@@ -17,7 +17,7 @@ Every feature is a plugin. The core defines shared types, routing logic, and eve
 This repository is the starting point for building plugins, extending platform behavior, or contributing to KleeneStar itself.
 It includes core logic in C#, plugin base classes, system interfaces, and an event bus. Architecture documentation and example plugins help you get started quickly.
 
-# Legal & Licensing
+## Legal & Licensing
 
 **KleeneStar.Core** is released under the `MIT License`, a permissive open-source license that allows reuse, modification, and distribution with minimal restrictions. You're free to use **KleeneStar** in personal, academic, or commercial projects, just include the original copyright notice.
 
@@ -29,7 +29,7 @@ The system is designed to be GDPR-compliant:
 
 **KleeneStar** respects your data and your autonomy. It's built for clarity, not surveillance.
 
-# Contributing
+## Contributing
 
 We welcome contributions in many areas:
 - Plugin development (C#)
