@@ -538,7 +538,7 @@ The global permissions model of **KleeneStar** is applied context-specifically t
 
 A profile defines which policy a global group receives within a specific workspace. It functions as a context-aware role assignment and enables granular and flexible rights management.
 
-- **Principle:** A user receives the rights defined by a policy for a workspace if they are a member of a group for which a corresponding profile (`Group → Policy`) exists in that workspace.
+- **Principle:** A user receives the rights defined by a policy for a workspace if they are a member of a group for which a corresponding profile (`Group -> Policy`) exists in that workspace.
 - **Flexibility:** The same global group (e.g., "Marketing") can be assigned the `workspace_view_policy` (read-only access) in Workspace A and the `workspace_edit_policy` (write access) in Workspace B.
 - **Management:** Users with administrative rights for a workspace (e.g., through the `workspace_admin_policy`) can create, edit, and delete profiles. This means they can manage the assignment of policies to groups for their workspace.
 
