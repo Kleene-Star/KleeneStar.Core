@@ -4,7 +4,7 @@ This document specifies the management of workspaces as a central organizational
 
 A workspace acts as a self-contained container that bundles all associated data, such as type definitions, concrete instances of these types, their attributes, and relationships (links). It also isolates this data from other workspaces. This segmentation forms the foundation of the system's multi-tenancy and enables different organizational units, projects, or security domains to be cleanly separated from one another.
 
-To promote standardization and consistency across multiple workspaces, the concept of blueprints is introduced. Any workspace can serve as a blueprint for other workspaces. A workspace derived from a blueprint inherits its structural configuration, particularly the definitions of EntityTypes and AttributeTypes.
+To promote standardization and consistency across multiple workspaces, the concept of blueprints is introduced. Any workspace can serve as a blueprint for other workspaces. A workspace derived from a blueprint inherits its structural configuration, particularly the definitions of Classess and Fields.
 
 This inheritance is dynamic: changes to the type definitions in the blueprint are automatically propagated to all derived workspaces. This mechanism ensures that an entire group of workspaces is based on a uniform, centrally managed data model. At the same time, each derived workspace maintains its independence, as metadata such as name, description, or color-coding, as well as assigned permissions, can be configured individually. They are not inherited from the blueprint.
 
@@ -41,32 +41,24 @@ The following state diagram visualizes these transitions:
 
 ## Data Model
 
-The **KleeneStar** Core Data Model forms the structural foundation for managing identities, roles, and permissions. It is based on a clearly modular architecture that distinguishes between type definitions, concrete instances, and semantic extensions. The components of the permission model (e.g., Position, Role, Resource, Policy) can be defined as EntityTypes. Their specific manifestations (e.g., "Head of Marketing", "Admin") are EntityInstances with corresponding AttributeValues (e.g., description, assigned group). Relationships such as "Position → Role" or "Role → Resource" are modeled via Links. Comments, versioning, and file references enable additional documentation and traceability.
+The **KleeneStar** Core Data Model forms the structural foundation for managing identities, roles, and permissions. It is based on a clearly modular architecture that distinguishes between type definitions, concrete instances, and semantic extensions. The components of the permission model (e.g., Position, Role, Resource, Policy) can be defined as Classes. Their specific manifestations (e.g., "Head of Marketing", "Admin") are Objects with corresponding Values (e.g., description, assigned group). Relationships such as "Position → Role" or "Role → Resource" are modeled via Links. Comments, versioning, and file references enable additional documentation and traceability.
 
 ```
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
 ║                             KleeneStar Core Data Model                               ║
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
-║       ┌─────────────┐ *    * ┌───────────────┐ 1      * ┌───────────────┐            ║
-║       │ Workspace   ├───────►│ EntityType    │◄─────────┤ AttributeType │            ║
-║       ├─────────────┤        └───────────────┘          └───────────────┘            ║
-║       │ Id          │                ▲ 1                       ▲ 1                   ║
-║       │ Key         │                │                         │                     ║
-║       │ Name        │                │                         │                     ║
-║       │ Icon        │                │                         │                     ║
-║     * │ Description │                │                         │                     ║
-║   ┌──►│ Created     │                │                         │                     ║
-║   │   │ Updated     │                │                         │                     ║
-║   │   │ Archived    │                │                         │                     ║
-║   │   └─┬─────────┬─┘                │                         │                     ║
-║   │     │ 1     1 └────────────┐     │                         │                     ║
-║   └─────┘                      ▼ *   │ *                       │ *                   ║
-║ Blueprint    ┌──────┐ *    2 ┌───────┴────────┐ 1    * ┌───────┴────────┐            ║
-║              │ Link ├───────►│ EntityInstance │◄───────┤ AttributeValue │            ║
-║              └──────┘        └────────────────┘        └────────────────┘            ║
-║                                 ▲ 1     ▲ 1                    ▲ 1                   ║
-║                     ┌───────────┘       │                      │                     ║
+║       ┌─────────────┐ *           * ┌───────┐ 1          * ┌───────┐                 ║
+║       │ Workspace   ├──────────────►│ Class │◄─────────────┤ Field │                 ║
+║       └─────┬───────┘               └───────┘              └───────┘                 ║
+║             │ 1                         ▲ 1                    ▲ 1                   ║
+║             └──────────────────────┐    │                      │                     ║
+║                                    ▼ *  │ *                    │ *                   ║
+║              ┌──────┐ *        2 ┌──────┴─┐ 1            * ┌───┴───┐                 ║
+║              │ Link ├───────────►│ Object │◄───────────────┤ Value │                 ║
+║              └──────┘            └────────┘                └───────┘                 ║
+║                                   ▲ 1   ▲ 1                    ▲ 1                   ║
+║                     ┌─────────────┘     │                      │                     ║
 ║                     │ *                 │ *                    │ *                   ║
 ║                ┌────┴────┐         ┌────┴────┐         ┌───────┴───────┐             ║
 ║                │ Comment │         │ Version │         │ FileReference │             ║
@@ -102,69 +94,73 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║                                       Δ                                              ║
 ║                                       ¦                                              ║
 ║                                       ¦                                              ║
-║                   ┌───────────────────┴───────────────────────┐                      ║
-║                   │ <<Interface>>                             │                      ║
-║             ┌-----┤ IWorkspaceManager                         │                      ║
-║             ¦     ├───────────────────────────────────────────┤                      ║
-║             ¦     │ AddWorkspace:Event                        │                      ║
-║             ¦     │ RemoveWorkspace:Event                     │                      ║
-║             ¦     ├───────────────────────────────────────────┤ 1                    ║
-║             ¦     │ Workspaces:IEnumerable<IWorkspace>        ├───┐                  ║
-║             ¦     ├───────────────────────────────────────────┤   │                  ║
-║             ¦     │ AddWorkspace(Workspace):IWorkspace        │   │                  ║
-║             ¦     │ GetWorkspaces(filter):                    │   │                  ║
-║             ¦     │   IEnumerable<IWorkspace>                 │   │                  ║
-║             ¦     │ CloneWorkspace(IWorkspace):IWorkspace     │   │                  ║
-║             ¦     │ DeleteWorkspaces(IWorkspace):bool         │   │                  ║
-║             ¦     └───────────────────────────────────────────┘   │                  ║
-║             ¦                                                     │                  ║
-║             ¦         ┌───────────────┐   ┌────────────────┐      │                  ║
-║             ¦         │ <<Interface>> │   │ <<Interface>>  │      │                  ║
-║             ¦         │ IModel        │   │ IIndexItem     │      │                  ║
-║             ¦         ├───────────────┤   ├────────────────┤      │                  ║
-║             ¦         └───────────────┘   │ Id: Guid       │      │                  ║
-║             ¦                Δ            └────────────────┘      │                  ║
-║             ¦                ¦                   Δ                │                  ║
-║             ¦                └--------┬----------┘                │                  ║
-║             ¦                         ¦                           │                  ║
-║             ¦         ┌───────────────┴────────────────┐ *        │                  ║
-║             ¦         │ <<Interface>>                  │◄─────────┘                  ║
-║             ¦         │ IWorkspace                     │                             ║
-║             ¦         ├────────────────────────────────┤                             ║
-║             ¦         │ Key:String                     │                             ║
-║             ¦         │ Name:String                    │                             ║
-║             ¦         │ Icon:IIcon                     │                             ║
-║             ¦         │ Description:String             │                             ║
-║             ¦         │ Created:DateTime               │                             ║
-║             ¦         │ Updated:DateTime               │                             ║
-║             ¦         │ Archived:Bool                  │                             ║
-║             ¦         │ EntityTypes:                   │                             ║
-║             ¦         │   IEnumerable<IEntityType>     │                             ║
-║             ¦         │ EntityInstances:               │                             ║
-║             ¦         │   IEnumerable<IEntityInstance> │                             ║
-║             ¦         │ AccessibleWorkspaces:          │                             ║
-║             ¦         │   IEnumerable<IWorkspace>      │                             ║
-║             ¦         └────────────────────────────────┘                             ║
-║             ¦                         Δ                                              ║
-║             ¦                         ¦                                              ║
-║             ¦                         ¦                                              ║
-║             ¦  create ┌───────────────┴────────────────┐                             ║
-║             └--------►│ Workspace                      │                             ║
-║                       ├────────────────────────────────┤                             ║
-║                       │ Key:String                     │                             ║
-║                       │ Name:String                    │                             ║
-║                       │ Icon:IIcon                     │                             ║
-║                       │ Description:String             │                             ║
-║                       │ Created:DateTime               │                             ║
-║                       │ Updated:DateTime               │                             ║
-║                       │ Archived:Bool                  │                             ║
-║                       │ EntityTypes:                   │                             ║
-║                       │   IEnumerable<IEntityType>     │                             ║
-║                       │ EntityInstances:               │                             ║
-║                       │   IEnumerable<IEntityInstance> │                             ║
-║                       │ AccessibleWorkspaces:          │                             ║
-║                       │   IEnumerable<IWorkspace>      │                             ║
-║                       └────────────────────────────────┘                             ║
+║                     ┌─────────────────┴─────────────────────┐                        ║
+║                     │ <<Interface>>                         │                        ║
+║         ┌-----------┤ IWorkspaceManager                     │                        ║
+║         ¦           ├───────────────────────────────────────┤                        ║
+║         ¦           │ AddWorkspace:Event                    │                        ║
+║         ¦           │ RemoveWorkspace:Event                 │                        ║
+║         ¦           ├───────────────────────────────────────┤ 1                      ║
+║         ¦           │ Workspaces:IEnumerable<IWorkspace>    ├───────┐                ║
+║         ¦           ├───────────────────────────────────────┤       │                ║
+║         ¦           │ AddWorkspace(Workspace):IWorkspace    │       │                ║
+║         ¦           │ GetWorkspaces(filter):                │       │                ║
+║         ¦           │   IEnumerable<IWorkspace>             │       │                ║
+║         ¦           │ CloneWorkspace(IWorkspace):IWorkspace │       │                ║
+║         ¦           │ DeleteWorkspace(IWorkspace):bool      │       │                ║
+║         ¦           └───────────────────────────────────────┘       │                ║
+║         ¦                                                           │                ║
+║         ¦             ┌───────────────┐   ┌────────────────┐        │                ║
+║         ¦             │ <<Interface>> │   │ <<Interface>>  │        │                ║
+║         ¦             │ IModel        │   │ IIndexItem     │        │                ║
+║         ¦             ├───────────────┤   ├────────────────┤        │                ║
+║         ¦             └───────────────┘   │ Id: Guid       │        │                ║
+║         ¦                    Δ            └────────────────┘        │                ║
+║         ¦                    ¦                   Δ                  │                ║
+║         ¦                    └--------┬----------┘                  │                ║
+║         ¦                             ¦                             │                ║
+║         ¦           ┌─────────────────┴──────────────────┐ *        │                ║
+║         ¦           │ <<Interface>>                      │◄─────────┘                ║
+║         ¦           │ IWorkspace                         │                           ║
+║         ¦           ├────────────────────────────────────┤                           ║
+║         ¦           │ Key:String                         │                           ║
+║         ¦           │ Name:String                        │                           ║
+║         ¦           │ Icon:IIcon                         │                           ║
+║         ¦           │ Description:String                 │                           ║
+║         ¦           │ Created:DateTime                   │                           ║
+║         ¦           │ Updated:DateTime                   │                           ║
+║         ¦           │ Archived:Bool                      │                           ║
+║         ¦           │ Classes:                           │                           ║
+║         ¦           │   IEnumerable<IClass>              │                           ║
+║         ¦           │ Objects:                           │                           ║
+║         ¦           │   IEnumerable<IObject>             │                           ║
+║         ¦           │ AccessibleWorkspaces:              │                           ║
+║         ¦           │   IEnumerable<IWorkspace>          │                           ║
+║         ¦           │ PermissionsProfiles:               │                           ║
+║         ¦           │   IEnumerable<IPermissionsProfile> │                           ║
+║         ¦           └────────────────────────────────────┘                           ║
+║         ¦                             Δ                                              ║
+║         ¦                             ¦                                              ║
+║         ¦                             ¦                                              ║
+║         ¦ create    ┌─────────────────┴──────────────────┐                           ║
+║         └----------►│ Workspace                          │                           ║
+║                     ├────────────────────────────────────┤                           ║
+║                     │ Key:String                         │                           ║
+║                     │ Name:String                        │                           ║
+║                     │ Icon:IIcon                         │                           ║
+║                     │ Description:String                 │                           ║
+║                     │ Created:DateTime                   │                           ║
+║                     │ Updated:DateTime                   │                           ║
+║                     │ Archived:Bool                      │                           ║
+║                     │ Classes:                           │                           ║
+║                     │   IEnumerable<IClass>              │                           ║
+║                     │ Objects:                           │                           ║
+║                     │   IEnumerable<IObject>             │                           ║
+║                     │ AccessibleWorkspaces:              │                           ║
+║                     │   IEnumerable<IWorkspace>          │                           ║
+║                     │ PermissionsProfiles:               │                           ║
+║                     │   IEnumerable<IPermissionsProfile> │                           ║
+║                     └────────────────────────────────────┘                           ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -189,11 +185,11 @@ The global workspace dropdown is a central and permanently available component i
 ║└──────────────────││ Search         ││──────────────────────────────────────────────┘║
 ║┌Workspace ────────│└────────────────┘│──────────────────────────────────────────────┐║
 ║│                  │ Workspace 0      │                                              │║
-║│  [Icon]          │ Workspace 1      │             [ Search ] [+ AddEntityInstance] │║
+║│  [Icon]          │ Workspace 1      │                     [ Search ] [+ AddObject] │║
 ║│  [Name]          │ ...              │                                              │║
 ║│                  │ Workspace n      │     | Tel.  | Description                    │║
 ║│                  ├──────────────────┤-----|-------|------------------------------- │║
-║│ EntityType       │ Manage Workspace │     | 555-1 | Head of Sales              […] │║
+║│ Class            │ Manage Workspace │     | 555-1 | Head of Sales              […] │║
 ║│ ├─ xxxxxx        │ + Add Workspace  │lder | 555-7 | IT Administrator           […] │║
 ║│ ├─ yyyyyyyyy     │ <section>        │     | 555-3 | HR Manager                 […] │║
 ║│ └─ zzzzz         └──────────────────┘e    | 555-4 | System Architect           […] │║
@@ -275,11 +271,11 @@ The sidebar visualizes essential metadata at a glance, such as the name, an icon
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Workspace─────────────┐ ┌Workspace Content──────────────────────────────────────────┐║
 ║│[Name]                │░│                                                           │║
-║│                      │░│ EntityType xxxxxx        [ Search ] [+ AddEntityInstance] │║
+║│                      │░│ Class xxxxxx                     [ Search ] [+ AddObject] │║
 ║│      [Icon]          │░│                                                           │║
 ║│                      │░│ Name             | Tel.  | Description                    │║
 ║│                      │░│------------------|-------|------------------------------- │║
-║│ EntityType           │░│ John Sample      | 555-1 | Head of Sales              […] │║
+║│ Class                │░│ John Sample      | 555-1 | Head of Sales              […] │║
 ║│ ├─ xxxxxx        […] │░│ Jane Placeholder | 555-7 | IT Administrator           […] │║
 ║│ ├─ yyyyyyyyy     […] │░│ Mark Demo        | 555-3 | HR Manager                 […] │║
 ║│ └─ zzzzz         […] │░│ Emily Example    | 555-4 | System Architect           […] │║
@@ -314,15 +310,15 @@ The content of the modal dynamically adapts to the respective use case. In edit 
 ║│ * KleeneStar     Workspace ▼                                                       │║
 ║└─────╔WorkspaceModal══════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Wo║│                                                                      │║     │║
-║└─────║│ Add Workspace / Edit Workspace                                       │║─────┘║
+║│ / Wo║│ Add Workspace / Edit Workspace                                       │║     │║
+║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
 ║│[Name║│                  Name: [Workspace A                                ] │║     │║
-║│     ║│                   Key: [ws0                                        ] │║nce] │║
+║│     ║│                   Key: [ws0                                        ] │║ect] │║
 ║│     ║│              Category: [                                           ] │║     │║
 ║│     ║│             Blueprint: [None                                      ▼] │║     │║
 ║│     ║│                Active: [✓]                                           │║---- │║
-║│ Enti║│ Accessible Workspaces: [Workspace B, Workspace C                  ▼] │║ […] │║
+║│ Clas║│ Accessible Workspaces: [Workspace B, Workspace C                  ▼] │║ […] │║
 ║│ ├─ x║│           Description: [                                           ] │║ […] │║
 ║│ ├─ y║│                                                                      │║ […] │║
 ║│ └─ z║│                                                                      │║ […] │║
@@ -358,22 +354,22 @@ After confirmation, the new workspace is created and automatically integrated in
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                                                       │║
 ║└─────╔CloneModal══════════════════════════════════════════════════════════════╗─────┘║
-║┌Bread║┌──────────────────────────────────────────────────────────────────────┐║─────┐║
+║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Wo║│ Clone Workspace                                                      │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
-║│     ║│ You are about to clone the workspace 'Sales Operations'.             │║     │║
-║│  [Ic║│ Please adjust the details for the new workspace below.               │║nce] │║
-║│  [Na║│                                                                      │║     │║
+║│[Name║│ You are about to clone the workspace 'Sales Operations'.             │║     │║
+║│     ║│ Please adjust the details for the new workspace below.               │║ect] │║
+║│     ║│                                                                      │║     │║
 ║│     ║│ Workspace Name: [ Sales Operations (Copy)                        ]   │║     │║
-║│     ║│            Key: [ newkey                                         ]   │║     │║
-║│     ║│    Description: [ Copy of sales-related workflows and assets.    ]   │║     │║
+║│     ║│            Key: [ newkey                                         ]   │║---- │║
+║│ Clas║│    Description: [ Copy of sales-related workflows and assets.    ]   │║ […] │║
+║│ ├─ x║│                                                                      │║ […] │║
+║│ ├─ y║│   Include structure: [✓]                                             │║ […] │║
+║│ └─ z║│ Include permissions: [✓]                                             │║ […] │║
+║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║     │║
-║│     ║│   Include structure: [✓]                                             │║     │║
-║│     ║│ Include permissions: [✓]                                             │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
+║│     ║│                                                                      │║xt › │║
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
@@ -397,7 +393,7 @@ The dialog window clearly indicates which workspace is intended for deletion by 
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                                                       │║
 ║└─────╔DeleteModal═════════════════════════════════════════════════════════════╗─────┘║
-║┌Bread║┌──────────────────────────────────────────────────────────────────────┐║─────┐║
+║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Wo║│ Delete Workspace                                                     │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
@@ -406,7 +402,7 @@ The dialog window clearly indicates which workspace is intended for deletion by 
 ║│  [Na║│                                                                      │║     │║
 ║│     ║│ To confirm, please type 'sales-ops' in the box below:                │║     │║
 ║│     ║│ [                                                                 ]  │║---- │║
-║│ Enti║│                                                                      │║ […] │║
+║│ Clas║│                                                                      │║ […] │║
 ║│ ├─ x║│                                                                      │║ […] │║
 ║│ ├─ y║│                                                                      │║ […] │║
 ║│ └─ z║│                                                                      │║ […] │║
@@ -421,7 +417,7 @@ The dialog window clearly indicates which workspace is intended for deletion by 
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│ [+][║                                                     [Delete] [Cancel]  ║     │║
+║│ [+] ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -442,7 +438,7 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                                                       │║
 ║└─────╔PermissionsModal════════════════════════════════════════════════════════╗─────┘║
-║┌Bread║┌──────────────────────────────────────────────────────────────────────┐║─────┐║
+║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Wo║│  Manage Permissions for 'Sales Operations'                           │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
@@ -451,7 +447,7 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 ║│  [Na║│                                                                      │║     │║
 ║│     ║│  [+ Assign]                                                          │║     │║
 ║│     ║│                                                          [ Search ]  │║---- │║
-║│ Enti║│                                                                      │║ […] │║
+║│ Clas║│                                                                      │║ […] │║
 ║│ ├─ x║│ Assigned Group       | Effective Policy                              │║ […] │║
 ║│ ├─ y║│----------------------|-----------------------------------------------│║ […] │║
 ║│ └─ z║│ Admin                | workspace_admin_policy                      X │║ […] │║
@@ -534,7 +530,7 @@ Through integration with the `WebExpress-EventManager`, these events are availab
 
 ## Permissions Model
 
-The global permissions model of **KleeneStar** is applied context-specifically to individual workspaces. The connection between the globally defined groups and policies is established through a `Profile`, which is valid exclusively within a specific workspace.
+The global permissions model of **KleeneStar** is applied context-specifically to individual workspaces. The connection between the globally defined groups and policies is established through a Profile, which is valid exclusively within a specific workspace.
 
 A profile defines which policy a global group receives within a specific workspace. It functions as a context-aware role assignment and enables granular and flexible rights management.
 
