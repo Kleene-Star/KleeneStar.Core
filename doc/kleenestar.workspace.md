@@ -48,11 +48,11 @@ The **KleeneStar** Core Data Model forms the structural foundation for managing 
 ║                             KleeneStar Core Data Model                               ║
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
-║       ┌─────────────┐ *           * ┌───────┐ 1          * ┌───────┐                 ║
-║       │ Workspace   ├──────────────►│ Class │◄─────────────┤ Field │                 ║
-║       └─────┬───────┘               └───────┘              └───────┘                 ║
-║             │ 1                         ▲ 1                    ▲ 1                   ║
-║             └──────────────────────┐    │                      │                     ║
+║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐                 ║
+║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field │                 ║
+║         └─────┬─────┘               └───────┘              └───────┘                 ║
+║               │ 1                       ▲ 1                    ▲ 1                   ║
+║               └────────────────────┐    │                      │                     ║
 ║                                    ▼ *  │ *                    │ *                   ║
 ║              ┌──────┐ *        2 ┌──────┴─┐ 1            * ┌───┴───┐                 ║
 ║              │ Link ├───────────►│ Object │◄───────────────┤ Value │                 ║
@@ -99,6 +99,7 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║         ┌-----------┤ IWorkspaceManager                     │                        ║
 ║         ¦           ├───────────────────────────────────────┤                        ║
 ║         ¦           │ AddWorkspace:Event                    │                        ║
+║         ¦           │ UpdateWorkspace:Event                 │                        ║
 ║         ¦           │ RemoveWorkspace:Event                 │                        ║
 ║         ¦           ├───────────────────────────────────────┤ 1                      ║
 ║         ¦           │ Workspaces:IEnumerable<IWorkspace>    ├───────┐                ║
@@ -178,14 +179,14 @@ The global workspace dropdown is a central and permanently available component i
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                                                       │║
+║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└────────────────────¦───────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb────────┌─┴────────────────┐──────────────────────────────────────────────┐║
 ║│ / Site / ...     │┌────────────────┐│                                              │║
 ║└──────────────────││ Search         ││──────────────────────────────────────────────┘║
 ║┌Workspace ────────│└────────────────┘│──────────────────────────────────────────────┐║
 ║│                  │ Workspace 0      │                                              │║
-║│  [Icon]          │ Workspace 1      │                     [ Search ] [+ AddObject] │║
+║│  [Icon]          │ Workspace 1      │                       [Search] [+ AddObject] │║
 ║│  [Name]          │ ...              │                                              │║
 ║│                  │ Workspace n      │     | Tel.  | Description                    │║
 ║│                  ├──────────────────┤-----|-------|------------------------------- │║
@@ -221,19 +222,19 @@ The main component of this page is a tabular list of all workspaces. Each row re
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                                                       │║
+║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Workspaces                                                                       │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Workspace Category────┐ ┌Workspaces─────────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│ - All                │░│                              [ Search ] [+ Add Workspace] │║
+║│ - All                │░│                                [Search] [+ Add Workspace] │║
 ║│ - Category 0         │░│                                                           │║
 ║│ - Category 1         │░│ Name             | Key         | Status   | ...           │║
-║│ - ...                │░│------------------|-------------|----------|-------------- │║
+║│ - ...                │░│------------------|-------------|----------|---------------│║
 ║│ - Category n         │░│ Sales Operations | sales-ops   | active   | ...       […] │║
-║│                      │░│ Engineering      | engineering | archived | ...       […] │║
+║│ - Archived           │░│ Engineering      | engineering | archived | ...       […] │║
 ║│                      │░│ Marketing        | marketing   | active   | ...       […] │║
 ║│                      │░│                                                        ¦  │║
 ║│                      │░│                                   ‹ Prev  ┌────────────┴┐ │║
@@ -264,31 +265,31 @@ The sidebar visualizes essential metadata at a glance, such as the name, an icon
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                                                       │║
+║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Workspace 0                                                                      │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Workspace─────────────┐ ┌Workspace Content──────────────────────────────────────────┐║
 ║│[Name]                │░│                                                           │║
-║│                      │░│ Class xxxxxx                     [ Search ] [+ AddObject] │║
-║│      [Icon]          │░│                                                           │║
+║│                      │░│ Class xxxxxx                                          […] │║
+║│      [Icon]          │░│                                                  [Search] │║
 ║│                      │░│ Name             | Tel.  | Description                    │║
-║│                      │░│------------------|-------|------------------------------- │║
+║│           [ Search ] │░│------------------|-------|------------------------------- │║
 ║│ Class                │░│ John Sample      | 555-1 | Head of Sales              […] │║
 ║│ ├─ xxxxxx        […] │░│ Jane Placeholder | 555-7 | IT Administrator           […] │║
 ║│ ├─ yyyyyyyyy     […] │░│ Mark Demo        | 555-3 | HR Manager                 […] │║
 ║│ └─ zzzzz         […] │░│ Emily Example    | 555-4 | System Architect           […] │║
 ║│                      │░│ Anna Mock        | 555-8 | DevOps Lead                […] │║
-║│                      │<│                                                           │║
-║│       ┌─────────────┐│<│                                   ‹ Prev  1  2  3  Next › │║
-║│       │ Edit        ││<│                                                           │║
-║│       │ Clone       ││░│                                                           │║
-║│       │ Permissions ││░│                                                           │║
-║│       │ <section>   ││░│                                                           │║
-║│       ├─────────────┤│░│                                                           │║
-║│       │ Delete      ││░│                                                           │║
-║│       └┬────────────┘│░│                                                           │║
+║│    ┌Workspace───────┐│<│                                                           │║
+║│    │ Edit           ││<│                                   ‹ Prev  1  2  3  Next › │║
+║│    │ Clone          ││<│                                                           │║
+║│    │ Manage Classes ││░│                                                           │║
+║│    │ Permissions    ││░│                                                           │║
+║│    │ <section>      ││░│                                                           │║
+║│    ├────────────────┤│░│                                                           │║
+║│    │ Delete         ││░│                                                           │║
+║│    └───┬────────────┘│░│                                                           │║
 ║├────────¦─────────────┤░│                                                           │║
 ║│ [+] | [Setting]   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
@@ -307,15 +308,15 @@ The content of the modal dynamically adapts to the respective use case. In edit 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                                                       │║
-║└─────╔WorkspaceModal══════════════════════════════════════════════════════════╗─────┘║
+║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║└─────╔WorkspaceAddEditModal═══════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Wo║│ Add Workspace / Edit Workspace                                       │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
 ║│[Name║│                  Name: [Workspace A                                ] │║     │║
-║│     ║│                   Key: [ws0                                        ] │║ect] │║
-║│     ║│              Category: [                                           ] │║     │║
+║│     ║│                   Key: [ws0                                        ] │║ […] │║
+║│     ║│              Category: [                                           ] │║rch] │║
 ║│     ║│             Blueprint: [None                                      ▼] │║     │║
 ║│     ║│                Active: [✓]                                           │║---- │║
 ║│ Clas║│ Accessible Workspaces: [Workspace B, Workspace C                  ▼] │║ […] │║
@@ -352,15 +353,15 @@ After confirmation, the new workspace is created and automatically integrated in
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                                                       │║
-║└─────╔CloneModal══════════════════════════════════════════════════════════════╗─────┘║
+║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║└─────╔WorkspaceCloneModal═════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Wo║│ Clone Workspace                                                      │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
 ║│[Name║│ You are about to clone the workspace 'Sales Operations'.             │║     │║
-║│     ║│ Please adjust the details for the new workspace below.               │║ect] │║
-║│     ║│                                                                      │║     │║
+║│     ║│ Please adjust the details for the new workspace below.               │║ […] │║
+║│     ║│                                                                      │║rch] │║
 ║│     ║│ Workspace Name: [ Sales Operations (Copy)                        ]   │║     │║
 ║│     ║│            Key: [ newkey                                         ]   │║---- │║
 ║│ Clas║│    Description: [ Copy of sales-related workflows and assets.    ]   │║ […] │║
@@ -391,15 +392,15 @@ The dialog window clearly indicates which workspace is intended for deletion by 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                                                       │║
-║└─────╔DeleteModal═════════════════════════════════════════════════════════════╗─────┘║
+║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║└─────╔WorkspaceDeleteModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Wo║│ Delete Workspace                                                     │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
-║│     ║│ Are you sure you want to delete the workspace 'Sales Operations'?    │║     │║
-║│  [Ic║│ This action cannot be undone.                                        │║Add] │║
-║│  [Na║│                                                                      │║     │║
+║│[Name║│ Are you sure you want to delete the workspace 'Sales Operations'?    │║     │║
+║│     ║│ This action cannot be undone.                                        │║ […] │║
+║│     ║│                                                                      │║rch] │║
 ║│     ║│ To confirm, please type 'sales-ops' in the box below:                │║     │║
 ║│     ║│ [                                                                 ]  │║---- │║
 ║│ Clas║│                                                                      │║ […] │║
@@ -436,17 +437,17 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                                                       │║
-║└─────╔PermissionsModal════════════════════════════════════════════════════════╗─────┘║
+║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║└─────╔WorkspacePermissionsModal═══════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Wo║│  Manage Permissions for 'Sales Operations'                           │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
 ║│     ║│  Assign Group: [Admin ▼]                                             │║     │║
-║│  [Ic║│        Policy: [workspace_admin_policy ▼]                            │║Add] │║
-║│  [Na║│                                                                      │║     │║
+║│  [Ic║│        Policy: [workspace_admin_policy ▼]                            │║ […] │║
+║│  [Na║│                                                                      │║rch] │║
 ║│     ║│  [+ Assign]                                                          │║     │║
-║│     ║│                                                          [ Search ]  │║---- │║
+║│     ║│                                                             [Search] │║---- │║
 ║│ Clas║│                                                                      │║ […] │║
 ║│ ├─ x║│ Assigned Group       | Effective Policy                              │║ […] │║
 ║│ ├─ y║│----------------------|-----------------------------------------------│║ […] │║
@@ -474,35 +475,40 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 
 The sitemap defines the hierarchical structure and navigation paths of the user interface for workspace management. It ensures a clear organization of the pages, serves as the basis for routing within the web application, and is structured as follows:
 
-|Path                            |Page                  |Description
-|--------------------------------|----------------------|-------------------------------------------------------------
-|`/`                             |Dashboard             |Central entry point of the application.
-|`/workspaces`                   |Workspace Management  |Overview of all workspaces with search, filter, and management functions.
-|`/workspaces/add`               |Workspace Creation    |Form for creating a new workspace.
-|`/workspaces/{key}`             |Workspace Detail View |Detailed view and actions for a single workspace.
-|`/workspaces/{key}/edit`        |Workspace Editing     |Form for editing the metadata of an existing workspace.
-|`/workspaces/{key}/clone`       |Workspace Cloning     |Dialog for replicating an existing workspace with customizable fields.
-|`/workspaces/{key}/delete`      |Workspace Deletion    |Modal for confirming and executing the irreversible deletion of a workspace.
-|`/workspaces/{key}/permissions` |Workspace Permissions |Modal for managing profiles (group-policy assignments) for a specific workspace.
+|Path                                     |Page                  |Description
+|-----------------------------------------|----------------------|-------------------------------------------------------------
+|`/`                                      |Dashboard             |Central entry point of the application.
+|`/workspaces`                            |Workspace Management  |Overview of all workspaces with search, filter, and management functions.
+|`/workspaces/add`                        |Workspace Creation    |Form for creating a new workspace.
+|`/workspaces/{workspaceKey}`             |Workspace Detail View |Detailed view and actions for a single workspace.
+|`/workspaces/{workspaceKey}/edit`        |Workspace Editing     |Form for editing the metadata of an existing workspace.
+|`/workspaces/{workspaceKey}/clone`       |Workspace Cloning     |Dialog for replicating an existing workspace with customizable fields.
+|`/workspaces/{workspaceKey}/delete`      |Workspace Deletion    |Modal for confirming and executing the irreversible deletion of a workspace.
+|`/workspaces/{workspaceKey}/permissions` |Workspace Permissions |Modal for managing profiles (group-policy assignments) for a specific workspace.
+|`/workspaces/{workspaceKey}/import`      |Workspace Import      |Import of external workspace schemas.
+|`/workspaces/{workspaceKey}/export`      |Workspace Export      |Export of the current workspace schema for reuse or transfer.
+
 
 ## API Interfaces (REST Endpoints)
 
-For programmatic interaction, integration of third-party systems, and automation purposes, workspace management provides a standardized REST API. This interface follows REST principles and uses JSON as the data exchange format. Authentication and authorization are handled by mechanisms provided by the central `IdentityManager`, typically via API tokens or OAuth. Standard HTTP status codes are used to signal the success or failure of a request.
+For programmatic interaction, third-party integration, and automation purposes, **KleeneStar** provides a standardized REST API for managing class definitions within a workspace. The interface adheres to REST principles and uses JSON as the data exchange format. Authentication and authorization are handled by **KleeneStar**. Standard HTTP status codes indicate the outcome of each request, including success, validation errors, permission issues, or missing resources.
 
 The management of workspaces is handled via the following endpoints:
 
-|Endpoint                                   |HTTP Method |Description
-|-------------------------------------------|------------|------------------------------------------------------------
-|`/api/workspaces`                          |GET         |Lists all available workspaces. The results are paginated and can be filtered by status and sorted.
-|`/api/workspaces`                          |POST        |Creates a new workspace. Requires at least a `name` and a system-wide unique `key` in the request body.
-|`/api/workspaces/{key}`                    |GET         |Retrieves the detailed information of a specific workspace by its key.
-|`/api/workspaces/{key}`                    |PUT         |Updates the metadata (e.g., `name`, `description`) of an existing workspace. The key is immutable.
-|`/api/workspaces/{key}`                    |DELETE      |Deletes a workspace.
-|`/api/workspaces/{key}/archive`            |POST        |Archives a workspace, placing it in a read-only state.
-|`/api/workspaces/{key}/restore`            |POST        |Restores an archived or temporarily deleted workspace, setting its status to `active`.
-|`/api/workspaces/{key}/profiles`           |GET         |Lists all profiles (group-policy assignments) for the specified workspace. Requires the workspace:manage_profiles permission.
-|`/api/workspaces/{key}/profiles`           |POST        |Creates a new profile, assigning a group to a policy within the workspace. The request body must contain groupId and policyId.
-|`/api/workspaces/{key}/profiles/{groupId}` |DELETE      |Deletes a profile for a specific group from the workspace, thereby revoking the group's permissions.
+|Endpoint                                              |HTTP Method |Description
+|------------------------------------------------------|------------|------------------------------------------------------------
+|`/api/workspaces`                                     |GET         |Lists all available workspaces. The results are paginated and can be filtered by status and sorted.
+|`/api/workspaces`                                     |POST        |Creates a new workspace. Requires at least a `name` and a system-wide unique `key` in the request body.
+|`/api/workspaces/{workspaceKey}`                      |GET         |Retrieves the detailed information of a specific workspace by its key.
+|`/api/workspaces/{workspaceKey}`                      |PUT         |Updates the metadata (e.g., `name`, `description`) of an existing workspace. The key is immutable.
+|`/api/workspaces/{workspaceKey}`                      |DELETE      |Deletes a workspace.
+|`/api/workspaces/{workspaceKey}/archive`              |POST        |Archives a workspace, placing it in a read-only state.
+|`/api/workspaces/{workspaceKey}/restore`              |POST        |Restores an archived or temporarily deleted workspace, setting its status to `active`.
+|`/api/workspaces/{workspaceKey}/profiles`             |GET         |Lists all profiles (group-policy assignments) for the specified workspace. Requires the workspace:manage_profiles permission.
+|`/api/workspaces/{workspaceKey}/profiles`             |POST        |Creates a new profile, assigning a group to a policy within the workspace. The request body must contain groupId and policyId.
+|`/api/workspaces/{workspaceKey}/profiles/{profileId}` |DELETE      |Deletes a profile for a specific group from the workspace, thereby revoking the group's permissions.
+|`/api/workspaces/{workspaceKey}/import`               |POST        |Imports one or more workspace definitions from an external schema (e.g., JSON or YAML).
+|`/api/workspaces/{workspaceKey}/export`               |GET         |Exports the current workspace schema for backup or reuse.
 
 Standard error responses include `400 Bad Request` for validation errors (e.g., a key that is already taken), `401 Unauthorized` for missing authentication, `403 Forbidden` for insufficient permissions, and `404 Not Found` if the requested resource does not exist. A successful creation (POST) is acknowledged with `201 Created`, while a successful deletion (DELETE) results in a `204 No Content` response.
 
@@ -511,6 +517,7 @@ Standard error responses include `400 Bad Request` for validation errors (e.g., 
 Workspace management utilizes an event-driven architecture model to communicate state changes transparently and reactively throughout the system. Events are published via the `WebExpress-EventManager`, which acts as the central event backbone. This allows other modules, plugins, or external systems to subscribe to relevant changes without being directly coupled to the `WorkspaceManager`.
 
 The following events are published by the `WorkspaceManager` via the `WebExpress-EventManager`:
+
 |Event Name          |Description
 |--------------------|-----------------------------------------------------------------------------
 |`WorkspaceAdded`    |Triggered when a new workspace has been successfully created.
@@ -530,11 +537,11 @@ Through integration with the `WebExpress-EventManager`, these events are availab
 
 ## Permissions Model
 
-The global permissions model of **KleeneStar** is applied context-specifically to individual workspaces. The connection between the globally defined groups and policies is established through a Profile, which is valid exclusively within a specific workspace.
+The permissions model of **KleeneStar** is applied context-specifically to individual workspaces. The connection between the globally defined groups and policies is established through a Profile, which is valid exclusively within a specific workspace.
 
 A profile defines which policy a global group receives within a specific workspace. It functions as a context-aware role assignment and enables granular and flexible rights management.
 
-- **Principle:** A user receives the rights defined by a policy for a workspace if they are a member of a group for which a corresponding profile (`Group -> Policy`) exists in that workspace.
+- **Principle:** A user receives the rights defined by a policy for a workspace if they are a member of a group for which a corresponding profile (Group → Policy) exists in that workspace.
 - **Flexibility:** The same global group (e.g., "Marketing") can be assigned the `workspace_view_policy` (read-only access) in Workspace A and the `workspace_edit_policy` (write access) in Workspace B.
 - **Management:** Users with administrative rights for a workspace (e.g., through the `workspace_admin_policy`) can create, edit, and delete profiles. This means they can manage the assignment of policies to groups for their workspace.
 
