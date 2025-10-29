@@ -122,21 +122,23 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║         ¦                             ¦                             │                ║
 ║         ¦           ┌─────────────────┴──────────────────┐ *        │                ║
 ║         ¦           │ <<Interface>>                      │◄─────────┘                ║
-║         ¦           │ IWorkspace                         │                           ║
-║         ¦           ├────────────────────────────────────┤                           ║
-║         ¦           │ Key:String                         │                           ║
-║         ¦           │ Name:String                        │                           ║
-║         ¦           │ Icon:IIcon                         │                           ║
-║         ¦           │ Description:String                 │                           ║
-║         ¦           │ Created:DateTime                   │                           ║
-║         ¦           │ Updated:DateTime                   │                           ║
-║         ¦           │ Archived:Bool                      │                           ║
-║         ¦           │ Classes:                           │                           ║
-║         ¦           │   IEnumerable<IClass>              │                           ║
-║         ¦           │ Objects:                           │                           ║
-║         ¦           │   IEnumerable<IObject>             │                           ║
-║         ¦           │ AccessibleWorkspaces:              │                           ║
-║         ¦           │   IEnumerable<IWorkspace>          │                           ║
+║         ¦           │ IWorkspace                         │    ┌────────────────────┐ ║
+║         ¦           ├────────────────────────────────────┤    │ <<Enum>>           │ ║
+║         ¦           │ Key:String                         │    │ TypeWorkspaceState │ ║
+║         ¦           │ Name:String                        │    ├────────────────────┤ ║
+║         ¦           │ State:TypeWorkspaceState           │    │ Active             │ ║
+║         ¦           │ Icon:IIcon                         │    │ Archived           │ ║
+║         ¦           │ Description:String                 │    └────────────────────┘ ║
+║         ¦           │ Created:DateTime                   │    ┌────────────────────┐ ║
+║         ¦           │ Updated:DateTime                   │    │ <<Enum>>           │ ║
+║         ¦           │ Inherited:IWorkspace               │    │ TypeAccessModifier │ ║
+║         ¦           │ Sealed:Bool                        │    ├────────────────────┤ ║
+║         ¦           │ Tenant:IEnumerable<ITenant>        │    │ Private            │ ║
+║         ¦           │ Classes:                           │    │ Protected          │ ║
+║         ¦           │   IEnumerable<IClass>              │    │ Public             │ ║
+║         ¦           │ Objects:                           │    │ Internal           │ ║
+║         ¦           │   IEnumerable<IObject>             │    └────────────────────┘ ║
+║         ¦           │ AccessModifier:TypeAccessModifier  │                           ║
 ║         ¦           │ PermissionsProfiles:               │                           ║
 ║         ¦           │   IEnumerable<IPermissionsProfile> │                           ║
 ║         ¦           └────────────────────────────────────┘                           ║
@@ -148,23 +150,33 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║                     ├────────────────────────────────────┤                           ║
 ║                     │ Key:String                         │                           ║
 ║                     │ Name:String                        │                           ║
+║                     │ State:TypeWorkspaceState           │                           ║
 ║                     │ Icon:IIcon                         │                           ║
 ║                     │ Description:String                 │                           ║
 ║                     │ Created:DateTime                   │                           ║
 ║                     │ Updated:DateTime                   │                           ║
-║                     │ Archived:Bool                      │                           ║
+║                     │ Inherited:IWorkspace               │                           ║
+║                     │ Sealed:Bool                        │                           ║
+║                     │ Tenant:IEnumerable<ITenant>        │                           ║
 ║                     │ Classes:                           │                           ║
 ║                     │   IEnumerable<IClass>              │                           ║
 ║                     │ Objects:                           │                           ║
 ║                     │   IEnumerable<IObject>             │                           ║
-║                     │ AccessibleWorkspaces:              │                           ║
-║                     │   IEnumerable<IWorkspace>          │                           ║
+║                     │ AccessModifier:TypeAccessModifier  │                           ║
 ║                     │ PermissionsProfiles:               │                           ║
 ║                     │   IEnumerable<IPermissionsProfile> │                           ║
 ║                     └────────────────────────────────────┘                           ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
+
+A workspace can inherit exactly one other workspace as its base. Inheritance is referential, meaning classes and fields from the parent workspace become visible in the child without being copied. Resolution follows a clear precedence: overrides in the child take priority over definitions in the parent. If no override exists, the parent’s values apply. Child-specific overloads can selectively hide inherited elements without modifying the parent. In cases of naming conflicts, the system deterministically favors the child. Each workspace maintains its own operational state; archiving the parent does not automatically affect its children but is displayed as a source status.
+
+Access modifiers follow a monotonic visibility rule across the inheritance hierarchy. A child may only adopt the same or more restrictive visibility than its parent, never a broader one. The modifier private enforces complete encapsulation, disallowing any tenant-wide or hierarchical exposure. Protected grants visibility to derived workspaces. Internal allows visibility across the entire tenant. Public enables cross-tenant visibility. Inheritance across tenants is permitted only in public scenarios.
+
+A workspace can also be assigned to multiple tenants simultaneously. This allows shared visibility and reuse across organizational boundaries, provided that access modifiers and inheritance rules are respected.
+
+The modifier sealed introduces an inheritance boundary. A sealed workspace can be inherited, but it cannot itself be extended further. Once a workspace is marked as sealed, it becomes a terminal node in the inheritance chain. This is useful for stabilizing reference implementations, locking down shared templates, or preventing unintended specialization.
 
 ## UI Concepts and Pages
 
@@ -182,7 +194,7 @@ The global workspace dropdown is a central and permanently available component i
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└────────────────────¦───────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb────────┌─┴────────────────┐──────────────────────────────────────────────┐║
-║│ / Site / ...     │┌────────────────┐│                                              │║
+║│ / Workspace 0    │┌────────────────┐│                                              │║
 ║└──────────────────││ Search         ││──────────────────────────────────────────────┘║
 ║┌Workspace ────────│└────────────────┘│──────────────────────────────────────────────┐║
 ║│                  │ Workspace 0      │                                              │║
@@ -314,17 +326,17 @@ The content of the modal dynamically adapts to the respective use case. In edit 
 ║│ / Wo║│ Add Workspace / Edit Workspace                                       │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
-║│[Name║│                  Name: [Workspace A                                ] │║     │║
-║│     ║│                   Key: [ws0                                        ] │║ […] │║
-║│     ║│              Category: [                                           ] │║rch] │║
-║│     ║│             Blueprint: [None                                      ▼] │║     │║
-║│     ║│                Active: [✓]                                           │║---- │║
-║│ Clas║│ Accessible Workspaces: [Workspace B, Workspace C                  ▼] │║ […] │║
-║│ ├─ x║│           Description: [                                           ] │║ […] │║
-║│ ├─ y║│                                                                      │║ […] │║
-║│ └─ z║│                                                                      │║ […] │║
+║│[Name║│           Name: [Workspace A                                       ] │║     │║
+║│     ║│            Key: [ws0                                               ] │║ […] │║
+║│     ║│       Category: [                                                  ] │║rch] │║
+║│     ║│         Tenant: [Tenant A, Tenant B                               ▼] │║     │║
+║│     ║│         Active: [✓]                                                  │║---- │║
+║│ Clas║│Access Modifier: [Private                                          ▼] │║ […] │║
+║│ ├─ x║│         Sealed: [✓]                                                  │║ […] │║
+║│ ├─ y║│      Inherited: [None                                             ▼] │║ […] │║
+║│ └─ z║│    Description: [                                                  ] │║ […] │║
 ║│     ║│                                                                      │║ […] │║
-║│     ║│                                                                      │║     │║
+║│     ║│      Blueprint: [None                                             ▼] │║     │║
 ║│     ║│                                                                      │║xt › │║
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║     │║
