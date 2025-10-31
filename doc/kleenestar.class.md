@@ -336,7 +336,7 @@ After confirmation, the new class is created and automatically integrated into t
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Class║│                                                                      │║─────┐║
 ║│     ║│ You are about to clone the class 'Sales Operations'.                 │║     │║
-║│  - A║│ Please adjust the details for the new workspace below.               │║ass] │║
+║│  - A║│ Please adjust the details for the new class below.                   │║ass] │║
 ║│  - I║│                                                                      │║     │║
 ║│  - S║│     Class Name: [ xxxxxx (Copy)                                  ]   │║     │║
 ║│  - H║│            Key: [ newkey                                         ]   │║---- │║

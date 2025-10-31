@@ -117,18 +117,18 @@ An integrated audit system documents all relevant actions around fields: accesse
 ║    ¦          │     │ DeleteField(IClass,IField):bool       │       │                ║
 ║    ¦          │     └───────────────────────────────────────┘       │                ║
 ║    ¦          ▼ *                                                   │                ║
-║    ¦ ┌─────────────────────┐                                        │                ║
-║    ¦ │ <<Interface>>       │                                        │                ║
-║    ¦ │ IFieldType          │                                        │                ║
-║    ¦ ├─────────────────────┤        ┌───────────────┐               │                ║
-║    ¦ │ Id:String           │        │ <<Interface>> │               │                ║
-║    ¦ │ Name:String         │        │ IModel        │               │                ║
-║    ¦ ├─────────────────────┤        ├───────────────┤               │                ║
-║    ¦ │ Marshall(Object):   │        └───────────────┘               │                ║
-║    ¦ │   String            │               Δ                        │                ║
-║    ¦ │ Unmarshall(String): │               ¦                        │                ║
-║    ¦ │   Object            │               ¦                        │                ║
-║    ¦ └─────────────────────┘          ┌----┘                        │                ║
+║    ¦ ┌────────────────────┐                                         │                ║
+║    ¦ │ <<Interface>>      │                                         │                ║
+║    ¦ │ IFieldType         │                                         │                ║
+║    ¦ ├────────────────────┤        ┌───────────────┐                │                ║
+║    ¦ │ Id:String          │        │ <<Interface>> │                │                ║
+║    ¦ │ Name:String        │        │ IModel        │                │                ║
+║    ¦ ├────────────────────┤        ├───────────────┤                │                ║
+║    ¦ │ Marshal(Object):   │        └───────────────┘                │                ║
+║    ¦ │   String           │               Δ                         │                ║
+║    ¦ │ Unmarshal(String): │               ¦                         │                ║
+║    ¦ │   Object           │               ¦                         │                ║
+║    ¦ └────────────────────┘           ┌---┘                         │                ║
 ║    ¦          ▲ 1                     ¦                             │                ║
 ║    ¦          │                       ¦                             │                ║
 ║    ¦          │     ┌─────────────────┴──────────────────┐ *        │                ║
