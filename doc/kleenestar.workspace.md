@@ -4,7 +4,7 @@ This document specifies the management of workspaces as a central organizational
 
 A workspace acts as a self-contained container that bundles all associated data, such as type definitions, concrete instances of these types, their attributes, and relationships (links). It also isolates this data from other workspaces. This segmentation forms the foundation of the system's multi-tenancy and enables different organizational units, projects, or security domains to be cleanly separated from one another.
 
-To promote standardization and consistency across multiple workspaces, the concept of blueprints is introduced. Any workspace can serve as a blueprint for other workspaces. A workspace derived from a blueprint inherits its structural configuration, particularly the definitions of Classess and Fields.
+To promote standardization and consistency across multiple workspaces, the concept of blueprints is introduced. Any workspace can serve as a blueprint for other workspaces. A workspace derived from a blueprint inherits its structural configuration, particularly the definitions of Classes and Fields.
 
 This inheritance is dynamic: changes to the type definitions in the blueprint are automatically propagated to all derived workspaces. This mechanism ensures that an entire group of workspaces is based on a uniform, centrally managed data model. At the same time, each derived workspace maintains its independence, as metadata such as name, description, or color-coding, as well as assigned permissions, can be configured individually. They are not inherited from the blueprint.
 

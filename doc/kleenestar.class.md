@@ -298,7 +298,7 @@ When editing a class ("Edit Class"), all existing information is pre-populated. 
 ║│  - H║│         Parent: [Issue                                            ▼] │║---- │║
 ║│  - A║│     Subclasses: [                                                 ▼] │║ […] │║
 ║│     ║│Access Modifier: [Private                                          ▼] │║ […] │║
-║│     ║│      Singelton: [ ]                                                  │║ […] │║
+║│     ║│      Singleton: [ ]                                                  │║ […] │║
 ║│     ║│         Active: [✓]                                                  │║ […] │║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
@@ -545,4 +545,4 @@ This permission model ensures that class management remains modular, secure, and
 
 ## Conclusion
 
-The document "KleeneStar Class Management" outlines the conceptual framework for modeling and maintaining class definitions within modular workspaces. It defines key functional elements such as inheritance, abstraction, subclass composition, and blueprint-based field generation, and positions them within a flexible, UI-integrated lifecycle. As a high-level specification, the document intentionally leaves certain implementation aspects open. Topics like persistence mechanisms, concurrent schema updates, validation strategies, and version control are not defined in detail and must be addressed during implementation. Similarly, advanced features such as asynchronous import/export, audit integration, and plugin-driven schema augmentation are acknowledged but not elaborated.The focus lies on structural clarity, extensibility, and contributor empowerment. The proposed model supports recursive composition, dynamic UI rendering, and permission-aware operations, while remaining adaptable to diverse project needs. 
+The document "KleeneStar Class Management" outlines the conceptual framework for modeling and maintaining class definitions within modular workspaces. It defines key functional elements such as inheritance, abstraction, subclass composition, and blueprint-based field generation, and positions them within a flexible, UI-integrated lifecycle. As a high-level specification, the document intentionally leaves certain implementation aspects open. Topics like persistence mechanisms, concurrent schema updates, validation strategies, and version control are not defined in detail and must be addressed during implementation. Similarly, advanced features such as asynchronous import/export, audit integration, and plugin-driven schema augmentation are acknowledged but not elaborated. The focus lies on structural clarity, extensibility, and contributor empowerment. The proposed model supports recursive composition, dynamic UI rendering, and permission-aware operations, while remaining adaptable to diverse project needs. 
