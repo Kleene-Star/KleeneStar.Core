@@ -48,8 +48,18 @@ The **KleeneStar** Core Data Model forms the structural foundation for managing 
 ║                             KleeneStar Core Data Model                               ║
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
-║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐                 ║
-║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field │                 ║
+║                        ┌────────────────┬────────────────────────────────┐           ║
+║                        │ *              │ *                              │           ║
+║                        ▼                ▼                                │           ║
+║                  ┌──────────┐     ┌──────────┐      ┌──────┐ 1           │           ║
+║                  │ Workflow │     │ Priority │      │ Form ├───┐         │           ║
+║                  └─────┬────┘     └─────┬────┘      └───┬──┘   │         │           ║
+║                        │ *              │ *             │ *    │         │           ║
+║                        └────────────────┼───────────────┘      │         │           ║
+║                                         │                      │         │           ║
+║                                         ▼ 1                    ▼ *       │           ║
+║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐ 0,1 │           ║
+║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field ├─────┘           ║
 ║         └─────┬─────┘               └───────┘              └───────┘                 ║
 ║               │ 1                       ▲ 1                    ▲ 1                   ║
 ║               └────────────────────┐    │                      │                     ║
@@ -57,8 +67,8 @@ The **KleeneStar** Core Data Model forms the structural foundation for managing 
 ║              ┌──────┐ *        2 ┌──────┴─┐ 1            * ┌───┴───┐                 ║
 ║              │ Link ├───────────►│ Object │◄───────────────┤ Value │                 ║
 ║              └──────┘            └────────┘                └───────┘                 ║
-║                                   ▲ 1   ▲ 1                    ▲ 1                   ║
-║                     ┌─────────────┘     │                      │                     ║
+║                                    ▲ 1  ▲ 1                    ▲ 1                   ║
+║                     ┌──────────────┘    │                      │                     ║
 ║                     │ *                 │ *                    │ *                   ║
 ║                ┌────┴────┐         ┌────┴────┐         ┌───────┴───────┐             ║
 ║                │ Comment │         │ Version │         │ FileReference │             ║
@@ -73,7 +83,7 @@ The application's architecture follows a modular, decoupled design. At its core 
 
 The data structure of a workspace is defined by the `IWorkspace` interface and its concrete implementation in the `Workspace` class. These objects contain central attributes such as `Key`, `Name`, `Description`, and lifecycle information. New workspace instances are created exclusively by the `WorkspaceManager`. Direct access to internal data structures is not permitted by the system. Instead, the interface acts as a controlled intermediary for all interactions—a model that reliably protects data integrity.
 
-For reactive, loosely coupled communication, the `WorkspaceManager` provides the `AddWorkspace` and `RemoveWorkspace` events. Other components can subscribe to these events and react to changes without creating a direct dependency on the manager. This event-driven mechanism promotes high cohesion while maintaining modularity. Additionally, the events are made available system-wide via the `WebExpress-EventManager`.
+For reactive, loosely coupled communication, the `WorkspaceManager` provides the `WorkspaceAdded`, `WorkspaceUpdated` and `WorkspaceRemoved` events. Other components can subscribe to these events and react to changes without creating a direct dependency on the manager. This event-driven mechanism promotes high cohesion while maintaining modularity. Additionally, the events are made available system-wide via the `WebExpress-EventManager`.
 
 The `WorkspaceManager` also handles several server-side tasks that are essential for scalability, security, and traceability. This includes the persistent storage of all workspaces in a transaction-safe, versioned repository. At system startup, all stored workspaces are loaded, and all indexes and event subscriptions are initialized.
 
@@ -98,17 +108,20 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║                     │ <<Interface>>                         │                        ║
 ║         ┌-----------┤ IWorkspaceManager                     │                        ║
 ║         ¦           ├───────────────────────────────────────┤                        ║
-║         ¦           │ AddWorkspace:Event                    │                        ║
-║         ¦           │ UpdateWorkspace:Event                 │                        ║
-║         ¦           │ RemoveWorkspace:Event                 │                        ║
+║         ¦           │ WorkspaceAdded:Event                  │                        ║
+║         ¦           │ WorkspaceUpdated:Event                │                        ║
+║         ¦           │ WorkspaceRemoved:Event                │                        ║
 ║         ¦           ├───────────────────────────────────────┤ 1                      ║
 ║         ¦           │ Workspaces:IEnumerable<IWorkspace>    ├───────┐                ║
 ║         ¦           ├───────────────────────────────────────┤       │                ║
-║         ¦           │ AddWorkspace(Workspace):IWorkspace    │       │                ║
-║         ¦           │ GetWorkspaces(filter):                │       │                ║
+║         ¦           │ AddWorkspace(Workspace):              │       │                ║
+║         ¦           │   IWorkspaceManager                   │       │                ║
+║         ¦           │ GetWorkspaces(predicate):             │       │                ║
 ║         ¦           │   IEnumerable<IWorkspace>             │       │                ║
-║         ¦           │ CloneWorkspace(IWorkspace):IWorkspace │       │                ║
-║         ¦           │ DeleteWorkspace(IWorkspace):bool      │       │                ║
+║         ¦           │ CloneWorkspace(IWorkspace):           │       │                ║
+║         ¦           │   IWorkspaceManager                   │       │                ║
+║         ¦           │ RemoveWorkspace(IWorkspace)           │       │                ║
+║         ¦           │   IWorkspaceManager                   │       │                ║
 ║         ¦           └───────────────────────────────────────┘       │                ║
 ║         ¦                                                           │                ║
 ║         ¦             ┌───────────────┐   ┌────────────────┐        │                ║
@@ -507,20 +520,20 @@ For programmatic interaction, third-party integration, and automation purposes, 
 
 The management of workspaces is handled via the following endpoints:
 
-|Endpoint                                              |HTTP Method |Description
-|------------------------------------------------------|------------|------------------------------------------------------------
-|`/api/workspaces`                                     |GET         |Lists all available workspaces. The results are paginated and can be filtered by status and sorted.
-|`/api/workspaces`                                     |POST        |Creates a new workspace. Requires at least a `name` and a system-wide unique `key` in the request body.
-|`/api/workspaces/{workspaceKey}`                      |GET         |Retrieves the detailed information of a specific workspace by its key.
-|`/api/workspaces/{workspaceKey}`                      |PUT         |Updates the metadata (e.g., `name`, `description`) of an existing workspace. The key is immutable.
-|`/api/workspaces/{workspaceKey}`                      |DELETE      |Deletes a workspace.
-|`/api/workspaces/{workspaceKey}/archive`              |POST        |Archives a workspace, placing it in a read-only state.
-|`/api/workspaces/{workspaceKey}/restore`              |POST        |Restores an archived or temporarily deleted workspace, setting its status to `active`.
-|`/api/workspaces/{workspaceKey}/profiles`             |GET         |Lists all profiles (group-policy assignments) for the specified workspace. Requires the workspace:manage_profiles permission.
-|`/api/workspaces/{workspaceKey}/profiles`             |POST        |Creates a new profile, assigning a group to a policy within the workspace. The request body must contain groupId and policyId.
-|`/api/workspaces/{workspaceKey}/profiles/{profileId}` |DELETE      |Deletes a profile for a specific group from the workspace, thereby revoking the group's permissions.
-|`/api/workspaces/{workspaceKey}/import`               |POST        |Imports one or more workspace definitions from an external schema (e.g., JSON or YAML).
-|`/api/workspaces/{workspaceKey}/export`               |GET         |Exports the current workspace schema for backup or reuse.
+|Endpoint                                                |HTTP Method |Description
+|--------------------------------------------------------|------------|------------------------------------------------------------
+|`/api/1/workspaces`                                     |GET         |Lists all available workspaces. The results are paginated and can be filtered by status and sorted.
+|`/api/1/workspaces`                                     |POST        |Creates a new workspace. Requires at least a `name` and a system-wide unique `key` in the request body.
+|`/api/1/workspaces/{workspaceKey}`                      |GET         |Retrieves the detailed information of a specific workspace by its key.
+|`/api/1/workspaces/{workspaceKey}`                      |PUT         |Updates the metadata (e.g., `name`, `description`) of an existing workspace. The key is immutable.
+|`/api/1/workspaces/{workspaceKey}`                      |DELETE      |Deletes a workspace.
+|`/api/1/workspaces/{workspaceKey}/archive`              |POST        |Archives a workspace, placing it in a read-only state.
+|`/api/1/workspaces/{workspaceKey}/restore`              |POST        |Restores an archived or temporarily deleted workspace, setting its status to `active`.
+|`/api/1/workspaces/{workspaceKey}/profiles`             |GET         |Lists all profiles (group-policy assignments) for the specified workspace. Requires the workspace:manage_profiles permission.
+|`/api/1/workspaces/{workspaceKey}/profiles`             |POST        |Creates a new profile, assigning a group to a policy within the workspace. The request body must contain groupId and policyId.
+|`/api/1/workspaces/{workspaceKey}/profiles/{profileId}` |DELETE      |Deletes a profile for a specific group from the workspace, thereby revoking the group's permissions.
+|`/api/1/workspaces/{workspaceKey}/import`               |POST        |Imports one or more workspace definitions from an external schema (e.g., JSON or YAML).
+|`/api/1/workspaces/{workspaceKey}/export`               |GET         |Exports the current workspace schema for backup or reuse.
 
 Standard error responses include `400 Bad Request` for validation errors (e.g., a key that is already taken), `401 Unauthorized` for missing authentication, `403 Forbidden` for insufficient permissions, and `404 Not Found` if the requested resource does not exist. A successful creation (POST) is acknowledged with `201 Created`, while a successful deletion (DELETE) results in a `204 No Content` response.
 

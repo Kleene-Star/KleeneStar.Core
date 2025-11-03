@@ -49,8 +49,18 @@ Concrete data instances are represented as Object and are always assigned to a C
 ║                             KleeneStar Core Data Model                               ║
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
-║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐                 ║
-║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field │                 ║
+║                        ┌────────────────┬────────────────────────────────┐           ║
+║                        │ *              │ *                              │           ║
+║                        ▼                ▼                                │           ║
+║                  ┌──────────┐     ┌──────────┐      ┌──────┐ 1           │           ║
+║                  │ Workflow │     │ Priority │      │ Form ├───┐         │           ║
+║                  └─────┬────┘     └─────┬────┘      └───┬──┘   │         │           ║
+║                        │ *              │ *             │ *    │         │           ║
+║                        └────────────────┼───────────────┘      │         │           ║
+║                                         │                      │         │           ║
+║                                         ▼ 1                    ▼ *       │           ║
+║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐ 0,1 │           ║
+║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field ├─────┘           ║
 ║         └─────┬─────┘               └───────┘              └───────┘                 ║
 ║               │ 1                       ▲ 1                    ▲ 1                   ║
 ║               └────────────────────┐    │                      │                     ║
@@ -58,8 +68,8 @@ Concrete data instances are represented as Object and are always assigned to a C
 ║              ┌──────┐ *        2 ┌──────┴─┐ 1            * ┌───┴───┐                 ║
 ║              │ Link ├───────────►│ Object │◄───────────────┤ Value │                 ║
 ║              └──────┘            └────────┘                └───────┘                 ║
-║                                   ▲ 1   ▲ 1                    ▲ 1                   ║
-║                     ┌─────────────┘     │                      │                     ║
+║                                    ▲ 1  ▲ 1                    ▲ 1                   ║
+║                     ┌──────────────┘    │                      │                     ║
 ║                     │ *                 │ *                    │ *                   ║
 ║                ┌────┴────┐         ┌────┴────┐         ┌───────┴───────┐             ║
 ║                │ Comment │         │ Version │         │ FileReference │             ║
@@ -74,7 +84,7 @@ The application follows a modular, decoupled architectural principle. At its cen
 
 Each instance contains key attributes such as name, workspace affiliation, and lifecycle status. New classes are created exclusively via the `ClassManager` to ensure data integrity and consistent access rules.
 
-For a loosely coupled, reactive architecture, the `ClassManager` provides the events addclass and removeclass. Other components can subscribe to these and react to changes without being directly dependent on the manager. This event system fosters modularity and high cohesion.
+For a loosely coupled, reactive architecture, the `ClassManager` provides the events `ClassAdded`, `ClassUpdated` and `ClassRemoved`. Other components can subscribe to these and react to changes without being directly dependent on the manager. This event system fosters modularity and high cohesion.
 
 The `ClassManager` handles server-side tasks such as the persistent storage of all classes in a transactional, versioned store. At system startup, stored classes are loaded, indexes are built, and event subscriptions are initialized. To support fast and context-aware searches, a server-side reverse index is created for each class. This captures keywords from names, descriptions, user-defined tags, as well as structured metadata such as creation date and status. The index is continuously updated and enables high-performance full-text and metadata searches.
 
@@ -97,17 +107,20 @@ An integrated audit system documents all relevant actions around classes: access
 ║                     │ <<Interface>>                         │                        ║
 ║         ┌-----------┤ IClassManager                         │                        ║
 ║         ¦           ├───────────────────────────────────────┤                        ║
-║         ¦           │ AddClass:Event                        │                        ║
-║         ¦           │ UpdateClass:Event                     │                        ║
-║         ¦           │ RemoveClass:Event                     │                        ║
+║         ¦           │ ClassAdded:Event                      │                        ║
+║         ¦           │ ClassUpdated:Event                    │                        ║
+║         ¦           │ ClassRemoved:Event                    │                        ║
 ║         ¦           ├───────────────────────────────────────┤ 1                      ║
 ║         ¦           │ Classes:IEnumerable<IClass>           ├───────┐                ║
 ║         ¦           ├───────────────────────────────────────┤       │                ║
-║         ¦           │ AddClass(IWorkspace,IClass):IClass    │       │                ║
-║         ¦           │ GetClasses(IWorkspace,filter):        │       │                ║
+║         ¦           │ AddClass(IWorkspace,IClass):          │       │                ║
+║         ¦           │   IClassManager                       │       │                ║
+║         ¦           │ GetClasses(IWorkspace,predicate):     │       │                ║
 ║         ¦           │   IEnumerable<IClass>                 │       │                ║
-║         ¦           │ CloneClass(IWorkspace,IClass):IClass  │       │                ║
-║         ¦           │ DeleteClass(IWorkspace,IClass):bool   │       │                ║
+║         ¦           │ CloneClass(IWorkspace,IClass):        │       │                ║
+║         ¦           │   IClassManager                       │       │                ║
+║         ¦           │ RemoveClass(IWorkspace,IClass):       │       │                ║
+║         ¦           │   IClassManager                       │       │                ║
 ║         ¦           └───────────────────────────────────────┘       │                ║
 ║         ¦                                                           │                ║
 ║         ¦                      ┌───────────────┐                    │                ║
@@ -253,18 +266,18 @@ The page is accessible via the "Manage Classes" option in the workspace editing 
 ║│  - Hidden            │░│------------------|-----------------------------│----------│║
 ║│  - Archived          │░│ Incident         | Report of a disruption      │ ...  […] │║
 ║│                      │░│ Problem          | Analysis of recurring errors│ ...   ¦  │║
-║│                      │░│ ChangeRequest    | Request for change   ┌──────────────┴┐ │║
-║│                      │░│ ServiceRequest   | Standard service requ│ Edit          │ │║
-║│                      │░│ KnowledgeArticle | Documented knowledge │ Clone         │ │║
-║│                      │<│ Approval         | Approval step        │ Manage Fields │ │║
-║│                      │<│ Request          | Inquiry or sub-proces│ Permissions   │ │║
-║│                      │<│ Task             | Executable activity  │ <section>     │ │║
-║│                      │░│ SLA              | Service Level Agreeme├───────────────┤ │║
-║│                      │░│ Comment          | Free-text note       │ Delete        │ │║
-║│                      │░│ UserFeedback     | User feedback        └───────────────┘ │║
-║│                      │░│ Escalation       | Escalation to higher inst...│ ...  […] │║
-║│                      │░│                                                           │║
-║│                      │░│                                   ‹ Prev  1  2  3  Next › │║
+║│                      │░│ ChangeRequest    | Request for chang┌──────────────────┴┐ │║
+║│                      │░│ ServiceRequest   | Standard service │ Edit              │ │║
+║│                      │░│ KnowledgeArticle | Documented knowle│ Clone             │ │║
+║│                      │<│ Approval         | Approval step    │ Manage Fields     │ │║
+║│                      │<│ Request          | Inquiry or sub-pr│ Manage Workflows  │ │║
+║│                      │<│ Task             | Executable activi│ Manage Priorities │ │║
+║│                      │░│ SLA              | Service Level Agr│ Manage Forms      │ │║
+║│                      │░│ Comment          | Free-text note   │ Permissions       │ │║
+║│                      │░│ UserFeedback     | User feedback    │ <section>         │ │║
+║│                      │░│ Escalation       | Escalation to hig├───────────────────┤ │║
+║│                      │░│                                     │ Delete            │ │║
+║│                      │░│                                   ‹ └───────────────────┘ │║
 ║├──────────────────────┤░│                                                           │║
 ║│ [Setting]         << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
@@ -459,19 +472,19 @@ For programmatic interaction, third-party integration, and automation purposes, 
 
 The management of classes is handled via the following endpoints:
 
-|Endpoint                                                                    |HTTP Method |Description
-|----------------------------------------------------------------------------|------------|-------------------------------------------------------------------------------------------
-|`/api/workspaces/{workspaceKey}/classes`                                    |GET         |Lists all classes defined in the specified workspace. Supports filtering and pagination.
-|`/api/workspaces/{workspaceKey}/classes`                                    |POST        |Creates a new class. Requires at least a name.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}`                         |GET         |Retrieves detailed metadata and field definitions of a specific class.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}`                         |PUT         |Updates the metadata or field schema of an existing class. The class key remains immutable.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}`                         |DELETE      |Deletes a class definition. Requires confirmation and appropriate permissions.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/clone`                   |POST        |Creates a duplicate of the specified class, including all fields and settings.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/permissions`             |GET         |Lists all access profiles assigned to the class.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/permissions`             |POST        |Assigns a group-policy profile to the class. Requires groupId and policyId in the request body.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/permissions/{profileId}` |DELETE      |Removes a specific profile assignment from the class.
-|`/api/workspaces/{workspaceKey}/classes/import`                             |POST        |Imports one or more class definitions from an external schema (e.g., JSON or YAML).
-|`/api/workspaces/{workspaceKey}/classes/export`                             |GET         |Exports the current class schema for backup or reuse.
+|Endpoint                                                                      |HTTP Method |Description
+|------------------------------------------------------------------------------|------------|-------------------------------------------------------------------------------------------
+|`/api/1/workspaces/{workspaceKey}/classes`                                    |GET         |Lists all classes defined in the specified workspace. Supports filtering and pagination.
+|`/api/1/workspaces/{workspaceKey}/classes`                                    |POST        |Creates a new class. Requires at least a name.
+|`/api/1/workspaces/{workspaceKey}/classes/{classKey}`                         |GET         |Retrieves detailed metadata and field definitions of a specific class.
+|`/api/1/workspaces/{workspaceKey}/classes/{classKey}`                         |PUT         |Updates the metadata or field schema of an existing class. The class key remains immutable.
+|`/api/1/workspaces/{workspaceKey}/classes/{classKey}`                         |DELETE      |Deletes a class definition. Requires confirmation and appropriate permissions.
+|`/api/1/workspaces/{workspaceKey}/classes/{classKey}/clone`                   |POST        |Creates a duplicate of the specified class, including all fields and settings.
+|`/api/1/workspaces/{workspaceKey}/classes/{classKey}/permissions`             |GET         |Lists all access profiles assigned to the class.
+|`/api/1/workspaces/{workspaceKey}/classes/{classKey}/permissions`             |POST        |Assigns a group-policy profile to the class. Requires groupId and policyId in the request body.
+|`/api/1/workspaces/{workspaceKey}/classes/{classKey}/permissions/{profileId}` |DELETE      |Removes a specific profile assignment from the class.
+|`/api/1/workspaces/{workspaceKey}/classes/import`                             |POST        |Imports one or more class definitions from an external schema (e.g., JSON or YAML).
+|`/api/1/workspaces/{workspaceKey}/classes/export`                             |GET         |Exports the current class schema for backup or reuse.
 
 Standard error responses include:
 - **400 Bad Request** - e.g., invalid schema or duplicate key

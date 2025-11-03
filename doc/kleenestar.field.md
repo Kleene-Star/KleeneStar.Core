@@ -57,8 +57,18 @@ Fields are uniquely assigned to a class and affect objects of that class. The de
 ║                             KleeneStar Core Data Model                               ║
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
-║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐                 ║
-║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field │                 ║
+║                        ┌────────────────┬────────────────────────────────┐           ║
+║                        │ *              │ *                              │           ║
+║                        ▼                ▼                                │           ║
+║                  ┌──────────┐     ┌──────────┐      ┌──────┐ 1           │           ║
+║                  │ Workflow │     │ Priority │      │ Form ├───┐         │           ║
+║                  └─────┬────┘     └─────┬────┘      └───┬──┘   │         │           ║
+║                        │ *              │ *             │ *    │         │           ║
+║                        └────────────────┼───────────────┘      │         │           ║
+║                                         │                      │         │           ║
+║                                         ▼ 1                    ▼ *       │           ║
+║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐ 0,1 │           ║
+║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field ├─────┘           ║
 ║         └─────┬─────┘               └───────┘              └───────┘                 ║
 ║               │ 1                       ▲ 1                    ▲ 1                   ║
 ║               └────────────────────┐    │                      │                     ║
@@ -66,8 +76,8 @@ Fields are uniquely assigned to a class and affect objects of that class. The de
 ║              ┌──────┐ *        2 ┌──────┴─┐ 1            * ┌───┴───┐                 ║
 ║              │ Link ├───────────►│ Object │◄───────────────┤ Value │                 ║
 ║              └──────┘            └────────┘                └───────┘                 ║
-║                                   ▲ 1   ▲ 1                    ▲ 1                   ║
-║                     ┌─────────────┘     │                      │                     ║
+║                                    ▲ 1  ▲ 1                    ▲ 1                   ║
+║                     ┌──────────────┘    │                      │                     ║
 ║                     │ *                 │ *                    │ *                   ║
 ║                ┌────┴────┐         ┌────┴────┐         ┌───────┴───────┐             ║
 ║                │ Comment │         │ Version │         │ FileReference │             ║
@@ -103,18 +113,21 @@ An integrated audit system documents all relevant actions around fields: accesse
 ║                     │ <<Interface>>                         │                        ║
 ║    ┌----------------┤ IFieldManager                         │                        ║
 ║    ¦                ├───────────────────────────────────────┤                        ║
-║    ¦                │ AddField:Event                        │                        ║
-║    ¦                │ UpdateField:Event                     │                        ║
-║    ¦                │ RemoveField:Event                     │                        ║
+║    ¦                │ FieldAdded:Event                      │                        ║
+║    ¦                │ FieldUpdated:Event                    │                        ║
+║    ¦                │ FieldRemoved:Event                    │                        ║
 ║    ¦              1 ├───────────────────────────────────────┤                        ║
 ║    ¦          ┌─────┤ FieldTypes:IEnumerable<IFieldTypes>   │                        ║
 ║    ¦          │     │ Fields:IEnumerable<IField>            ├───────┐                ║
 ║    ¦          │     ├───────────────────────────────────────┤ 1     │                ║
-║    ¦          │     │ AddField(IClass,IField):IField        │       │                ║
-║    ¦          │     │ GetFields(filter):                    │       │                ║
+║    ¦          │     │ AddField(IClass,IField):              │       │                ║
+║    ¦          │     │   IFieldManager                       │       │                ║
+║    ¦          │     │ GetFields(IClass,predicate):          │       │                ║
 ║    ¦          │     │   IEnumerable<IField>                 │       │                ║
-║    ¦          │     │ CloneField(IClass,IField):IField      │       │                ║
-║    ¦          │     │ DeleteField(IClass,IField):bool       │       │                ║
+║    ¦          │     │ CloneField(IClass,IField):            │       │                ║
+║    ¦          │     │   IFieldManager                       │       │                ║
+║    ¦          │     │ RemoveField(IClass,IField):           │       │                ║
+║    ¦          │     │   IFieldManager                       │       │                ║
 ║    ¦          │     └───────────────────────────────────────┘       │                ║
 ║    ¦          ▼ *                                                   │                ║
 ║    ¦ ┌────────────────────┐                                         │                ║
@@ -652,22 +665,22 @@ For programmatic interaction, third-party integration, and automation, **KleeneS
 
 Field administration is performed via the following endpoints:
 
-|Endpoint                                                            |HTTP Method |Description
-|--------------------------------------------------------------------|------------|------------------------------------------------------------
-|`/api/classes/{classKey}/fields`                                    | GET        |Lists all fields of a class. Results are paginated and can be filtered by status, type, and name.
-|`/api/classes/{classKey}/fields`                                    | POST       |Creates a new field within the class. Requires at least a unique `key`, `name`, and `type` in the request body.
-|`/api/classes/{classKey}/fields/{fieldKey}`                         | GET        |Returns detailed information about a specific field by its key.
-|`/api/classes/{classKey}/fields/{fieldKey}`                         | PUT        |Updates the field definition and properties (e.g., name, type, cardinality, validations, indexes, privacy). The field key is immutable.
-|`/api/classes/{classKey}/fields/{fieldKey}`                         | DELETE     |Permanently deletes a field. Values and indexes are removed. Confirmation is required.
-|`/api/classes/{classKey}/fields/{fieldKey}/archive`                 | POST       |Archives a field, setting it to a read-only state.
-|`/api/classes/{classKey}/fields/{fieldKey}/restore`                 | POST       |Restores an archived or deleted field, setting the status to `active`.
-|`/api/classes/{classKey}/fields/{fieldKey}/clone`                   | POST       |Creates a new field by cloning an existing field definition. The request body can contain optional settings for validation, indexing, permissions, etc.
-|`/api/classes/{classKey}/fields/{fieldKey}/configure`               | PUT        |Configures field-specific settings such as cardinality, validation rules, options, and filter objects.
-|`/api/classes/{classKey}/fields/{fieldKey}/permissions`             | GET        |Lists all permission assignments (group-policy) for a field. Requires the permission field_manage_permissions.
-|`/api/classes/{classKey}/fields/{fieldKey}/permissions`             | POST       |Creates a new permission assignment by assigning a policy to a group for the field. The request body requires groupId and policyId.
-|`/api/classes/{classKey}/fields/{fieldKey}/permissions/{profileId}` | DELETE     |Removes a permission assignment from a field, thereby revoking the group’s rights.
-|`/api/classes/{classKey}/fields/{fieldKey}/audit`                   | GET        |Returns the audit history for all actions around the field.
-|`/api/classes/{classKey}/fields/{fieldKey}/migrate`                 | POST       |Initiates a migration of the field schema, e.g., type change, backfill, transformation.
+|Endpoint                                                              |HTTP Method |Description
+|----------------------------------------------------------------------|------------|------------------------------------------------------------
+|`/api/1/classes/{classKey}/fields`                                    |GET         |Lists all fields of a class. Results are paginated and can be filtered by status, type, and name.
+|`/api/1/classes/{classKey}/fields`                                    |POST        |Creates a new field within the class. Requires at least a unique `key`, `name`, and `type` in the request body.
+|`/api/1/classes/{classKey}/fields/{fieldKey}`                         |GET         |Returns detailed information about a specific field by its key.
+|`/api/1/classes/{classKey}/fields/{fieldKey}`                         |PUT         |Updates the field definition and properties (e.g., name, type, cardinality, validations, indexes, privacy). The field key is immutable.
+|`/api/1/classes/{classKey}/fields/{fieldKey}`                         |DELETE      |Permanently deletes a field. Values and indexes are removed. Confirmation is required.
+|`/api/1/classes/{classKey}/fields/{fieldKey}/archive`                 |POST        |Archives a field, setting it to a read-only state.
+|`/api/1/classes/{classKey}/fields/{fieldKey}/restore`                 |POST        |Restores an archived or deleted field, setting the status to `active`.
+|`/api/1/classes/{classKey}/fields/{fieldKey}/clone`                   |POST        |Creates a new field by cloning an existing field definition. The request body can contain optional settings for validation, indexing, permissions, etc.
+|`/api/1/classes/{classKey}/fields/{fieldKey}/configure`               |PUT         |Configures field-specific settings such as cardinality, validation rules, options, and filter objects.
+|`/api/1/classes/{classKey}/fields/{fieldKey}/permissions`             |GET         |Lists all permission assignments (group-policy) for a field. Requires the permission field_manage_permissions.
+|`/api/1/classes/{classKey}/fields/{fieldKey}/permissions`             |POST        |Creates a new permission assignment by assigning a policy to a group for the field. The request body requires groupId and policyId.
+|`/api/1/classes/{classKey}/fields/{fieldKey}/permissions/{profileId}` |DELETE      |Removes a permission assignment from a field, thereby revoking the group’s rights.
+|`/api/1/classes/{classKey}/fields/{fieldKey}/audit`                   |GET         |Returns the audit history for all actions around the field.
+|`/api/1/classes/{classKey}/fields/{fieldKey}/migrate`                 |POST        |Initiates a migration of the field schema, e.g., type change, backfill, transformation.
 
 Standard error responses include `400 Bad Request` for validation errors (e.g., key already taken), `401 Unauthorized` for missing authentication, `403 Forbidden` for insufficient permissions, and `404 Not Found` if the resource does not exist. A successful creation (POST) is confirmed with `201 Created`, a successful deletion (DELETE) with `204 No Content`.
 
