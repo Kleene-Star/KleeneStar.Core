@@ -293,28 +293,28 @@ The sidebar visualizes essential metadata at a glance, such as the name, an icon
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
-║│ / Workspace 0                                                                      │║
+║│ / Service Desk                                                                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Workspace─────────────┐ ┌Workspace Content──────────────────────────────────────────┐║
 ║│[Name]                │░│                                                           │║
-║│                      │░│ Class xxxxxx                                          […] │║
+║│                      │░│ Incident                                              […] │║
 ║│      [Icon]          │░│                                                  [Search] │║
-║│                      │░│ Name             | Tel.  | Description                    │║
-║│           [ Search ] │░│------------------|-------|------------------------------- │║
-║│ Class                │░│ John Sample      | 555-1 | Head of Sales              […] │║
-║│ ├─ xxxxxx        […] │░│ Jane Placeholder | 555-7 | IT Administrator           […] │║
-║│ ├─ yyyyyyyyy     […] │░│ Mark Demo        | 555-3 | HR Manager                 […] │║
-║│ └─ zzzzz         […] │░│ Emily Example    | 555-4 | System Architect           […] │║
-║│                      │░│ Anna Mock        | 555-8 | DevOps Lead                […] │║
-║│    ┌Workspace───────┐│<│                                                           │║
-║│    │ Edit           ││<│                                   ‹ Prev  1  2  3  Next › │║
-║│    │ Clone          ││<│                                                           │║
-║│    │ Manage Classes ││░│                                                           │║
-║│    │ Permissions    ││░│                                                           │║
-║│    │ <section>      ││░│                                                           │║
-║│    ├────────────────┤│░│                                                           │║
+║│                      │░│ Title                            | Status  | Impact       │║
+║│           [ Search ] │░│----------------------------------|---------|--------------│║
+║│ Issue                │░│ VPN connection disrupted         | Open    | High     […] │║
+║│ ├─ Incident          │░│ Outlook won't start              | Open    | Medium   […] │║
+║│ ├─ Problem           │░│ Printer on floor 3 offline       | Assigned| Low      […] │║
+║│ └─ ServiceRequest    │░│ File upload fails                | In Prog.| Medium   […] │║
+║│                      │░│ Remote desktop not reachable     | Open    | High     […] │║
+║│    ┌Workspace───────┐│<│ Password reset not possible      | Closed  | Low      […] │║
+║│    │ Edit           ││<│ Wi-Fi outage in conference room  | Open    | High     […] │║
+║│    │ Clone          ││<│ Teams notifications delayed      | Assigned| Medium   […] │║
+║│    │ Manage Classes ││░│ Scanner not sending PDFs         | Assigned| Low      […] │║
+║│    │ Permissions    ││░│ SharePoint access denied         | Open    | High     […] │║
+║│    │ <section>      ││░│ Software update blocks startup   | In Prog.| High     […] │║
+║│    ├────────────────┤│░│ Screen flickers intermittently   | Closed  | Medium   […] │║
 ║│    │ Delete         ││░│                                                           │║
-║│    └───┬────────────┘│░│                                                           │║
+║│    └───┬────────────┘│░│                                   ‹ Prev  1  2  3  Next › │║
 ║├────────¦─────────────┤░│                                                           │║
 ║│ [+] | [Setting]   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
@@ -336,28 +336,28 @@ The content of the modal dynamically adapts to the respective use case. In edit 
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔WorkspaceAddEditModal═══════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Wo║│ Add Workspace / Edit Workspace                                       │║     │║
+║│ / Se║│ Add Workspace / Edit Workspace                                       │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
-║│[Name║│           Name: [Workspace A                                       ] │║     │║
-║│     ║│            Key: [ws0                                               ] │║ […] │║
-║│     ║│       Category: [                                                  ] │║rch] │║
-║│     ║│         Tenant: [Tenant A, Tenant B                               ▼] │║     │║
-║│     ║│         Active: [✓]                                                  │║---- │║
-║│ Clas║│Access Modifier: [Private                                          ▼] │║ […] │║
-║│ ├─ x║│         Sealed: [✓]                                                  │║ […] │║
-║│ ├─ y║│      Inherited: [None                                             ▼] │║ […] │║
-║│ └─ z║│    Description: [                                                  ] │║ […] │║
+║│[Name║│           Name*: [ Service Desk                                    ] │║     │║
+║│     ║│            Key*: [ sd                                              ] │║ […] │║
+║│     ║│        Category: [                                                 ] │║rch] │║
+║│     ║│          Tenant: [ Tenant A, Tenant B                             ▼] │║     │║
+║│     ║│          Active: [✓]                                                 │║---- │║
+║│ Issu║│Access Modifier*: [ Private                                        ▼] │║ […] │║
+║│ ├─ I║│          Sealed: [✓]                                                 │║ […] │║
+║│ ├─ P║│       Inherited: [ None                                           ▼] │║ […] │║
+║│ └─ S║│     Description: [                                                 ] │║ […] │║
 ║│     ║│                                                                      │║ […] │║
-║│     ║│      Blueprint: [None                                             ▼] │║     │║
-║│     ║│                                                                      │║xt › │║
+║│     ║│       Blueprint: [ None                                           ▼] │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
+║│     ║└──────────────────────────────────────────────────────────────────────┘║xt › │║
 ║├─────║                                                                        ║     │║
 ║│ [+] ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
@@ -367,7 +367,7 @@ The content of the modal dynamically adapts to the respective use case. In edit 
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Workspace Management – Clone (Modal)
+### Workspace Management - Clone (Modal)
 
 Cloning a workspace allows for the rapid replication of existing structures and is particularly useful for reusing proven configurations. The function is provided via a separate modal dialog window, which can be called from the detail view or the management page.
 
@@ -381,24 +381,28 @@ After confirmation, the new workspace is created and automatically integrated in
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔WorkspaceCloneModal═════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Wo║│ Clone Workspace                                                      │║     │║
+║│ / Se║│ Clone Workspace                                                      │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
 ║│[Name║│ You are about to clone the workspace 'Sales Operations'.             │║     │║
 ║│     ║│ Please adjust the details for the new workspace below.               │║ […] │║
 ║│     ║│                                                                      │║rch] │║
-║│     ║│ Workspace Name: [ Sales Operations (Copy)                        ]   │║     │║
-║│     ║│            Key: [ newkey                                         ]   │║---- │║
-║│ Clas║│    Description: [ Copy of sales-related workflows and assets.    ]   │║ […] │║
-║│ ├─ x║│                                                                      │║ […] │║
-║│ ├─ y║│   Include structure: [✓]                                             │║ […] │║
-║│ └─ z║│ Include permissions: [✓]                                             │║ […] │║
+║│     ║│ Workspace Name*: [ Sales Operations (Copy)                       ]   │║     │║
+║│     ║│            Key*: [ newkey                                        ]   │║---- │║
+║│ Issu║│     Description: [ Copy of sales-related workflows and assets.   ]   │║ […] │║
+║│ ├─ I║│                                                                      │║ […] │║
+║│ ├─ P║│   Include structure: [✓]                                             │║ […] │║
+║│ └─ S║│ Include permissions: [✓]                                             │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║xt › │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
+║│     ║└──────────────────────────────────────────────────────────────────────┘║xt › │║
 ║├─────║                                                                        ║     │║
 ║│ [+] ║                                                      [Clone] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
@@ -420,28 +424,28 @@ The dialog window clearly indicates which workspace is intended for deletion by 
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔WorkspaceDeleteModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Wo║│ Delete Workspace                                                     │║     │║
+║│ / Se║│ Delete Workspace                                                     │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
 ║│[Name║│ Are you sure you want to delete the workspace 'Sales Operations'?    │║     │║
 ║│     ║│ This action cannot be undone.                                        │║ […] │║
 ║│     ║│                                                                      │║rch] │║
-║│     ║│ To confirm, please type 'sales-ops' in the box below:                │║     │║
+║│     ║│ To confirm, please type 'sales-ops' in the box below*:               │║     │║
 ║│     ║│ [                                                                 ]  │║---- │║
-║│ Clas║│                                                                      │║ […] │║
-║│ ├─ x║│                                                                      │║ […] │║
-║│ ├─ y║│                                                                      │║ […] │║
-║│ └─ z║│                                                                      │║ […] │║
+║│ Issu║│                                                                      │║ […] │║
+║│ ├─ I║│                                                                      │║ […] │║
+║│ ├─ P║│                                                                      │║ […] │║
+║│ └─ S║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║xt › │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
+║│     ║└──────────────────────────────────────────────────────────────────────┘║xt › │║
 ║├─────║                                                                        ║     │║
 ║│ [+] ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
@@ -465,28 +469,28 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔WorkspacePermissionsModal═══════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Wo║│  Manage Permissions for 'Sales Operations'                           │║     │║
+║│ / Se║│  Manage Permissions for 'Sales Operations'                           │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Works║│                                                                      │║─────┐║
-║│     ║│  Assign Group: [Admin ▼]                                             │║     │║
-║│  [Ic║│        Policy: [workspace_admin_policy ▼]                            │║ […] │║
+║│     ║│  Assign Group*: [ Admin ▼]                                           │║     │║
+║│  [Ic║│        Policy*: [ workspace_admin_policy ▼]                          │║ […] │║
 ║│  [Na║│                                                                      │║rch] │║
 ║│     ║│  [+ Assign]                                                          │║     │║
 ║│     ║│                                                             [Search] │║---- │║
-║│ Clas║│                                                                      │║ […] │║
-║│ ├─ x║│ Assigned Group       | Effective Policy                              │║ […] │║
-║│ ├─ y║│----------------------|-----------------------------------------------│║ […] │║
-║│ └─ z║│ Admin                | workspace_admin_policy                      X │║ […] │║
+║│ Issu║│                                                                      │║ […] │║
+║│ ├─ I║│ Assigned Group       | Effective Policy                              │║ […] │║
+║│ ├─ P║│----------------------|-----------------------------------------------│║ […] │║
+║│ └─ S║│ Admin                | workspace_admin_policy                      X │║ […] │║
 ║│     ║│ User                 | workspace_view_policy                       X │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                             ‹ Prev  1  2  3  Next ›  │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║     │║
-║│     ║│                                             ‹ Prev  1  2  3  Next ›  │║xt › │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║│                                                                      │║     │║
-║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
+║│     ║└──────────────────────────────────────────────────────────────────────┘║xt › │║
 ║├─────║                                                                        ║     │║
 ║│ [+][║                                                                [Done]  ║     │║
 ║└─────║                                                                        ║─────┘║

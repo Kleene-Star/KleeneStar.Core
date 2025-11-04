@@ -221,7 +221,8 @@ To illustrate the field types, the following table provides an overview of the b
 |`UrlFieldType`           |Specialized string with URL validation
 |`IPFieldType`            |Specialized string with IP validation
 |`UserReferenceFieldType` |Reference to user objects, e.g., assignee, creator
-|`StatusFieldType`        |State field with defined lifecycle logic, e.g., Open, In Progress, Done
+|`WorkflowFieldType`      |State field with defined lifecycle logic, e.g., Open, In Progress, Done
+|`PriorityFieldType`      |Predefined priority level, e.g., Low, Medium, High, Critical
 
 ## UI Concepts and Pages
 
@@ -333,13 +334,13 @@ When editing a field, all existing properties are prefilled. Adjustable items in
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Cl║│ Add Field / Edit Field                                               │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
-║┌Field║│             Name: [Title                                           ] │║─────┐║
-║│     ║│             Type: [String                                         ▼] │║     │║
+║┌Field║│            Name*: [ Title                                          ] │║─────┐║
+║│     ║│            Type*: [ String                                        ▼] │║     │║
 ║│  - A║│      Placeholder: [                                                ] │║ild] │║
 ║│  - R║│           Active: [ ]                                                │║     │║
 ║│  - D║│       Deprecated: [ ]                                                │║     │║
-║│  - A║│  Access Modifier: [Private                                        ▼] │║-----│║
-║│     ║│      Description: [Human-readable help text …                      ] │║ […] │║
+║│  - A║│ Access Modifier*: [ Private                                       ▼] │║-----│║
+║│     ║│      Description: [ Human-readable help text …                     ] │║ […] │║
 ║│     ║│         HelpText: [                                                ] │║ […] │║
 ║│     ║│           Unique: [ ]                                                │║ […] │║
 ║│     ║│           Hidden: [ ]                                                │║ […] │║
@@ -379,9 +380,9 @@ Using minimum, maximum, and the "Unlimited" option, it is defined whether a fiel
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Cl║│ Configure                                                            │║     │║
-║└─────║├─────────────┬────────────┬─────────┬────────────────┬────────────────┤║─────┘║
-║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │                │║─────┐║
-║│     ║│             └────────────┴─────────┴────────────────┴────────────────┤║     │║
+║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
+║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │ Workflow │ Prio│║─────┐║
+║│     ║│             └────────────┴─────────┴────────────────┴──────────┴─────┤║     │║
 ║│  - A║│                                                                      │║ild] │║
 ║│  - R║│       Minimum: [   0]                                                │║     │║
 ║│  - D║│     Unlimited: [ ]                                                   │║     │║
@@ -419,9 +420,9 @@ For text and string fields, regex patterns can be stored. Validations are only d
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Cl║│ Configure                                                            │║     │║
-║└─────║├─────────────┬────────────┬─────────┬────────────────┬────────────────┤║─────┘║
-║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │                │║─────┐║
-║│     ║├─────────────┘            └─────────┴────────────────┴────────────────┤║     │║
+║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
+║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │ Workflow │ Prio│║─────┐║
+║│     ║├─────────────┘            └─────────┴────────────────┴──────────┴─────┤║     │║
 ║│  - A║│                                                                      │║ild] │║
 ║│  - R║│ Regular expression: [                                              ] │║     │║
 ║│  - D║│                                                                      │║     │║
@@ -459,9 +460,9 @@ Value-label pairs can be maintained, optionally with stable keys, ordering, acti
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Cl║│ Configure                                                            │║     │║
-║└─────║├─────────────┬────────────┬─────────┬────────────────┬────────────────┤║─────┘║
-║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │                │║─────┐║
-║│     ║├─────────────┴────────────┘         └────────────────┴────────────────┤║     │║
+║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
+║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │ Workflow │ Prio│║─────┐║
+║│     ║├─────────────┴────────────┘         └────────────────┴──────────┴─────┤║     │║
 ║│  - A║│                                                                      │║ild] │║
 ║│  - R║│ Options: [                                                         ] │║     │║
 ║│  - D║│                                                                      │║     │║
@@ -499,9 +500,9 @@ A WQL-based filter can be used to define target classes, status, metadata, tenan
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Cl║│ Configure                                                            │║     │║
-║└─────║├─────────────┬────────────┬─────────┬────────────────┬────────────────┤║─────┘║
-║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │                │║─────┐║
-║│     ║├─────────────┴────────────┴─────────┘                └────────────────┤║     │║
+║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
+║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │ Workflow │ Prio│║─────┐║
+║│     ║├─────────────┴────────────┴─────────┘                └──────────┴─────┤║     │║
 ║│  - A║│                                                                      │║ild] │║
 ║│  - R║│ Filter by WQL: [                                                   ] │║     │║
 ║│  - D║│                                                                      │║     │║
@@ -526,11 +527,93 @@ A WQL-based filter can be used to define target classes, status, metadata, tenan
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Field Management – Clone (Modal)
+#### Workflow
+
+The Workflow category is used to assign an active workflow to a field of type `WorkflowFieldType`. It enables the direct linkage of a field to a specific process model that governs or visualizes the lifecycle of an object.
+
+Selection is limited to published (Active) workflows that are compatible with the class of the field. The assignment is binding and directly influences the field’s behavior, such as displaying status information, executing transitions, or integrating with UI components.
+
+```
+╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
+║┌Header──────────────────────────────────────────────────────────────────────────────┐║
+║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
+║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
+║│ / Cl║│ Configure                                                            │║     │║
+║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
+║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │ Workflow │ Prio│║─────┐║
+║│     ║├─────────────┴────────────┴─────────┴────────────────┘          └─────┤║     │║
+║│  - A║│                                                                      │║ild] │║
+║│  - R║│ Workflow*: [                                                      ▼] │║     │║
+║│  - D║│                                                                      │║     │║
+║│  - A║│                                                                      │║-----│║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║     │║
+║│     ║│                                                                      │║xt › │║
+║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
+║├─────║                                                                        ║     │║
+║│ [Set║                                                       [Save] [Cancel]  ║     │║
+║└─────║                                                                        ║─────┘║
+║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
+║│                                                                                    │║
+║└────────────────────────────────────────────────────────────────────────────────────┘║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+```
+
+#### Priority
+
+The Priority category is used to assign a predefined priority level to a field of type `PriorityFieldType`. It enables the direct association of the field with a specific priority definition that reflects the urgency, importance, or processing order of an object.
+
+Selection is limited to published priority values that are defined and released within the current workspace. The assignment is binding and directly affects the field’s behavior—for example, in object sorting, automatic triggering of time-sensitive processes (such as SLA tracking), or visual highlighting of urgency and escalation levels in the user interface.
+
+Automatic migration of existing values does not take place. Fields retain their previous value in objects until those objects are actively edited. If the existing value is no longer valid or available in the new configuration, the field will be reset to the defined default value during the next edit. The user is transparently informed about this change to prevent unexpected effects and ensure traceability.
+
+```
+╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
+║┌Header──────────────────────────────────────────────────────────────────────────────┐║
+║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
+║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
+║│ / Cl║│ Configure                                                            │║     │║
+║└─────║├────────┬────────────┬─────────┬────────────────┬──────────┬──────────┤║─────┘║
+║┌Field║│ nality │ Validation │ Options │ Filter objects │ Workflow │ Priority │║─────┐║
+║│     ║├────────┴────────────┴─────────┴────────────────┴──────────┘          │║     │║
+║│  - A║│                                                                      │║ild] │║
+║│  - R║│  Default priority*: [ Medium                                      ▼] │║     │║
+║│  - D║│                                                                      │║     │║
+║│  - A║│ ┌────────────────────────────┬────┬────────────────────────────────┐ │║-----│║
+║│     ║│ │    Selected priorities     │    │     Available priorities       │ │║ […] │║
+║│     ║│ ├────────────────────────────┼────┼────────────────────────────────┤ │║ […] │║
+║│     ║│ │ High                       │ << │ Low                            │ │║ […] │║
+║│     ║│ │ Medium                     │ <  │ Critical                       │ │║ […] │║
+║│     ║│ │                            │ >  │                                │ │║ […] │║
+║│     ║│ │                            │ >> │                                │ │║ […] │║
+║│     ║│ │                            │    │                                │ │║ […] │║
+║│     ║│ │                            │    │                                │ │║ […] │║
+║│     ║│ └────────────────────────────┴────┴────────────────────────────────┘ │║     │║
+║│     ║│                                                                      │║xt › │║
+║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
+║├─────║                                                                        ║     │║
+║│ [Set║                                                       [Save] [Cancel]  ║     │║
+║└─────║                                                                        ║─────┘║
+║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
+║│                                                                                    │║
+║└────────────────────────────────────────────────────────────────────────────────────┘║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+```
+
+### Field Management - Clone (Modal)
 
 Cloning a field enables the quick reuse of proven field definitions within the same class. The function is provided in a separate modal dialog, which can be opened from the class detail view (actions dropdown "Manage Fields") as well as from the class’s field overview. When cloning, a new field is created whose central properties can be adopted from the original. System-critical characteristics such as the unique field key and, if applicable, permission-related assignments are newly generated or explicitly requested.
 
-The modal allows adjustment of the name and key of the new field as well as optional adoption of validation rules, indexing options, default values, UI hints, and permissions. By default, the field type and cardinality are preserved to ensure compatibility. If changes are desired, the UI points out possible migration needs (transform/backfill, reindexing). After confirmation, the new field is created and immediately integrated into the class’s field list. Audit and policy requirements are observed.
+In the modal, only the new name of the field can be adjusted. All other properties, such as validation rules, indexing options, default values, UI hints, and permissions, are fully inherited from the original field and must be modified manually afterward if needed.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
@@ -543,17 +626,17 @@ The modal allows adjustment of the name and key of the new field as well as opti
 ║┌Field║│ The field 'Priority' from class 'Incident' will be cloned.           │║─────┐║
 ║│     ║│ Please adjust the details for the new field.                         │║     │║
 ║│  - A║│                                                                      │║ild] │║
-║│  - R║│        New Name: [ Priority (Copy)                                 ] │║     │║
-║│  - D║│            Type: [ Enum                                           ▼] │║     │║
-║│  - A║│     Cardinality: [ Single (1)                                     ▼] │║-----│║
+║│  - R║│       New Name*: [ Priority (Copy)                                 ] │║     │║
+║│  - D║│                                                                      │║     │║
+║│  - A║│                                                                      │║-----│║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
-║│     ║│  Include validation rules:   [ ]                                     │║ […] │║
-║│     ║│  Include default value:      [ ]                                     │║ […] │║
-║│     ║│  Include permissions:        [ ]                                     │║ […] │║
 ║│     ║│                                                                      │║ […] │║
-║│     ║│ Note: Changing type/cardinality may require migration and            │║ […] │║
-║│     ║│       reindexing.                                                    │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║xt › │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
@@ -566,7 +649,7 @@ The modal allows adjustment of the name and key of the new field as well as opti
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Field Management – Delete (Modal)
+### Field Management - Delete (Modal)
 
 Deleting a field is a critical and irreversible operation that requires explicit confirmation. To prevent unintentional deletions, a modal dialog is used, which can be opened from the class’s field overview or via the actions dropdown ("Manage Fields"). The dialog clearly states the field to be deleted and its class as well as the field key. As an additional safety measure, the exact field key must be entered. Only when it matches does the "Delete" button become active. The dialog points out the consequences (e.g., removal of existing values, update/removal of indexes, possible impacts on validation or cross-field rules). A "Cancel" option aborts the process without changes.
 
@@ -604,7 +687,7 @@ Deleting a field is a critical and irreversible operation that requires explicit
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Field Management – Permissions Management (Modal)
+### Field Management - Permissions Management (Modal)
 
 A modal dialog serves as the central interface for granting field-specific access rights by assigning appropriate permission policies to groups. This enables fine-grained control over which groups may read, write, or administratively manage a particular field (e.g., schema changes, reindexing, or permission assignment itself). It is invoked via the "Permissions" button within field management, either as a row action in the field list or from the field detail view. Display and use require the permission `field_manage_permissions`. In the dialog, groups can be selected and suitable field policies assigned. Existing assignments can be adjusted or removed at any time.
 
@@ -619,8 +702,8 @@ Assignments are displayed in tabular form and can be managed efficiently via sea
 ║│ / Cl║│  Manage Permissions for Field 'Assignee'                             │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Field║│                                                                      │║─────┐║
-║│     ║│  Assign Group: [IT Support ▼]                                        │║     │║
-║│  - A║│        Policy: [field_edit_policy ▼]                                 │║ild] │║
+║│     ║│  Assign Group*: [ IT Support ▼]                                      │║     │║
+║│  - A║│        Policy*: [ field_edit_policy ▼]                               │║ild] │║
 ║│  - R║│                                                                      │║     │║
 ║│  - D║│  [+ Assign]                                                          │║     │║
 ║│  - A║│                                                             [Search] │║---- │║

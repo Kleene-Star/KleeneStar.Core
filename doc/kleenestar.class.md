@@ -211,14 +211,14 @@ Additionally, the sidebar contains an "Add Class" feature that allows new classe
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
-║│ / Workspace 0                                                                      │║
+║│ / Service Desk                                                                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Workspace─────────────┐ ┌Workspace Content──────────────────────────────────────────┐║
 ║│[Name]                │░│                                                           │║
 ║│                      │░│ Incident                                              […] │║
 ║│      [Icon]          │░│                                                  [Search] │║
 ║│                      │░│ Title                            | Status  | Impact       │║
-║│             [Search] │░│----------------------------------|---------|------------- │║
+║│             [Search] │░│----------------------------------|---------|--------------│║
 ║│ Issue                │░│ VPN connection disrupted         | Open    | High     […] │║
 ║│ ├─ Incident          │░│ Outlook won't start              | Open    | Medium   […] │║
 ║│ ├─ Problem           │░│ Printer on floor 3 offline       | Assigned| Low      […] │║
@@ -256,7 +256,7 @@ The page is accessible via the "Manage Classes" option in the workspace editing 
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
-║│ / Workspace 0 / Classes                                                            │║
+║│ / Service Desk / Classes                                                           │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Classes───────────────┐ ┌Classes Content────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
@@ -301,18 +301,18 @@ When editing a class ("Edit Class"), all existing information is pre-populated. 
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔ClassAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Si║│ Add Class / Edit Class                                               │║     │║
+║│ / Se║│ Add Class / Edit Class                                               │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
-║┌Class║│           Name: [Incident                                          ] │║─────┐║
-║│     ║│    Description: [Report of technical or operational incidents.     ] │║     │║
-║│  - A║│      Inherited: [None                                             ▼] │║ass] │║
-║│  - I║│       Abstract: [ ]                                                  │║     │║
-║│  - S║│      Blueprint: [Incident                                         ▼] │║     │║
-║│  - H║│         Parent: [Issue                                            ▼] │║---- │║
-║│  - A║│     Subclasses: [                                                 ▼] │║ […] │║
-║│     ║│Access Modifier: [Private                                          ▼] │║ […] │║
-║│     ║│      Singleton: [ ]                                                  │║ […] │║
-║│     ║│         Active: [✓]                                                  │║ […] │║
+║┌Class║│           Name*: [Incident                                         ] │║─────┐║
+║│     ║│     Description: [Report of technical or operational incidents.    ] │║     │║
+║│  - A║│       Inherited: [None                                            ▼] │║ass] │║
+║│  - I║│        Abstract: [ ]                                                 │║     │║
+║│  - S║│       Blueprint: [Incident                                        ▼] │║     │║
+║│  - H║│          Parent: [Issue                                           ▼] │║---- │║
+║│  - A║│      Subclasses: [                                                ▼] │║ […] │║
+║│     ║│ Access Modifier: [Private                                         ▼] │║ […] │║
+║│     ║│       Singleton: [ ]                                                 │║ […] │║
+║│     ║│          Active: [✓]                                                 │║ […] │║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
@@ -331,11 +331,11 @@ When editing a class ("Edit Class"), all existing information is pre-populated. 
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Class Management – Clone (Modal)
+### Class Management - Clone (Modal)
 
 Cloning a class enables fast reuse of existing structures and is particularly suitable for leveraging proven class definitions. The function is provided via a separate modal dialog that can be opened from both the detail view and the class overview. 
 
-When cloning, a new class is created whose properties (such as name, description, fields, and metadata) are copied from the original. System-critical characteristics such as the unique key, creation timestamp, and permissions are regenerated or specifically requested. The modal allows for adjusting the new class’s name and description. Optionally, it can be specified whether to include the field structure and associated permissions.
+When cloning, a new class is created whose properties (such as name, description, fields, and metadata) are copied from the original. System-critical characteristics such as the creation timestamp, and permissions are regenerated or specifically requested. The modal allows for adjusting the new class’s name and description.
 
 After confirmation, the new class is created and automatically integrated into the workspace’s existing class list.
 
@@ -345,18 +345,18 @@ After confirmation, the new class is created and automatically integrated into t
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔ClassCloneModal═════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Wo║│ Clone Class                                                          │║     │║
+║│ / Se║│ Clone Class                                                          │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Class║│                                                                      │║─────┐║
 ║│     ║│ You are about to clone the class 'Sales Operations'.                 │║     │║
 ║│  - A║│ Please adjust the details for the new class below.                   │║ass] │║
 ║│  - I║│                                                                      │║     │║
-║│  - S║│     Class Name: [ xxxxxx (Copy)                                  ]   │║     │║
-║│  - H║│            Key: [ newkey                                         ]   │║---- │║
-║│  - A║│    Description: [ Copy of xxxxxx.                                ]   │║ […] │║
+║│  - S║│     Class Name*: [ xxxxxx (Copy)                                   ] │║     │║
+║│  - H║│     Description: [ Copy of xxxxxx.                                 ] │║---- │║
+║│  - A║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
-║│     ║│   Include structure: [✓]                                             │║ […] │║
-║│     ║│ Include permissions: [✓]                                             │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
@@ -372,7 +372,7 @@ After confirmation, the new class is created and automatically integrated into t
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Class Management – Delete (Modal)
+### Class Management - Delete (Modal)
 
 Deleting a class is a critical and irreversible process that requires explicit user confirmation. To prevent accidental deletions, a modal dialog is used. This modal is activated when the delete action is initiated from either the detail view or the class overview.
 
@@ -384,13 +384,13 @@ The dialog clearly indicates which class is to be deleted by explicitly naming t
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔═ClassDeleteModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Wo║│ Delete Class                                                         │║     │║
+║│ / Se║│ Delete Class                                                         │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Class║│                                                                      │║─────┐║
 ║│     ║│ Are you sure you want to delete the class 'Incident'?                │║     │║
 ║│  - A║│ This action cannot be undone.                                        │║ass] │║
 ║│  - I║│                                                                      │║     │║
-║│  - S║│ To confirm, please type 'incident-001' in the box below:             │║     │║
+║│  - S║│ To confirm, please type 'incident-001' in the box below*:            │║     │║
 ║│  - H║│ [                                                                  ] │║---- │║
 ║│  - A║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
@@ -411,7 +411,7 @@ The dialog clearly indicates which class is to be deleted by explicitly naming t
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Class Management – Permissions Management (Modal)
+### Class Management - Permissions Management (Modal)
 
 A modal dialog is used to manage access rights to a class, serving as the central interface for assigning groups to context-specific permission policies. This modal enables fine-grained control over which groups can access a specific class with which rights. Access to the modal is via the "Permissions" button in class management. The permission `class_manage_profiles` is required to display and use the dialog. Within the modal, administrators can select groups and assign suitable policies to them.
 
@@ -423,11 +423,11 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔ClassPermissionsModal═══════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Cl║│  Manage Permissions for Class 'Incident'                             │║     │║
+║│ / Se║│  Manage Permissions for Class 'Incident'                             │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Class║│                                                                      │║─────┐║
-║│     ║│  Assign Group: [IT Support ▼]                                        │║     │║
-║│  - A║│        Policy: [class_edit_policy ▼]                                 │║ass] │║
+║│     ║│  Assign Group*: [ IT Support ▼]                                      │║     │║
+║│  - A║│        Policy*: [ class_edit_policy ▼]                               │║ass] │║
 ║│  - I║│                                                                      │║     │║
 ║│  - S║│  [+ Assign]                                                          │║     │║
 ║│  - H║│                                                             [Search] │║---- │║
