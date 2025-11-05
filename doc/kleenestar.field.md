@@ -571,7 +571,7 @@ Selection is limited to published (Active) workflows that are compatible with th
 
 The Priority category is used to assign a predefined priority level to a field of type `PriorityFieldType`. It enables the direct association of the field with a specific priority definition that reflects the urgency, importance, or processing order of an object.
 
-Selection is limited to published priority values that are defined and released within the current workspace. The assignment is binding and directly affects the field’s behavior—for example, in object sorting, automatic triggering of time-sensitive processes (such as SLA tracking), or visual highlighting of urgency and escalation levels in the user interface.
+Selection is limited to published priority values that are defined and released within the current workspace. The assignment is binding and directly affects the field’s behavior (for example, in object sorting, automatic triggering of time-sensitive processes (such as SLA tracking), or visual highlighting of urgency and escalation levels in the user interface).
 
 Automatic migration of existing values does not take place. Fields retain their previous value in objects until those objects are actively edited. If the existing value is no longer valid or available in the new configuration, the field will be reset to the defined default value during the next edit. The user is transparently informed about this change to prevent unexpected effects and ensure traceability.
 
@@ -742,7 +742,7 @@ The sitemap for field management describes the hierarchical structure and naviga
 |`/workspaces/{workspaceKey}/classes/{classKey}/fields/{fieldKey}/delete`      |Field deletion      |Modal for confirming and performing the final removal of a field.
 |`/workspaces/{workspaceKey}/classes/{classKey}/fields/{fieldKey}/permissions` |Field permissions   |Modal for managing group and policy assignments for a field.
 
-## API Interfaces (REST Endpoints) – Field Management
+## API Interfaces (REST Endpoints) - Field Management
 
 For programmatic interaction, third-party integration, and automation, **KleeneStar** provides a standardized REST API for managing field definitions within a class. The interface follows REST principles and uses JSON as the data format. Authentication and authorization are ensured by **KleeneStar**. Standard HTTP status codes indicate the result of each request, including success, validation errors, permission issues, or missing resources.
 
