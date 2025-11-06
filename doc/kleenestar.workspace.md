@@ -207,18 +207,18 @@ The global workspace dropdown is a central and permanently available component i
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└────────────────────¦───────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb────────┌─┴────────────────┐──────────────────────────────────────────────┐║
-║│ / Workspace 0    │┌────────────────┐│                                              │║
+║│ / Service Desk   │┌────────────────┐│                                              │║
 ║└──────────────────││ Search         ││──────────────────────────────────────────────┘║
 ║┌Workspace ────────│└────────────────┘│──────────────────────────────────────────────┐║
-║│                  │ Workspace 0      │                                              │║
-║│  [Icon]          │ Workspace 1      │                       [Search] [+ AddObject] │║
-║│  [Name]          │ ...              │                                              │║
+║│[Name]            │ Workspace 0      │                                              │║
+║│                  │ Workspace 1      │                       [Search] [+ AddObject] │║
+║│      [Icon]      │ ...              │                                              │║
 ║│                  │ Workspace n      │     | Tel.  | Description                    │║
 ║│                  ├──────────────────┤-----|-------|------------------------------- │║
-║│ Class            │ Manage Workspace │     | 555-1 | Head of Sales              […] │║
-║│ ├─ xxxxxx        │ + Add Workspace  │lder | 555-7 | IT Administrator           […] │║
-║│ ├─ yyyyyyyyy     │ <section>        │     | 555-3 | HR Manager                 […] │║
-║│ └─ zzzzz         └──────────────────┘e    | 555-4 | System Architect           […] │║
+║│ Issue            │ Manage Workspace │     | 555-1 | Head of Sales              […] │║
+║│ ├─ Incident      │ + Add Workspace  │lder | 555-7 | IT Administrator           […] │║
+║│ ├─ Problem       │ <section>        │     | 555-3 | HR Manager                 […] │║
+║│ └─ ServiceRequest└──────────────────┘e    | 555-4 | System Architect           […] │║
 ║│                      │░│ Anna Mock        | 555-8 | DevOps Lead                […] │║
 ║│                      │<│                                                           │║
 ║│                      │<│                                   ‹ Prev  1  2  3  Next › │║
@@ -589,11 +589,11 @@ The following table lists the granular permissions required for comprehensive co
 | `workspace_read_content`    | Grants read access to the contents of a workspace (entities, attributes, etc.).
 | `workspace_write_content`   | Allows the creation, editing, and deletion of content within a workspace.
 
-These permissions are bundled into logical policies to represent typical use cases and responsibilities. The policies can be assigned to global groups within a workspace profile.
+These permissions are bundled into logical policies to represent typical use cases and responsibilities. The policies can be assigned to global groups within a c profile.
 
 |Policy                     |Description                                                 |Included Permissions
 |---------------------------|------------------------------------------------------------|-------------------------
-|`workspace_admin_policy`   |Complete administrative control over a workspace.           |`workspace_read`, `workspace_update`, `workspace_delete`, `workspace_archive`, `workspace_restore`, `workspace_clone`, `workspace_manage_profiles`, `workspace_read_content`, `workspace_write_content`
+|`workspace_admin_policy`   |Complete administrative control over a workspace.           |all `workspace_*`
 |`workspace_edit_policy`    |Authorizes the management of a workspace's contents.        |`workspace_read`, `workspace_read_content`, `workspace_write_content`
 |`workspace_view_policy`    |Grants read-only access to a workspace and its contents.    |`workspace_read`, `workspace_read_content`
 |`workspace_creator_policy` |A global policy that allows the creation of new workspaces. |`workspace_create`

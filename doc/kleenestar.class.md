@@ -262,10 +262,10 @@ The page is accessible via the "Manage Classes" option in the workspace editing 
 ║│                      │░│                                                           │║
 ║│  - All               │░│                                    [Search] [+ Add Class] │║
 ║│  - Issues            │░│                                                           │║
-║│  - Sub-Issues        │░│ Class Name       | Description                 │ Status   │║
-║│  - Hidden            │░│------------------|-----------------------------│----------│║
-║│  - Archived          │░│ Incident         | Report of a disruption      │ ...  […] │║
-║│                      │░│ Problem          | Analysis of recurring errors│ ...   ¦  │║
+║│  - Sub-Issues        │░│ Class Name       | Description                 | Status   │║
+║│  - Hidden            │░│------------------|-----------------------------|----------│║
+║│  - Archived          │░│ Incident         | Report of a disruption      | ...  […] │║
+║│                      │░│ Problem          | Analysis of recurring errors| ...   ¦  │║
 ║│                      │░│ ChangeRequest    | Request for chang┌──────────────────┴┐ │║
 ║│                      │░│ ServiceRequest   | Standard service │ Edit              │ │║
 ║│                      │░│ KnowledgeArticle | Documented knowle│ Clone             │ │║
@@ -279,8 +279,53 @@ The page is accessible via the "Manage Classes" option in the workspace editing 
 ║│                      │░│                                     │ Delete            │ │║
 ║│                      │░│                                   ‹ └───────────────────┘ │║
 ║├──────────────────────┤░│                                                           │║
-║│ [Setting]         << │░│                                                           │║
+║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
+║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
+║│                                                                                    │║
+║└────────────────────────────────────────────────────────────────────────────────────┘║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+```
+
+### KleeneStar - Class Detail View (Page)
+
+The Class Detail View provides a focused perspective on a single class within a workspace. It consolidates metadata, inheritance relationships, visibility settings, and key metrics, while bundling the most important administrative functions into a central entry point. Changes to a class take effect immediately after successful validation and follow the established lifecycle (Active, Archived, Deleted). Subsections for fields, forms, workflows, states/priorities, permissions, and audit are contextually integrated.
+
+The page is accessed via the "Manage Classes" entry.
+
+```
+╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
+║┌Header──────────────────────────────────────────────────────────────────────────────┐║
+║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║└────────────────────────────────────────────────────────────────────────────────────┘║
+║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
+║│ / Service Desk / Classes                                                           │║
+║└────────────────────────────────────────────────────────────────────────────────────┘║
+║┌Classes───────────────┐ ┌Class Detail Content─────────────────┬─────────────────────┐║
+║│Incident              │░│                                     │                     │║
+║│                      │░│ Incident                     [Edit] │ Key: incident       │║
+║│       [Icon]         │░│                                     │ State: Active       │║
+║│                      │░│ ┌Overview─────────────────────────┐ │ Access: Public      │║
+║│                      │░│ │ Report of technical or          │ │ Inherited: None     │║
+║│                      │░│ │ operational incidents.          │ │ Abstract: no        │║
+║│                      │░│ ├Fields───────────────────────────┤ │ Sealed: no          │║
+║│                      │░│ │ Field A                  [Edit] │ │ Singleton: no       │║
+║│                      │░│ │ Field B                         │ │ Created: 2025-01-12 │║
+║│┌───────────────────┐ │░│ │ Field C                         │ │ Updated: 2025-01-12 │║
+║││ Edit              │ │<│ ├Forms────────────────────────────┤ │                     │║
+║││ Clone             │ │<│ │ Form A                   [Edit] │ │                     │║
+║││ Manage Fields     │ │<│ │ Form B                          │ │                     │║
+║││ Manage Workflows  │ │░│ │ Form C                          │ │                     │║
+║││ Manage Priorities │ │░│ ├States───────────────────────────┤ │                     │║
+║││ Manage Forms      │ │░│ │ State A                  [Edit] │ │                     │║
+║││ Permissions       │ │░│ │ State B                         │ │                     │║
+║││ <section>         │ │░│ │ State C                         │ │                     │║
+║│├───────────────────┤ │░│ ├Workflows────────────────────────┤ │                     │║
+║││ Delete            │ │░│ │ Workflow A               [Edit] │ │                     │║
+║│└─┬─────────────────┘ │░│ │ Workflow B                      │ │                     │║
+║├──¦───────────────────┤░│ │ Workflow C                      │ │                     │║
+║│ [Setting]         << │░│ ├Priorities───────────────────────┤ │                     │║
+║└──────────────────────┘ └─────────────────────────────────────┴─────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
 ║│                                                                                    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
@@ -323,7 +368,7 @@ When editing a class ("Edit Class"), all existing information is pre-populated. 
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║xt › │║
 ║├─────║                                                                        ║     │║
-║│ [+ A║                                                       [Save] [Cancel]  ║     │║
+║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -364,7 +409,7 @@ After confirmation, the new class is created and automatically integrated into t
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║xt › │║
 ║├─────║                                                                        ║     │║
-║│ [+ A║                                                      [Clone] [Cancel]  ║     │║
+║│     ║                                                      [Clone] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -403,7 +448,7 @@ The dialog clearly indicates which class is to be deleted by explicitly naming t
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║xt › │║
 ║├─────║                                                                        ║     │║
-║│ [+ A║                                                     [Delete] [Cancel]  ║     │║
+║│     ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -442,7 +487,7 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║xt › │║
 ║├─────║                                                                        ║     │║
-║│ [+][║                                                                [Done]  ║     │║
+║│     ║                                                                [Done]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -548,7 +593,7 @@ These permissions are bundled into logical policies to reflect typical roles and
 
 |Policy                  |Description                                           |Included Permissions
 |------------------------|------------------------------------------------------|-------------------------------------------------------------------------------------------------------
-|`class_admin_policy`    |Full administrative control over class definitions.   |`class_read`, `class_update`, `class_delete`, `class_clone`, `class_import`, `class_export`, `class_manage_permissions`
+|`class_admin_policy`    |Full administrative control over class definitions.   |all `class_*`
 |`class_edit_policy`     |Allows creation and modification of classes.          |`class_create`, `class_read`, `class_update`, `class_clone`
 |`class_view_policy`     |Grants read-only access to class metadata and fields. |`class_read`
 |`class_importer_policy` |Enables importing external class schemas.             |`class_import`

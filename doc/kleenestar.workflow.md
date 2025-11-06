@@ -153,16 +153,13 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ║         ¦        │  │ State:TypeWorkflowState            │     │ Draft             │ ║
 ║         ¦        │  │ Class:IClass                       │     │ Active            │ ║
 ║         ¦        │  │ Created:DateTime                   │     │ Archived          │ ║
-║         ¦        │  │ Updated:DateTime                   │     └───────────────────┘ ║
-║         ¦        │1 │ AccessModifier:TypeAccessModifier  │    ┌────────────────────┐ ║
-║         ¦        └──┤ States:IEnumerable<IState>         │    │ <<Enum>>           │ ║
-║         ¦        ┌──┤ Transitions:                       │    │ TypeAccessModifier │ ║
-║         ¦        │1 │   IEnumerable<ITransition>         │    ├────────────────────┤ ║
-║         ¦        │  │ PermissionsProfiles:               │    │ Private            │ ║
-║         ¦        │  │   IEnumerable<IPermissionsProfile> │    │ Protected          │ ║
-║         ¦        │  └────────────────────────────────────┘    │ Public             │ ║
-║         ¦        │                               Δ            │ Internal           │ ║
-║         ¦        │                               ¦            └────────────────────┘ ║
+║         ¦        │1 │ Updated:DateTime                   │     └───────────────────┘ ║
+║         ¦        └──┤ States:IEnumerable<IState>         │                           ║
+║         ¦        ┌──┤ Transitions:                       │                           ║
+║         ¦        │1 │   IEnumerable<ITransition>         │                           ║
+║         ¦        │  └────────────────────────────────────┘                           ║
+║         ¦        │                               Δ                                   ║
+║         ¦        │                               ¦                                   ║
 ║         ¦        │                               ¦                                   ║
 ║         ¦        ▼ *                             ¦                                   ║
 ║         ¦  ┌──────────────────────────────┐      ¦                                   ║
@@ -193,12 +190,9 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ║                     │ Class:IClass                       │                           ║
 ║                     │ Created:DateTime                   │                           ║
 ║                     │ Updated:DateTime                   │                           ║
-║                     │ AccessModifier:TypeAccessModifier  │                           ║
 ║                     │ States:IEnumerable<IState>         │                           ║
 ║                     │ Transitions:                       │                           ║
 ║                     │   IEnumerable<ITransition>         │                           ║
-║                     │ PermissionsProfiles:               │                           ║
-║                     │   IEnumerable<IPermissionsProfile> │                           ║
 ║                     └────────────────────────────────────┘                           ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
@@ -210,7 +204,7 @@ A workflow is modeled through the IWorkflow interface and contains key propertie
 
 Each workflow consists of a set of states (IState) and transitions (ITransition). States are defined by an ID, a name, and a category (`TypeStatusCategory`) such as "ToDo", "InProgress", "Waiting", or "Done". Transitions connect two states and include, besides source and target, a collection of conditions (Guards), validation rules (Validators), follow-up actions (PostFunctions), and optional UI elements (Form). This structure enables precise control of the object life cycle within a workflow.
 
-Workflows are versionable and follow defined states such as "Draft", Active", or "Archived". The associated permission profiles (PermissionsProfiles) enable fine-grained control of access rights and role dependencies.
+Workflows are versionable and follow defined states such as "Draft", Active", or "Archived".
 
 ## UI Concepts and Pages
 
@@ -249,7 +243,7 @@ The tabular overview displays important attributes per class such as name, descr
 ║│                      │<│ Request          | Inquiry or sub-pr│ Manage Status     │ │║
 ║│                      │<│ Task             | Executable activi│ Manage Workflows  │ │║
 ║│                      │░│ SLA              | Service Level Agr│ Manage Priorities │ │║
-║│                      │░│ Comment          | Free-text note   │ Manage Screens    │ │║
+║│                      │░│ Comment          | Free-text note   │ Manage Forms      │ │║
 ║│                      │░│ UserFeedback     | User feedback    │ Permissions       │ │║
 ║│                      │░│ Escalation       | Escalation to hig│ <section>         │ │║
 ║│                      │░│                                     ├───────────────────┤ │║
@@ -298,7 +292,7 @@ Status maintenance is accessed directly from Class Management via the "Manage St
 ║│                      │░│                                                           │║
 ║│                      │░│                                                           │║
 ║├──────────────────────┤░│                                                           │║
-║│ [Setting]         << │░│                                                           │║
+║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
 ║│                                                                                    │║
@@ -336,7 +330,7 @@ The modal for creating and editing status values in Status Management is used to
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
-║│     ║                                                                        ║     │║
+║├─────║                                                                        ║     │║
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
@@ -377,7 +371,7 @@ In the modal, the fields name, category, and description are automatically prefi
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
-║│     ║                                                                        ║     │║
+║├─────║                                                                        ║     │║
 ║│     ║                                                      [Clone] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
@@ -420,7 +414,7 @@ When the modal opens, the name of the status to be deleted is displayed clearly 
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
-║│     ║                                                                        ║     │║
+║├─────║                                                                        ║     │║
 ║│     ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
@@ -464,7 +458,7 @@ Published workflows directly affect the process control of the associated object
 ║│                      │░│                                           │ Delete      │ │║
 ║│                      │░│                                           └─────────────┘ │║
 ║├──────────────────────┤░│                                                           │║
-║│ [Setting]         << │░│                                                           │║
+║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
 ║│                                                                                    │║
@@ -749,7 +743,7 @@ Cloning a workflow enables quick reuse of proven process models within the same 
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                       [Clone] [Cancel] ║     │║
+║│     ║                                                       [Clone] [Cancel] ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -790,7 +784,7 @@ Active workflows (Active) cannot be deleted directly. They must first be archive
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                     [Delete] [Cancel]  ║     │║
+║│     ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║

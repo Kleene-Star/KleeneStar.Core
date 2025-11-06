@@ -242,16 +242,16 @@ Entry into field management occurs directly from the class overview. On the `Cla
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
-║│ / Workspace 0 / Classes                                                            │║
+║│ / Service Desk / Classes                                                            │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Classes───────────────┐ ┌Classes Content────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
 ║│  - All               │░│                                    [Search] [+ Add Class] │║
 ║│  - Issues            │░│                                                           │║
-║│  - Sub-Issues        │░│ Class Name       | Description                 │ Status   │║
-║│  - Hidden            │░│------------------|-----------------------------│----------│║
-║│  - Archived          │░│ Incident         | Report of a disruption      │ ...  […] │║
-║│                      │░│ Problem          | Analysis of recurring errors│ ...   ¦  │║
+║│  - Sub-Issues        │░│ Class Name       | Description                 | Status   │║
+║│  - Hidden            │░│------------------|-----------------------------|----------│║
+║│  - Archived          │░│ Incident         | Report of a disruption      | ...  […] │║
+║│                      │░│ Problem          | Analysis of recurring errors| ...   ¦  │║
 ║│                      │░│ ChangeRequest    | Request for change   ┌──────────────┴┐ │║
 ║│                      │░│ ServiceRequest   | Standard service requ│ Edit          │ │║
 ║│                      │░│ KnowledgeArticle | Documented knowledge │ Clone         │ │║
@@ -261,7 +261,7 @@ Entry into field management occurs directly from the class overview. On the `Cla
 ║│                      │░│ SLA              | Service Level Agreeme├───────────────┤ │║
 ║│                      │░│ Comment          | Free-text note       │ Delete        │ │║
 ║│                      │░│ UserFeedback     | User feedback        └───────────────┘ │║
-║│                      │░│ Escalation       | Escalation to higher inst...│ ...  […] │║
+║│                      │░│ Escalation       | Escalation to higher inst...| ...  […] │║
 ║│                      │░│                                                           │║
 ║│                      │░│                                   ‹ Prev  1  2  3  Next › │║
 ║├──────────────────────┤░│                                                           │║
@@ -287,7 +287,7 @@ The page can be accessed via the "Manage Fields" option in class administration 
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
-║│ / Workspace 0 / Incident / Fields                                                  │║
+║│ / Service Desk / Incident / Fields                                                  │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Fields────────────────┐ ┌Fields Content─────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
@@ -299,7 +299,7 @@ The page can be accessed via the "Manage Fields" option in class administration 
 ║│                      │░│ Status       | Enum      | ✓    | Active               ¦  │║
 ║│                      │░│ Priority     | Enum      |      | Active  ┌────────────┴┐ │║
 ║│                      │░│ Assignee     | Link      |      | Active  │ Edit        │ │║
-║│                      │░│ Tags         | List[str] |      | Active  │ Configure   │ │║
+║│                      │░│ Tags         | Tags      |      | Active  │ Configure   │ │║
 ║│                      │<│ Description  | Text      |      | Active  │ Clone       │ │║
 ║│                      │<│ ReportedAt   | DateTime  | ✓    | Active  │ Permissions │ │║
 ║│                      │<│ Affected CI  | Link      |      | Active  │ <section>   │ │║
@@ -310,7 +310,7 @@ The page can be accessed via the "Manage Fields" option in class administration 
 ║│                      │░│                                                           │║
 ║│                      │░│                                                           │║
 ║├──────────────────────┤░│                                                           │║
-║│ [Setting]         << │░│                                                           │║
+║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
 ║│                                                                                    │║
@@ -332,7 +332,7 @@ When editing a field, all existing properties are prefilled. Adjustable items in
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Cl║│ Add Field / Edit Field                                               │║     │║
+║│ / Se║│ Add Field / Edit Field                                               │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Field║│            Name*: [ Title                                          ] │║─────┐║
 ║│     ║│            Type*: [ String                                        ▼] │║     │║
@@ -353,7 +353,7 @@ When editing a field, all existing properties are prefilled. Adjustable items in
 ║│     ║│                                                                      │║xt › │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                       [Save] [Cancel]  ║     │║
+║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -379,7 +379,7 @@ Using minimum, maximum, and the "Unlimited" option, it is defined whether a fiel
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Cl║│ Configure                                                            │║     │║
+║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
 ║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │ Workflow │ Prio│║─────┐║
 ║│     ║│             └────────────┴─────────┴────────────────┴──────────┴─────┤║     │║
@@ -399,7 +399,7 @@ Using minimum, maximum, and the "Unlimited" option, it is defined whether a fiel
 ║│     ║│                                                                      │║xt › │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                       [Save] [Cancel]  ║     │║
+║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -419,7 +419,7 @@ For text and string fields, regex patterns can be stored. Validations are only d
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Cl║│ Configure                                                            │║     │║
+║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
 ║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │ Workflow │ Prio│║─────┐║
 ║│     ║├─────────────┘            └─────────┴────────────────┴──────────┴─────┤║     │║
@@ -439,7 +439,7 @@ For text and string fields, regex patterns can be stored. Validations are only d
 ║│     ║│                                                                      │║xt › │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                       [Save] [Cancel]  ║     │║
+║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -459,7 +459,7 @@ Value-label pairs can be maintained, optionally with stable keys, ordering, acti
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Cl║│ Configure                                                            │║     │║
+║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
 ║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │ Workflow │ Prio│║─────┐║
 ║│     ║├─────────────┴────────────┘         └────────────────┴──────────┴─────┤║     │║
@@ -479,7 +479,7 @@ Value-label pairs can be maintained, optionally with stable keys, ordering, acti
 ║│     ║│                                                                      │║xt › │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                       [Save] [Cancel]  ║     │║
+║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -499,7 +499,7 @@ A WQL-based filter can be used to define target classes, status, metadata, tenan
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Cl║│ Configure                                                            │║     │║
+║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
 ║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │ Workflow │ Prio│║─────┐║
 ║│     ║├─────────────┴────────────┴─────────┘                └──────────┴─────┤║     │║
@@ -519,7 +519,7 @@ A WQL-based filter can be used to define target classes, status, metadata, tenan
 ║│     ║│                                                                      │║xt › │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                       [Save] [Cancel]  ║     │║
+║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -539,7 +539,7 @@ Selection is limited to published (Active) workflows that are compatible with th
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Cl║│ Configure                                                            │║     │║
+║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
 ║┌Field║│ Cardinality │ Validation │ Options │ Filter objects │ Workflow │ Prio│║─────┐║
 ║│     ║├─────────────┴────────────┴─────────┴────────────────┘          └─────┤║     │║
@@ -559,7 +559,7 @@ Selection is limited to published (Active) workflows that are compatible with th
 ║│     ║│                                                                      │║xt › │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                       [Save] [Cancel]  ║     │║
+║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -581,7 +581,7 @@ Automatic migration of existing values does not take place. Fields retain their 
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Cl║│ Configure                                                            │║     │║
+║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├────────┬────────────┬─────────┬────────────────┬──────────┬──────────┤║─────┘║
 ║┌Field║│ nality │ Validation │ Options │ Filter objects │ Workflow │ Priority │║─────┐║
 ║│     ║├────────┴────────────┴─────────┴────────────────┴──────────┘          │║     │║
@@ -601,7 +601,7 @@ Automatic migration of existing values does not take place. Fields retain their 
 ║│     ║│                                                                      │║xt › │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                       [Save] [Cancel]  ║     │║
+║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -621,7 +621,7 @@ In the modal, only the new name of the field can be adjusted. All other properti
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔FieldCloneModal═════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Cl║│ Clone Field                                                          │║     │║
+║│ / Se║│ Clone Field                                                          │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Field║│ The field 'Priority' from class 'Incident' will be cloned.           │║─────┐║
 ║│     ║│ Please adjust the details for the new field.                         │║     │║
@@ -641,7 +641,7 @@ In the modal, only the new name of the field can be adjusted. All other properti
 ║│     ║│                                                                      │║xt › │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                      [Clone] [Cancel]  ║     │║
+║│     ║                                                      [Clone] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -659,17 +659,17 @@ Deleting a field is a critical and irreversible operation that requires explicit
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔═FieldDeleteModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Wo║│ Delete Field                                                         │║     │║
+║│ / Se║│ Delete Field                                                         │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Field║│                                                                      │║─────┐║
 ║│     ║│ Are you sure you want to delete the field 'Tags' in class 'Incident'?│║     │║
 ║│  - A║│ This action cannot be undone. Field values and related indexes will  │║ild] │║
 ║│  - R║│ be removed. Cross-field rules may be affected.                       │║     │║
-║│  - D║│ To confirm, please type the field key 'tags' in the box below:       │║     │║
-║│  - A║│ [                                                                  ] │║---- │║
+║│  - D║│                                                                      │║     │║
+║│  - A║│ To confirm, please type the field name 'Tags' in the box below:      │║---- │║
+║│     ║│ [                                                                  ] │║ […] │║
 ║│     ║│                                                                      │║ […] │║
-║│     ║│ Options: [ ] also remove historical index data                       │║ […] │║
-║│     ║│          [ ] acknowledge impact on validation/cross-field rules      │║ […] │║
+║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
@@ -679,7 +679,7 @@ Deleting a field is a critical and irreversible operation that requires explicit
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║xt › │║
 ║│     ║                                                                        ║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                     [Delete] [Cancel]  ║     │║
+║│     ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -699,7 +699,7 @@ Assignments are displayed in tabular form and can be managed efficiently via sea
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
 ║└─────╔FieldPermissionsModal═══════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Cl║│  Manage Permissions for Field 'Assignee'                             │║     │║
+║│ / Se║│  Manage Permissions for Field 'Assignee'                             │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Field║│                                                                      │║─────┐║
 ║│     ║│  Assign Group*: [ IT Support ▼]                                      │║     │║
@@ -719,7 +719,7 @@ Assignments are displayed in tabular form and can be managed efficiently via sea
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║xt › │║
 ║│     ║                                                                        ║     │║
 ║├─────║                                                                        ║     │║
-║│ [Set║                                                                [Done]  ║     │║
+║│     ║                                                                [Done]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -820,12 +820,12 @@ The following table lists the granular permissions for comprehensive control of 
 
 These permissions are bundled into logical policies that represent typical use cases and responsibilities. Policies can be assigned to global groups in the field profile of a class.
 
-|Policy                     |Description                                            |Included permissions
-|---------------------------|-------------------------------------------------------|-------------------------
-|`field_admin_policy`       |Full administrative control over a field.              |`field_read`, `field_update`, `field_delete`, `field_archive`, `field_restore`, `field_clone`, `field_manage_permissions`, `field_read_values`, `field_write_values`
-|`field_edit_policy`        |Authorizes the management of field values.             |`field_read`, `field_read_values`, `field_write_values`
-|`field_view_policy`        |Grants read access to the field definition and values. |`field_read`, `field_read_values`
-|`field_creator_policy`     |Global policy for creating new fields.                 |`field_create`
+|Policy                 |Description                                            |Included permissions
+|-----------------------|-------------------------------------------------------|-------------------------
+|`field_admin_policy`   |Full administrative control over a field.              |all `field_*`
+|`field_edit_policy`    |Authorizes the management of field values.             |`field_read`, `field_read_values`, `field_write_values`
+|`field_view_policy`    |Grants read access to the field definition and values. |`field_read`, `field_read_values`
+|`field_creator_policy` |Global policy for creating new fields.                 |`field_create`
 
 Assignment and management of field policies are performed via the field administration interfaces and are transparently documented in auditing and governance.
 
