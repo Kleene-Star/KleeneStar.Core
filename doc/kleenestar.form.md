@@ -338,7 +338,7 @@ The Form Designer is the central tool for designing and maintaining forms within
 
 The "Add Form" and "Edit Form" modals in the **KleeneStar** web application provide the central interface for creating and maintaining forms within a selected class. They offer a structured and user-friendly UI focused on managing form-specific properties.
 
-When creating a new form, basic metadata is defined first, including the form name and a description. Placeholders and help texts can be added to support consistent, context-sensitive interaction. The form’s content structure—i.e., the arrangement of fields and layout groups—is maintained separately via the `FormManager`.
+When creating a new form, basic metadata is defined first, including the form name and a description. Placeholders and help texts can be added to support consistent, context-sensitive interaction. The form’s content structure (i.e., the arrangement of fields and layout groups) is maintained separately via the `FormManager`.
 
 When editing an existing form, all properties are prefilled and can be adjusted. Changes are saved via the "Save" button, "Cancel" discards modifications.
 
@@ -390,7 +390,7 @@ Cloning creates a new form with key properties inherited from the original, incl
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
-║└─────╔FormAddEditModal════════════════════════════════════════════════════════╗─────┘║
+║└─────╔FormCloneModal══════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Clone Form                                                           │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
@@ -416,7 +416,7 @@ Cloning creates a new form with key properties inherited from the original, incl
 ║│     ║│                                                                      │║     │║
 ║│     ║└──────────────────────────────────────────────────────────────────────┘║     │║
 ║├─────║                                                                        ║     │║
-║│     ║                                                       [Save] [Cancel]  ║     │║
+║│     ║                                                      [Clone] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
 ║│                                                                                    │║
@@ -432,7 +432,7 @@ Deleting a form is a critical operation handled via a dedicated modal to avoid a
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
-║└─────╔FormAddEditModal════════════════════════════════════════════════════════╗─────┘║
+║└─────╔FormDeleteModal═════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Delete Form                                                          │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
@@ -506,18 +506,19 @@ Form management in **KleeneStar** uses the central **WebExpress** `EventManager`
 
 The following events are published by the `FormManager` via the **WebExpress** `EventManager`:
 
-| Event Name    | Description
-|---------------|-----------------------------------------------------------------------------
-| FormCreated   | New form created and activated (initial version).
-| FormUpdated   | Form changed. New active version created.
-| FormActivated | Activation of a new version with simultaneous archiving of the predecessor.
-| FormArchived  | Form version set to "Archived" (read-only).
-| FormRestored  | Archived version restored as new active version.
-| FormDeleted   | Form permanently removed (after retention/dependency checks).
-| FormCloned    | Form successfully cloned (new active version).
-| FormAssigned  | Form assigned to a workflow transition.
-| FormUnassigned| Form unassigned from a workflow transition.
+|Event Name       |Description
+|-----------------|-------------------------------------------------------------------------
+|`FormCreated`    |New form created and activated (initial version).
+|`FormUpdated`    |Form changed. New active version created.
+|`FormActivated`  |Activation of a new version with simultaneous archiving of the predecessor.
+|`FormArchived`   |Form version set to "Archived" (read-only).
+|`FormRestored`   |Archived version restored as new active version.
+|`FormDeleted`    |Form permanently removed (after retention/dependency checks).
+|`FormCloned`     |Form successfully cloned (new active version).
+|`FormAssigned`   |Form assigned to a workflow transition.
+|`FormUnassigned` |Form unassigned from a workflow transition.
 
+Each event in priority management carries a structured payload containing essential metadata for processing and traceability. This includes the unique form key and its associated class key, a timestamp marking when the action occurred, the context of the triggering user or module, and the type and source of the action. These details ensure that events are clearly identifiable, auditable, and actionable across the system.
 
 ## Permission Model - Form Management
 
@@ -529,18 +530,18 @@ Administrators with the `form_admin_policy` may manage class profiles and thus c
 
 The following fine-grained permissions form the basis for comprehensive and controlled form management:
 
-| Permission               | Description
-|--------------------------|-----------------------------------------------------------------------------------
-| `form_create`            | Create forms (immediately active after validation).
-| `form_read`              | Read metadata, structure (layout/tree), and assignments.
-| `form_update`            | Edit forms (layout, rules, bindings, metadata).
-| `form_delete`            | Permanently delete forms.
-| `form_archive`           | Archive active forms.
-| `form_restore`           | Restore archived forms (as new active versions).
-| `form_clone`             | Clone forms (new active version).
-| `form_assign_transition` | Maintain assignment of a form as a transition screen.
-| `form_import`            | Import external form definitions.
-| `form_export`            | Export forms (including structure).
+|Permission               |Description
+|-------------------------|------------------------------------------------------
+|`form_create`            |Create forms (immediately active after validation).
+|`form_read`              |Read metadata, structure (layout/tree), and assignments.
+|`form_update`            |Edit forms (layout, rules, bindings, metadata).
+|`form_delete`            |Permanently delete forms.
+|`form_archive`           |Archive active forms.
+|`form_restore`           |Restore archived forms (as new active versions).
+|`form_clone`             |Clone forms (new active version).
+|`form_assign_transition` |Maintain assignment of a form as a transition screen.
+|`form_import`            |Import external form definitions.
+|`form_export`            |Export forms (including structure).
 
 These permissions are bundled into logical policies representing common use cases and responsibilities. Policies can be assigned to global groups in the class profile.
 

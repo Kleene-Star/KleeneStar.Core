@@ -377,7 +377,7 @@ Using minimum, maximum, and the "Unlimited" option, it is defined whether a fiel
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
-║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
+║└─────╔FieldConfigureModal═════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
@@ -417,7 +417,7 @@ For text and string fields, regex patterns can be stored. Validations are only d
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
-║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
+║└─────╔FieldAConfigureModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
@@ -457,7 +457,7 @@ Value-label pairs can be maintained, optionally with stable keys, ordering, acti
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
-║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
+║└─────╔FieldAConfigureModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
@@ -497,7 +497,7 @@ A WQL-based filter can be used to define target classes, status, metadata, tenan
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
-║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
+║└─────╔FieldAConfigureModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
@@ -537,7 +537,7 @@ Selection is limited to published (Active) workflows that are compatible with th
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
-║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
+║└─────╔FieldAConfigureModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├─────────────┬────────────┬─────────┬────────────────┬──────────┬─────┤║─────┘║
@@ -579,7 +579,7 @@ Automatic migration of existing values does not take place. Fields retain their 
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
-║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
+║└─────╔FieldAConfigureModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
 ║└─────║├────────┬────────────┬─────────┬────────────────┬──────────┬──────────┤║─────┘║
@@ -591,8 +591,8 @@ Automatic migration of existing values does not take place. Fields retain their 
 ║│  - A║│ ┌────────────────────────────┬────┬────────────────────────────────┐ │║-----│║
 ║│     ║│ │    Selected priorities     │    │     Available priorities       │ │║ […] │║
 ║│     ║│ ├────────────────────────────┼────┼────────────────────────────────┤ │║ […] │║
-║│     ║│ │ High                       │ << │ Low                            │ │║ […] │║
-║│     ║│ │ Medium                     │ <  │ Critical                       │ │║ […] │║
+║│     ║│ │ ⠿ High                     │ << │ Low                            │ │║ […] │║
+║│     ║│ │ ⠿ Medium                   │ <  │ Critical                       │ │║ […] │║
 ║│     ║│ │                            │ >  │                                │ │║ […] │║
 ║│     ║│ │                            │ >> │                                │ │║ […] │║
 ║│     ║│ │                            │    │                                │ │║ […] │║
@@ -785,11 +785,7 @@ The following events are published by the `FieldManager` via the **WebExpress** 
 |`FieldPermissionsUpdated` |Reports changes to the permission assignments of a field.
 |`FieldMigrated`           |Signals the execution of a field migration, e.g., for schema changes or backfill.
 
-Events contain a structured payload with the following information:
-- Unique field key and associated class key
-- Timestamp of the action
-- Context of the triggering user or module
-- Type and source of the action
+Each field-related event includes a well-defined payload that provides all necessary context for system-wide processing. This payload contains the unique identifier of the field and its associated class, a timestamp marking when the event occurred, information about the user or system component that triggered the event, and metadata describing the nature and origin of the action. This structure ensures that events are traceable, actionable, and seamlessly integrated into reactive workflows and audit mechanisms across the platform.
 
 Through integration with the WebExpress EventManager, these events are available both within the application and to connected subsystems.
 

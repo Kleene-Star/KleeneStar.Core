@@ -273,7 +273,7 @@ Status maintenance is accessed directly from Class Management via the "Manage St
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Incident / Status                                                 │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
-║┌Workflows─────────────┐ ┌Workflows Content──────────────────────────────────────────┐║
+║┌Status────────────────┐ ┌Status Content─────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
 ║│  - All               │░│                                    [Search] [+ Add Status]│║
 ║│  - ToDo              │░│                                                           │║
@@ -308,11 +308,11 @@ The modal for creating and editing status values in Status Management is used to
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
-║└─────╔WorkflowAddEditModal════════════════════════════════════════════════════╗─────┘║
+║└─────╔StatusAddEditModal══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Status / Edit Status                                             │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
-║┌Workf║│                                                                      │║─────┐║
+║┌Statu║│                                                                      │║─────┐║
 ║│     ║│                                                                      │║     │║
 ║│  - A║│           Name*: [                                                 ] │║─────┤║
 ║│  - T║│        Category: [ ToDo                                           ▼] │║     │║
@@ -349,11 +349,11 @@ In the modal, the fields name, category, and description are automatically prefi
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
-║└─────╔WorkflowCloneModal══════════════════════════════════════════════════════╗─────┘║
+║└─────╔StatusCloneModal════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Clone Status                                                         │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
-║┌Workf║│                                                                      │║─────┐║
+║┌Statu║│                                                                      │║─────┐║
 ║│     ║│ You are about to clone the status 'Review'.                          │║     │║
 ║│  - A║│ Please adjust the details for the new status below.                  │║─────┤║
 ║│  - T║│                                                                      │║     │║
@@ -392,11 +392,11 @@ When the modal opens, the name of the status to be deleted is displayed clearly 
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
-║└─────╔WorkflowCloneModal══════════════════════════════════════════════════════╗─────┘║
+║└─────╔StatusDeleteModal═══════v═══════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Se║│ Clone Status                                                         │║     │║
+║│ / Se║│ Delete Status                                                        │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
-║┌Workf║│                                                                      │║─────┐║
+║┌Statu║│                                                                      │║─────┐║
 ║│     ║│ Are you sure you want to delete the status 'Review'?                 │║     │║
 ║│  - A║│ This action cannot be undone. Active status cannot be deleted.       │║─────┤║
 ║│  - T║│                                                                      │║     │║

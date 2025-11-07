@@ -548,7 +548,7 @@ Successful operations return:
 
 The following events are emitted by the `ClassManager`:
 
-|Event                    |Description
+|Event Name               |Description
 |-------------------------|-----------------------------------------------------------------------
 |`ClassAdded`             |Emitted when a new class is created within a workspace.
 |`ClassUpdated`           |Indicates changes to metadata or field definitions of an existing class.
