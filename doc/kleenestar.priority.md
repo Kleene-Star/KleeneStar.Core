@@ -181,7 +181,7 @@ The Manage Priorities function thus complements the existing management options 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Classes                                                           │║
@@ -226,7 +226,7 @@ Access to the priority management page is via Manage Priorities in class adminis
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Incident / Forms                                                  │║
@@ -274,7 +274,7 @@ The modals for creating and editing priorities are directly accessible from the 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
 ║└─────╔PriorityAddEditModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Priority / Edit Priority                                         │║     │║
@@ -318,7 +318,7 @@ When cloning, a new priority is created that adopts central properties of the or
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
 ║└─────╔PriorityCloneModal══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Clone Priority                                                       │║     │║
@@ -366,7 +366,7 @@ The process can be canceled at any time via the "Cancel" button without applying
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼                     [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
 ║└─────╔PriorityDeleteModal═════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Delete Priority                                                      │║     │║
@@ -484,8 +484,8 @@ These permissions are grouped into policies that reflect typical roles and respo
 |Policy                      |Description                        |Included Permissions
 |----------------------------|-----------------------------------|------------------------------------------------------------
 |`priority_admin_policy`     |Full access                        |all `priority_*`
-|`priority_publisher_policy` |Lifecycle control without deletion |`priority_read`,`priority_archive`,`priority_restore`,`priority_export`
-|`priority_edit_policy`      |Model/rule maintenance             |`priority_read`,`priority_update`,`priority_clone`
+|`priority_publisher_policy` |Lifecycle control without deletion |`priority_read`, `priority_archive`, `priority_restore`, `priority_export`
+|`priority_edit_policy`      |Model/rule maintenance             |`priority_read`, `priority_update`, `priority_clone`
 |`priority_view_policy`      |View only                          |`priority_read`
 |`priority_importer_policy`  |Import                             |`priority_import`
 |`priority_exporter_policy`  |Export                             |`priority_export`
