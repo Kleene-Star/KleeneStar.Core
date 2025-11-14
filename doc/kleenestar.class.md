@@ -1,3 +1,5 @@
+![KleeneStar](https://raw.githubusercontent.com/kleene-star/.github/main/docs/assets/img/banner.png)
+
 # KleeneStar Class Management Concept
 
 In **KleeneStar**, the term "class" denotes a structured template for describing data, comparable to a blueprint that defines which fields, rules, and relationships an object can have. These classes form the basis of a workspace’s data model. Unlike programming classes in object-oriented programming, they do not contain methods or logic; they serve exclusively for the semantic structuring and validation of data. Through centrally managed base workspaces, classes can be defined uniformly across the system and automatically inherited. This results in a consistent, versionable, and traceable data model that combines central governance with local extensibility. Classes consolidate all relevant information on the data structure (from field definitions and validation rules to search indexes), thereby ensuring data quality, performance, and interoperability. Local adaptations are possible but clearly delineated, so central governance is preserved and changes remain traceable at all times.
@@ -22,15 +24,15 @@ The following state diagram visualizes this default lifecycle:
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
 ║                               ┌───────────────────┐                                  ║
-║                               │     archive       ▼                                  ║
-║                      new  ╔════════╗         ┌──────────┐                            ║
-║                        ──►║ active ║         │ archived │                            ║
-║                           ╚════════╝         └─┬──────┬─┘                            ║
-║                             │    ▲   restore   │      │                              ║
+║                               │     archive       │                                  ║
+║                      new  ╔════════╗         ┌────▼─────┐                            ║
+║                        ───► active ║         │ archived │                            ║
+║                           ╚══════▲═╝         └─┬──────┬─┘                            ║
+║                             │    │   restore   │      │                              ║
 ║                             │    └─────────────┘      │                              ║
 ║                             │                         │                              ║
 ║                             │      ╔═════════╗        │                              ║
-║                             └─────►║ deleted ║◄───────┘                              ║
+║                             └──────► deleted ◄────────┘                              ║
 ║                                    ╚═════════╝                                       ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
@@ -51,24 +53,23 @@ Concrete data instances are represented as Object and are always assigned to a C
 ║                                                                                      ║
 ║                        ┌────────────────┬────────────────────────────────┐           ║
 ║                        │ *              │ *                              │           ║
-║                        ▼                ▼                                │           ║
-║                  ┌──────────┐     ┌──────────┐      ┌──────┐ 1           │           ║
+║                  ┌─────▼────┐     ┌─────▼────┐      ┌──────┐ 1           │           ║
 ║                  │ Workflow │     │ Priority │      │ Form ├───┐         │           ║
 ║                  └─────┬────┘     └─────┬────┘      └───┬──┘   │         │           ║
 ║                        │ *              │ *             │ *    │         │           ║
 ║                        └────────────────┼───────────────┘      │         │           ║
 ║                                         │                      │         │           ║
-║                                         ▼ 1                    ▼ *       │           ║
-║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐ 0,1 │           ║
-║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field ├─────┘           ║
-║         └─────┬─────┘               └───────┘              └───────┘                 ║
-║               │ 1                       ▲ 1                    ▲ 1                   ║
+║                                         │ 1                    │ *       │           ║
+║         ┌───────────┐ *           * ┌───▼───┐ 1          * ┌───▼───┐ 0,1 │           ║
+║         │ Workspace ├───────────────► Class ◄──────────────┤ Field ├─────┘           ║
+║         └─────┬─────┘               └───▲───┘              └───▲───┘                 ║
+║               │ 1                       │ 1                    │ 1                   ║
 ║               └────────────────────┐    │                      │                     ║
-║                                    ▼ *  │ *                    │ *                   ║
-║              ┌──────┐ *        2 ┌──────┴─┐ 1            * ┌───┴───┐                 ║
-║              │ Link ├───────────►│ Object ├───────────────►│ Value │                 ║
-║              └──────┘            └────────┘                └───────┘                 ║
-║                                    ▲ 1  ▲ 1                    ▲ 1                   ║
+║                                    │ *  │ *                    │ *                   ║
+║              ┌──────┐ *        2 ┌─▼────┴─┐ 1            * ┌───┴───┐                 ║
+║              │ Link ├────────────► Object ├────────────────► Value │                 ║
+║              └──────┘            └─▲────▲─┘                └───▲───┘                 ║
+║                                    │ 1  │ 1                    │ 1                   ║
 ║                     ┌──────────────┘    │                      │                     ║
 ║                     │ *                 │ *                    │ *                   ║
 ║                ┌────┴────┐         ┌────┴────┐         ┌───────┴───────┐             ║
@@ -99,8 +100,7 @@ An integrated audit system documents all relevant actions around classes: access
 ║                              │ <<Interface>>      │                                  ║
 ║                              │ IComponentManager  │                                  ║
 ║                              ├────────────────────┤                                  ║
-║                              └────────────────────┘                                  ║
-║                                       Δ                                              ║
+║                              └────────Δ───────────┘                                  ║
 ║                                       ¦                                              ║
 ║                                       ¦                                              ║
 ║                     ┌─────────────────┴─────────────────────┐                        ║
@@ -127,12 +127,11 @@ An integrated audit system documents all relevant actions around classes: access
 ║         ¦                      │ <<Interface>> │                    │                ║
 ║         ¦                      │ IModel        │                    │                ║
 ║         ¦                      ├───────────────┤                    │                ║
-║         ¦                      └───────────────┘                    │                ║
-║         ¦                             Δ                             │                ║
+║         ¦                      └──────Δ────────┘                    │                ║
 ║         ¦                             ¦                             │                ║
 ║         ¦                             ¦                             │                ║
 ║         ¦           ┌─────────────────┴──────────────────┐ *        │                ║
-║         ¦           │ <<Interface>>                      │◄─────────┘                ║
+║         ¦           │ <<Interface>>                      ◄──────────┘                ║
 ║         ¦           │ IClass                             │        ┌────────────────┐ ║
 ║         ¦           ├────────────────────────────────────┤        │ <<Enum>>       │ ║
 ║         ¦           │ Key:String                         │        │ TypeClassState │ ║
@@ -141,23 +140,20 @@ An integrated audit system documents all relevant actions around classes: access
 ║         ¦           │ Workspace:IWorkspace               │        │ Archived       │ ║
 ║         ¦           │ Created:DateTime                   │        └────────────────┘ ║
 ║         ¦           │ Updated:DateTime                   │    ┌────────────────────┐ ║
-║         ¦           │ IsSubClass:Bool                    │    │ <<Enum>>           │ ║
-║         ¦           │ IsAbstract:Bool                    │    │ TypeAccessModifier │ ║
-║         ¦           │ Inherited:IClass                   │    ├────────────────────┤ ║
-║         ¦           │ Sealed:Bool                        │    │ Private            │ ║
-║         ¦           │ Parent:IClass                      │    │ Protected          │ ║
-║         ¦           │ AccessModifier:TypeAccessModifier  │    │ Public             │ ║
-║         ¦           │ Fields:IEnumerable<IField>         │    │ Internal           │ ║
-║         ¦           │ Subclasses:                        │    └────────────────────┘ ║
-║         ¦           │   IEnumerable<IClass>              │                           ║
-║         ¦           │ PermissionsProfiles:               │                           ║
+║         ¦           │ IsAbstract:Bool                    │    │ <<Enum>>           │ ║
+║         ¦           │ Inherited:IClass                   │    │ TypeAccessModifier │ ║
+║         ¦           │ Sealed:Bool                        │    ├────────────────────┤ ║
+║         ¦           │ Parent:IClass                      │    │ Private            │ ║
+║         ¦           │ AccessModifier:TypeAccessModifier  │    │ Protected          │ ║
+║         ¦           │ AllowedChildren:                   │    │ Public             │ ║
+║         ¦           │   IEnumerable<IClass>              │    │ Internal           │ ║
+║         ¦           │ PermissionsProfiles:               │    └────────────────────┘ ║
 ║         ¦           │   IEnumerable<IPermissionsProfile> │                           ║
-║         ¦           └────────────────────────────────────┘                           ║
-║         ¦                             Δ                                              ║
+║         ¦           └─────────────────Δ──────────────────┘                           ║
 ║         ¦                             ¦                                              ║
 ║         ¦                             ¦                                              ║
 ║         ¦ create    ┌─────────────────┴──────────────────┐                           ║
-║         └----------►│ Class                              │                           ║
+║         └-----------► Class                              │                           ║
 ║                     ├────────────────────────────────────┤                           ║
 ║                     │ Key:String                         │                           ║
 ║                     │ Name:String                        │                           ║
@@ -165,14 +161,12 @@ An integrated audit system documents all relevant actions around classes: access
 ║                     │ Workspace:Workspace                │                           ║
 ║                     │ Created:DateTime                   │                           ║
 ║                     │ Updated:DateTime                   │                           ║
-║                     │ IsSubClass:Bool                    │                           ║
 ║                     │ IsAbstract:Bool                    │                           ║
 ║                     │ Inherited:IClass                   │                           ║
 ║                     │ Sealed:Bool                        │                           ║
 ║                     │ Parent:IClass                      │                           ║
 ║                     │ AccessModifier:TypeAccessModifier  │                           ║
-║                     │ Fields:IEnumerable<Field>          │                           ║
-║                     │ Subclasses:                        │                           ║
+║                     │ AllowedChildren:                   │                           ║
 ║                     │   IEnumerable<IClass>              │                           ║
 ║                     │ PermissionsProfiles:               │                           ║
 ║                     │   IEnumerable<IPermissionsProfile> │                           ║
@@ -187,7 +181,7 @@ Each class can inherit exactly one other class. Inheritance is referential, mean
 
 Class visibility is controlled via the Access Modifier, which follows a monotonic rule across the inheritance hierarchy. A child class may only adopt the same or a more restrictive visibility than its parent and never a broader one. The available levels include Private, which ensures complete encapsulation and disallows visibility outside the class itself. Protected allows visibility for derived classes. Internal, also referred to as Tenant, enables visibility within the same tenant. Public allows cross-tenant visibility and is required for cross-tenant inheritance. Sealed marks a class as inheritable but prevents further extension beyond its immediate children. A sealed class can be inherited but cannot itself be extended further.
 
-**KleeneStar** also supports composition through the Subclasses field. This allows embedding other class types to model sub-issues, comments, approvals, or tasks. Classes can be marked as abstract, meaning they cannot be instantiated directly but serve as reusable base types. Through the Parent field, a class can be assigned to a higher-level category such as Issue or Request, enabling hierarchical classification.
+**KleeneStar** also supports composition through the `AllowedChildren` field. This allows embedding other class types to model sub-issues, comments, approvals, or tasks. Classes can be marked as abstract, meaning they cannot be instantiated directly but serve as reusable base types. Through the Parent field, a class can be assigned to a higher-level category such as Issue or Request, enabling hierarchical classification.
 
 Further options include the Singleton flag, which ensures that only one instance of the class may exist per context. This is useful for modeling settings, profiles, or configuration anchors. Attributes can be added dynamically via Add Field, with support for types such as String, Enum, DateTime, or Text.
 
@@ -208,7 +202,7 @@ Additionally, the sidebar contains an "Add Class" feature that allows new classe
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk                                                                     │║
@@ -237,7 +231,7 @@ Additionally, the sidebar contains an "Add Class" feature that allows new classe
 ║│ [+] | [Setting]   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -253,7 +247,7 @@ The page is accessible via the "Manage Classes" option in the workspace editing 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Classes                                                           │║
@@ -282,7 +276,7 @@ The page is accessible via the "Manage Classes" option in the workspace editing 
 ║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -296,7 +290,7 @@ The page is accessed via the "Manage Classes" entry.
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Classes                                                           │║
@@ -327,7 +321,7 @@ The page is accessed via the "Manage Classes" entry.
 ║│ [Setting]         << │░│ ├Priorities───────────────────────┤ │                     │║
 ║└──────────────────────┘ └─────────────────────────────────────┴─────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -343,21 +337,21 @@ When editing a class ("Edit Class"), all existing information is pre-populated. 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔ClassAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Class / Edit Class                                               │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
-║┌Class║│           Name*: [Incident                                         ] │║─────┐║
-║│     ║│     Description: [Report of technical or operational incidents.    ] │║     │║
-║│  - A║│       Inherited: [None                                            ▼] │║ass] │║
-║│  - I║│        Abstract: [ ]                                                 │║     │║
-║│  - S║│       Blueprint: [Incident                                        ▼] │║     │║
-║│  - H║│          Parent: [Issue                                           ▼] │║---- │║
-║│  - A║│      Subclasses: [                                                ▼] │║ […] │║
-║│     ║│ Access Modifier: [Private                                         ▼] │║ […] │║
-║│     ║│       Singleton: [ ]                                                 │║ […] │║
-║│     ║│          Active: [✓]                                                 │║ […] │║
+║┌Class║│            Name*: [Incident                                        ] │║─────┐║
+║│     ║│      Description: [Report of technical or operational incidents.   ] │║     │║
+║│  - A║│        Inherited: [None                                           ▼] │║ass] │║
+║│  - I║│         Abstract: [ ]                                                │║     │║
+║│  - S║│        Blueprint: [Incident                                       ▼] │║     │║
+║│  - H║│           Parent: [Issue                                          ▼] │║---- │║
+║│  - A║│ Allowed Children: [                                               ▼] │║ […] │║
+║│     ║│  Access Modifier: [Private                                        ▼] │║ […] │║
+║│     ║│        Singleton: [ ]                                                │║ […] │║
+║│     ║│           Active: [✓]                                                │║ […] │║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
@@ -371,7 +365,7 @@ When editing a class ("Edit Class"), all existing information is pre-populated. 
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -387,7 +381,7 @@ After confirmation, the new class is created and automatically integrated into t
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔ClassCloneModal═════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Clone Class                                                          │║     │║
@@ -412,7 +406,7 @@ After confirmation, the new class is created and automatically integrated into t
 ║│     ║                                                      [Clone] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -426,7 +420,7 @@ The dialog clearly indicates which class is to be deleted by explicitly naming t
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔═ClassDeleteModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Delete Class                                                         │║     │║
@@ -451,7 +445,7 @@ The dialog clearly indicates which class is to be deleted by explicitly naming t
 ║│     ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -465,7 +459,7 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔ClassPermissionsModal═══════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│  Manage Permissions for Class 'Incident'                             │║     │║
@@ -490,7 +484,7 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 ║│     ║                                                                [Done]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```

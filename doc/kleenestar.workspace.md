@@ -1,3 +1,5 @@
+![KleeneStar](https://raw.githubusercontent.com/kleene-star/.github/main/docs/assets/img/banner.png)
+
 # KleeneStar Workspace Management Concept
 
 This document specifies the management of workspaces as a central organizational and encapsulation instance within the **KleeneStar** system. Workspace management creates the multi-tenant framework required for the structured collection and logical separation of all modeled content.
@@ -25,15 +27,15 @@ The following state diagram visualizes these transitions:
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
 ║                               ┌───────────────────┐                                  ║
-║                               │     archive       ▼                                  ║
-║                      new  ╔════════╗         ┌──────────┐                            ║
-║                        ──►║ active ║         │ archived │                            ║
-║                           ╚════════╝         └─┬──────┬─┘                            ║
-║                             │    ▲   restore   │      │                              ║
+║                               │     archive       │                                  ║
+║                      new  ╔════════╗         ┌────▼─────┐                            ║
+║                        ───► active ║         │ archived │                            ║
+║                           ╚══════▲═╝         └─┬──────┬─┘                            ║
+║                             │    │   restore   │      │                              ║
 ║                             │    └─────────────┘      │                              ║
 ║                             │                         │                              ║
 ║                             │      ╔═════════╗        │                              ║
-║                             └─────►║ deleted ║◄───────┘                              ║
+║                             └──────► deleted ◄────────┘                              ║
 ║                                    ╚═════════╝                                       ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
@@ -50,24 +52,23 @@ The **KleeneStar** Core Data Model forms the structural foundation for managing 
 ║                                                                                      ║
 ║                        ┌────────────────┬────────────────────────────────┐           ║
 ║                        │ *              │ *                              │           ║
-║                        ▼                ▼                                │           ║
-║                  ┌──────────┐     ┌──────────┐      ┌──────┐ 1           │           ║
+║                  ┌─────▼────┐     ┌─────▼────┐      ┌──────┐ 1           │           ║
 ║                  │ Workflow │     │ Priority │      │ Form ├───┐         │           ║
 ║                  └─────┬────┘     └─────┬────┘      └───┬──┘   │         │           ║
 ║                        │ *              │ *             │ *    │         │           ║
 ║                        └────────────────┼───────────────┘      │         │           ║
 ║                                         │                      │         │           ║
-║                                         ▼ 1                    ▼ *       │           ║
-║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐ 0,1 │           ║
-║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field ├─────┘           ║
-║         └─────┬─────┘               └───────┘              └───────┘                 ║
-║               │ 1                       ▲ 1                    ▲ 1                   ║
+║                                         │ 1                    │ *       │           ║
+║         ┌───────────┐ *           * ┌───▼───┐ 1          * ┌───▼───┐ 0,1 │           ║
+║         │ Workspace ├───────────────► Class ◄──────────────┤ Field ├─────┘           ║
+║         └─────┬─────┘               └───▲───┘              └───▲───┘                 ║
+║               │ 1                       │ 1                    │ 1                   ║
 ║               └────────────────────┐    │                      │                     ║
-║                                    ▼ *  │ *                    │ *                   ║
-║              ┌──────┐ *        2 ┌──────┴─┐ 1            * ┌───┴───┐                 ║
-║              │ Link ├───────────►│ Object ├───────────────►│ Value │                 ║
-║              └──────┘            └────────┘                └───────┘                 ║
-║                                    ▲ 1  ▲ 1                    ▲ 1                   ║
+║                                    │ *  │ *                    │ *                   ║
+║              ┌──────┐ *        2 ┌─▼────┴─┐ 1            * ┌───┴───┐                 ║
+║              │ Link ├────────────► Object ├────────────────► Value │                 ║
+║              └──────┘            └─▲────▲─┘                └───▲───┘                 ║
+║                                    │ 1  │ 1                    │ 1                   ║
 ║                     ┌──────────────┘    │                      │                     ║
 ║                     │ *                 │ *                    │ *                   ║
 ║                ┌────┴────┐         ┌────┴────┐         ┌───────┴───────┐             ║
@@ -100,8 +101,7 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║                              │ <<Interface>>      │                                  ║
 ║                              │ IComponentManager  │                                  ║
 ║                              ├────────────────────┤                                  ║
-║                              └────────────────────┘                                  ║
-║                                       Δ                                              ║
+║                              └────────Δ───────────┘                                  ║
 ║                                       ¦                                              ║
 ║                                       ¦                                              ║
 ║                     ┌─────────────────┴─────────────────────┐                        ║
@@ -128,13 +128,13 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║         ¦             │ <<Interface>> │   │ <<Interface>>  │        │                ║
 ║         ¦             │ IModel        │   │ IIndexItem     │        │                ║
 ║         ¦             ├───────────────┤   ├────────────────┤        │                ║
-║         ¦             └───────────────┘   │ Id: Guid       │        │                ║
-║         ¦                    Δ            └────────────────┘        │                ║
-║         ¦                    ¦                   Δ                  │                ║
+║         ¦             └──────Δ────────┘   │ Id: Guid       │        │                ║
+║         ¦                    ¦            └──────Δ─────────┘        │                ║
+║         ¦                    ¦                   ¦                  │                ║
 ║         ¦                    └--------┬----------┘                  │                ║
 ║         ¦                             ¦                             │                ║
 ║         ¦           ┌─────────────────┴──────────────────┐ *        │                ║
-║         ¦           │ <<Interface>>                      │◄─────────┘                ║
+║         ¦           │ <<Interface>>                      ◄──────────┘                ║
 ║         ¦           │ IWorkspace                         │    ┌────────────────────┐ ║
 ║         ¦           ├────────────────────────────────────┤    │ <<Enum>>           │ ║
 ║         ¦           │ Key:String                         │    │ TypeWorkspaceState │ ║
@@ -154,12 +154,11 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║         ¦           │ AccessModifier:TypeAccessModifier  │                           ║
 ║         ¦           │ PermissionsProfiles:               │                           ║
 ║         ¦           │   IEnumerable<IPermissionsProfile> │                           ║
-║         ¦           └────────────────────────────────────┘                           ║
-║         ¦                             Δ                                              ║
+║         ¦           └─────────────────Δ──────────────────┘                           ║
 ║         ¦                             ¦                                              ║
 ║         ¦                             ¦                                              ║
 ║         ¦ create    ┌─────────────────┴──────────────────┐                           ║
-║         └----------►│ Workspace                          │                           ║
+║         └-----------► Workspace                          │                           ║
 ║                     ├────────────────────────────────────┤                           ║
 ║                     │ Key:String                         │                           ║
 ║                     │ Name:String                        │                           ║
@@ -204,7 +203,7 @@ The global workspace dropdown is a central and permanently available component i
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────¦───────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb────────┌─┴────────────────┐──────────────────────────────────────────────┐║
 ║│ / Service Desk   │┌────────────────┐│                                              │║
@@ -233,7 +232,7 @@ The global workspace dropdown is a central and permanently available component i
 ║│ [+] | [Setting]   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -247,7 +246,7 @@ The main component of this page is a tabular list of all workspaces. Each row re
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Workspaces                                                                       │║
@@ -276,7 +275,7 @@ The main component of this page is a tabular list of all workspaces. Each row re
 ║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -290,7 +289,7 @@ The sidebar visualizes essential metadata at a glance, such as the name, an icon
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk                                                                     │║
@@ -319,7 +318,7 @@ The sidebar visualizes essential metadata at a glance, such as the name, an icon
 ║│ [+] | [Setting]   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -333,7 +332,7 @@ The content of the modal dynamically adapts to the respective use case. In edit 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔WorkspaceAddEditModal═══════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Workspace / Edit Workspace                                       │║     │║
@@ -362,7 +361,7 @@ The content of the modal dynamically adapts to the respective use case. In edit 
 ║│ [+] ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -378,7 +377,7 @@ After confirmation, the new workspace is created and automatically integrated in
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔WorkspaceCloneModal═════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Clone Workspace                                                      │║     │║
@@ -407,7 +406,7 @@ After confirmation, the new workspace is created and automatically integrated in
 ║│ [+] ║                                                      [Clone] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -421,7 +420,7 @@ The dialog window clearly indicates which workspace is intended for deletion by 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔WorkspaceDeleteModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Delete Workspace                                                     │║     │║
@@ -450,7 +449,7 @@ The dialog window clearly indicates which workspace is intended for deletion by 
 ║│ [+] ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -466,7 +465,7 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔WorkspacePermissionsModal═══════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│  Manage Permissions for 'Sales Operations'                           │║     │║
@@ -495,7 +494,7 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 ║│ [+] ║                                                                [Done]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```

@@ -1,3 +1,5 @@
+![KleeneStar](https://raw.githubusercontent.com/kleene-star/.github/main/docs/assets/img/banner.png)
+
 # KleeneStar Priority Management Concept
 
 Priority management in **KleeneStar** enables model-based and controlled administration of priorities, for example in terms of urgency or impact, within the context of a class. A priority describes attributes such as name, description, and weighting. The objective is a consistent and safe classification that is used for object processing, sorting, SLA control, and decision-making in workflows.
@@ -20,15 +22,15 @@ If a priority is removed, references stored on objects or historical evaluations
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
 ║                               ┌───────────────────┐                                  ║
-║                               │     archive       ▼                                  ║
-║                      new  ╔════════╗         ┌──────────┐                            ║
-║                        ──►║ active ║         │ archived │                            ║
-║                           ╚════════╝         └─┬──────┬─┘                            ║
-║                             │    ▲   restore   │      │                              ║
+║                               │     archive       │                                  ║
+║                      new  ╔════════╗         ┌────▼─────┐                            ║
+║                        ───► active ║         │ archived │                            ║
+║                           ╚══════▲═╝         └─┬──────┬─┘                            ║
+║                             │    │   restore   │      │                              ║
 ║                             │    └─────────────┘      │                              ║
 ║                             │                         │                              ║
 ║                             │      ╔═════════╗        │                              ║
-║                             └─────►║ deleted ║◄───────┘                              ║
+║                             └──────► deleted ◄────────┘                              ║
 ║                                    ╚═════════╝                                       ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
@@ -45,24 +47,23 @@ The **KleeneStar** data model forms the structural foundation for priority manag
 ║                                                                                      ║
 ║                        ┌────────────────┬────────────────────────────────┐           ║
 ║                        │ *              │ *                              │           ║
-║                        ▼                ▼                                │           ║
-║                  ┌──────────┐     ┌──────────┐      ┌──────┐ 1           │           ║
+║                  ┌─────▼────┐     ┌─────▼────┐      ┌──────┐ 1           │           ║
 ║                  │ Workflow │     │ Priority │      │ Form ├───┐         │           ║
 ║                  └─────┬────┘     └─────┬────┘      └───┬──┘   │         │           ║
 ║                        │ *              │ *             │ *    │         │           ║
 ║                        └────────────────┼───────────────┘      │         │           ║
 ║                                         │                      │         │           ║
-║                                         ▼ 1                    ▼ *       │           ║
-║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐ 0,1 │           ║
-║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field ├─────┘           ║
-║         └─────┬─────┘               └───────┘              └───────┘                 ║
-║               │ 1                       ▲ 1                    ▲ 1                   ║
+║                                         │ 1                    │ *       │           ║
+║         ┌───────────┐ *           * ┌───▼───┐ 1          * ┌───▼───┐ 0,1 │           ║
+║         │ Workspace ├───────────────► Class ◄──────────────┤ Field ├─────┘           ║
+║         └─────┬─────┘               └───▲───┘              └───▲───┘                 ║
+║               │ 1                       │ 1                    │ 1                   ║
 ║               └────────────────────┐    │                      │                     ║
-║                                    ▼ *  │ *                    │ *                   ║
-║              ┌──────┐ *        2 ┌──────┴─┐ 1            * ┌───┴───┐                 ║
-║              │ Link ├───────────►│ Object ├───────────────►│ Value │                 ║
-║              └──────┘            └────────┘                └───────┘                 ║
-║                                    ▲ 1  ▲ 1                    ▲ 1                   ║
+║                                    │ *  │ *                    │ *                   ║
+║              ┌──────┐ *        2 ┌─▼────┴─┐ 1            * ┌───┴───┐                 ║
+║              │ Link ├────────────► Object ├────────────────► Value │                 ║
+║              └──────┘            └─▲────▲─┘                └───▲───┘                 ║
+║                                    │ 1  │ 1                    │ 1                   ║
 ║                     ┌──────────────┘    │                      │                     ║
 ║                     │ *                 │ *                    │ *                   ║
 ║                ┌────┴────┐         ┌────┴────┐         ┌───────┴───────┐             ║
@@ -89,41 +90,40 @@ The audit system records every relevant action in the lifecycle of a priority. T
 ║                              │ <<Interface>>      │                                  ║
 ║                              │ IComponentManager  │                                  ║
 ║                              ├────────────────────┤                                  ║
-║                              └────────────────────┘                                  ║
-║                                       Δ                                              ║
+║                              └────────Δ───────────┘                                  ║
 ║                                       ¦                                              ║
-║                    ┌──────────────────┴────────────────────┐                         ║
-║                    │ <<Interface>>                         │                         ║
-║   ┌----------------┤ IPriorityManager                      │                         ║
-║   ¦                ├───────────────────────────────────────┤                         ║
-║   ¦                │ PriorityAdded:Event                   │                         ║
-║   ¦                │ PriorityUpdated:Event                 │                         ║
-║   ¦                │ PriorityRemoved:Event                 │                         ║
-║   ¦                ├───────────────────────────────────────┤                         ║
-║   ¦                │ Priorities:IEnumerable<IPriority>     ├──────┐                  ║
-║   ¦                ├───────────────────────────────────────┤ 1    │                  ║
-║   ¦                │ AddPriority(IClass,IPriority):        │      │                  ║
-║   ¦                │   IPriorityManager                    │      │                  ║
-║   ¦                │ GetPriorities(IClass,predicate):      │      │                  ║
-║   ¦                │   IEnumerable<IPriority>              │      │                  ║
-║   ¦                │ ClonePriority(IClass,IPriority):      │      │                  ║
-║   ¦                │   IPriorityManager                    │      │                  ║
-║   ¦                │ UpdatePriority(IPriority):            │      │                  ║
-║   ¦                │   IPriorityManager                    │      │                  ║
-║   ¦                │ DeletePriority(IPriority):            │      │                  ║
-║   ¦                │   IPriorityManager                    │      │                  ║
-║   ¦                └───────────────────────────────────────┘      │                  ║
+║                                       ¦                                              ║
+║                      ┌────────────────┴──────────────────┐                           ║
+║                      │ <<Interface>>                     │                           ║
+║   ┌------------------┤ IPriorityManager                  │                           ║
+║   ¦                  ├───────────────────────────────────┤                           ║
+║   ¦                  │ PriorityAdded:Event               │                           ║
+║   ¦                  │ PriorityUpdated:Event             │                           ║
+║   ¦                  │ PriorityRemoved:Event             │                           ║
+║   ¦                  ├───────────────────────────────────┤                           ║
+║   ¦                  │ Priorities:IEnumerable<IPriority> ├────────┐                  ║
+║   ¦                  ├───────────────────────────────────┤ 1      │                  ║
+║   ¦                  │ AddPriority(IClass,IPriority):    │        │                  ║
+║   ¦                  │   IPriorityManager                │        │                  ║
+║   ¦                  │ GetPriorities(IClass,predicate):  │        │                  ║
+║   ¦                  │   IEnumerable<IPriority>          │        │                  ║
+║   ¦                  │ ClonePriority(IClass,IPriority):  │        │                  ║
+║   ¦                  │   IPriorityManager                │        │                  ║
+║   ¦                  │ UpdatePriority(IPriority):        │        │                  ║
+║   ¦                  │   IPriorityManager                │        │                  ║
+║   ¦                  │ DeletePriority(IPriority):        │        │                  ║
+║   ¦                  │   IPriorityManager                │        │                  ║
+║   ¦                  └───────────────────────────────────┘        │                  ║
 ║   ¦                                                               │                  ║
 ║   ¦                           ┌───────────────┐                   │                  ║
 ║   ¦                           │ <<Interface>> │                   │                  ║
 ║   ¦                           │ IModel        │                   │                  ║
 ║   ¦                           ├───────────────┤                   │                  ║
-║   ¦                           └───────────────┘                   │                  ║
-║   ¦                                   Δ                           │                  ║
+║   ¦                           └───────Δ───────┘                   │                  ║
 ║   ¦                                   ¦                           │                  ║
 ║   ¦                                   ¦                           │                  ║
 ║   ¦                      ┌────────────┴────────────┐ *            │                  ║
-║   ¦                      │ <<Interface>>           │◄─────────────┘                  ║
+║   ¦                      │ <<Interface>>           ◄──────────────┘                  ║
 ║   ¦                      │ IPriority               │                                 ║
 ║   ¦                      ├─────────────────────────┤         ┌───────────────────┐   ║
 ║   ¦                      │ Id:Guid                 │         │ <<Enum>>          │   ║
@@ -135,12 +135,11 @@ The audit system records every relevant action in the lifecycle of a priority. T
 ║   ¦                      │ Class:IClass            │                                 ║
 ║   ¦                      │ Created:DateTime        │                                 ║
 ║   ¦                      │ Updated:DateTime        │                                 ║
-║   ¦                      └─────────────────────────┘                                 ║
-║   ¦                                   Δ                                              ║
+║   ¦                      └────────────Δ────────────┘                                 ║
 ║   ¦                                   ¦                                              ║
 ║   ¦                                   ¦                                              ║
 ║   ¦ create               ┌────────────┴────────────┐                                 ║
-║   └---------------------►│ Priority                │                                 ║
+║   └----------------------► Priority                │                                 ║
 ║                          ├─────────────────────────┤                                 ║
 ║                          │ Id:Guid                 │                                 ║
 ║                          │ Name:String             │                                 ║
@@ -181,7 +180,7 @@ The Manage Priorities function thus complements the existing management options 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Classes                                                           │║
@@ -210,7 +209,7 @@ The Manage Priorities function thus complements the existing management options 
 ║│ [Setting]         << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -226,7 +225,7 @@ Access to the priority management page is via Manage Priorities in class adminis
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Incident / Forms                                                  │║
@@ -256,7 +255,7 @@ Access to the priority management page is via Manage Priorities in class adminis
 ║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -274,7 +273,7 @@ The modals for creating and editing priorities are directly accessible from the 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔PriorityAddEditModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Priority / Edit Priority                                         │║     │║
@@ -304,7 +303,7 @@ The modals for creating and editing priorities are directly accessible from the 
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -318,7 +317,7 @@ When cloning, a new priority is created that adopts central properties of the or
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔PriorityCloneModal══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Clone Priority                                                       │║     │║
@@ -348,7 +347,7 @@ When cloning, a new priority is created that adopts central properties of the or
 ║│     ║                                                      [Clone] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -366,7 +365,7 @@ The process can be canceled at any time via the "Cancel" button without applying
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔PriorityDeleteModal═════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Delete Priority                                                      │║     │║
@@ -396,7 +395,7 @@ The process can be canceled at any time via the "Cancel" button without applying
 ║│     ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```

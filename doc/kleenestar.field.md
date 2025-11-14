@@ -1,3 +1,5 @@
+![KleeneStar](https://raw.githubusercontent.com/kleene-star/.github/main/docs/assets/img/banner.png)
+
 # KleeneStar Field Management Concept
 
 Field management in **KleeneStar** complements the class concept with an independent, fine-grained administration of all fields within a class. Fields define the data type, cardinality, default values, validations, indexes, visibility, and semantic properties of an object attribute. The goal is a consistent, versionable, and traceable schema system that combines central governance with local extensibility, ensures data quality, and enables performant, context-sensitive queries.
@@ -26,15 +28,15 @@ State transitions occur in a controlled manner with validation, migration planni
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
 ║                               ┌───────────────────┐                                  ║
-║                               │     archive       ▼                                  ║
-║                      new  ╔════════╗         ┌──────────┐                            ║
-║                        ──►║ active ║         │ archived │                            ║
-║                           ╚════════╝         └─┬──────┬─┘                            ║
-║                             │    ▲   restore   │      │                              ║
+║                               │     archive       │                                  ║
+║                      new  ╔════════╗         ┌────▼─────┐                            ║
+║                        ───► active ║         │ archived │                            ║
+║                           ╚══════▲═╝         └─┬──────┬─┘                            ║
+║                             │    │   restore   │      │                              ║
 ║                             │    └─────────────┘      │                              ║
 ║                             │                         │                              ║
 ║                             │      ╔═════════╗        │                              ║
-║                             └─────►║ deleted ║◄───────┘                              ║
+║                             └──────► deleted ◄────────┘                              ║
 ║                                    ╚═════════╝                                       ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
@@ -59,24 +61,23 @@ Fields are uniquely assigned to a class and affect objects of that class. The de
 ║                                                                                      ║
 ║                        ┌────────────────┬────────────────────────────────┐           ║
 ║                        │ *              │ *                              │           ║
-║                        ▼                ▼                                │           ║
-║                  ┌──────────┐     ┌──────────┐      ┌──────┐ 1           │           ║
+║                  ┌─────▼────┐     ┌─────▼────┐      ┌──────┐ 1           │           ║
 ║                  │ Workflow │     │ Priority │      │ Form ├───┐         │           ║
 ║                  └─────┬────┘     └─────┬────┘      └───┬──┘   │         │           ║
 ║                        │ *              │ *             │ *    │         │           ║
 ║                        └────────────────┼───────────────┘      │         │           ║
 ║                                         │                      │         │           ║
-║                                         ▼ 1                    ▼ *       │           ║
-║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐ 0,1 │           ║
-║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field ├─────┘           ║
-║         └─────┬─────┘               └───────┘              └───────┘                 ║
-║               │ 1                       ▲ 1                    ▲ 1                   ║
+║                                         │ 1                    │ *       │           ║
+║         ┌───────────┐ *           * ┌───▼───┐ 1          * ┌───▼───┐ 0,1 │           ║
+║         │ Workspace ├───────────────► Class ◄──────────────┤ Field ├─────┘           ║
+║         └─────┬─────┘               └───▲───┘              └───▲───┘                 ║
+║               │ 1                       │ 1                    │ 1                   ║
 ║               └────────────────────┐    │                      │                     ║
-║                                    ▼ *  │ *                    │ *                   ║
-║              ┌──────┐ *        2 ┌──────┴─┐ 1            * ┌───┴───┐                 ║
-║              │ Link ├───────────►│ Object ├───────────────►│ Value │                 ║
-║              └──────┘            └────────┘                └───────┘                 ║
-║                                    ▲ 1  ▲ 1                    ▲ 1                   ║
+║                                    │ *  │ *                    │ *                   ║
+║              ┌──────┐ *        2 ┌─▼────┴─┐ 1            * ┌───┴───┐                 ║
+║              │ Link ├────────────► Object ├────────────────► Value │                 ║
+║              └──────┘            └─▲────▲─┘                └───▲───┘                 ║
+║                                    │ 1  │ 1                    │ 1                   ║
 ║                     ┌──────────────┘    │                      │                     ║
 ║                     │ *                 │ *                    │ *                   ║
 ║                ┌────┴────┐         ┌────┴────┐         ┌───────┴───────┐             ║
@@ -105,8 +106,7 @@ An integrated audit system documents all relevant actions around fields: accesse
 ║                              │ <<Interface>>      │                                  ║
 ║                              │ IComponentManager  │                                  ║
 ║                              ├────────────────────┤                                  ║
-║                              └────────────────────┘                                  ║
-║                                       Δ                                              ║
+║                              └────────Δ───────────┘                                  ║
 ║                                       ¦                                              ║
 ║                                       ¦                                              ║
 ║                     ┌─────────────────┴─────────────────────┐                        ║
@@ -129,23 +129,23 @@ An integrated audit system documents all relevant actions around fields: accesse
 ║    ¦          │     │ RemoveField(IClass,IField):           │       │                ║
 ║    ¦          │     │   IFieldManager                       │       │                ║
 ║    ¦          │     └───────────────────────────────────────┘       │                ║
-║    ¦          ▼ *                                                   │                ║
-║    ¦ ┌────────────────────┐                                         │                ║
+║    ¦          │ *                                                   │                ║
+║    ¦ ┌────────▼───────────┐                                         │                ║
 ║    ¦ │ <<Interface>>      │                                         │                ║
 ║    ¦ │ IFieldType         │                                         │                ║
 ║    ¦ ├────────────────────┤        ┌───────────────┐                │                ║
 ║    ¦ │ Id:String          │        │ <<Interface>> │                │                ║
 ║    ¦ │ Name:String        │        │ IModel        │                │                ║
 ║    ¦ ├────────────────────┤        ├───────────────┤                │                ║
-║    ¦ │ Marshal(Object):   │        └───────────────┘                │                ║
-║    ¦ │   String           │               Δ                         │                ║
+║    ¦ │ Marshal(Object):   │        └──────Δ────────┘                │                ║
+║    ¦ │   String           │               ¦                         │                ║
 ║    ¦ │ Unmarshal(String): │               ¦                         │                ║
 ║    ¦ │   Object           │               ¦                         │                ║
-║    ¦ └────────────────────┘           ┌---┘                         │                ║
-║    ¦          ▲ 1                     ¦                             │                ║
+║    ¦ └────────▲───────────┘           ┌---┘                         │                ║
+║    ¦          │ 1                     ¦                             │                ║
 ║    ¦          │                       ¦                             │                ║
 ║    ¦          │     ┌─────────────────┴──────────────────┐ *        │                ║
-║    ¦          │     │ <<Interface>>                      │◄─────────┘                ║
+║    ¦          │     │ <<Interface>>                      ◄──────────┘                ║
 ║    ¦          │     │ IField                             │     ┌────────────────┐    ║
 ║    ¦          │     ├────────────────────────────────────┤     │ <<Enum>>       │    ║
 ║    ¦          │     │ Id:Guid                            │     │ TypeFieldState │    ║
@@ -167,12 +167,11 @@ An integrated audit system documents all relevant actions around fields: accesse
 ║    ¦                │ Default:IDefaultSpec               │                           ║
 ║    ¦                │ PermissionsProfiles:               │                           ║
 ║    ¦                │   IEnumerable<IPermissionsProfile> │                           ║
-║    ¦                └────────────────────────────────────┘                           ║
-║    ¦                                  Δ                                              ║
+║    ¦                └─────────────────Δ──────────────────┘                           ║
 ║    ¦                                  ¦                                              ║
 ║    ¦                                  ¦                                              ║
 ║    ¦ create         ┌─────────────────┴──────────────────┐                           ║
-║    └---------------►│ Field                              │                           ║
+║    └----------------► Field                              │                           ║
 ║                     ├────────────────────────────────────┤                           ║
 ║                     │ Id:Guid                            │                           ║
 ║                     │ Name:String                        │                           ║
@@ -239,7 +238,7 @@ Entry into field management occurs directly from the class overview. On the `Cla
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Classes                                                           │║
@@ -268,7 +267,7 @@ Entry into field management occurs directly from the class overview. On the `Cla
 ║│ [Setting]         << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -284,7 +283,7 @@ The page can be accessed via the "Manage Fields" option in class administration 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Incident / Fields                                                 │║
@@ -313,7 +312,7 @@ The page can be accessed via the "Manage Fields" option in class administration 
 ║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -329,7 +328,7 @@ When editing a field, all existing properties are prefilled. Adjustable items in
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FieldAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Field / Edit Field                                               │║     │║
@@ -356,7 +355,7 @@ When editing a field, all existing properties are prefilled. Adjustable items in
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -376,7 +375,7 @@ Using minimum, maximum, and the "Unlimited" option, it is defined whether a fiel
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FieldConfigureModal═════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
@@ -402,7 +401,7 @@ Using minimum, maximum, and the "Unlimited" option, it is defined whether a fiel
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -416,7 +415,7 @@ For text and string fields, regex patterns can be stored. Validations are only d
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FieldAConfigureModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
@@ -442,7 +441,7 @@ For text and string fields, regex patterns can be stored. Validations are only d
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -456,7 +455,7 @@ Value-label pairs can be maintained, optionally with stable keys, ordering, acti
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FieldAConfigureModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
@@ -482,7 +481,7 @@ Value-label pairs can be maintained, optionally with stable keys, ordering, acti
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -496,7 +495,7 @@ A WQL-based filter can be used to define target classes, status, metadata, tenan
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FieldAConfigureModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
@@ -522,7 +521,7 @@ A WQL-based filter can be used to define target classes, status, metadata, tenan
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -536,7 +535,7 @@ Selection is limited to published (Active) workflows that are compatible with th
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FieldAConfigureModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
@@ -562,7 +561,7 @@ Selection is limited to published (Active) workflows that are compatible with th
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -578,7 +577,7 @@ Automatic migration of existing values does not take place. Fields retain their 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FieldAConfigureModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Configure                                                            │║     │║
@@ -604,7 +603,7 @@ Automatic migration of existing values does not take place. Fields retain their 
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -618,7 +617,7 @@ In the modal, only the new name of the field can be adjusted. All other properti
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FieldCloneModal═════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Clone Field                                                          │║     │║
@@ -644,7 +643,7 @@ In the modal, only the new name of the field can be adjusted. All other properti
 ║│     ║                                                      [Clone] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -656,7 +655,7 @@ Deleting a field is a critical and irreversible operation that requires explicit
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔═FieldDeleteModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Delete Field                                                         │║     │║
@@ -682,7 +681,7 @@ Deleting a field is a critical and irreversible operation that requires explicit
 ║│     ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -696,7 +695,7 @@ Assignments are displayed in tabular form and can be managed efficiently via sea
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FieldPermissionsModal═══════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│  Manage Permissions for Field 'Assignee'                             │║     │║
@@ -722,7 +721,7 @@ Assignments are displayed in tabular form and can be managed efficiently via sea
 ║│     ║                                                                [Done]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```

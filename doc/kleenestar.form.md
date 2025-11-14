@@ -1,3 +1,5 @@
+![KleeneStar](https://raw.githubusercontent.com/kleene-star/.github/main/docs/assets/img/banner.png)
+
 # KleeneStar Form Management Concept
 
 Form management in **KleeneStar** enables the modeling, versioning, and control of UI schemas that cover both presentation and data capture at the class level. A form defines the layout, the structure of sections, bindings to fields, visibility rules, and validations for user input. The goal is to ensure consistent, secure, and auditable creation, display, and editing of objects.
@@ -20,15 +22,15 @@ When fields are removed from a form, previously assigned values on affected obje
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
 ║                               ┌───────────────────┐                                  ║
-║                               │     archive       ▼                                  ║
-║                      new  ╔════════╗         ┌──────────┐                            ║
-║                        ──►║ active ║         │ archived │                            ║
-║                           ╚════════╝         └─┬──────┬─┘                            ║
-║                             │    ▲   restore   │      │                              ║
+║                               │     archive       │                                  ║
+║                      new  ╔════════╗         ┌────▼─────┐                            ║
+║                        ───► active ║         │ archived │                            ║
+║                           ╚══════▲═╝         └─┬──────┬─┘                            ║
+║                             │    │   restore   │      │                              ║
 ║                             │    └─────────────┘      │                              ║
 ║                             │                         │                              ║
 ║                             │      ╔═════════╗        │                              ║
-║                             └─────►║ deleted ║◄───────┘                              ║
+║                             └──────► deleted ◄────────┘                              ║
 ║                                    ╚═════════╝                                       ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
@@ -45,24 +47,23 @@ The **KleeneStar** data model forms the structural foundation for form managemen
 ║                                                                                      ║
 ║                        ┌────────────────┬────────────────────────────────┐           ║
 ║                        │ *              │ *                              │           ║
-║                        ▼                ▼                                │           ║
-║                  ┌──────────┐     ┌──────────┐      ┌──────┐ 1           │           ║
+║                  ┌─────▼────┐     ┌─────▼────┐      ┌──────┐ 1           │           ║
 ║                  │ Workflow │     │ Priority │      │ Form ├───┐         │           ║
 ║                  └─────┬────┘     └─────┬────┘      └───┬──┘   │         │           ║
 ║                        │ *              │ *             │ *    │         │           ║
 ║                        └────────────────┼───────────────┘      │         │           ║
 ║                                         │                      │         │           ║
-║                                         ▼ 1                    ▼ *       │           ║
-║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐ 0,1 │           ║
-║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field ├─────┘           ║
-║         └─────┬─────┘               └───────┘              └───────┘                 ║
-║               │ 1                       ▲ 1                    ▲ 1                   ║
+║                                         │ 1                    │ *       │           ║
+║         ┌───────────┐ *           * ┌───▼───┐ 1          * ┌───▼───┐ 0,1 │           ║
+║         │ Workspace ├───────────────► Class ◄──────────────┤ Field ├─────┘           ║
+║         └─────┬─────┘               └───▲───┘              └───▲───┘                 ║
+║               │ 1                       │ 1                    │ 1                   ║
 ║               └────────────────────┐    │                      │                     ║
-║                                    ▼ *  │ *                    │ *                   ║
-║              ┌──────┐ *        2 ┌──────┴─┐ 1            * ┌───┴───┐                 ║
-║              │ Link ├───────────►│ Object ├───────────────►│ Value │                 ║
-║              └──────┘            └────────┘                └───────┘                 ║
-║                                    ▲ 1  ▲ 1                    ▲ 1                   ║
+║                                    │ *  │ *                    │ *                   ║
+║              ┌──────┐ *        2 ┌─▼────┴─┐ 1            * ┌───┴───┐                 ║
+║              │ Link ├────────────► Object ├────────────────► Value │                 ║
+║              └──────┘            └─▲────▲─┘                └───▲───┘                 ║
+║                                    │ 1  │ 1                    │ 1                   ║
 ║                     ┌──────────────┘    │                      │                     ║
 ║                     │ *                 │ *                    │ *                   ║
 ║                ┌────┴────┐         ┌────┴────┐         ┌───────┴───────┐             ║
@@ -91,8 +92,7 @@ An integrated audit system records all relevant actions around forms—accesses,
 ║                              │ <<Interface>>      │                                  ║
 ║                              │ IComponentManager  │                                  ║
 ║                              ├────────────────────┤                                  ║
-║                              └────────────────────┘                                  ║
-║                                       Δ                                              ║
+║                              └────────Δ───────────┘                                  ║
 ║                                       ¦                                              ║
 ║                                       ¦                                              ║
 ║                     ┌─────────────────┴─────────────────────┐                        ║
@@ -119,12 +119,11 @@ An integrated audit system records all relevant actions around forms—accesses,
 ║    ¦                            │ <<Interface>> │                   │                ║
 ║    ¦                            │ IModel        │                   │                ║
 ║    ¦                            ├───────────────┤                   │                ║
-║    ¦                            └───────────────┘                   │                ║
-║    ¦                                   Δ                            │                ║
+║    ¦                            └──────Δ────────┘                   │                ║
 ║    ¦                                   ¦                            │                ║
 ║    ¦                                   ¦                            │                ║
 ║    ¦                 ┌─────────────────┴─────────────────┐ *        │                ║
-║    ¦                 │ <<Interface>>                     │◄─────────┘                ║
+║    ¦                 │ <<Interface>>                     ◄──────────┘                ║
 ║    ¦                 │ IForm                             │      ┌───────────────┐    ║
 ║    ¦                 ├───────────────────────────────────┤      │ <<Enum>>      │    ║
 ║    ¦                 │ Id:Guid                           │      │ TypeFormState │    ║
@@ -136,21 +135,21 @@ An integrated audit system records all relevant actions around forms—accesses,
 ║    ¦                 │ Created:DateTime                  │                           ║
 ║    ¦               1 │ Updated:DateTime                  │                           ║
 ║    ¦          ┌──────┤ Tabs:IEnumerable<IFormTab>        │                           ║
-║    ¦          │      └───────────────────────────────────┘                           ║
-║    ¦          │                                  Δ                                   ║
-║    ¦          ▼ *                                ¦                                   ║
-║    ¦  ┌──────────────────┐     ┌───────────────┐ ¦                                   ║
+║    ¦          │      └───────────────────────────Δ───────┘                           ║
+║    ¦          │                                  ¦                                   ║
+║    ¦          │ *                                ¦                                   ║
+║    ¦  ┌───────▼──────────┐     ┌───────────────┐ ¦                                   ║
 ║    ¦  │ <<Interface>>    │     │ <<Interface>> │ ¦                                   ║
 ║    ¦  │ IFormTab         │     │ IField        │ ¦                                   ║
 ║    ¦  ├──────────────────┤     ├───────────────┤ ¦                                   ║
-║    ¦  │ Id:Guid          │     └───────────────┘ ¦                                   ║
-║    ¦  │ Name:String      │ 1          Δ          ¦                                   ║
+║    ¦  │ Id:Guid          │     └──────Δ────────┘ ¦                                   ║
+║    ¦  │ Name:String      │ 1          ¦          ¦                                   ║
 ║    ¦  │ Group:IFormGroup ├─────┐      ¦          ¦                                   ║
 ║    ¦  └──────────────────┘     │      ¦          ¦                                   ║
 ║    ¦                           │      ¦          ¦                                   ║
 ║    ¦                           │      ¦          ¦                                   ║
-║    ¦                           ▼ *    ¦          ¦                                   ║
-║    ¦                ┌─────────────────┴─────┐    ¦                                   ║
+║    ¦                           │ *    ¦          ¦                                   ║
+║    ¦                ┌──────────▼──────┴─────┐    ¦                                   ║
 ║    ¦                │ <<Interface>>         │    ¦                                   ║
 ║    ¦                │ IFormGroup            │    ¦                                   ║
 ║    ¦                ├───────────────────────┤    ¦                                   ║
@@ -160,7 +159,7 @@ An integrated audit system records all relevant actions around forms—accesses,
 ║    ¦                └───────────────────────┘    ¦                                   ║
 ║    ¦                                             ¦                                   ║
 ║    ¦ create          ┌───────────────────────────┴───────┐                           ║
-║    └----------------►│ Form                              │                           ║
+║    └-----------------► Form                              │                           ║
 ║                      ├───────────────────────────────────┤                           ║
 ║                      │ Id:Guid                           │                           ║
 ║                      │ Name:String                       │                           ║
@@ -187,13 +186,13 @@ An integrated audit system records all relevant actions around forms—accesses,
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-The architecture model extends **KleeneStar** form management with a hierarchical structure that enables flexible, modular, and visually differentiated form design. At its core is the IForm interface describing a form as a standalone unit. Each form consists of a set of tabs (IFormTab), each containing one group (IFormGroup). These groups form the structural basis for arranging form elements and can contain both concrete fields as leaves and further groups as inner nodes. This creates a nested tree that can represent complex layouts and logical groupings within a form.
+The architecture model extends **KleeneStar** form management with a hierarchical structure that enables flexible, modular, and visually differentiated form design. At its core is the IForm interface describing a form as a standalone unit. Each form consists of a set of tabs (`IFormTab`), each containing one group (`IFormGroup`). These groups form the structural basis for arranging form elements and can contain both concrete fields as leaves and further groups as inner nodes. This creates a nested tree that can represent complex layouts and logical groupings within a form.
 
-The group elements themselves are polymorphic and realized through specialized IFormGroup implementations. These include FormGroupVertical, FormGroupHorizontal, FormGroupMix, FormGroupColumnVertical, FormGroupColumnHorizontal, and FormGroupColumnMix. Each variant defines a specific layout behavior: FormGroupVertical enables vertical stacking of fields with labels and help texts. FormGroupHorizontal provides a horizontal arrangement. The mix variants combine these approaches, for example via vertical fields with help text below or column-based layouts with flexible alignment. This variety allows precise control over the visual presentation and supports both simple and complex UIs.
+The group elements themselves are polymorphic and realized through specialized `IFormGroup` implementations. These include `FormGroupVertical`, `FormGroupHorizontal`, `FormGroupMix`, `FormGroupColumnVertical`, `FormGroupColumnHorizontal`, and `FormGroupColumnMix`. Each variant defines a specific layout behavior: `FormGroupVertical` enables vertical stacking of fields with labels and help texts. `FormGroupHorizontal` provides a horizontal arrangement. The mix variants combine these approaches, for example via vertical fields with help text below or column-based layouts with flexible alignment. This variety allows precise control over the visual presentation and supports both simple and complex UIs.
 
-The `IFormManager` acts as the central control unit for form management. It provides methods for creating, cloning, querying, and removing forms and ensures that all changes are communicated system-wide via events such as FormAdded, FormUpdated, and FormRemoved. This enables other components to react to form changes without being directly coupled to the manager, supporting loose coupling and architectural extensibility.
+The `IFormManager` acts as the central control unit for form management. It provides methods for creating, cloning, querying, and removing forms and ensures that all changes are communicated system-wide via events such as `FormAdded`, `FormUpdated`, and `FormRemoved`. This enables other components to react to form changes without being directly coupled to the manager, supporting loose coupling and architectural extensibility.
 
-All forms also have a lifecycle state (TypeFormState) distinguishing between active, archived, and deleted.
+All forms also have a lifecycle state (`TypeFormState`) distinguishing between active, archived, and deleted.
 
 ## UI Concepts and Pages
 
@@ -212,7 +211,7 @@ The tabular overview shows key attributes per class such as name, description, a
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Classes                                                           │║
@@ -241,7 +240,7 @@ The tabular overview shows key attributes per class such as name, description, a
 ║│ [Setting]         << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -257,7 +256,7 @@ Access to the form management page is via Manage Forms in class administration o
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Incident / Forms                                                  │║
@@ -287,7 +286,7 @@ Access to the form management page is via Manage Forms in class administration o
 ║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -299,7 +298,7 @@ The Form Designer is the central tool for designing and maintaining forms within
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Incident / IncidentForm                                           │║
@@ -329,7 +328,7 @@ The Form Designer is the central tool for designing and maintaining forms within
 ║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -345,7 +344,7 @@ When editing an existing form, all properties are prefilled and can be adjusted.
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FormAddEditModal════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Form / Edit Form                                                 │║     │║
@@ -375,7 +374,7 @@ When editing an existing form, all properties are prefilled and can be adjusted.
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -389,7 +388,7 @@ Cloning creates a new form with key properties inherited from the original, incl
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FormCloneModal══════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Clone Form                                                           │║     │║
@@ -419,7 +418,7 @@ Cloning creates a new form with key properties inherited from the original, incl
 ║│     ║                                                      [Clone] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -431,7 +430,7 @@ Deleting a form is a critical operation handled via a dedicated modal to avoid a
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔FormDeleteModal═════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Delete Form                                                          │║     │║
@@ -461,7 +460,7 @@ Deleting a form is a critical operation handled via a dedicated modal to avoid a
 ║│     ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```

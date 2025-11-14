@@ -1,3 +1,5 @@
+![KleeneStar](https://raw.githubusercontent.com/kleene-star/.github/main/docs/assets/img/banner.png)
+
 # KleeneStar Managed Workflow Concept
 
 The Managed Workflow concept in **KleeneStar** describes the modeled, versioned, and server-side controlled management of object life cycles within a class. A workflow defines which states, transitions, conditions, validations, and follow-up actions are permitted for objects. The goal is to ensure consistent, safe, and traceable process execution, from capture through processing to closure. Workflows are auditable, multi-tenant capable, and closely tied to fields (e.g., status). Workflows are versionable, strictly enforced server-side (including validations and post functions), can be integrated on the UI side, and extended via plugins. This creates a robust, rule-based control system for object-related processes.
@@ -24,19 +26,19 @@ Versions that should be permanently removed are deleted immediately and irrevoca
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
 ║                      new  ╔═══════╗                                                  ║
-║                        ──►║ draft ║                                                  ║
+║                        ───► draft ║                                                  ║
 ║                           ╚═══════╝                                                  ║
 ║                               │ publish                                              ║
-║                               ▼                                                      ║
-║                           ┌────────┐         ┌──────────┐                            ║
+║                               │                                                      ║
+║                           ┌───▼────┐         ┌──────────┐                            ║
 ║                           │ active │         │ archived │                            ║
-║                           └─┬──┬───┘         └─┬──────┬─┘                            ║
-║                             │  │  ▲  restore   │ ▲    │                              ║
+║                           └─┬──┬──▲┘         └─┬─▲────┬─┘                            ║
+║                             │  │  │  restore   │ │    │                              ║
 ║                             │  │  └────────────┘ │    │                              ║
 ║                             │  └─────────────────┘    │                              ║
 ║                             │        archive          │                              ║
 ║                             │      ╔═════════╗        │                              ║
-║                             └─────►║ deleted ║◄───────┘                              ║
+║                             └──────► deleted ◄────────┘                              ║
 ║                                    ╚═════════╝                                       ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
@@ -48,29 +50,28 @@ The data model of Managed Workflows in **KleeneStar** is anchored locally at the
 
 ```
 ╔══════════════════════════════════════════════════════════════════════════════════════╗
-║                        Managed Workflow - Structure Overview                         ║
+║                             KleeneStar Core Data Model                               ║
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
 ║                        ┌────────────────┬────────────────────────────────┐           ║
 ║                        │ *              │ *                              │           ║
-║                        ▼                ▼                                │           ║
-║                  ┌──────────┐     ┌──────────┐      ┌──────┐ 1           │           ║
+║                  ┌─────▼────┐     ┌─────▼────┐      ┌──────┐ 1           │           ║
 ║                  │ Workflow │     │ Priority │      │ Form ├───┐         │           ║
 ║                  └─────┬────┘     └─────┬────┘      └───┬──┘   │         │           ║
 ║                        │ *              │ *             │ *    │         │           ║
 ║                        └────────────────┼───────────────┘      │         │           ║
 ║                                         │                      │         │           ║
-║                                         ▼ 1                    ▼ *       │           ║
-║         ┌───────────┐ *           * ┌───────┐ 1          * ┌───────┐ 0,1 │           ║
-║         │ Workspace ├──────────────►│ Class │◄─────────────┤ Field ├─────┘           ║
-║         └─────┬─────┘               └───────┘              └───────┘                 ║
-║               │ 1                       ▲ 1                    ▲ 1                   ║
+║                                         │ 1                    │ *       │           ║
+║         ┌───────────┐ *           * ┌───▼───┐ 1          * ┌───▼───┐ 0,1 │           ║
+║         │ Workspace ├───────────────► Class ◄──────────────┤ Field ├─────┘           ║
+║         └─────┬─────┘               └───▲───┘              └───▲───┘                 ║
+║               │ 1                       │ 1                    │ 1                   ║
 ║               └────────────────────┐    │                      │                     ║
-║                                    ▼ *  │ *                    │ *                   ║
-║              ┌──────┐ *        2 ┌──────┴─┐ 1            * ┌───┴───┐                 ║
-║              │ Link ├───────────►│ Object ├───────────────►│ Value │                 ║
-║              └──────┘            └────────┘                └───────┘                 ║
-║                                    ▲ 1  ▲ 1                    ▲ 1                   ║
+║                                    │ *  │ *                    │ *                   ║
+║              ┌──────┐ *        2 ┌─▼────┴─┐ 1            * ┌───┴───┐                 ║
+║              │ Link ├────────────► Object ├────────────────► Value │                 ║
+║              └──────┘            └─▲────▲─┘                └───▲───┘                 ║
+║                                    │ 1  │ 1                    │ 1                   ║
 ║                     ┌──────────────┘    │                      │                     ║
 ║                     │ *                 │ *                    │ *                   ║
 ║                ┌────┴────┐         ┌────┴────┐         ┌───────┴───────┐             ║
@@ -97,8 +98,7 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ║                                │ <<Interface>>      │                                ║
 ║                                │ IComponentManager  │                                ║
 ║                                ├────────────────────┤                                ║
-║                                └────────────────────┘                                ║
-║                                         Δ                                            ║
+║                                └────────Δ───────────┘                                ║
 ║                                         ¦                                            ║
 ║                                         ¦                                            ║
 ║                     ┌───────────────────┴───────────────────┐                        ║
@@ -125,27 +125,26 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ║         ¦       │   │   IWorkflowManager                    │       │                ║
 ║         ¦       │   └───────────────────────────────────────┘       │                ║
 ║         ¦       │                                                   │                ║
-║         ¦       ▼ *                                                 │                ║
-║         ¦  ┌────────────────────────────┐     ┌───────────────────┐ │                ║
+║         ¦       │ *                                                 │                ║
+║         ¦  ┌────▼───────────────────────┐     ┌───────────────────┐ │                ║
 ║         ¦  │ <<Interface>>              │     │ <<Enum>>          │ │                ║
 ║         ¦  │ IState                     │     | TypeStatusCategry | │                ║
 ║         ¦  ├────────────────────────────┤     ├───────────────────┤ │                ║
 ║         ¦  │ Id:Guid                    │     │ ToDo              │ │                ║
 ║         ¦  │ Name:string                │     │ InProgress        │ │                ║
 ║         ¦  | Category:TypeStatusCategry |     │ Wating            │ │                ║
-║         ¦  └────────────────────────────┘     │ Done              │ │                ║
-║         ¦        ▲ *                          └───────────────────┘ │                ║
+║         ¦  └─────▲──────────────────────┘     │ Done              │ │                ║
+║         ¦        │ *                          └───────────────────┘ │                ║
 ║         ¦        │                                                  │                ║
 ║         ¦        │             ┌───────────────┐                    │                ║
 ║         ¦        │             │ <<Interface>> │                    │                ║
 ║         ¦        │             │ IModel        │                    │                ║
 ║         ¦        │             ├───────────────┤                    │                ║
-║         ¦        │             └───────────────┘                    │                ║
-║         ¦        │                    Δ                             │                ║
+║         ¦        │             └──────Δ────────┘                    │                ║
 ║         ¦        │                    ¦                             │                ║
 ║         ¦        │                    ¦                             │                ║
 ║         ¦        │  ┌─────────────────┴──────────────────┐ *        │                ║
-║         ¦        │  │ <<Interface>>                      │◄─────────┘                ║
+║         ¦        │  │ <<Interface>>                      ◄──────────┘                ║
 ║         ¦        │  │ IWorkflow                          │     ┌───────────────────┐ ║
 ║         ¦        │  ├────────────────────────────────────┤     │ <<Enum>>          │ ║
 ║         ¦        │  │ Id:Guid                            │     │ TypeWorkflowState │ ║
@@ -157,12 +156,11 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ║         ¦        └──┤ States:IEnumerable<IState>         │                           ║
 ║         ¦        ┌──┤ Transitions:                       │                           ║
 ║         ¦        │1 │   IEnumerable<ITransition>         │                           ║
-║         ¦        │  └────────────────────────────────────┘                           ║
-║         ¦        │                               Δ                                   ║
+║         ¦        │  └────────────────────────────Δ───────┘                           ║
 ║         ¦        │                               ¦                                   ║
 ║         ¦        │                               ¦                                   ║
-║         ¦        ▼ *                             ¦                                   ║
-║         ¦  ┌──────────────────────────────┐      ¦                                   ║
+║         ¦        │ *                             ¦                                   ║
+║         ¦  ┌─────▼────────────────────────┐      ¦                                   ║
 ║         ¦  │ <<Interface>>                │      ¦                                   ║
 ║         ¦  │ ITransition                  │      ¦                                   ║
 ║         ¦  ├──────────────────────────────┤      ¦                                   ║
@@ -182,7 +180,7 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ║         ¦                             ¦                                              ║
 ║         ¦                             ¦                                              ║
 ║         ¦ create    ┌─────────────────┴──────────────────┐                           ║
-║         └----------►│ Workflow                           │                           ║
+║         └-----------► Workflow                           │                           ║
 ║                     ├────────────────────────────────────┤                           ║
 ║                     │ Id:Guid                            │                           ║
 ║                     │ Name:String                        │                           ║
@@ -198,11 +196,11 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-The workflow management architecture in **KleeneStar.Core** is based on a component-oriented model that enables a clear separation of responsibilities and high extensibility. At its center is the `IWorkflowManager`, which as part of the `IComponentManager` forms the central interface for managing workflows. It controls the creation, update, removal, and querying of workflows and provides events such as `StatusAdded`, `statusUpdated`, `StatusRemoved`, `WorkflowAdded`, `WorkflowUpdated`, and `WorkflowRemoved` to enable reactive and loosely coupled system integration.
+The workflow management architecture in **KleeneStar.Core** is based on a component-oriented model that enables a clear separation of responsibilities and high extensibility. At its center is the `IWorkflowManager`, which as part of the `IComponentManager` forms the central interface for managing workflows. It controls the creation, update, removal, and querying of workflows and provides events such as `StatusAdded`, `StatusUpdated`, `StatusRemoved`, `WorkflowAdded`, `WorkflowUpdated`, and `WorkflowRemoved` to enable reactive and loosely coupled system integration.
 
 A workflow is modeled through the IWorkflow interface and contains key properties such as a unique ID, name, status (`TypeWorkflowState`), associated class (`IClass`), timestamps for creation and update, and access control via AccessModifier. Access levels such as Private, Protected, Internal, or Public govern visibility and usability of the workflow within and across tenants.
 
-Each workflow consists of a set of states (IState) and transitions (ITransition). States are defined by an ID, a name, and a category (`TypeStatusCategory`) such as "ToDo", "InProgress", "Waiting", or "Done". Transitions connect two states and include, besides source and target, a collection of conditions (Guards), validation rules (Validators), follow-up actions (PostFunctions), and optional UI elements (Form). This structure enables precise control of the object life cycle within a workflow.
+Each workflow consists of a set of states (`IState`) and transitions (`ITransition`). States are defined by an ID, a name, and a category (`TypeStatusCategory`) such as "ToDo", "InProgress", "Waiting", or "Done". Transitions connect two states and include, besides source and target, a collection of conditions (Guards), validation rules (Validators), follow-up actions (PostFunctions), and optional UI elements (Form). This structure enables precise control of the object life cycle within a workflow.
 
 Workflows are versionable and follow defined states such as "Draft", Active", or "Archived".
 
@@ -223,7 +221,7 @@ The tabular overview displays important attributes per class such as name, descr
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Classes                                                           │║
@@ -252,7 +250,7 @@ The tabular overview displays important attributes per class such as name, descr
 ║│ [Setting]         << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -268,7 +266,7 @@ Status maintenance is accessed directly from Class Management via the "Manage St
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Incident / Status                                                 │║
@@ -295,7 +293,7 @@ Status maintenance is accessed directly from Class Management via the "Manage St
 ║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -307,7 +305,7 @@ The modal for creating and editing status values in Status Management is used to
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔StatusAddEditModal══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Status / Edit Status                                             │║     │║
@@ -334,7 +332,7 @@ The modal for creating and editing status values in Status Management is used to
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -348,7 +346,7 @@ In the modal, the fields name, category, and description are automatically prefi
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔StatusCloneModal════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Clone Status                                                         │║     │║
@@ -375,7 +373,7 @@ In the modal, the fields name, category, and description are automatically prefi
 ║│     ║                                                      [Clone] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -391,7 +389,7 @@ When the modal opens, the name of the status to be deleted is displayed clearly 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔StatusDeleteModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Delete Status                                                        │║     │║
@@ -418,7 +416,7 @@ When the modal opens, the name of the status to be deleted is displayed clearly 
 ║│     ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -434,7 +432,7 @@ Published workflows directly affect the process control of the associated object
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│ / Service Desk / Incident / Workflows                                              │║
@@ -461,7 +459,7 @@ Published workflows directly affect the process control of the associated object
 ║│                   << │░│                                                           │║
 ║└──────────────────────┘ └───────────────────────────────────────────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -479,7 +477,7 @@ The Workflow Designer enables visual modeling of a class’s state machine with 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│  / Service Desk / Incident / Incident Draft / Designer                             │║
@@ -506,7 +504,7 @@ The Workflow Designer enables visual modeling of a class’s state machine with 
 ║│                                                               │                    │║
 ║└───────────────────────────────────────────────────────────────┴────────────────────┘║
 ║┌Footer──────────────────────────────────────────────────────────────────────────────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -518,7 +516,7 @@ The tabular workflow management allows faithful maintenance of states and transi
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
 ║│  / Service Desk / Incident / Incident Draft / Designer                             │║
@@ -545,7 +543,7 @@ The tabular workflow management allows faithful maintenance of states and transi
 ║│                                                                  ├───────────────┤ │║
 ║└──────────────────────────────────────────────────────────────────│ Delete        │─┘║
 ║┌Footer────────────────────────────────────────────────────────────└───────────────┘─┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -557,7 +555,7 @@ The modal for creating and editing transitions in workflow management is used to
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔WorkflowAddEditModal════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Workflow / Edit Workflow                                         │║     │║
@@ -584,7 +582,7 @@ The modal for creating and editing transitions in workflow management is used to
 ║│     ║                                                       [Save] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -598,7 +596,7 @@ Configuration is carried out via a structured interface that supports both simpl
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔WorkflowGuardModal══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Guard / Edit Guard                                               │║     │║
@@ -625,7 +623,7 @@ Configuration is carried out via a structured interface that supports both simpl
 ║│     ║                                                                [Done]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -639,7 +637,7 @@ Within the modal, simple validation rules can be defined, such as whether a part
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔WorkflowValidatorModal══════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Validator / Edit Validator                                       │║     │║
@@ -666,7 +664,7 @@ Within the modal, simple validation rules can be defined, such as whether a part
 ║│     ║                                                                [Done]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -680,7 +678,7 @@ Within the modal, simple actions can be selected and configured directly, for ex
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔WorkflowPostfunctionModal═══════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Add Postfunction / Edit Postfunction                                 │║     │║
@@ -707,7 +705,7 @@ Within the modal, simple actions can be selected and configured directly, for ex
 ║│     ║                                                                [Done]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -719,7 +717,7 @@ Cloning a workflow enables quick reuse of proven process models within the same 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
-║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]                     │║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└─────╔WorkflowCloneModa═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
 ║│ / Se║│ Clone Workflow                                                       │║     │║
@@ -746,7 +744,7 @@ Cloning a workflow enables quick reuse of proven process models within the same 
 ║│     ║                                                       [Clone] [Cancel] ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -787,7 +785,7 @@ Active workflows (Active) cannot be deleted directly. They must first be archive
 ║│     ║                                                     [Delete] [Cancel]  ║     │║
 ║└─────║                                                                        ║─────┘║
 ║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
-║│ [Dokumentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
