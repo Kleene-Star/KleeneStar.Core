@@ -75,11 +75,11 @@ The **KleeneStar** data model forms the structural foundation for priority manag
 
 ## Software Architecture
 
-Priority management in **KleeneStar** is modular and deliberately decoupled from other components. The central element is the PriorityManager, which controls the entire lifecycle of priorities, ensures their consistency, and regulates access within a class. It manages all priority definitions server-side and provides a controlled interface for creation, modification, archiving, and deletion. Tight integration with the `ClassManager` ensures that priorities are always used in a context-appropriate manner.
+Priority management in **KleeneStar** is modular and deliberately decoupled from other components. The central element is the `PriorityManager`, which controls the entire lifecycle of priorities, ensures their consistency, and regulates access within a class. It manages all priority definitions server-side and provides a controlled interface for creation, modification, archiving, and deletion. Tight integration with the `ClassManager` ensures that priorities are always used in a context-appropriate manner.
 
-New priorities are created exclusively through the PriorityManager. Changes are versioned and persisted transactionally, ensuring a consistent and traceable state at all times. On system startup, the manager loads all existing priorities, builds indexes (for example by score or category), and initializes relevant events.
+New priorities are created exclusively through the `PriorityManager`. Changes are versioned and persisted transactionally, ensuring a consistent and traceable state at all times. On system startup, the manager loads all existing priorities, builds indexes (for example by score or category), and initializes relevant events.
 
-An integrated event system enables reactive coupling with other components. These can react to events such as PriorityCreated or PriorityUpdated and trigger corresponding follow-up actions, such as recalculating SLAs or adjusting escalation logics.
+An integrated event system enables reactive coupling with other components. These can react to events such as `PriorityCreated` or `PriorityUpdate`d and trigger corresponding follow-up actions, such as recalculating SLAs or adjusting escalation logics.
 
 The audit system records every relevant action in the lifecycle of a priority. This includes creation, modification, archiving, restoration, and deletion, as well as adjustments to rule definitions, escalation configurations, or permission assignments. In this way, complete traceability and compliance-compliant management are ensured.
 
@@ -155,9 +155,9 @@ The audit system records every relevant action in the lifecycle of a priority. T
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-The model shown represents the core functions of priority management in **KleeneStar**. The starting point is the generic IComponentManager interface, which serves as a base for manager components. Building on this, IPriorityManager specifies the administration of priorities and provides methods for their lifecycle. These include adding, updating, cloning, and deleting priorities, as well as the ability to query priorities of a class in a targeted manner. This is complemented by events such as PriorityAdded, PriorityUpdated, or PriorityRemoved, which enable reactive coupling with other system parts and can, for example, trigger SLA recalculations or escalation logic.
+The model shown represents the core functions of priority management in **KleeneStar**. The starting point is the generic `IComponentManager` interface, which serves as a base for manager components. Building on this, `IPriorityManager` specifies the administration of priorities and provides methods for their lifecycle. These include adding, updating, cloning, and deleting priorities, as well as the ability to query priorities of a class in a targeted manner. This is complemented by events such as `PriorityAdded`, `PriorityUpdated`, or `PriorityRemoved`, which enable reactive coupling with other system parts and can, for example, trigger SLA recalculations or escalation logic.
 
-The actual priority is described via the IPriority interface, which contains central attributes such as Id, name, and description. The state is formalized by the TypePriorityState enumeration and distinguishes between active and archived priorities. Other properties such as the reference to the associated class and timestamps for creation and update ensure context binding and traceability. The concrete implementation is carried out by the Priority class, which adopts all defined properties and is used in the system as a persistent entity.
+The actual priority is described via the `IPriority` interface, which contains central attributes such as Id, name, and description. The state is formalized by the `TypePriorityState` enumeration and distinguishes between active and archived priorities. Other properties such as the reference to the associated class and timestamps for creation and update ensure context binding and traceability. The concrete implementation is carried out by the priority class, which adopts all defined properties and is used in the system as a persistent entity.
 
 ## UI Concepts and Pages
 
@@ -268,7 +268,7 @@ When creating a new priority, basic metadata is defined first, including the nam
 
 When editing an existing priority, all properties are prefilled and can be adjusted. Changes are saved via the "Save" button, while "Cancel" discards all modifications. The interface provides clear feedback and supports consistent, auditable administration of priorities.
 
-The modals for creating and editing priorities are directly accessible from the priority management page. Changes have an immediate effect on classification logic and object processing—especially in interaction with workflows, SLA rules, and escalation mechanisms.
+The modals for creating and editing priorities are directly accessible from the priority management page. Changes immediately influence the classification logic and object processing, particularly in relation to workflows, SLA rules, and escalation mechanisms.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
@@ -442,7 +442,7 @@ Priority management in **KleeneStar** uses the central **WebExpress** `EventMana
 
 Through event processing, user interfaces can be updated dynamically, audit logs can be expanded automatically, and external integrations or subsequent processes can be triggered. This creates a transparent, reactive, and extensible infrastructure for consistent control of priority states throughout the system.
 
-The following events are published by the PriorityManager via the **WebExpress** `EventManager`:
+The following events are published by the `PriorityManager` via the **WebExpress** `EventManager`:
 
 |Event Name            |Description
 |----------------------|-----------
@@ -462,7 +462,7 @@ The permission model for priority management in **KleeneStar** is context-sensit
 
 A user receives the rights defined in a policy for all priorities of a class if they belong to a global group linked to this policy in the class profile. The permissions thus apply to all priorities of the class, regardless of whether they are active, archived, or newly created.
 
-Administrators with the priority_admin_policy can manage class profiles and thereby control the assignment of policies to groups. They determine which actions are permitted for a class within the scope of priority management.
+Administrators with the `priority_admin_policy` can manage class profiles and thereby control the assignment of policies to groups. They determine which actions are permitted for a class within the scope of priority management.
 
 The following individual permissions form the basis for comprehensive and controlled management of priorities:
 
@@ -489,12 +489,12 @@ These permissions are grouped into policies that reflect typical roles and respo
 |`priority_importer_policy`  |Import                             |`priority_import`
 |`priority_exporter_policy`  |Export                             |`priority_export`
 
-All actions—creation, modification, archiving, restoration, deletion, and permission changes—are logged in an audit-proof manner. Timestamps, user information, and the source of the action are recorded to ensure transparency and traceability throughout the system.
+All actions including creation, modification, archiving, restoration, deletion, and permission changes are logged in a manner that ensures audit security. Each entry records the timestamp, user information, and the origin of the action to maintain transparency and enable full traceability across the system.
 
 ## Conclusion
 
 Server-side priority management in **KleeneStar** provides a structured and powerful foundation for creating and maintaining priorities in the class context. By directly linking to class attributes and hierarchical organization, a flexible and extensible model emerges that can be efficiently integrated into existing processes.
 
-The central PriorityManager takes on all tasks related to storage, event processing, and lifecycle control. The user interface and REST API enable comprehensive operation and easy connection of external systems.
+The central `PriorityManager` takes on all tasks related to storage, event processing, and lifecycle control. The user interface and REST API enable comprehensive operation and easy connection of external systems.
 
 However, further technical and conceptual details remain to be clarified for complete implementation. These include structural changes, performance aspects, accessibility, import and export functions, and consistent rights management across all system levels.

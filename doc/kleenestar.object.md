@@ -14,11 +14,11 @@ The object model in **KleeneStar** combines semantic modeling at the class level
 
 ## Lifecycle and States
 
-Object management in **KleeneStar** is based on a dual lifecycle model that considers both administrative and business aspects. The administrative lifecycle of an object comprises the states `active` and `archived`, while the business progression is controlled by the workflow associated with the class.
+Object management in **KleeneStar** is based on a dual lifecycle model that considers both administrative and business aspects. The administrative lifecycle of an object comprises the states "active" and "archived", while the business progression is controlled by the workflow associated with the class.
 
-An object in the `active` state is productively usable and passes through the status values defined in the workflow within this framework, such as "Open", "In Progress", or "Closed". These status values reflect the business dynamics of the object and enable regular operations as well as defined state transitions. The workflow allows flexible modeling of processes without altering the overarching lifecycle.
+An object in the "active" state is productively usable and passes through the status values defined in the workflow within this framework, such as "Open", "In Progress", or "Closed". These status values reflect the business dynamics of the object and enable regular operations as well as defined state transitions. The workflow allows flexible modeling of processes without altering the overarching lifecycle.
 
-If an object is no longer needed actively, it can be transferred to the `archived` state. In this mode, the object is write-protected and serves for historization. All data and relationships are retained and remain available for reporting or traceability. If required, an archived object can be restored and returned to the active state.
+If an object is no longer needed actively, it can be transferred to the "archived" state. In this mode, the object is write-protected and serves for historization. All data and relationships are retained and remain available for reporting or traceability. If required, an archived object can be restored and returned to the active state.
 
 Additionally, an object can be permanently deleted. This step can be performed from either the active or archived state and is irreversible. The deletion is executed immediately.
 
@@ -179,11 +179,11 @@ An integrated audit system logs all relevant actions around objects: accesses, v
 
 The **KleeneStar**.Core model describes a modular, object-oriented architecture for managing structured data objects within a systematic and extensible framework. It is based on the principle of separation of concerns and clear definition of interfaces for key functions such as object management, data modeling, and access control.
 
-At the center is the `IComponentManager` interface, which serves as the overarching management unit. Derived from it is `IObjectManager`, a specialized interface that provides all essential operations for object lifecycle management. These include creating, fetching, updating, deleting, and transitioning objects. These operations are event-driven, meaning that corresponding events are triggered on each change, such as ObjectCreated or ObjectUpdated.
+At the center is the `IComponentManager` interface, which serves as the overarching management unit. Derived from it is `IObjectManager`, a specialized interface that provides all essential operations for object lifecycle management. These include creating, fetching, updating, deleting, and transitioning objects. These operations are event-driven, meaning that corresponding events are triggered on each change, such as `ObjectCreated` or `ObjectUpdated`.
 
-Objects themselves are described by the IObject interface. In addition to a unique key, they contain metadata such as class, workspace, and current state. The content data of an object is organized as IValue instances, each representing a field and its value. Additionally, objects can be equipped with permission profiles (IPermissionsProfile) to define granular access rights.
+Objects themselves are described by the `IObject` interface. In addition to a unique key, they contain metadata such as class, workspace, and current state. The content data of an object is organized as `IValue` instances, each representing a field and its value. Additionally, objects can be equipped with permission profiles (`IPermissionsProfile`) to define granular access rights.
 
-The architecture also foresees a clear separation between interfaces and implementations. IObject is implemented by the concrete Object class, which provides all defined properties and methods. This separation enables high flexibility and extensibility of the system.
+The architecture also foresees a clear separation between interfaces and implementations. `IObject` is implemented by the concrete object class, which provides all defined properties and methods. This separation enables high flexibility and extensibility of the system.
 
 ## UI Concepts and Pages
 

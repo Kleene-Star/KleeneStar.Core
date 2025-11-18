@@ -16,9 +16,9 @@ The `FieldManager` is complementary to the `ClassManager` and is integrated into
 
 Field management follows a default lifecycle analogous to classes, with the states active, archived, and deleted.
 
-- active: The field is usable in production. Only compatible changes or versioned migrations are permitted.
-- archived: The field is read-only. Serves for historicization and referencing in older object versions.
-- deleted: Final removal initiated. Actual deletion occurs after retention periods and dependency checks.
+- **active:** The field is usable in production. Only compatible changes or versioned migrations are permitted.
+- **archived:** The field is read-only. Serves for historicization and referencing in older object versions.
+- **deleted:** Final removal initiated. Actual deletion occurs after retention periods and dependency checks.
 
 State transitions occur in a controlled manner with validation, migration planning, and audit entries. Restoration (restore) is possible from archived to active, provided there are no irreconcilable conflicts.
 

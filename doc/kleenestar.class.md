@@ -281,7 +281,7 @@ The page is accessible via the "Manage Classes" option in the workspace editing 
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### KleeneStar - Class Detail View (Page)
+### Class Management - Class Detail View (Page)
 
 The Class Detail View provides a focused perspective on a single class within a workspace. It consolidates metadata, inheritance relationships, visibility settings, and key metrics, while bundling the most important administrative functions into a central entry point. Changes to a class take effect immediately after successful validation and follow the established lifecycle (Active, Archived, Deleted). Subsections for fields, forms, workflows, states/priorities, permissions, and audit are contextually integrated.
 

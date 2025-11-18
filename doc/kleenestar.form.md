@@ -83,7 +83,7 @@ For a reactive and loosely coupled architecture, the `FormManager` exposes an ev
 
 Access to forms is governed by a fine-grained permission model aligned with class permissions and augmented with form-specific rules. Context-dependent filters, time-limited rights, and audit requirements enable flexible control of read, write, and administrative access.
 
-An integrated audit system records all relevant actions around forms—accesses, changes, archiving, deletions, and permission checks. Each action is logged with a timestamp, user identity, class and form reference, and action type. These data support traceability, error analysis, compliance, and state restoration.
+An integrated audit system records all relevant actions related to forms, including accesses, changes, archiving, deletions, and permission checks. Each action is logged with a timestamp, the user identity, the class and form reference, and the type of action performed. This data supports traceability, facilitates error analysis, ensures compliance, and enables restoration of previous states.
 
 ```
 ╔KleeneStar.Core═══════════════════════════════════════════════════════════════════════╗
@@ -198,7 +198,7 @@ All forms also have a lifecycle state (`TypeFormState`) distinguishing between a
 
 The UI for form management in **KleeneStar** is designed to translate complex structures and rules into an intuitive and comprehensible interaction model. The goal is efficient, safe, and user-friendly work with forms within a class.
 
-The design follows the established UI patterns of the **KleeneStar** web application. Users benefit from a consistent experience with clear navigation paths, familiar controls, and recurring interaction principles. This reduces onboarding time and enables a fast execution of typical tasks in the form context. The provided mockups serve as visual references for the final UI design. They illustrate how forms are managed within the class context—from navigation and form selection to displaying relevant metadata and states.
+The design is based on the established UI patterns of the **KleeneStar** web application. Users benefit from a consistent experience that includes clear navigation paths, familiar controls, and recurring interaction principles. This consistency helps reduce onboarding time and supports the efficient execution of typical tasks within the form context. The provided mockups serve as visual references for the final UI design. They demonstrate how forms are managed within the class context, including navigation, form selection, and the display of relevant metadata and states.
 
 Using concrete use cases, the UI demonstrates how forms are created, edited, or removed. The interface supports these workflows with targeted action areas, context-dependent controls, and clear feedback.
 
@@ -523,7 +523,7 @@ Each event in priority management carries a structured payload containing essent
 
 The permission model for form management in **KleeneStar** is context-sensitive and enables fine-grained access control at the class level. Rights are not assigned directly at the form level but via class profiles that link global groups with specific policies within a class. This yields a flexible and consistent rights concept aligned with organizational and business requirements.
 
-A user receives the permissions of a given policy for all forms of a class if they belong to a global group that has the corresponding policy in that class profile. The rights thus apply to all forms within that class—regardless of whether they are active, archived, or newly created.
+A user receives the permissions defined by a given policy for all forms of a class if they are a member of a global group associated with that policy in the class profile. These permissions apply uniformly to all forms within the class, whether the forms are active, archived, or newly created.
 
 Administrators with the `form_admin_policy` may manage class profiles and thus control the assignment of policies to groups, defining which actions are allowed in form management for a class.
 
