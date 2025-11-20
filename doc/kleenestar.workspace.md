@@ -10,6 +10,8 @@ To promote standardization and consistency across multiple workspaces, the conce
 
 This inheritance is dynamic: changes to the type definitions in the blueprint are automatically propagated to all derived workspaces. This mechanism ensures that an entire group of workspaces is based on a uniform, centrally managed data model. At the same time, each derived workspace maintains its independence, as metadata such as name, description, or color-coding, as well as assigned permissions, can be configured individually. They are not inherited from the blueprint.
 
+## Lifecycle of the Workflow
+
 The functional scope of workspace management covers the entire lifecycle of a workspace. This includes the following core operations:
 
 - **Create**: Creating new, isolated workspaces.
@@ -50,30 +52,30 @@ The **KleeneStar** Core Data Model forms the structural foundation for managing 
 ║                             KleeneStar Core Data Model                               ║
 ╠══════════════════════════════════════════════════════════════════════════════════════╣
 ║                                                                                      ║
-║                        ┌────────────────┬────────────────────────────────┐           ║
-║                        │ *              │ *                              │           ║
-║                  ┌─────▼────┐     ┌─────▼────┐      ┌──────┐ 1           │           ║
-║                  │ Workflow │     │ Priority │      │ Form ├───┐         │           ║
-║                  └─────┬────┘     └─────┬────┘      └───┬──┘   │         │           ║
-║                        │ *              │ *             │ *    │         │           ║
-║                        └────────────────┼───────────────┘      │         │           ║
-║                                         │                      │         │           ║
-║                                         │ 1                    │ *       │           ║
-║         ┌───────────┐ *           * ┌───▼───┐ 1          * ┌───▼───┐ 0,1 │           ║
-║         │ Workspace ├───────────────► Class ◄──────────────┤ Field ├─────┘           ║
-║         └─────┬─────┘               └───▲───┘              └───▲───┘                 ║
-║               │ 1                       │ 1                    │ 1                   ║
-║               └────────────────────┐    │                      │                     ║
-║                                    │ *  │ *                    │ *                   ║
-║              ┌──────┐ *        2 ┌─▼────┴─┐ 1            * ┌───┴───┐                 ║
-║              │ Link ├────────────► Object ├────────────────► Value │                 ║
-║              └──────┘            └─▲────▲─┘                └───▲───┘                 ║
-║                                    │ 1  │ 1                    │ 1                   ║
-║                     ┌──────────────┘    │                      │                     ║
-║                     │ *                 │ *                    │ *                   ║
-║                ┌────┴────┐         ┌────┴────┐         ┌───────┴───────┐             ║
-║                │ Comment │         │ Version │         │ FileReference │             ║
-║                └─────────┘         └─────────┘         └───────────────┘             ║
+║                         ┌────────────────┬────────────────────────────────┐          ║
+║                         │ *              │ *                              │          ║
+║                   ┌─────▼────┐     ┌─────▼────┐      ┌──────┐ 1           │          ║
+║                   │ Workflow │     │ Priority │      │ Form ├───┐         │          ║
+║                   └─────┬────┘     └─────┬────┘      └───┬──┘   │         │          ║
+║                         │ *              │ *             │ *    │         │          ║
+║                         └────────────────┼───────────────┘      │         │          ║
+║                                          │                      │         │          ║
+║                                          │ 1                    │ *       │          ║
+║          ┌───────────┐ *           * ┌───▼───┐ 1          * ┌───▼───┐ 0,1 │          ║
+║          │ Workspace ├───────────────► Class ◄──────────────┤ Field ├─────┘          ║
+║          └─────┬─────┘               └───▲───┘              └───▲───┘                ║
+║                │ 1                       │ 1                    │ 1                  ║
+║                └────────────────────┐    │                      │                    ║
+║                                     │ *  │ *                    │ *                  ║
+║    ┌───────────┐  ┌──────┐ *    2 ┌─▼────┴─┐ 1            * ┌───┴───┐                ║
+║    │ Dashboard │  │ Link ├────────► Object ├────────────────► Value │                ║
+║    └─────┬─────┘  └──────┘        └─▲────▲─┘                └───▲───┘                ║
+║          │ 1                        │ 1  │ 1                    │ 1                  ║
+║          │              ┌───────────┘    │                      │                    ║
+║          │ *            │ *              │ *                    │ *                  ║
+║     ┌────▼───┐     ┌────┴────┐      ┌────┴────┐         ┌───────┴───────┐            ║
+║     │ Widget │     │ Comment │      │ Version │         │ FileReference │            ║
+║     └────────┘     └─────────┘      └─────────┘         └───────────────┘            ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
@@ -151,6 +153,7 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║         ¦           │   IEnumerable<IClass>              │    │ Public             │ ║
 ║         ¦           │ Objects:                           │    │ Internal           │ ║
 ║         ¦           │   IEnumerable<IObject>             │    └────────────────────┘ ║
+║         ¦           │ Categories:IEnumerable<String>     │                           ║
 ║         ¦           │ AccessModifier:TypeAccessModifier  │                           ║
 ║         ¦           │ PermissionsProfiles:               │                           ║
 ║         ¦           │   IEnumerable<IPermissionsProfile> │                           ║
@@ -174,6 +177,7 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║                     │   IEnumerable<IClass>              │                           ║
 ║                     │ Objects:                           │                           ║
 ║                     │   IEnumerable<IObject>             │                           ║
+║                     │ Categories:IEnumerable<String>     │                           ║
 ║                     │ AccessModifier:TypeAccessModifier  │                           ║
 ║                     │ PermissionsProfiles:               │                           ║
 ║                     │   IEnumerable<IPermissionsProfile> │                           ║
@@ -204,21 +208,21 @@ The global workspace dropdown is a central and permanently available component i
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
-║└────────────────────¦───────────────────────────────────────────────────────────────┘║
-║┌Breadcrumb────────┌─┴────────────────┐──────────────────────────────────────────────┐║
-║│ / Service Desk   │┌────────────────┐│                                              │║
-║└──────────────────││ Search         ││──────────────────────────────────────────────┘║
-║┌Workspace ────────│└────────────────┘│──────────────────────────────────────────────┐║
-║│[Name]            │ Workspace 0      │                                              │║
-║│                  │ Workspace 1      │                       [Search] [+ AddObject] │║
-║│      [Icon]      │ ...              │                                              │║
-║│                  │ Workspace n      │     | Tel.  | Description                    │║
-║│                  ├──────────────────┤-----|-------|------------------------------- │║
-║│ Issue            │ Manage Workspace │     | 555-1 | Head of Sales              […] │║
-║│ ├─ Incident      │ + Add Workspace  │lder | 555-7 | IT Administrator           […] │║
-║│ ├─ Problem       │ <section>        │     | 555-3 | HR Manager                 […] │║
-║│ └─ ServiceRequest└──────────────────┘e    | 555-4 | System Architect           […] │║
-║│                      │░│ Anna Mock        | 555-8 | DevOps Lead                […] │║
+║└───────────────────¦────────────────────────────────────────────────────────────────┘║
+║┌Breadcrumb───────┌─┴────────────────┐───────────────────────────────────────────────┐║
+║│ / Service Desk  │┌────────────────┐│                                               │║
+║└─────────────────││ Search         ││───────────────────────────────────────────────┘║
+║┌Workspace ───────│└────────────────┘│───────────────────────────────────────────────┐║
+║│[Name]           │ Workspace 0      │                                               │║
+║│                 │ Workspace 1      │                                           […] │║
+║│      [Icon]     │ ...              │                                      [Search] │║
+║│                 │ Workspace n      │                      | Status  | Impact     + │║
+║│                 ├──────────────────┤----------------------|---------|--------------│║
+║│ Issue           │ Manage Workspace │ion disrupted         | Open    | High     […] │║
+║│ ├─ Incident     │ + Add Workspace  │'t start              | Open    | Medium   […] │║
+║│ ├─ Problem      │ <section>        │floor 3 offline       | Assigne | Medium   […] │║
+║│ └─ ServiceReques└──────────────────┘ fails                | In Prog.| Low      […] │║
+║│                      │░│ Remote desktop not reachable     | Open    | Medium   […] │║
 ║│                      │<│                                                           │║
 ║│                      │<│                                   ‹ Prev  1  2  3  Next › │║
 ║│                      │<│                                                           │║
@@ -386,9 +390,9 @@ After confirmation, the new workspace is created and automatically integrated in
 ║│[Name║│ You are about to clone the workspace 'Sales Operations'.             │║     │║
 ║│     ║│ Please adjust the details for the new workspace below.               │║ […] │║
 ║│     ║│                                                                      │║rch] │║
-║│     ║│ Workspace Name*: [ Sales Operations (Copy)                       ]   │║     │║
-║│     ║│            Key*: [ newkey                                        ]   │║---- │║
-║│ Issu║│     Description: [ Copy of sales-related workflows and assets.   ]   │║ […] │║
+║│     ║│ Workspace Name*: [ Sales Operations (Copy)                         ] │║     │║
+║│     ║│            Key*: [ newkey                                          ] │║---- │║
+║│ Issu║│     Description: [ Copy of sales-related workflows and assets.     ] │║ […] │║
 ║│ ├─ I║│                                                                      │║ […] │║
 ║│ ├─ P║│   Include structure: [✓]                                             │║ […] │║
 ║│ └─ S║│ Include permissions: [✓]                                             │║ […] │║
@@ -503,18 +507,18 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 
 The sitemap defines the hierarchical structure and navigation paths of the user interface for workspace management. It ensures a clear organization of the pages, serves as the basis for routing within the web application, and is structured as follows:
 
-|Path                                     |Page                  |Description
-|-----------------------------------------|----------------------|-------------------------------------------------------------
-|`/`                                      |Dashboard             |Central entry point of the application.
-|`/workspaces`                            |Workspace Management  |Overview of all workspaces with search, filter, and management functions.
-|`/workspaces/add`                        |Workspace Creation    |Form for creating a new workspace.
-|`/workspaces/{workspaceKey}`             |Workspace Detail View |Detailed view and actions for a single workspace.
-|`/workspaces/{workspaceKey}/edit`        |Workspace Editing     |Form for editing the metadata of an existing workspace.
-|`/workspaces/{workspaceKey}/clone`       |Workspace Cloning     |Dialog for replicating an existing workspace with customizable fields.
-|`/workspaces/{workspaceKey}/delete`      |Workspace Deletion    |Modal for confirming and executing the irreversible deletion of a workspace.
-|`/workspaces/{workspaceKey}/permissions` |Workspace Permissions |Modal for managing profiles (group-policy assignments) for a specific workspace.
-|`/workspaces/{workspaceKey}/import`      |Workspace Import      |Import of external workspace schemas.
-|`/workspaces/{workspaceKey}/export`      |Workspace Export      |Export of the current workspace schema for reuse or transfer.
+|Path                                           |Page                  |Description
+|-----------------------------------------------|----------------------|-------------------------------------------------------------
+|`/`                                            |Dashboard             |Central entry point of the application.
+|`/workspacemanager`                            |Workspace Management  |Overview of all workspaces with search, filter, and management functions.
+|`/workspacemanager/add`                        |Workspace Creation    |Form for creating a new workspace.
+|`/workspacemanager/{workspaceKey}`             |Workspace Detail View |Detailed view and actions for a single workspace.
+|`/workspacemanager/{workspaceKey}/edit`        |Workspace Editing     |Form for editing the metadata of an existing workspace.
+|`/workspacemanager/{workspaceKey}/clone`       |Workspace Cloning     |Dialog for replicating an existing workspace with customizable fields.
+|`/workspacemanager/{workspaceKey}/delete`      |Workspace Deletion    |Modal for confirming and executing the irreversible deletion of a workspace.
+|`/workspacemanager/{workspaceKey}/permissions` |Workspace Permissions |Modal for managing profiles (group-policy assignments) for a specific workspace.
+|`/workspacemanager/{workspaceKey}/import`      |Workspace Import      |Import of external workspace schemas.
+|`/workspacemanager/{workspaceKey}/export`      |Workspace Export      |Export of the current workspace schema for reuse or transfer.
 
 
 ## API Interfaces (REST Endpoints)
@@ -575,18 +579,18 @@ A profile defines which policy a global group receives within a specific workspa
 
 The following table lists the granular permissions required for comprehensive control of workspace management.
 
-| Permission                  | Description
-| --------------------------- | -----------------------------------------------------------------------------------
-| `workspace_create`          | Allows the creation of new, isolated workspaces.
-| `workspace_read`            | Grants read access to the metadata of a workspace (name, description, status, etc.).
-| `workspace_update`          | Authorizes the modification of an existing workspace's metadata.
-| `workspace_delete`          | Allows the permanent deletion of a workspace.
-| `workspace_archive`         | Permits the archiving of an active workspace.
-| `workspace_restore`         | Enables the restoration of an archived workspace.
-| `workspace_clone`           | Authorizes the duplication of an existing workspace.
-| `workspace_manage_profiles` | Allows the management of profiles (assignment of policies to groups) for a workspace.
-| `workspace_read_content`    | Grants read access to the contents of a workspace (entities, attributes, etc.).
-| `workspace_write_content`   | Allows the creation, editing, and deletion of content within a workspace.
+|Permission                  |Description
+|--------------------------- |-----------------------------------------------------------------------------------
+|`workspace_create`          |Allows the creation of new, isolated workspaces.
+|`workspace_read`            |Grants read access to the metadata of a workspace (name, description, status, etc.).
+|`workspace_update`          |Authorizes the modification of an existing workspace's metadata.
+|`workspace_delete`          |Allows the permanent deletion of a workspace.
+|`workspace_archive`         |Permits the archiving of an active workspace.
+|`workspace_restore`         |Enables the restoration of an archived workspace.
+|`workspace_clone`           |Authorizes the duplication of an existing workspace.
+|`workspace_manage_profiles` |Allows the management of profiles (assignment of policies to groups) for a workspace.
+|`workspace_read_content`    |Grants read access to the contents of a workspace (entities, attributes, etc.).
+|`workspace_write_content`   |Allows the creation, editing, and deletion of content within a workspace.
 
 These permissions are bundled into logical policies to represent typical use cases and responsibilities. The policies can be assigned to global groups within a c profile.
 
