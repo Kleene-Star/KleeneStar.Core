@@ -126,15 +126,15 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ║         ¦       │   └───────────────────────────────────────┘       │                ║
 ║         ¦       │                                                   │                ║
 ║         ¦       │ *                                                 │                ║
-║         ¦  ┌────▼───────────────────────┐     ┌───────────────────┐ │                ║
-║         ¦  │ <<Interface>>              │     │ <<Enum>>          │ │                ║
-║         ¦  │ IState                     │     | TypeStatusCategry | │                ║
-║         ¦  ├────────────────────────────┤     ├───────────────────┤ │                ║
-║         ¦  │ Id:Guid                    │     │ ToDo              │ │                ║
-║         ¦  │ Name:string                │     │ InProgress        │ │                ║
-║         ¦  | Category:TypeStatusCategry |     │ Wating            │ │                ║
-║         ¦  └─────▲──────────────────────┘     │ Done              │ │                ║
-║         ¦        │ *                          └───────────────────┘ │                ║
+║         ¦  ┌────▼────────────────────────┐   ┌────────────────────┐ │                ║
+║         ¦  │ <<Interface>>               │   │ <<Enum>>           │ │                ║
+║         ¦  │ IState                      │   | TypeStatusCategory | │                ║
+║         ¦  ├─────────────────────────────┤   ├────────────────────┤ │                ║
+║         ¦  │ Id:Guid                     │   │ ToDo               │ │                ║
+║         ¦  │ Name:string                 │   │ InProgress         │ │                ║
+║         ¦  | Category:TypeStatusCategory |   │ Wating             │ │                ║
+║         ¦  └─────▲───────────────────────┘   │ Done               │ │                ║
+║         ¦        │ *                         └────────────────────┘ │                ║
 ║         ¦        │                                                  │                ║
 ║         ¦        │             ┌───────────────┐                    │                ║
 ║         ¦        │             │ <<Interface>> │                    │                ║
@@ -202,7 +202,7 @@ A workflow is modeled through the IWorkflow interface and contains key propertie
 
 Each workflow consists of a set of states (`IState`) and transitions (`ITransition`). States are defined by an ID, a name, and a category (`TypeStatusCategory`) such as "ToDo", "InProgress", "Waiting", or "Done". Transitions connect two states and include, besides source and target, a collection of conditions (Guards), validation rules (Validators), follow-up actions (PostFunctions), and optional UI elements (Form). This structure enables precise control of the object life cycle within a workflow.
 
-Workflows are versionable and follow defined states such as "Draft", Active", or "Archived".
+Workflows are versionable and follow defined states such as "Draft", "Active", or "Archived".
 
 ## UI Concepts and Pages
 

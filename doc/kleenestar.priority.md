@@ -79,7 +79,7 @@ Priority management in **KleeneStar** is modular and deliberately decoupled from
 
 New priorities are created exclusively through the `PriorityManager`. Changes are versioned and persisted transactionally, ensuring a consistent and traceable state at all times. On system startup, the manager loads all existing priorities, builds indexes (for example by score or category), and initializes relevant events.
 
-An integrated event system enables reactive coupling with other components. These can react to events such as `PriorityCreated` or `PriorityUpdate`d and trigger corresponding follow-up actions, such as recalculating SLAs or adjusting escalation logics.
+An integrated event system enables reactive coupling with other components. These can react to events such as `PriorityCreated` or `PriorityUpdated` and trigger corresponding follow-up actions, such as recalculating SLAs or adjusting escalation logics.
 
 The audit system records every relevant action in the lifecycle of a priority. This includes creation, modification, archiving, restoration, and deletion, as well as adjustments to rule definitions, escalation configurations, or permission assignments. In this way, complete traceability and compliance-compliant management are ensured.
 
