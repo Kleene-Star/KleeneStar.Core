@@ -123,6 +123,7 @@ To ensure transparency and traceability, every relevant action related to dashbo
 ║         ¦           │ DashboardRemoved:Event                │                        ║
 ║         ¦           ├───────────────────────────────────────┤ 1                      ║
 ║         ¦           │ Workspaces:IEnumerable<IWorkspace>    ├───────┐                ║
+║         ¦           │ Widgets:IEnumerable<IWidget>          │       │                ║
 ║         ¦           ├───────────────────────────────────────┤       │                ║
 ║         ¦           │ AddDashboard(IDashboard):             │       │                ║
 ║         ¦           │   IDashboardManager                   │       │                ║

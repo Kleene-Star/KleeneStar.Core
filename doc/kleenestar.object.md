@@ -828,9 +828,9 @@ Access rights to individual objects are managed via a special dialog that can be
 
 To use the modal, users need the `object_manage_profiles` permission. After opening, they can select a group and assign an appropriate access policy (for example, view-only, edit, or full administrative rights). The available policies are divided into three levels:
 
-- object_view_policy for read access
-- object_edit_policy for editing rights
-- object_admin_policy for full control, including rights management
+- `object_view_policy` for read access
+- `object_edit_policy` for editing rights
+- `object_admin_policy` for full control, including rights management
 
 All existing assignments are displayed in a table. They can be adjusted or extended at any time. To maintain an overview even with extensive permission structures, the modal offers a search function and pagination. Changes to permissions take effect immediately and are logged for traceability.
 

@@ -913,10 +913,6 @@ Each event contains a structured payload with at least the following information
 - Triggering user or module context
 - Action type and source (e.g., API, UI, Scheduler)
 - Optional delta summary (e.g., number of changed states/transitions)
-- For validation: reference to validation report and severities
-- For publication: mapping summary (old→new states), optional asynchronous job ID
-- For triggers: trigger ID, type (schedule/event), and referenced transition/action
-- For error events: error type, message, context, and retry information
 
 Events are available both within the application and to connected subsystems and enable reactive UI updates, revision-safe audit logs, plugin hooks, as well as external synchronization with downstream systems.
 
@@ -924,9 +920,9 @@ Events are available both within the application and to connected subsystems and
 
 **KleeneStar** manages workflow-related permissions context-specifically at the class level. Global groups are bound via profiles to workflow-wide policies or transition-specific rights. This model enables precise control over who may read, design, validate, simulate, publish, archive, or delete workflow definitions and who may execute specific transitions on objects. Assignments can apply workflow-wide or be explicitly stored for individual transitions, optionally with conditions (e.g., segregation of duties, role- or field-value-based expressions). Enforcement is performed server-side in the `WorkflowManager` and consolidated with class, field, and object permissions. All changes are auditable.
 
-- Assignment logic: A user inherits the rights of a policy if they belong to a group for which an active profile exists in the context (Workspace → Class → Workflow or Transition). Transition rights can additionally be conditional and are evaluated in the guard check.
-- Granularity: Policies distinguish reading/editing workflow definitions, validation/simulation, publication/archive/restore, cloning/import/export, trigger management, as well as execution of individual transitions.
-- Delegation: Workflow administrators (e.g., via `class_workflow_admin_policy`) manage profiles and assignments for workflow-wide and transition-specific rights.
+- **Assignment logic:** A user inherits the rights of a policy if they belong to a group for which an active profile exists in the context (Workspace → Class → Workflow or Transition). Transition rights can additionally be conditional and are evaluated in the guard check.
+- **Granularity:** Policies distinguish reading/editing workflow definitions, validation/simulation, publication/archive/restore, cloning/import/export, trigger management, as well as execution of individual transitions.
+- **Delegation:** Workflow administrators (e.g., via `class_workflow_admin_policy`) manage profiles and assignments for workflow-wide and transition-specific rights.
 
 The following table lists fine-grained permissions for workflow management:
 

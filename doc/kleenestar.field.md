@@ -794,9 +794,9 @@ The permission model for field management in **KleeneStar** is context-based and
 
 A field profile defines which policy a global group receives for a particular field within a class. This creates a context-sensitive role assignment that enables flexible and differentiated rights management down to the single attribute.
 
-- Principle: A user receives the rights of a policy for a field in a class if they are a member of a group for which a corresponding field profile (group → policy) exists in this context.
-- Flexibility: The same global group (e.g., "Data Stewards") can receive the policy `field_view_policy` (read-only) for the "email" field in Class A and the policy `field_edit_policy` (edit) for the "phone" field in Class B.
-- Administration: Users with administrative rights for a class (e.g., via the policy `field_admin_policy`) can create, edit, and remove field profiles and thus control the assignment of policies to groups for fields.
+- **Principle:** A user receives the rights of a policy for a field in a class if they are a member of a group for which a corresponding field profile (group → policy) exists in this context.
+- **Flexibility:** The same global group (e.g., "Data Stewards") can receive the policy `field_view_policy` (read-only) for the "email" field in Class A and the policy `field_edit_policy` (edit) for the "phone" field in Class B.
+- **Administration:** Users with administrative rights for a class (e.g., via the policy `field_admin_policy`) can create, edit, and remove field profiles and thus control the assignment of policies to groups for fields.
 
 The following table lists the granular permissions for comprehensive control of field management:
 
