@@ -607,12 +607,12 @@ Configuration is carried out via a structured interface that supports both simpl
 ║│     ║│  [+ AddGuard]                                                        │║     │║
 ║│  new║│                                                                      │║     │║
 ║│  ---║│ Guard condition:                                                     │║     │║
-║│     ║│    AND                                                             x │║     │║
-║│     ║│    ├─ user role == "Reviewer"                                      x │║)    │║
-║│     ║│    ├─ field "Priority" == "High"                                   x │║ (5) │║
-║│     ║│    └─ OR                                                           x │║     │║
-║│     ║│        ├─ group == "IncidentManager"                               x │║     │║
-║│     ║│        └─ user attribute "Region" == "EMEA"                        x │║     │║
+║│     ║│    ⠿ AND                                                           x │║     │║
+║│     ║│    ├─ ⠿ user role == "Reviewer"                                    x │║)    │║
+║│     ║│    ├─ ⠿ field "Priority" == "High"                                 x │║ (5) │║
+║│     ║│    └─ ⠿ OR                                                         x │║     │║
+║│     ║│        ├─ ⠿ group == "IncidentManager"                             x │║     │║
+║│     ║│        └─ ⠿ user attribute "Region" == "EMEA"                      x │║     │║
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║     │║
@@ -648,12 +648,12 @@ Within the modal, simple validation rules can be defined, such as whether a part
 ║│     ║│  [+ AddValidator]                                                    │║     │║
 ║│  new║│                                                                      │║     │║
 ║│  ---║│ Validator rules:                                                     │║     │║
-║│     ║│    AND                                                             x │║     │║
-║│     ║│    ├─ field "Summary" != empty                                     x │║)    │║
-║│     ║│    ├─ field "DueDate" >= today                                     x │║ (5) │║
-║│     ║│    └─ OR                                                           x │║     │║
-║│     ║│        ├─ field "Category" == "Urgent"                             x │║     │║
-║│     ║│        └─ user attribute "ClearanceLevel" >= 3                     x │║     │║
+║│     ║│    ⠿ AND                                                           x │║     │║
+║│     ║│    ├─ ⠿ field "Summary" != empty                                   x │║)    │║
+║│     ║│    ├─ ⠿ field "DueDate" >= today                                   x │║ (5) │║
+║│     ║│    └─ ⠿ OR                                                         x │║     │║
+║│     ║│        ├─ ⠿ field "Category" == "Urgent"                           x │║     │║
+║│     ║│        └─ ⠿ user attribute "ClearanceLevel" >= 3                   x │║     │║
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║     │║
@@ -689,9 +689,9 @@ Within the modal, simple actions can be selected and configured directly, for ex
 ║│     ║│  [+ AddValidator]                                                    │║     │║
 ║│  new║│                                                                      │║     │║
 ║│  ---║│ Postfunction actions:                                                │║     │║
-║│     ║│    1. Set field "Status" = "In Progress"                           x │║     │║
-║│     ║│    2. Add comment: "Processing has started."                       x │║)    │║
-║│     ║│    3. Send notification to group "SupportTeam"                     x │║ (5) │║
+║│     ║│    ⠿ Set field "Status" = "In Progress"                            x │║     │║
+║│     ║│    ⠿ Add comment: "Processing has started."                        x │║)    │║
+║│     ║│    ⠿ Send notification to group "SupportTeam"                      x │║ (5) │║
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║     │║
 ║│     ║│                                                                      │║     │║
