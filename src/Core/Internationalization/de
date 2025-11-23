@@ -1,0 +1,36 @@
+plugin.name=KleeneStar.Core
+plugin.description=Core-Plugin für die KleeneStar-Anwendung.
+
+app.name=KleeneStar
+app.label=KleeneStar Anwendung
+app.description=KleeneStar ist eine modulare Plattform für Wissens-, Prozess- und Asset-Management.
+app.license.label=Lizenz MIT
+app.license.uri=https://github.com/Kleene-Star/KleeneStar.Core/blob/main/LICENSE
+app.about=Über KleeneStar
+app.version.label={0} Version {1} erstellt mit {2} Version {3}.
+
+kleenestar.label=KleeneStar
+
+workspace.dropdown.label=Arbeitsbereich
+workspace.add.label=Neuer Arbeitsbereich
+workspace.add.submit.label=Erstellen
+workspace.edit.label=Arbeitsbereich bearbeiten
+workspace.edit.submit.label=Aktualisieren
+workspace.manage.label=Arbeitsbereiche verwalten
+workspace.manage.description=Diese Ansicht listet alle registrierten Workspaces auf. Jeder Workspace repräsentiert eine logisch getrennte Umgebung mit eigenen Klassen, Rollen und Konfigurationen.
+workspace.name.label=Arbeitsbereichsname
+workspace.name.placeholder=Geben Sie den Namen des Arbeitsbereichs ein.
+workspace.name.help=Der Name hilft Ihnen, diesen Arbeitsbereich schnell zu identifizieren.
+workspace.key.label=Schlüssel
+workspace.key.placeholder=
+workspace.key.help=Der Schlüssel des Arbeitsbereiches. Er muss eindeutig sein.
+workspace.category.label=Kategorie
+workspace.category.placeholder=Wählen Sie eine Kategorie für den Arbeitsbereich.
+workspace.category.help=
+workspace.description.label=Beschreibung
+workspace.description.placeholder=Geben Sie eine kurze Beschreibung des Arbeitsbereichs ein.
+workspace.overview.label=Übersicht
+workspace.quickfilter.all.label=Alle Workspaces
+
+dashboard.label=Dashboard
+

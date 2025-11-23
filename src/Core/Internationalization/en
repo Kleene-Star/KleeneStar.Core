@@ -1,0 +1,37 @@
+plugin.name=KleeneStar.Core
+plugin.description=Core plugin for the KleeneStar application.
+
+app.name=KleeneStar
+app.label=KleeneStar Application
+app.description=KleeneStar is a modular platform for knowledge, process, and asset management.
+app.license.label=License MIT 
+app.license.uri=https://github.com/Kleene-Star/KleeneStar.Core/blob/main/LICENSE
+app.about=About KleeneStar
+app.version.label={0} version {1} created with {2} version {3}.
+
+kleenestar.label=KleeneStar
+
+workspace.dropdown.label=Workspace
+workspace.add.label=Add Workspace
+workspace.add.submit.label=Create
+workspace.edit.label=Edit Workspace
+workspace.edit.submit.label=Update
+workspace.manage.label=Manage Workspaces
+workspace.manage.description=This view lists all registered workspaces. Each workspace represents a logically separate environment with its own classes, roles, and configurations.
+workspace.name.label=Workspace Name
+workspace.name.placeholder=Enter the name of the workspace.
+workspace.name.help=The name helps you quickly identify this workspace.
+workspace.key.label=Key
+workspace.key.placeholder=
+workspace.key.help=The key of the workspace. It must be unique.
+workspace.category.label=Category
+workspace.category.placeholder=Select a category for the workspace.
+workspace.category.help=
+workspace.description.label=Description
+workspace.description.placeholder=Enter a brief description of the workspace.
+workspace.overview.label=Overview
+workspace.quickfilter.all.label=All Workspaces
+
+dashboard.label=Dashboard
+
+
