@@ -370,6 +370,48 @@ The content of the modal dynamically adapts to the respective use case. In edit 
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
+### Workspace Management - Icon Edit (Modal)
+
+In addition to editing textual and structural properties of a workspace, there is also the option to customize the associated icon. This makes it easier to visually distinguish workspaces within the management interface and the sidebar. In the selected workspace, the current icon is displayed in the sidebar and can be modified via an edit button. A modal window opens, allowing the icon to be replaced and, if necessary, resized or cropped. The system supports standardized icon sets to ensure consistent representation across different tenants, but also permits individual uploads when required. Once saved, the changes are immediately visible in the workspace sidebar without the need to reload the page.
+
+```
+╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
+║┌Header──────────────────────────────────────────────────────────────────────────────┐║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
+║└─────╔WorkspaceIconModal══════════════════════════════════════════════════════╗─────┘║
+║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
+║│ / Se║│ Edit Workspace Icon                                                  │║     │║
+║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
+║┌Works║│                                                                      │║─────┐║
+║│[Name║│             Select image by drag or double-click.                    │║     │║
+║│     ║│                ┌────────────────────────────────────┐                │║ […] │║
+║│     ║│                │              * * *                 │                │║rch] │║
+║│     ║│                │               ***                  │                │║     │║
+║│     ║│                │             *** ***                │                │║---- │║
+║│ Issu║│                │               ***                  │                │║ […] │║
+║│ ├─ I║│                │              * * *                 │                │║ […] │║
+║│ ├─ P║│                └────────────────────────────────────┘                │║ […] │║
+║│ └─ S║│                Zoom                                                  │║ […] │║
+║│     ║│                  ──■───────────────────────────────                  │║ […] │║
+║│     ║│                           [Select Image]                             │║ […] │║
+║│     ║│                                                                      │║ […] │║
+║│     ║│ ┌──────────────────────────────────────────────────────────────────┐ │║ […] │║
+║│     ║│ │ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐│ │║ […] │║
+║│     ║│ │ │ □ │ │ ◇ │ │ ○ │ │ ◎ │ │ ◍ │ │ ◉ │ │ ◔ │ │ ◕ │ │ ▣ │ │ ◪ │ │ ◫ ││ │║ […] │║
+║│     ║│ │ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘│ │║ […] │║
+║│     ║│ │ Icon  Icon  Icon  Icon  Icon  Icon  Icon  Icon  Icon  Icon  Icon │ │║     │║
+║│     ║│ └──────────────────────────────────────────────────────────────────┘ │║     │║
+║│     ║└──────────────────────────────────────────────────────────────────────┘║xt › │║
+║├─────║                                                                        ║     │║
+║│ [+] ║                                                       [Save] [Cancel]  ║     │║
+║└─────║                                                                        ║─────┘║
+║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║└────────────────────────────────────────────────────────────────────────────────────┘║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+
+```
+
 ### Workspace Management - Clone (Modal)
 
 Cloning a workspace allows for the rapid replication of existing structures and is particularly useful for reusing proven configurations. The function is provided via a separate modal dialog window, which can be called from the detail view or the management page.
