@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using WebExpress.WebApp.WebAttribute;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.WebDomain;
 using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex;
 
-namespace KleeneStar.Core.WebWorkspace
+namespace KleeneStar.Core.Model.Workspace
 {
     /// <summary>
     /// Represents a workspace that provides a unique key, name, and description.
     /// </summary>
     /// <remarks>
-    public interface IWorkspace : IIndexItem
+    public interface IWorkspace : IIndexItem, IDomain
     {
         /// <summary>
         /// Returns the key of the workspace.

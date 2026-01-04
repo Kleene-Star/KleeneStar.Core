@@ -9,7 +9,7 @@ using WebExpress.WebCore;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WebWorkspace
+namespace KleeneStar.Core.Model.Workspace
 {
     /// <summary>
     /// Defines the contract for managing workspaces, including adding, retrieving, and removing workspaces, as well as
@@ -65,6 +65,7 @@ namespace KleeneStar.Core.WebWorkspace
         public IEnumerable<string> WorkspaceCategories => Workspaces
             .Select(x => x.Categories)
             .SelectMany(x => x)
+            .Where(x => x is not null)
             .Distinct();
 
         /// <summary>
@@ -97,7 +98,7 @@ namespace KleeneStar.Core.WebWorkspace
 
             SaveWorkspace(workspace, workspaceDirectory);
 
-            if (_workspaceMap.ContainsKey(workspace.Key))
+            if (!_workspaceMap.ContainsKey(workspace.Key))
             {
                 _workspaceMap[workspace.Key] = workspace;
             }
@@ -131,6 +132,11 @@ namespace KleeneStar.Core.WebWorkspace
         /// </returns>
         public IWorkspace GetWorkspaceByKey(string key)
         {
+            if (string.IsNullOrWhiteSpace(key))
+            {
+                return null;
+            }
+
             return _workspaceMap.TryGetValue(key, out var workspace) ? workspace : null;
         }
 

@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebWorkspace;
+using KleeneStar.Core.Model.Workspace;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
 
-namespace KleeneStar.Core.WebUri
+namespace KleeneStar.Core.WebUri.Workspace
 {
     /// <summary>
     /// Variable path segment.

@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter.Workspace;
 using System.Collections.Generic;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -9,14 +9,14 @@ using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.WorkspaceManager
+namespace KleeneStar.Core.WebFragment.Workspace
 {
     /// <summary>
     /// Represents a sidebar link fragment for quick filtering workspace categories within the workspace manager
     /// interface.
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Scope<WWW.WorkspaceManager.Index>]
+    [Scope<WWW.Workspace.Index>]
     [Cache]
     public sealed class WorkspaceQuickFilertCategoryFragment : FragmentControlSidebarItemLink
     {
@@ -31,7 +31,7 @@ namespace KleeneStar.Core.WebFragment.WorkspaceManager
             : base(fragmentContext)
         {
             Text = "kleenestar.core:workspace.quickfilter.category.label";
-            Uri = KleeneStar.GetUri<WWW.WorkspaceManager.Index>();
+            Uri = KleeneStar.GetUri<WWW.Workspace.Index>();
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace KleeneStar.Core.WebFragment.WorkspaceManager
             foreach (var category in KleeneStar.WorkspaceManager.WorkspaceCategories)
             {
                 var label = category.Trim().ToLower();
-                var uri = KleeneStar.GetUri<WWW.WorkspaceManager.Index>();
+                var uri = KleeneStar.GetUri<WWW.Workspace.Index>();
 
                 list.Add(new ControlSidebarItemLink()
                 {

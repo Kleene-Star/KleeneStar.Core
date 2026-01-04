@@ -1,18 +1,21 @@
-﻿using WebExpress.WebApp.WebApiControl;
+﻿using KleeneStar.Core.WebParameter.Workspace;
+using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
+using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
-using WebExpress.WebUI.WebIcon;
+using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebForm
+namespace KleeneStar.Core.WebControl.Workspace
 {
     /// <summary>
-    /// Represents a form used to add a new workspace.
+    /// Represents a form for a workspace.
     /// </summary>
-    public class WorkspaceAddForm : ControlForm
+    public class ControlWorkspaceFormAdd : ControlRestFormNew
     {
         /// <summary>
         /// Returns the input text control for specifying the name of the workspace.
         /// </summary>
-        public ControlRestFormItemInputUnique WorkspaceName { get; } = new ControlRestFormItemInputUnique()
+        public ControlRestFormItemInputUnique WorkspaceName { get; } = new()
         {
             Name = "name",
             Label = "kleenestar.core:workspace.name.label",
@@ -25,17 +28,21 @@ namespace KleeneStar.Core.WebForm
         /// <summary>
         /// Returns the input text control for specifying the key of the workspace.
         /// </summary>
-        public ControlRestFormItemInputUnique Key { get; } = new ControlRestFormItemInputUnique()
+        public ControlRestFormItemInputUnique Key { get; } = new()
         {
             Name = "key",
             Label = "kleenestar.core:workspace.key.label",
             Placeholder = "kleenestar.core:workspace.key.placeholder",
             Help = "kleenestar.core:workspace.key.help",
             Required = true,
+            MaxLength = 10,
             RestUri = KleeneStar.GetUri<WWW.Api._1.Workspaces.Unique>()
         };
 
-        public ControlFormItemInputTag Category { get; } = new ControlFormItemInputTag()
+        /// <summary>
+        /// Returns the input tag definition for the workspace category field.
+        /// </summary>
+        public ControlFormItemInputTag Category { get; } = new()
         {
             Name = "category",
             Label = "kleenestar.core:workspace.category.label",
@@ -55,22 +62,49 @@ namespace KleeneStar.Core.WebForm
             Required = false
         };
 
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public ControlWorkspaceFormAdd()
+            : this("kleenestar-workspace-form")
+        {
+
+        }
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public WorkspaceAddForm()
-            : base("kleenestar-workspace-form-add")
+        /// <param name="id">The unique identifier for the form control.</param>
+        public ControlWorkspaceFormAdd(string id)
+            : base(id)
         {
-            Add(WorkspaceName);
+            Enable = false;
+
             Add(Key);
+            Add(WorkspaceName);
             Add(Category);
             Add(Description);
-            AddPrimaryButton(new ControlFormItemButtonSubmit()
-            {
-                Icon = new IconPlus(),
-                Text = "kleenestar.core:workspace.add.submit.label"
-            });
+        }
+
+        /// <summary>
+        /// Renders the control as an HTML node.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
+        public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
+        {
+            var key = renderContext.Request.GetParameter<KeyParameter>();
+            var id = KleeneStar.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
+                .Id.ToString();
+
+            return base.Render(renderContext, visualTree, Items, id);
         }
     }
 }

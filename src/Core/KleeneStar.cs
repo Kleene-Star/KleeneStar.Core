@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.WebWorkspace;
+﻿using KleeneStar.Core.Model.Workspace;
 using WebExpress.WebCore.WebApplication;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebCore.WebEndpoint;

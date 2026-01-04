@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using WebExpress.WebCore.WebComponent;
 
-namespace KleeneStar.Core.WebWorkspace
+namespace KleeneStar.Core.Model.Workspace
 {
     /// <summary>
     /// Defines the contract for managing workspaces, including adding, retrieving, and removing workspaces, as well as

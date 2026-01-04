@@ -1,16 +1,23 @@
 ﻿using System.Linq;
+using System.Text.RegularExpressions;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
-using WebExpress.WebCore.WebRestApi;
 
 namespace KleeneStar.Core.WWW.Api._1.Workspaces
 {
     [Title("Workspace")]
-    [Method(CrudMethod.GET)]
     [Cache]
-    public sealed class Unique : RestApiUnique
+    public sealed partial class Unique : RestApiUnique
     {
+        /// <summary>
+        /// Provides a compiled regular expression that matches strings containing only alphanumeric 
+        /// characters (letters
+        /// and digits).
+        /// </summary>
+        [GeneratedRegex("^[a-zA-Z0-9]{1,10}$")]
+        private static partial Regex KeyRegex();
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -33,7 +40,12 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
             var data = KleeneStar.WorkspaceManager?.Workspaces;
             var unique = data.Select(x => x.Name.ToLower()).Any(x => x.StartsWith(value));
 
-            if (WebWorkspace.WorkspaceManager.ReservedWorkspaceKeys.Contains(value?.Trim().ToLower()))
+            if (Model.Workspace.WorkspaceManager.ReservedWorkspaceKeys.Contains(value?.Trim().ToLower()))
+            {
+                return false;
+            }
+
+            if (!KeyRegex().IsMatch(value))
             {
                 return false;
             }

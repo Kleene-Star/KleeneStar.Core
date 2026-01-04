@@ -34,8 +34,4 @@
 		<ProjectReference Include="..\..\..\WebExpress.WebUI\src\WebExpress.WebUI\WebExpress.WebUI.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="WebWorkspace\Model\" />
-	</ItemGroup>
-
 </Project>

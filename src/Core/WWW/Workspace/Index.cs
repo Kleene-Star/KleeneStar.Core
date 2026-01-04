@@ -1,18 +1,18 @@
-﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Core.WebParameter.Workspace;
-using WebExpress.WebApp.WebPage;
+﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.View
+namespace KleeneStar.Core.WWW.Workspace
 {
     /// <summary>
-    /// Represents the overview page for a workspace in the web application.
+    /// Represents the main workspace management page within the web application.
     /// </summary>
-    [Title("kleenestar.core:workspace.overview.label")]
-    [SegmentKey<KeyParameter>()]
+    [WebIcon<IconGlobe>]
+    [Title("kleenestar.core:workspace.manage.label")]
     [Scope<IScopeGeneral>]
+    [Domain<Model.Workspace.Workspace>]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>

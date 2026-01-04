@@ -1,31 +1,22 @@
-﻿using KleeneStar.Core.WebControl;
-using WebExpress.WebApp.WebScope;
-using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebCore.WebScope;
+using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.WorkspaceManager
+namespace KleeneStar.Core.WebFragment.Workspace
 {
     /// <summary>
-    /// Represents a dropdown fragment within a workspace, providing functionality to interact with and 
-    /// manage dropdown options.
+    /// Represents a fragment control that displays the workspace description using Markdown formatting within the
+    /// workspace management interface.
     /// </summary>
-    [Section<SectionAppNavigationPreferences>]
-    [Scope<IScopeGeneral>]
-    [Scope<IScopeAdmin>]
-    [Scope<IScopeStatusPage>]
+    [Section<SectionContentPreferences>]
+    [Scope<WWW.Workspace.Index>]
     [Cache]
-    public sealed class WorkspaceDropdownFragment : WorkspaceDoropdown, IFragmentControl<WorkspaceDoropdown>, IFragmentControlNavigationItem
+    public sealed class FragmentWorkspaceDescription : FragmentControlText
     {
-        /// <summary>
-        /// Returns the context of the fragment.
-        /// </summary>
-        public IFragmentContext FragmentContext { get; private set; }
-
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -33,11 +24,11 @@ namespace KleeneStar.Core.WebFragment.WorkspaceManager
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public WorkspaceDropdownFragment(IFragmentContext fragmentContext)
-            : base(fragmentContext?.FragmentId?.ToString())
+        public FragmentWorkspaceDescription(IFragmentContext fragmentContext)
+            : base(fragmentContext)
         {
-            FragmentContext = fragmentContext;
-            Text = "kleenestar.core:workspace.dropdown.label";
+            Text = "kleenestar.core:workspace.manage.description";
+            Format = TypeFormatText.Markdown;
         }
 
         /// <summary>

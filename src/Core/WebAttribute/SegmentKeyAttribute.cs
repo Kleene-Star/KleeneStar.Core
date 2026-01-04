@@ -1,5 +1,5 @@
-﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WebUri;
+﻿using KleeneStar.Core.WebParameter.Workspace;
+using KleeneStar.Core.WebUri.Workspace;
 using System;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebParameter;

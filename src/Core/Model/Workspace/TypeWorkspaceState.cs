@@ -1,4 +1,4 @@
-﻿namespace KleeneStar.Core.WebWorkspace
+﻿namespace KleeneStar.Core.Model.Workspace
 {
     /// <summary>
     /// Specifies the state of a workspace type, indicating whether it is active or archived.

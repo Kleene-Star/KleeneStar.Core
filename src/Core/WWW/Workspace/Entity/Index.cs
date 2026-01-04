@@ -1,16 +1,18 @@
-﻿using WebExpress.WebApp.WebPage;
+﻿using KleeneStar.Core.WebAttribute;
+using KleeneStar.Core.WebParameter.Workspace;
+using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.WorkspaceManager
+namespace KleeneStar.Core.WWW.Workspace.Entity
 {
     /// <summary>
-    /// Represents the main workspace management page within the web application.
+    /// Provides functionality for managing the current workspace page.
     /// </summary>
     [WebIcon<IconGlobe>]
-    [Title("kleenestar.core:workspace.manage.label")]
+    [SegmentKey<KeyParameter>()]
     [Scope<IScopeGeneral>]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
@@ -28,6 +30,7 @@ namespace KleeneStar.Core.WWW.WorkspaceManager
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
+            visualTree.Title = "Workspace Manager - Workspace";
         }
     }
 }

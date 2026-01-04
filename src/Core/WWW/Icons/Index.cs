@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WWW.Icons
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="resourceContext">The resource context.</param>
-        public Index(IResourceContext resourceContext, IHttpServerContext httpServerContext) 
+        public Index(IResourceContext resourceContext, IHttpServerContext httpServerContext)
         {
             _resourceContext = resourceContext;
             _httpServerContext = httpServerContext;
@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WWW.Icons
         /// </summary>
         /// <param name="request">The request.</param>
         /// <returns>The response.</returns>
-        public Response Process(Request request)
+        public IResponse Process(IRequest request)
         {
             var route = _resourceContext.Route;
             var filename = request.Uri.PathSegments.Skip(route.PathSegments.Count()).LastOrDefault()?.ToString();

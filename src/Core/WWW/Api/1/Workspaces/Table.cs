@@ -1,5 +1,5 @@
-﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WebWorkspace;
+﻿using KleeneStar.Core.Model.Workspace;
+using KleeneStar.Core.WebParameter.Workspace;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -8,60 +8,74 @@ using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebParameter;
-using WebExpress.WebCore.WebRestApi;
 using WebExpress.WebCore.WebUri;
 
 namespace KleeneStar.Core.WWW.Api._1.Workspaces
 {
+    /// <summary>
+    /// Represents a REST API table for managing workspace entities, providing data retrieval 
+    /// and option generation functionality for workspace records.
+    /// </summary>
     [Title("Workspace")]
-    [Method(CrudMethod.GET)]
-    [Method(CrudMethod.DELETE)]
-    [Method(CrudMethod.PUT)]
     [Cache]
-    public sealed class Table : RestApiCrudTable<IWorkspace>
+    public sealed class Table : RestApiTable<IWorkspace>
     {
-        private readonly IUri _formUri;
+        private readonly IUri _editFormUri;
+        private readonly IUri _deleteFormUri;
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public Table()
         {
-            var uri = KleeneStar.GetUri<WWW.WorkspaceManager.Entity.Edit>();
-            _formUri = new UriEndpoint(uri?.SetFragment("kleenestar-workspace-form-edit"));
-
-            Data = KleeneStar.WorkspaceManager?.Workspaces;
+            _editFormUri = KleeneStar.GetUri<WWW.Workspace.Entity.Edit>();
+            _deleteFormUri = KleeneStar.GetUri<WWW.Workspace.Entity.Delete>();
         }
 
         /// <summary>
         /// Retrieves a collection of options.
         /// </summary>
-        /// <param name="request">The request object containing the criteria for retrieving options. Cannot be null.</param>
-        /// <param name="row">The row object for which options are being retrieved. Cannot be null.</param>
-        public override IEnumerable<RestApiCrudOption> GetOptions(Request request, IWorkspace row)
+        /// <param name="request">
+        /// The request object containing the criteria for retrieving options. Cannot be null.
+        /// </param>
+        /// <param name="row">
+        /// The row object for which options are being retrieved. Cannot be null.
+        /// </param>
+        public override IEnumerable<RestApiOption> GetOptions(IRequest request, IWorkspace row)
         {
-            var uri = new UriEndpoint(_formUri);
-            uri = uri.SetParameters(new KeyParameter(row.Key)) as UriEndpoint;
-
-            yield return new RestApiCrudOptionHeader(request)
+            yield return new RestApiOptionHeader(request)
             {
                 Label = "webexpress.webapp:header.setting.label"
             };
 
-            yield return new RestApiCrudOptionEdit(request)
+            yield return new RestApiOptionEdit(request)
             {
-                Uri = uri.ToString()
+                Uri = _editFormUri?.SetParameters
+                (
+                    new KeyParameter(row.Key)
+                )?
+                    .ToString(),
+                Modal = "#modal-form"
             };
 
-            yield return new RestApiCrudOptionSeperator(request);
-            yield return new RestApiCrudOptionDelete(request);
+            yield return new RestApiOptionSeperator(request);
+            yield return new RestApiOptionDelete(request)
+            {
+                Uri = _deleteFormUri?.SetParameters
+                (
+                    new KeyParameter(row.Key)
+                )?
+                    .ToString(),
+                Modal = "#modal-form"
+            };
         }
 
         /// <summary>
         /// Retrieves a collection of objects based on the specified WQL statement and request.
         /// </summary>
         /// <param name="filter">
-        /// The filter used to query the data. This parameter defines the filtering and selection criteria.
+        /// The filter used to query the data. This parameter defines the filtering and 
+        /// selection criteria.
         /// </param>
         /// <param name="request">
         /// The request context containing additional information for the operation.
@@ -69,9 +83,9 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// <returns>
         /// An enumerable containing the objects that match the query criteria.
         /// </returns>
-        public override IEnumerable<IWorkspace> GetData(string filter, Request request)
+        public override IEnumerable<IWorkspace> GetData(string filter, IRequest request)
         {
-            var data = Data;
+            var data = KleeneStar.WorkspaceManager?.Workspaces;
 
             if (request.GetParameter<CategoryParameter>() is Parameter category)
             {
@@ -85,59 +99,13 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
 
             if (filter == null || filter == "null")
             {
-                return Data;
+                return data;
             }
 
-            return data
-                .Where
-                (
-                    x => x.Name.Contains(filter, System.StringComparison.InvariantCultureIgnoreCase)
-                );
-        }
-
-        /// <summary>
-        /// Performs validation before updating data.
-        /// </summary>
-        /// <param name="item"> The item containing the updated data.</param>
-        /// <param name="request">The HTTP request containing input data and parameters.</param>
-        /// <returns>
-        /// A <see cref="RestApiValidationResult"/> containing any validation errors 
-        /// encountered during the update process. If the operation completes successfully, 
-        /// the result will contain no errors.
-        /// </returns>
-        public override RestApiValidationResult ValidateUpdateData(IWorkspace item, Request request)
-        {
-            return new RestApiValidator(request)
-                .Require(nameof(IWorkspace.Name))
-                .MinLength(nameof(IWorkspace.Name), 3)
-                .Result;
-        }
-
-        /// <summary>
-        /// Updates the data record identified by the specified ID.
-        /// </summary>
-        /// <param name="item"> The item containing the updated data.</param>
-        /// <param name="request">The HTTP request containing the update parameters.</param>
-        public override void UpdateData(IWorkspace item, Request request)
-        {
-            var i = item as Workspace;
-            i.Name = request.GetParameter(nameof(IWorkspace.Name))?.Value;
-        }
-
-        /// <summary>
-        /// Deletes data.
-        /// </summary>
-        /// <param name="id">The id of the data to delete.</param>
-        /// <param name="request">The request.</param>
-        public override void DeleteData(string id, Request request)
-        {
-            var guid = default(Guid);
-            Guid.TryParse(id, out guid);
-
-            if (guid != Guid.Empty)
-            {
-                KleeneStar.WorkspaceManager.RemoveWorkspace(guid);
-            }
+            return data.Where
+            (
+                x => x.Name.Contains(filter, StringComparison.InvariantCultureIgnoreCase)
+            );
         }
     }
 }

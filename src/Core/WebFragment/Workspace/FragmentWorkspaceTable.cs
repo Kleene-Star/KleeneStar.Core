@@ -1,34 +1,31 @@
-﻿using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter.Workspace;
+using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebUI.WebControl;
-using WebExpress.WebUI.WebFragment;
+using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.WorkspaceManager
+namespace KleeneStar.Core.WebFragment.Workspace
 {
     /// <summary>
-    /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the workspace sidebar.
+    /// Represents a fragment control for managing workspace tables, providing functionality to 
+    /// render the fragment as HTML.
     /// </summary>
-    [Section<SectionSidebarPreferences>]
-    [Scope<WWW.WorkspaceManager.Index>]
+    [Section<SectionContentPrimary>]
+    [Scope<WWW.Workspace.Index>]
     [Cache]
-    public sealed class WorkspaceQuickFilertAllFragment : FragmentControlSidebarItemLink
+    public sealed class FragmentWorkspaceTable : FragmentControlRestTable
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        /// <param name="fragmentContext">
-        /// The context associated with the fragment, providing necessary data and services for its operation. 
-        /// Cannot be null.
-        /// </param>
-        public WorkspaceQuickFilertAllFragment(IFragmentContext fragmentContext)
+        /// <param name="fragmentContext">The context of the fragment.</param>
+        public FragmentWorkspaceTable(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:workspace.quickfilter.all.label";
-            Uri = KleeneStar.GetUri<WWW.WorkspaceManager.Index>();
+            RestUri = KleeneStar.GetUri<WWW.Api._1.Workspaces.Table>();
         }
 
         /// <summary>
@@ -41,9 +38,11 @@ namespace KleeneStar.Core.WebFragment.WorkspaceManager
         {
             var categoryParameter = renderContext.Request.GetParameter<CategoryParameter>();
 
-            Active = categoryParameter is null
-                ? TypeActive.Active
-                : TypeActive.None;
+            RestUri = KleeneStar
+                    .GetUri<WWW.Api._1.Workspaces.Table>()
+                    .Add(categoryParameter is not null
+                        ? new UriQuery("category", categoryParameter.Value)
+                        : null);
 
             return base.Render(renderContext, visualTree);
         }

@@ -1,22 +1,31 @@
-﻿using WebExpress.WebApp.WebSection;
+﻿using KleeneStar.Core.WebControl.Workspace;
+using WebExpress.WebApp.WebScope;
+using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebUI.WebControl;
+using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebFragment;
-using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.WorkspaceManager
+namespace KleeneStar.Core.WebFragment.Workspace
 {
     /// <summary>
-    /// Represents a control fragment that provides a button link for adding a new workspace within the application.
+    /// Represents a dropdown fragment within a workspace, providing functionality to interact with and 
+    /// manage dropdown options.
     /// </summary>
-    [Section<SectionHeadlinePrimary>]
-    [Scope<WWW.WorkspaceManager.Index>]
+    [Section<SectionAppNavigationPreferences>]
+    [Scope<IScopeGeneral>]
+    [Scope<IScopeAdmin>]
+    [Scope<IScopeStatusPage>]
     [Cache]
-    public sealed class WorkspaceAddFragment : FragmentControlButtonLink
+    public sealed class FragmentWorkspaceDropdown : ControlWorkspaceDoropdown, IFragmentControl<ControlWorkspaceDoropdown>, IFragmentControlNavigationItem
     {
+        /// <summary>
+        /// Returns the context of the fragment.
+        /// </summary>
+        public IFragmentContext FragmentContext { get; private set; }
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -24,14 +33,11 @@ namespace KleeneStar.Core.WebFragment.WorkspaceManager
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public WorkspaceAddFragment(IFragmentContext fragmentContext)
-            : base(fragmentContext)
+        public FragmentWorkspaceDropdown(IFragmentContext fragmentContext)
+            : base(fragmentContext?.FragmentId?.ToString())
         {
-            Text = "kleenestar.core:workspace.add.label";
-            Modal = "kleenestar-workspace-add";
-            Icon = new IconPlus();
-            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
-            BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
+            FragmentContext = fragmentContext;
+            Text = "kleenestar.core:workspace.dropdown.label";
         }
 
         /// <summary>

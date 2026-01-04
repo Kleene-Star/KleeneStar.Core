@@ -4,7 +4,7 @@ using WebExpress.WebApp.WebAttribute;
 using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebUri;
 
-namespace KleeneStar.Core.WebWorkspace
+namespace KleeneStar.Core.Model.Workspace
 {
     /// <summary>
     /// Represents a workspace, which serves as a container for related resources and metadata.
