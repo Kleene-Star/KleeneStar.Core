@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using WebExpress.WebApp.WebAttribute;
-using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebDomain;
 using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebUri;
@@ -31,13 +30,14 @@ namespace KleeneStar.Core.Model.Workspace
         /// Returns the collection of category names associated with the item.
         /// </summary>
         [RestTableColumnName("Category")]
+        [RestApiTableColumnTemplateTag(true)]
+        [RestTableJoin(';')]
         IEnumerable<string> Categories { get; }
 
         /// <summary>
         /// Returns the description of the workspace.
         /// </summary>
         [RestTableColumnName("Description")]
-        [RestTableColumnEditor(TypeRender.Editor)]
         string Description { get; }
 
         /// <summary>
