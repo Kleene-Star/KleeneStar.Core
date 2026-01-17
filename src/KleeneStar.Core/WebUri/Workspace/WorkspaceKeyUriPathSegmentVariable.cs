@@ -1,4 +1,4 @@
-using KleeneStar.Core.Model.Workspace;
+using KleeneStar.Core.Workspace;
 using System;
 using System.Collections.Generic;
 using System.Linq;

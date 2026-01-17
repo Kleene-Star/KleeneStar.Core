@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using KleeneStar.Core.Workspace;
+using System.Linq;
 using System.Text.RegularExpressions;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
@@ -37,10 +38,10 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// <returns>True if the specified value is available; otherwise, false.</returns>
         protected override bool CheckAvailable(string value, Request request)
         {
-            var data = KleeneStar.WorkspaceManager?.Workspaces;
+            var data = CoreHub.WorkspaceManager?.Workspaces;
             var unique = data.Select(x => x.Name.ToLower()).Any(x => x.StartsWith(value));
 
-            if (Model.Workspace.WorkspaceManager.ReservedWorkspaceKeys.Contains(value?.Trim().ToLower()))
+            if (WorkspaceManager.ReservedWorkspaceKeys.Contains(value?.Trim().ToLower()))
             {
                 return false;
             }

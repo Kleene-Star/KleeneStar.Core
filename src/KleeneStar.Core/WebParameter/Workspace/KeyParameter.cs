@@ -36,7 +36,7 @@ namespace KleeneStar.Core.WebParameter.Workspace
         /// </returns>
         public override string GetDisplayText(IRenderContext renderContext)
         {
-            var workspace = KleeneStar.WorkspaceManager.GetWorkspaceByKey(Value);
+            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(Value);
 
             return workspace?.Name;
         }
@@ -53,7 +53,7 @@ namespace KleeneStar.Core.WebParameter.Workspace
         /// </returns>
         public override IIcon GetIcon(IRenderContext renderContext)
         {
-            var workspace = KleeneStar.WorkspaceManager.GetWorkspaceByKey(Value);
+            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(Value);
 
             return workspace.Icon;
         }

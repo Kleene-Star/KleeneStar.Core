@@ -12,7 +12,7 @@ namespace KleeneStar.Core.WWW.Workspace
     [WebIcon<IconGlobe>]
     [Title("kleenestar.core:workspace.manage.label")]
     [Scope<IScopeGeneral>]
-    [Domain<Model.Workspace.Workspace>]
+    [Domain<Model.Entity.Workspace>]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>

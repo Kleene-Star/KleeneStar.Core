@@ -1,4 +1,5 @@
-﻿using WebExpress.WebCore.WebApplication;
+﻿using KleeneStar.Model;
+using WebExpress.WebCore.WebApplication;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebComponent;
 
@@ -22,7 +23,9 @@ namespace KleeneStar.Core
         public KleeneStarApplication(IApplicationContext applicationContext, IComponentHub componentHub)
         {
             CoreHub.ComponentHub = componentHub;
+            ModelHub.ComponentHub = componentHub;
             CoreHub.ApplicationContet = applicationContext;
+            ModelHub.ApplicationContet = applicationContext;
         }
 
         /// <summary>

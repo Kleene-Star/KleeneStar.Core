@@ -28,8 +28,8 @@ namespace KleeneStar.Core.WebFragment.Workspace
             : base(fragmentContext)
         {
             Text = "kleenestar.core:workspace.add.label";
-            Modal = "modal-form";
-            Uri = KleeneStar.GetUri<WWW.Workspace.Add>();
+            Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge);
+            Uri = CoreHub.GetUri<WWW.Workspace.Add>();
             Icon = new IconPlus();
             Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);

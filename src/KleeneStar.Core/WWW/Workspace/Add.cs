@@ -27,7 +27,7 @@ namespace KleeneStar.Core.WWW.Workspace
         public Add()
         {
             Form.Mode = TypeRestFormMode.New;
-            Form.Uri = KleeneStar.GetUri<WWW.Api._1.Workspaces.Index>();
+            Form.Uri = CoreHub.GetUri<WWW.Api._1.Workspaces.Index>();
         }
 
         /// <summary>

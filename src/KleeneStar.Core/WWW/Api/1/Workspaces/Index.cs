@@ -1,11 +1,10 @@
-﻿using KleeneStar.Core.Model.Workspace;
+﻿using KleeneStar.Model.Entity;
 using System;
 using System.Collections.Generic;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebRestApi;
-using WebExpress.WebUI.WebControl;
 
 namespace KleeneStar.Core.WWW.Api._1.Workspaces
 {
@@ -30,7 +29,7 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// </returns>
         public override IEnumerable<IWorkspace> Retrieve()
         {
-            return KleeneStar.WorkspaceManager.Workspaces;
+            return CoreHub.WorkspaceManager.Workspaces;
         }
 
         /// <summary>
@@ -46,8 +45,7 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         {
             return new RestApiCrudResultRetrieve<IWorkspace>()
             {
-                Title = I18N.Translate(request, "kleenestar.core:workspace.add.header"),
-                ModalSize = TypeModalSize.ExtraLarge
+                Title = I18N.Translate(request, "kleenestar.core:workspace.add.header")
             };
         }
 
@@ -68,8 +66,7 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
             return new RestApiCrudResultRetrieve<IWorkspace>()
             {
                 Title = I18N.Translate(request, "kleenestar.core:workspace.edit.header"),
-                Data = KleeneStar.WorkspaceManager.GetWorkspace(Guid.Parse(id)),
-                ModalSize = TypeModalSize.ExtraLarge
+                Data = CoreHub.WorkspaceManager.GetWorkspace(Guid.Parse(id))
             };
         }
 
@@ -90,14 +87,18 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// </returns>
         public override IRestApiCrudResultRetrieveDelete<IWorkspace> RetrieveForDelete(string id, IRequest request)
         {
-            var data = KleeneStar.WorkspaceManager.GetWorkspace(Guid.Parse(id));
+            var data = CoreHub.WorkspaceManager.GetWorkspace(Guid.Parse(id));
             return new RestApiCrudResultRetrieveDelete<IWorkspace>()
             {
                 Data = data,
                 Title = I18N.Translate(request, "kleenestar.core:workspace.delete.header"),
-                ModalSize = TypeModalSize.Default,
                 ConfirmItem = data?.Key
             };
+        }
+
+        public override IResponse Create(IRequest request)
+        {
+            return base.Create(request);
         }
 
         /// <summary>
@@ -120,7 +121,7 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// </returns>
         public override IRestApiValidationResult Validate(IWorkspace existingItem, RestApiCrudFormData payload, IRequest request)
         {
-            return new RestApiValidationResult();
+            return base.Validate(existingItem, payload, request);
         }
 
         /// <summary>
@@ -137,9 +138,7 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// </param>
         public override IRestApiCrudResultUpdate Update(IWorkspace existingItem, RestApiCrudFormData payload, IRequest request)
         {
-            //existingItem.Name = payload[nameof(IWorkspace.Name)]?.ToString();
-
-            return new RestApiCrudResultUpdate();
+            return base.Update(existingItem, payload, request);
         }
 
         /// <summary>
@@ -156,9 +155,9 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// </returns>
         public override IRestApiCrudResultDelete Delete(IWorkspace existingItem, IRequest request)
         {
-            KleeneStar.WorkspaceManager.RemoveWorkspace(existingItem.Id);
+            CoreHub.WorkspaceManager.RemoveWorkspace(existingItem.Id);
 
-            return new RestApiCrudResultDelete();
+            return base.Delete(existingItem, request);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace KleeneStar.Core.WWW.Workspace.Entity
         public Delete()
         {
             Form.Mode = TypeRestFormMode.Delete;
-            Form.Uri = KleeneStar.GetUri<WWW.Api._1.Workspaces.Index>();
+            Form.Uri = CoreHub.GetUri<WWW.Api._1.Workspaces.Index>();
         }
 
         /// <summary>

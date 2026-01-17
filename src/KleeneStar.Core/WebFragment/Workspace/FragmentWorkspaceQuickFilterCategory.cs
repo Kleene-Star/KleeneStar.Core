@@ -31,7 +31,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
             : base(fragmentContext)
         {
             Text = "kleenestar.core:workspace.quickfilter.category.label";
-            Uri = KleeneStar.GetUri<WWW.Workspace.Index>();
+            Uri = CoreHub.GetUri<WWW.Workspace.Index>();
         }
 
         /// <summary>
@@ -45,10 +45,10 @@ namespace KleeneStar.Core.WebFragment.Workspace
             var categoryParameter = renderContext.Request.GetParameter<CategoryParameter>();
             var list = new List<IHtmlNode>();
 
-            foreach (var category in KleeneStar.WorkspaceManager.WorkspaceCategories)
+            foreach (var category in CoreHub.WorkspaceManager.WorkspaceCategories)
             {
                 var label = category.Trim().ToLower();
-                var uri = KleeneStar.GetUri<WWW.Workspace.Index>();
+                var uri = CoreHub.GetUri<WWW.Workspace.Index>();
 
                 list.Add(new ControlSidebarItemLink()
                 {

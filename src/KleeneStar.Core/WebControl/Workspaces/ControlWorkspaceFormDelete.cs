@@ -44,7 +44,7 @@ namespace KleeneStar.Core.WebControl.Workspace
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             var key = renderContext.Request.GetParameter<KeyParameter>();
-            var id = KleeneStar.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
+            var id = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
                 .Id.ToString();
 
             return base.Render(renderContext, visualTree, Items, id);

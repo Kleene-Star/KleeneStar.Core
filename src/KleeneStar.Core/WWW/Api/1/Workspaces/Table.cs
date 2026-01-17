@@ -1,5 +1,5 @@
-﻿using KleeneStar.Core.Model.Workspace;
-using KleeneStar.Core.WebParameter.Workspace;
+﻿using KleeneStar.Core.WebParameter.Workspace;
+using KleeneStar.Model.Entity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,6 +9,7 @@ using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
+using WebExpress.WebUI.WebControl;
 
 namespace KleeneStar.Core.WWW.Api._1.Workspaces
 {
@@ -28,8 +29,8 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// </summary>
         public Table()
         {
-            _editFormUri = KleeneStar.GetUri<WWW.Workspace.Entity.Edit>();
-            _deleteFormUri = KleeneStar.GetUri<WWW.Workspace.Entity.Delete>();
+            _editFormUri = CoreHub.GetUri<WWW.Workspace.Entity.Edit>();
+            _deleteFormUri = CoreHub.GetUri<WWW.Workspace.Entity.Delete>();
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
                     new KeyParameter(row.Key)
                 )?
                     .ToString(),
-                Modal = "#modal-form"
+                Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionSeperator(request);
@@ -66,8 +67,44 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
                     new KeyParameter(row.Key)
                 )?
                     .ToString(),
-                Modal = "#modal-form"
+                Modal = new ModalTarget("modal-form", TypeModalSize.Small)
             };
+        }
+
+        /// <summary>
+        /// Retrieves a URI that represents the specified request within the given workspace context.
+        /// </summary>
+        /// <param name="request">
+        /// The request for which to obtain the corresponding URI. Cannot be null.
+        /// </param>
+        /// <param name="row">
+        /// The workspace context in which the request is evaluated. Cannot be null.
+        /// </param>
+        /// <returns>
+        /// An object implementing <see cref="IUri"/> that represents the URI for the specified request and workspace.
+        /// </returns>
+        public override IUri GetUri(IRequest request, IWorkspace row)
+        {
+            return CoreHub.GetUri<WWW.Index>()?
+                .Concat(row.Key);
+        }
+
+        /// <summary>
+        /// Returns the REST API endpoint URI associated with the specified request and workspace.
+        /// </summary>
+        /// <param name="request">
+        /// The request for which to retrieve the REST API endpoint.
+        /// </param>
+        /// <param name="row">
+        /// The workspace context used to determine the appropriate REST API endpoint.
+        /// </param>
+        /// <returns>
+        /// An object representing the URI of the REST API endpoint for the given request and workspace.
+        /// </returns>
+        public override IUri GetRestApi(IRequest request, IWorkspace row)
+        {
+            return CoreHub.GetUri<WWW.Api._1.Workspaces.Index>()?
+                .Add(new UriQuery("id", row.Id.ToString()));
         }
 
         /// <summary>
@@ -85,7 +122,7 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// </returns>
         public override IEnumerable<IWorkspace> GetData(string filter, IRequest request)
         {
-            var data = KleeneStar.WorkspaceManager?.Workspaces;
+            var data = CoreHub.WorkspaceManager?.Workspaces;
 
             if (request.GetParameter<CategoryParameter>() is Parameter category)
             {

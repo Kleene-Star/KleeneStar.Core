@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.Model.Workspace;
+﻿using KleeneStar.Model.Entity;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
@@ -33,7 +33,7 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// </returns>
         public override IEnumerable<IWorkspace> GetData(string filter, IRequest request)
         {
-            var data = KleeneStar.WorkspaceManager?.Workspaces;
+            var data = CoreHub.WorkspaceManager?.Workspaces;
 
             if (filter == null || filter == "null")
             {

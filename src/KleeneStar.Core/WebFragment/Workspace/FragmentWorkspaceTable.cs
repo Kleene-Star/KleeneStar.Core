@@ -25,7 +25,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
         public FragmentWorkspaceTable(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            RestUri = KleeneStar.GetUri<WWW.Api._1.Workspaces.Table>();
+            RestUri = CoreHub.GetUri<WWW.Api._1.Workspaces.Table>();
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
         {
             var categoryParameter = renderContext.Request.GetParameter<CategoryParameter>();
 
-            RestUri = KleeneStar
+            RestUri = CoreHub
                     .GetUri<WWW.Api._1.Workspaces.Table>()
                     .Add(categoryParameter is not null
                         ? new UriQuery("category", categoryParameter.Value)

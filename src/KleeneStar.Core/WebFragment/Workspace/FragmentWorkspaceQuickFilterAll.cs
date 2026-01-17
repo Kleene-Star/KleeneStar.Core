@@ -28,7 +28,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
             : base(fragmentContext)
         {
             Text = "kleenestar.core:workspace.quickfilter.all.label";
-            Uri = KleeneStar.GetUri<WWW.Workspace.Index>();
+            Uri = CoreHub.GetUri<WWW.Workspace.Index>();
         }
 
         /// <summary>

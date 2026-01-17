@@ -1,9 +1,9 @@
 ﻿using KleeneStar.Core.WebParameter.Workspace;
+using KleeneStar.Model.Entity;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
-using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebControl.Workspace
@@ -18,12 +18,12 @@ namespace KleeneStar.Core.WebControl.Workspace
         /// </summary>
         public ControlRestFormItemInputUnique WorkspaceName { get; } = new()
         {
-            Name = "name",
+            Name = nameof(IWorkspace.Name),
             Label = "kleenestar.core:workspace.name.label",
             Placeholder = "kleenestar.core:workspace.name.placeholder",
             Help = "kleenestar.core:workspace.name.help",
             Required = true,
-            RestUri = KleeneStar.GetUri<WWW.Api._1.Workspaces.Unique>()
+            RestUri = CoreHub.GetUri<WWW.Api._1.Workspaces.Unique>()
         };
 
         /// <summary>
@@ -31,13 +31,13 @@ namespace KleeneStar.Core.WebControl.Workspace
         /// </summary>
         public ControlRestFormItemInputUnique Key { get; } = new()
         {
-            Name = "key",
+            Name = nameof(IWorkspace.Key),
             Label = "kleenestar.core:workspace.key.label",
             Placeholder = "kleenestar.core:workspace.key.placeholder",
             Help = "kleenestar.core:workspace.key.help",
             Required = true,
             MaxLength = 10,
-            RestUri = KleeneStar.GetUri<WWW.Api._1.Workspaces.Unique>()
+            RestUri = CoreHub.GetUri<WWW.Api._1.Workspaces.Unique>()
         };
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WebControl.Workspace
         /// </summary>
         public ControlFormItemInputTag Category { get; } = new()
         {
-            Name = "category",
+            Name = nameof(IWorkspace.Categories),
             Label = "kleenestar.core:workspace.category.label",
             Placeholder = "kleenestar.core:workspace.category.placeholder",
             Help = "kleenestar.core:workspace.category.help"
@@ -56,20 +56,11 @@ namespace KleeneStar.Core.WebControl.Workspace
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = "description",
+            Name = nameof(IWorkspace.Description),
             Label = "kleenestar.core:workspace.description.label",
             Placeholder = "kleenestar.core:workspace.description.placeholder",
             Format = TypeEditTextFormat.Wysiwyg,
             Required = false
-        };
-
-        /// <summary>
-        /// Returns the submit button control used to confirm the form action.
-        /// </summary>
-        public ControlFormItemButtonSubmit SubmitButton { get; } = new ControlFormItemButtonSubmit()
-        {
-            Icon = new IconPlus(),
-            Text = "kleenestar.core:workspace.add.submit.label"
         };
 
         /// <summary>
@@ -94,8 +85,6 @@ namespace KleeneStar.Core.WebControl.Workspace
             Add(WorkspaceName);
             Add(Category);
             Add(Description);
-
-            //AddPrimaryButton(SubmitButton);
         }
 
         /// <summary>
@@ -113,7 +102,7 @@ namespace KleeneStar.Core.WebControl.Workspace
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             var key = renderContext.Request.GetParameter<KeyParameter>();
-            var id = KleeneStar.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
+            var id = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
                 .Id.ToString();
 
             return base.Render(renderContext, visualTree, Items, id);
