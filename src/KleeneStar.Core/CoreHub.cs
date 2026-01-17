@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.Model.Workspace;
+﻿using KleeneStar.Model.Workspace;
 using WebExpress.WebCore.WebApplication;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebCore.WebEndpoint;
@@ -10,7 +10,7 @@ namespace KleeneStar.Core
     /// <summary>
     /// Provides utility methods for working with the KleeneStar.
     /// </summary>
-    public static class KleeneStar
+    public static class CoreHub
     {
         private static WorkspaceManager _workspaceManager;
 

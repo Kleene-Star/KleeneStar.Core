@@ -5,7 +5,7 @@
 		<Version>0.0.1.0</Version>
 		<AssemblyVersion>0.0.1.0</AssemblyVersion>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<RepositoryUrl>https://github.com/Kleene-Star/KleeneStar.Core</RepositoryUrl>
+		<RepositoryUrl>https://github.com/kleenestar-project/KleeneStar.Core</RepositoryUrl>
 		<EnableDynamicLoading>true</EnableDynamicLoading>
 	</PropertyGroup>
 
@@ -32,6 +32,10 @@
 		<ProjectReference Include="..\..\..\WebExpress.WebCore\src\WebExpress.WebCore\WebExpress.WebCore.csproj" />
 		<ProjectReference Include="..\..\..\WebExpress.WebIndex\src\WebExpress.WebIndex\WebExpress.WebIndex.csproj" />
 		<ProjectReference Include="..\..\..\WebExpress.WebUI\src\WebExpress.WebUI\WebExpress.WebUI.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\KleeneStar.Model\src\KleeneStar.Model\KleeneStar.Model.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -5,7 +5,8 @@ using WebExpress.WebCore.WebComponent;
 namespace KleeneStar.Core
 {
     /// <summary>
-    /// Represents a the KleeneStar application with a specific name, description, icon, and context path.
+    /// Represents a the KleeneStar application with a specific name, description, 
+    /// icon, and context path.
     /// </summary>
     [Name("kleenestar.core:app.name")]
     [Description("kleenestar.core:app.description")]
@@ -20,8 +21,8 @@ namespace KleeneStar.Core
         /// <param name="componentHub">The component hub.</param>
         public KleeneStarApplication(IApplicationContext applicationContext, IComponentHub componentHub)
         {
-            KleeneStar.ComponentHub = componentHub;
-            KleeneStar.ApplicationContet = applicationContext;
+            CoreHub.ComponentHub = componentHub;
+            CoreHub.ApplicationContet = applicationContext;
         }
 
         /// <summary>
