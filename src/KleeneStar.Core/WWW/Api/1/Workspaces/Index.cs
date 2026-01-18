@@ -50,6 +50,38 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         }
 
         /// <summary>
+        /// Retrieves a result object containing default values and metadata for 
+        /// cloning a item.
+        /// </summary>
+        /// <param name="id">
+        /// The identifier of the item to retrieve. The comparison is case-insensitive.
+        /// </param>
+        /// <param name="request">The request.</param>
+        /// <returns>
+        /// A result instance representing the data and metadata required
+        /// to initialize a new item for creation.
+        /// </returns>
+        protected override IRestApiCrudResultRetrieve<IWorkspace> RetrieveForClone(string id, IRequest request)
+        {
+            var data = CoreHub.WorkspaceManager.GetWorkspace(Guid.Parse(id));
+            var newItem = new Model.Entity.Workspace()
+            {
+                Key = data.Key + "-copy",
+                Name = data.Name + " (Copy)",
+                Description = data.Description,
+                Categories = data.Categories,
+                Icon = data.Icon,
+                State = TypeWorkspaceState.Active
+            };
+
+            return new RestApiCrudResultRetrieve<IWorkspace>()
+            {
+                Title = I18N.Translate(request, "webexpress.webapp:clone.title"),
+                Data = newItem
+            };
+        }
+
+        /// <summary>
         /// Retrieves a workspace identified by the specified key for update operations.
         /// </summary>
         /// <param name="id">

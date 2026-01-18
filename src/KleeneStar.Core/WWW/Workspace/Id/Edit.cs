@@ -8,7 +8,7 @@ using WebExpress.WebUI.WebIcon;
 namespace KleeneStar.Core.WWW.Workspace.Id
 {
     /// <summary>
-    /// Represents the page for creating or editing a workspace within the web application. 
+    /// Represents the page for editing a workspace within the web application. 
     /// Provides access to the workspace edit form and handles form processing and rendering.
     /// </summary>
     [WebIcon<IconPencil>]

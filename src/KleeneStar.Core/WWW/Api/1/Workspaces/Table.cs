@@ -22,6 +22,7 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
     public sealed class Table : RestApiTable<IWorkspace>
     {
         private readonly IUri _editFormUri;
+        private readonly IUri _cloneFormUri;
         private readonly IUri _deleteFormUri;
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         public Table()
         {
             _editFormUri = CoreHub.GetUri<WWW.Workspace.Id.Edit>();
+            _cloneFormUri = CoreHub.GetUri<WWW.Workspace.Id.Clone>();
             _deleteFormUri = CoreHub.GetUri<WWW.Workspace.Id.Delete>();
         }
 
@@ -52,6 +54,16 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
             yield return new RestApiOptionEdit(request)
             {
                 Uri = _editFormUri?.SetParameters
+                (
+                    new KeyParameter(row.Key)
+                )?
+                    .ToString(),
+                Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge)
+            };
+
+            yield return new RestApiOptionClone(request)
+            {
+                Uri = _cloneFormUri?.SetParameters
                 (
                     new KeyParameter(row.Key)
                 )?

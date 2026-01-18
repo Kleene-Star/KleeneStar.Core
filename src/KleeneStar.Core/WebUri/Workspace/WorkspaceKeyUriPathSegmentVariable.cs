@@ -25,7 +25,7 @@ namespace KleeneStar.Core.WebUri.Workspace
         {
             VariableName = name;
             Value = name;
-            Expression = @"^[a-z]{1,10}$";
+            Expression = @"^[a-z-0-9]{1,10}$";
             Tag = tag;
         }
 
