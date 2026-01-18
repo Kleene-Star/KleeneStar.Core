@@ -2,16 +2,23 @@
 using KleeneStar.Model.Entity;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebFragment;
+using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebControl.Workspace
+namespace KleeneStar.Core.WebFragment.Workspace
 {
     /// <summary>
-    /// Represents a form for a workspace.
+    /// Represents a add form fragment for a workspace.
     /// </summary>
-    public class ControlWorkspaceFormEdit : ControlRestFormEdit
+    [Section<SectionContentPreferences>]
+    [Scope<WWW.Workspace.Add>]
+    [Cache]
+    public sealed class FragmentWorkspaceFormAdd : FragmentControlRestFormAdd
     {
         /// <summary>
         /// Returns the input text control for specifying the name of the workspace.
@@ -66,25 +73,17 @@ namespace KleeneStar.Core.WebControl.Workspace
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ControlWorkspaceFormEdit()
-            : this("kleenestar-workspace-form")
+        /// <param name="fragmentContext">The context of the fragment.</param>
+        public FragmentWorkspaceFormAdd(IFragmentContext fragmentContext)
+            : base(fragmentContext)
         {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the class.
-        /// </summary>
-        /// <param name="id">The unique identifier for the form control.</param>
-        public ControlWorkspaceFormEdit(string id)
-            : base(id)
-        {
-            Enable = false;
-
             Add(Key);
             Add(WorkspaceName);
             Add(Category);
             Add(Description);
+
+            Mode = TypeRestFormMode.Add;
+            Uri = CoreHub.GetUri<WWW.Api._1.Workspaces.Index>();
         }
 
         /// <summary>

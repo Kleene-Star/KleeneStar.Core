@@ -29,8 +29,8 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// </summary>
         public Table()
         {
-            _editFormUri = CoreHub.GetUri<WWW.Workspace.Entity.Edit>();
-            _deleteFormUri = CoreHub.GetUri<WWW.Workspace.Entity.Delete>();
+            _editFormUri = CoreHub.GetUri<WWW.Workspace.Id.Edit>();
+            _deleteFormUri = CoreHub.GetUri<WWW.Workspace.Id.Delete>();
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// <returns>
         /// An object representing the URI of the REST API endpoint for the given request and workspace.
         /// </returns>
-        public override IUri GetRestApi(IRequest request, IWorkspace row)
+        public override IUri GetRestApiForInlineEdit(IRequest request, IWorkspace row)
         {
             return CoreHub.GetUri<WWW.Api._1.Workspaces.Index>()?
                 .Add(new UriQuery("id", row.Id.ToString()));

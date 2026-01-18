@@ -1,24 +1,25 @@
-﻿using WebExpress.WebApp.WebPage;
+﻿using KleeneStar.Core.WebAttribute;
+using KleeneStar.Core.WebParameter.Workspace;
+using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
-using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Workspace
+namespace KleeneStar.Core.WWW.Workspace.Id
 {
     /// <summary>
-    /// Represents a page that provides a form for adding a new workspace within the application.
+    /// Provides functionality for managing the current workspace page.
     /// </summary>
-    [WebIcon<IconPlus>]
-    [Title("kleenestar.core:workspace.add.label")]
+    [WebIcon<IconGlobe>]
+    [SegmentKey<KeyParameter>()]
     [Scope<IScopeGeneral>]
-    public sealed class Add : IPage<VisualTreeWebApp>, IScope
+    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Add()
+        public Index()
         {
         }
 
@@ -29,6 +30,7 @@ namespace KleeneStar.Core.WWW.Workspace
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
+            visualTree.Title = "Workspace Manager - Workspace";
         }
     }
 }

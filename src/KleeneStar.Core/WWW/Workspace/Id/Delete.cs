@@ -1,25 +1,25 @@
-﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Core.WebParameter.Workspace;
-using WebExpress.WebApp.WebPage;
+﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Workspace.Entity
+namespace KleeneStar.Core.WWW.Workspace.Id
 {
     /// <summary>
-    /// Provides functionality for managing the current workspace page.
+    /// Represents the page for creating or editing a workspace within the web application. Provides access to the
+    /// workspace edit form and handles form processing and rendering.
     /// </summary>
-    [WebIcon<IconGlobe>]
-    [SegmentKey<KeyParameter>()]
+    [WebIcon<IconTrashAlt>]
+    [Title("kleenestar.core:workspace.delete.label")]
     [Scope<IScopeGeneral>]
-    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
+    public sealed class Delete : IPage<VisualTreeWebApp>, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Index()
+        public Delete()
         {
         }
 
@@ -30,7 +30,6 @@ namespace KleeneStar.Core.WWW.Workspace.Entity
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
-            visualTree.Title = "Workspace Manager - Workspace";
         }
     }
 }
