@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Model;
+using WebExpress.WebCore;
 using WebExpress.WebCore.WebApplication;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebComponent;
@@ -20,8 +21,11 @@ namespace KleeneStar.Core
         /// </summary>
         /// <param name="applicationContext">The application context.</param>
         /// <param name="componentHub">The component hub.</param>
-        public KleeneStarApplication(IApplicationContext applicationContext, IComponentHub componentHub)
+        /// <param name="httpServerContext">The reference to the context of the host.</param>
+        public KleeneStarApplication(IApplicationContext applicationContext, IComponentHub componentHub, IHttpServerContext httpServerContext)
         {
+            CoreHub.HttpServerContext = httpServerContext;
+            ModelHub.HttpServerContext = httpServerContext;
             CoreHub.ComponentHub = componentHub;
             ModelHub.ComponentHub = componentHub;
             CoreHub.ApplicationContet = applicationContext;

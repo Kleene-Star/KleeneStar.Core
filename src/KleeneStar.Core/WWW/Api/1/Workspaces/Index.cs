@@ -172,13 +172,58 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
         /// </returns>
         protected override IRestApiCrudResultCreate Create(RestApiCrudFormData fieldMap, IRequest request, out IWorkspace newItem)
         {
-            newItem = new Model.Entity.Workspace();
+            var id = Guid.NewGuid();
+            newItem = new Model.Entity.Workspace(id)
+            {
+                Icon = CoreHub.GenerateIcon(id),
+                State = TypeWorkspaceState.Active
+            };
+
             fieldMap.BindTo(newItem);
 
             CoreHub.WorkspaceManager.AddWorkspace(newItem);
 
             return new RestApiCrudResultCreate();
         }
+
+        /// <summary>
+        /// Creates a new workspace instance by cloning data from the specified form fields and 
+        /// adds it to the workspace manager.
+        /// </summary>
+        /// <param name="existingItem">
+        /// The existing workspace item to use as a reference for the clone operation. This parameter 
+        /// is not modified.
+        /// </param>
+        /// <param name="fieldMap">
+        /// The form data containing field values to bind to the new workspace instance. Cannot be null.
+        /// </param>
+        /// <param name="request">
+        /// The current request context for the operation. Provides additional information or 
+        /// services required during cloning.
+        /// </param>
+        /// <param name="newItem">
+        /// When this method returns, contains the newly created workspace instance populated 
+        /// with the provided form data.
+        /// </param>
+        /// <returns>
+        /// A result object indicating the outcome of the create operation.
+        /// </returns>
+        protected override IRestApiCrudResultCreate Clone(IWorkspace existingItem, RestApiCrudFormData fieldMap, IRequest request, out IWorkspace newItem)
+        {
+            var id = Guid.NewGuid();
+            newItem = new Model.Entity.Workspace(id)
+            {
+                Icon = CoreHub.GenerateIcon(id),
+                State = TypeWorkspaceState.Active
+            };
+
+            fieldMap.BindTo(newItem);
+
+            CoreHub.WorkspaceManager.AddWorkspace(newItem);
+
+            return new RestApiCrudResultCreate();
+        }
+
 
         /// <summary>
         /// Updates the data record.
