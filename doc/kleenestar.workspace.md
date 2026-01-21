@@ -265,15 +265,15 @@ The main component of this page is a tabular list of all workspaces. Each row re
 ║│ - Archived           │░│ Engineering      | engineering | archived | ...       […] │║
 ║│                      │░│ Marketing        | marketing   | active   | ...       […] │║
 ║│                      │░│                                                        ¦  │║
-║│                      │░│                                   ‹ Prev  ┌────────────┴┐ │║
-║│                      │<│                                           │ Edit        │ │║
-║│                      │<│                                           │ Clone       │ │║
-║│                      │<│                                           │ Permissions │ │║
-║│                      │░│                                           │ <section>   │ │║
-║│                      │░│                                           ├─────────────┤ │║
-║│                      │░│                                           │ Delete      │ │║
-║│                      │░│                                           └─────────────┘ │║
-║│                      │░│                                                           │║
+║│                      │░│                                   ‹ Pre┌───────────────┴┐ │║
+║│                      │<│                                        │ Edit           │ │║
+║│                      │<│                                        │ Clone          │ │║
+║│                      │<│                                        │ Manage Classes │ │║
+║│                      │░│                                        │ Permissions    │ │║
+║│                      │░│                                        │ <section>      │ │║
+║│                      │░│                                        ├────────────────┤ │║
+║│                      │░│                                        │ Delete         │ │║
+║│                      │░│                                        └────────────────┘ │║
 ║│                      │░│                                                           │║
 ║├──────────────────────┤░│                                                           │║
 ║│                   << │░│                                                           │║

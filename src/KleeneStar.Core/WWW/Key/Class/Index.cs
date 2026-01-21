@@ -4,15 +4,15 @@ using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Workspace
+namespace KleeneStar.Core.WWW.Key.Class
 {
     /// <summary>
-    /// Represents the main workspace management page within the kleenestar web application.
+    /// Represents the main class management page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconGlobe>]
-    [Title("kleenestar.core:workspace.manage.label")]
+    [WebIcon<IconBoxesStacked>]
+    [Title("kleenestar.core:class.manage.label")]
     [Scope<IScopeGeneral>]
-    [Domain<Model.Entity.Workspace>]
+    [Domain<Model.Entity.Class>]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>

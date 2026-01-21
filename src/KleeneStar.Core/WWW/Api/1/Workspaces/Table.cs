@@ -5,11 +5,13 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Api._1.Workspaces
 {
@@ -69,6 +71,19 @@ namespace KleeneStar.Core.WWW.Api._1.Workspaces
                 )?
                     .ToString(),
                 Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge)
+            };
+
+            yield return new RestApiOptionCustom(request)
+            {
+                Uri = CoreHub.GetUri<Key.Class.Index>()?
+                    .SetParameters
+                    (
+                        new KeyParameter(row.Key)
+                    )?
+                    .ToString(),
+                Label = I18N.Translate(request, "kleenestar.core:class.manage.label"),
+                Icon = new IconBoxesStacked().Class
+
             };
 
             yield return new RestApiOptionSeperator(request);

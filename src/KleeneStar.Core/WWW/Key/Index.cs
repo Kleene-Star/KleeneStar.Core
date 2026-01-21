@@ -5,7 +5,7 @@ using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
 
-namespace KleeneStar.Core.WWW.View
+namespace KleeneStar.Core.WWW.Key
 {
     /// <summary>
     /// Represents the overview page for a workspace in the web application.

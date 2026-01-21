@@ -39,5 +39,9 @@ workspace.description.placeholder=Geben Sie eine kurze Beschreibung des Arbeitsb
 workspace.overview.label=Übersicht
 workspace.quickfilter.all.label=Alle Workspaces
 
+class.manage.label=Klassen verwalten
+class.manage.description=Diese Ansicht listet alle registrierten Klassen des aktuellen Workspace auf. 
+
+
 dashboard.label=Dashboard
 
