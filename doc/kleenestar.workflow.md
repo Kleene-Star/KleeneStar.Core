@@ -228,7 +228,7 @@ The tabular overview displays important attributes per class such as name, descr
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Classes───────────────┐ ┌Classes Content────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│  - All               │░│                                    [Search] [+ Add Class] │║
+║│  - All               │░│ My Classes                         [Search] [+ Add Class] │║
 ║│  - Issues            │░│                                                           │║
 ║│  - Sub-Issues        │░│ Class Name       | Description                 | Status   │║
 ║│  - Hidden            │░│------------------|-----------------------------|----------│║
@@ -273,7 +273,7 @@ Status maintenance is accessed directly from Class Management via the "Manage St
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Status────────────────┐ ┌Status Content─────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│  - All               │░│                                    [Search] [+ Add Status]│║
+║│  - All               │░│ My Statuses                        [Search] [+ Add Status]│║
 ║│  - ToDo              │░│                                                           │║
 ║│  - InProgress        │░│ Status Name   | Kategorie  | Beschreibung                 │║
 ║│  - Waiting           │░│---------------|------------|------------------------------│║
@@ -439,7 +439,7 @@ Published workflows directly affect the process control of the associated object
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Workflows─────────────┐ ┌Workflows Content──────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│  - All               │░│                                  [Search] [+ Add Workflow]│║
+║│  - All               │░│ My Workflows                     [Search] [+ Add Workflow]│║
 ║│  - Drafts            │░│                                                           │║
 ║│  - Active            │░│ Workflow Name     | Version | Status                      │║
 ║│  - Archived          │░│-------------------|---------|-----------------------------│║
@@ -794,39 +794,39 @@ Active workflows (Active) cannot be deleted directly. They must first be archive
 
 The sitemap defines navigation paths and visibility logic for workflow management within the application. It forms the basis for routing in the context of workspace and class and allows deep-linkable addresses for list views, detail/edit views (designer or table view), publication, versioning, as well as archiving and deletion. Additionally, status maintenance, transition detail routes, permission and trigger management, and validation/simulation are addressable.
 
-|Path                                                                                                          |Page/View                       |Description
-|--------------------------------------------------------------------------------------------------------------|--------------------------------|---------------------------------------------
-|`/workspaces/{workspaceKey}/classes`                                                                          |Class Management                |Overview of all classes in a workspace.
-|`/workspaces/{workspaceKey}/classes/{classKey}`                                                               |Class Detail                    |Detail/entry page of a class incl. actions.
-|`/workspaces/{workspaceKey}/classes/{classKey}/status`                                                        |Status Management               |List and administration of all statuses of a class.
-|`/workspaces/{workspaceKey}/classes/{classKey}/status/new`                                                    |Status New (Modal)              |Create a new status value.
-|`/workspaces/{workspaceKey}/classes/{classKey}/status/{statusId}/edit`                                        |Status Edit (Modal)             |Edit an existing status value.
-|`/workspaces/{workspaceKey}/classes/{classKey}/status/{statusId}/clone`                                       |Status Clone (Modal)            |Duplicate a status as a template.
-|`/workspaces/{workspaceKey}/classes/{classKey}/status/{statusId}/delete`                                      |Status Delete (Modal)           |Final removal of a non-referenced status.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow`                                                      |Workflow Management             |Designer, lists, matrix, versions; filter/searchable.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow?filter={draft|active|archived}`                       |Workflow Management             |Filtered list view by status.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}`                                         |Workflow Designer               |Detail view of a workflow with graphical modeling.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/designer`                                |Workflow Designer               |Explicit designer route (default).
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/designer?mode=visual`                    |Workflow Designer (Visual)      |Visual canvas mode.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/designer?mode=table`                     |Workflow Designer (Tabular)     |Table/list mode for states/transitions.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/edit`                                    |Workflow Edit                   |Edit workflow metadata and settings.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/transitions`                             |Transitions List                |Overview of all transitions of a workflow.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/transitions/{transitionId}`              |Transition Edit                 |Edit label/description/form.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/transitions/{transitionId}/guards`       |Guard Management (Modal)        |Add/edit guard conditions.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/transitions/{transitionId}/validators`   |Validator Management (Modal)    |Add/edit validation rules.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/transitions/{transitionId}/postfunctions`|Postfunction Management (Modal) |Configure follow-up actions.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/permissions`                             |Permissions Management          |Workflow-wide/transition-specific permissions.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/simulate`                                |Workflow Simulation             |Simulation/what-if view, optionally with object context.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/validate`                                |Workflow Validate               |Validation/output of report (synchronous).
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/publish`                                 |Workflow Publish                |Publication, mappings, report; sync/async.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/versions`                                |Workflow Versions               |List versions (Active, Archive, Draft history).
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/versions/{version}`                      |Workflow Version Detail         |Show a specific version incl. states/transitions.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/archive`                                 |Workflow Archive                |Archive an active version incl. checks.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/restore`                                 |Workflow Restore                |Restore an archived version (compatible).
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/copy`                                    |Workflow Clone                  |Duplicate an existing workflow as draft.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/{workflowId}/delete`                                  |Workflow Delete                 |Remove a workflow (after archiving).
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/import`                                               |Class Import                    |Import external workflow definitions (dry run, conflict strategy).
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflow/export`                                               |Class Export                    |Export definitions/versions (selection via parameters).
+|Path                                                                                                           |Page/View                       |Description
+|---------------------------------------------------------------------------------------------------------------|--------------------------------|---------------------------------------------
+|`/workspaces/{workspaceKey}/classes`                                                                           |Class Management                |Overview of all classes in a workspace.
+|`/workspaces/{workspaceKey}/classes/{classKey}`                                                                |Class Detail                    |Detail/entry page of a class incl. actions.
+|`/workspaces/{workspaceKey}/classes/{classKey}/status`                                                         |Status Management               |List and administration of all statuses of a class.
+|`/workspaces/{workspaceKey}/classes/{classKey}/status/new`                                                     |Status New (Modal)              |Create a new status value.
+|`/workspaces/{workspaceKey}/classes/{classKey}/status/{statusId}/edit`                                         |Status Edit (Modal)             |Edit an existing status value.
+|`/workspaces/{workspaceKey}/classes/{classKey}/status/{statusId}/clone`                                        |Status Clone (Modal)            |Duplicate a status as a template.
+|`/workspaces/{workspaceKey}/classes/{classKey}/status/{statusId}/delete`                                       |Status Delete (Modal)           |Final removal of a non-referenced status.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows`                                                      |Workflow Management             |Designer, lists, matrix, versions; filter/searchable.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows?filter={draft|active|archived}`                       |Workflow Management             |Filtered list view by status.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}`                                         |Workflow Designer               |Detail view of a workflow with graphical modeling.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/designer`                                |Workflow Designer               |Explicit designer route (default).
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/designer?mode=visual`                    |Workflow Designer (Visual)      |Visual canvas mode.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/designer?mode=table`                     |Workflow Designer (Tabular)     |Table/list mode for states/transitions.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/edit`                                    |Workflow Edit                   |Edit workflow metadata and settings.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/transitions`                             |Transitions List                |Overview of all transitions of a workflow.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/transitions/{transitionId}`              |Transition Edit                 |Edit label/description/form.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/transitions/{transitionId}/guards`       |Guard Management (Modal)        |Add/edit guard conditions.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/transitions/{transitionId}/validators`   |Validator Management (Modal)    |Add/edit validation rules.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/transitions/{transitionId}/postfunctions`|Postfunction Management (Modal) |Configure follow-up actions.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/permissions`                             |Permissions Management          |Workflow-wide/transition-specific permissions.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/simulate`                                |Workflow Simulation             |Simulation/what-if view, optionally with object context.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/validate`                                |Workflow Validate               |Validation/output of report (synchronous).
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/publish`                                 |Workflow Publish                |Publication, mappings, report; sync/async.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/versions`                                |Workflow Versions               |List versions (Active, Archive, Draft history).
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/versions/{version}`                      |Workflow Version Detail         |Show a specific version incl. states/transitions.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/archive`                                 |Workflow Archive                |Archive an active version incl. checks.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/restore`                                 |Workflow Restore                |Restore an archived version (compatible).
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/copy`                                    |Workflow Clone                  |Duplicate an existing workflow as draft.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/delete`                                  |Workflow Delete                 |Remove a workflow (after archiving).
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/import`                                               |Class Import                    |Import external workflow definitions (dry run, conflict strategy).
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows/export`                                               |Class Export                    |Export definitions/versions (selection via parameters).
 
 ## API Interfaces (REST Endpoints)
 

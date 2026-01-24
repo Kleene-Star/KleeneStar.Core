@@ -245,7 +245,7 @@ Entry into field management occurs directly from the class overview. On the `Cla
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Classes───────────────┐ ┌Classes Content────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│  - All               │░│                                    [Search] [+ Add Class] │║
+║│  - All               │░│ My Classes                         [Search] [+ Add Class] │║
 ║│  - Issues            │░│                                                           │║
 ║│  - Sub-Issues        │░│ Class Name       | Description                 | Status   │║
 ║│  - Hidden            │░│------------------|-----------------------------|----------│║
@@ -290,7 +290,7 @@ The page can be accessed via the "Manage Fields" option in class administration 
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Fields────────────────┐ ┌Fields Content─────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│  - All               │░│                                    [Search] [+ Add Field] │║
+║│  - All               │░│ My Fields                          [Search] [+ Add Field] │║
 ║│  - Required          │░│                                                           │║
 ║│  - Deprecated        │░│ Field Name   | Type      | Req. | Status                  │║
 ║│  - Archived          │░│--------------|-----------|------|-------------------------│║

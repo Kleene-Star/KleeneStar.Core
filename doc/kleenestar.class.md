@@ -254,7 +254,7 @@ The page is accessible via the "Manage Classes" option in the workspace editing 
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Classes───────────────┐ ┌Classes Content────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│  - All               │░│                                    [Search] [+ Add Class] │║
+║│  - All               │░│ My Classes                         [Search] [+ Add Class] │║
 ║│  - Issues            │░│                                                           │║
 ║│  - Sub-Issues        │░│ Class Name       | Description                 | Status   │║
 ║│  - Hidden            │░│------------------|-----------------------------|----------│║

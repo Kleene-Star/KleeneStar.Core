@@ -330,9 +330,57 @@ Handling attachments is also user-friendly: files can be dragged and dropped dir
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Object Management - Templates (Modal)
+### Object Management - Add/Edit Object
 
-Clicking the "+ Add Object" button opens a central modal that offers the user a selection of available object templates. Each template is visually represented as a card and contains the class name, a short description, and an icon for easier recognition. Selecting a template initializes a new object with predefined fields and settings.
+The Add Object workflow provides a guided, multi‑step process for creating new objects within **KleeneStar**. It begins with selecting the appropriate workspace, continues with choosing an object template, and concludes with entering the object’s data in a dynamically generated form.
+
+When editing an existing object, this wizard is not used. Instead, the system opens the Add/Edit modal directly and loads the corresponding form for the selected object. This ensures that editing remains fast, focused, and context‑preserving.
+
+#### Object Management - Select Workspace (Modal)
+
+Clicking the "+ Add Object" button opens a central modal that allows the user to choose a workspace in which the new object will be created. Each workspace is presented as a card containing its name, category, and icon for quick visual recognition. Selecting a workspace determines the context for the new object and filters the available templates accordingly.
+
+```
+╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
+║┌Header──────────────────────────────────────────────────────────────────────────────┐║
+║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
+║└─────╔ObjectBlueprintModal════════════════════════════════════════════════════╗─────┘║
+║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
+║│ / Se║│ Create new object                                                    │║     │║
+║└─────║├──────────────┬───────────────────────────────────────────────────────┤║─────┘║
+║┌Works║│              │ Select an workspace:                         [Search] │║─────┐║
+║│[Name║│ - All        │                                                       │║     │║
+║│     ║│ - Category 0 │ ┌Workspaces─────────────────────────────────────────┐ │║ […] │║
+║│     ║│ - Category 1 │ │                                                  ▲│ │║rch] │║
+║│     ║│ - ...        │ │ ┌───────────────────┐  ┌────────────────────┐    ▒│ │║     │║
+║│     ║│ - Category n │ │ │ [Icon] SALE       │  │ [Icon] SD          │    ░│ │║-----│║
+║│ Issu║│              │ │ │ Sales             │  │ IT Service Desk    │    ░│ │║ […] │║
+║│ ├─ I║│              │ │ │ Operations        │  │                    │    ░│ │║ […] │║
+║│ ├─ P║│              │ │ └───────────────────┘  └────────────────────┘    ░│ │║ […] │║
+║│ └─ S║│              │ │                                                  ░│ │║ […] │║
+║│     ║│              │ │ ┌───────────────────┐  ┌────────────────────┐    ░│ │║ […] │║
+║│     ║│              │ │ │ [Icon] CMDB       │  │ [Icon] DEV         │    ░│ │║ […] │║
+║│     ║│              │ │ │ Configuration     │  │ Software           │    ░│ │║ […] │║
+║│     ║│              │ │ │ Database          │  │ Development        │    ░│ │║ […] │║
+║│     ║│              │ │ └───────────────────┘  └────────────────────┘    ░│ │║ […] │║
+║│     ║│              │ │                                                  ░│ │║ […] │║
+║│     ║│              │ │ ┌───────────────────┐  ┌────────────────────┐    ░│ │║ […] │║
+║│     ║│              │ │ │ [Icon] FIN        │  │ [Icon] HR          │    ▼│ │║ […] │║
+║│     ║│              │ └───────────────────────────────────────────────────┘ │║     │║
+║│     ║└──────────────┴───────────────────────────────────────────────────────┘║xt › │║
+║├─────║                                                                        ║     │║
+║│ [+] ║                                                       [Next] [Cancel]  ║     │║
+║└─────║                                                                        ║─────┘║
+║┌Foote╚════════════════════════════════════════════════════════════════════════╝─────┐║
+║│ [Documentation]        |        KleeneStar v1.2.3        |      [Report a problem] │║
+║└────────────────────────────────────────────────────────────────────────────────────┘║
+╚══════════════════════════════════════════════════════════════════════════════════════╝
+```
+
+
+#### Object Management - Templates (Modal)
+
+After selecting a workspace, the user is presented with a modal displaying all available object templates. Each template is shown as a card that includes the class name, a short description, and an icon to improve recognizability. Choosing a template initializes a new object with predefined fields, default values, and configuration settings defined in the class blueprint.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
@@ -371,9 +419,11 @@ Clicking the "+ Add Object" button opens a central modal that offers the user a 
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Object Management - New/Edit (Modal)
+#### Object Management - New/Edit (Modal)
 
-Creating and editing objects is done via forms displayed in a modal dialog. The displayed form is determined by the class and context (create, edit, or workflow transition) and dynamically loaded from the `FormManager`. It mirrors exactly the structure defined in the form designer, including all fields, their arrangement, and any layout groups (e.g., horizontal or column-based sections). All inputs are validated server-side based on field and workflow rules before the object is saved.
+Creating and editing objects is handled through a modal form. For new objects, this form is reached as the final step of the creation wizard. For existing objects, the wizard is skipped entirely, and the modal opens directly in Edit mode.
+
+The form layout is dynamically loaded from the form manager, based on the selected class and the current action (create, edit, or workflow transition). The modal mirrors the structure defined in the form designer, including all fields, layout groups, tabs, and input arrangements. All user input is validated server‑side according to field rules, workflow constraints, and class definitions before the object is saved.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
@@ -879,21 +929,19 @@ Each route fulfills a specific function, from the overview of all objects of a c
 
 The sitemap supports both technical integration and conceptual design of the user interface and significantly contributes to the system’s usability and maintainability.
 
-|Path                                                       |Page/View               |Description
-|-----------------------------------------------------------|------------------------|--------------------------------------------------------------
-|`/search`                                                  |Object search           |Global, workspace-wide search for objects.
-|`/workspaces/{workspaceKey}`                               |Object overview         |Lists all objects of the specified class in the workspace.
-|`/workspaces/{workspaceKey}/add`                           |Object creation         |Opens the modal for selecting an object template to create a new object.
-|`/workspaces/{workspaceKey}/{objectKey}`                   |Object detail view      |Detailed view of a single object.
-|`/workspaces/{workspaceKey}/{objectKey}/edit`              |Object editing          |Form for editing the metadata of an existing object.
-|`/workspaces/{workspaceKey}/{objectKey}/delete`            |Object deletion         |Confirmation and execution of the deletion process.
-|`/workspaces/{workspaceKey}/{objectKey}/move`              |Object move             |Move an object to another workspace or class.
-|`/workspaces/{workspaceKey}/{objectKey}/export`            |Object export           |Export an object in different formats.
-|`/workspaces/{workspaceKey}/{objectKey}/permissions`       |Permissions management  |Manage access rights for an object.
-|`/workspaces/{workspaceKey}/{objectKey}/link`              |Linking                 |Add links to an object.
-|`/workspaces/{workspaceKey}/{objectKey}/subobject`         |Subobject creation      |Start the process to create a subobject.
-|`/workspaces/{workspaceKey}/{objectKey}/show-as`           |View-as                 |View the object from another user’s perspective.
-|`/workspaces/{workspaceKey}/{objectKey}/transition/{tKey}` |Workflow transition     |Execute a workflow transition and, if applicable, display a form.
+|Path                                     |Page/View               |Description
+|-----------------------------------------|------------------------|--------------------------------------------------------------
+|`/objects`                               |Object overview         |Global, workspace-wide search for objects.
+|`/objects/add`                           |Object creation         |Opens the modal for selecting an object template to create a new object.
+|`/objects/{objectKey}`                   |Object detail view      |Detailed view of a single object.
+|`/objects/{objectKey}/edit`              |Object editing          |Form for editing the metadata of an existing object.
+|`/objects/{objectKey}/delete`            |Object deletion         |Confirmation and execution of the deletion process.
+|`/objects/{objectKey}/move`              |Object move             |Move an object to another workspace or class.
+|`/objects/{objectKey}/export`            |Object export           |Export an object in different formats.
+|`/objects/{objectKey}/permissions`       |Permissions management  |Manage access rights for an object.
+|`/objects/{objectKey}/link`              |Linking                 |Add links to an object.
+|`/objects/{objectKey}/subobject`         |Subobject creation      |Start the process to create a subobject.
+|`/objects/{objectKey}/show-as`           |View-as                 |View the object from another user’s perspective.
 
 ## API Interfaces (REST Endpoints)
 

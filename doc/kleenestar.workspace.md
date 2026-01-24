@@ -257,7 +257,7 @@ The main component of this page is a tabular list of all workspaces. Each row re
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Workspace Category────┐ ┌Workspaces─────────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│ - All                │░│                                [Search] [+ Add Workspace] │║
+║│ - All                │░│ My Workspaces                  [Search] [+ Add Workspace] │║
 ║│ - Category 0         │░│                                                           │║
 ║│ - Category 1         │░│ Name             | Key         | Status   | ...           │║
 ║│ - ...                │░│------------------|-------------|----------|---------------│║
@@ -549,18 +549,18 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 
 The sitemap defines the hierarchical structure and navigation paths of the user interface for workspace management. It ensures a clear organization of the pages, serves as the basis for routing within the web application, and is structured as follows:
 
-|Path                                           |Page                  |Description
-|-----------------------------------------------|----------------------|-------------------------------------------------------------
-|`/`                                            |Dashboard             |Central entry point of the application.
-|`/workspacemanager`                            |Workspace Management  |Overview of all workspaces with search, filter, and management functions.
-|`/workspacemanager/add`                        |Workspace Creation    |Form for creating a new workspace.
-|`/workspacemanager/{workspaceKey}`             |Workspace Detail View |Detailed view and actions for a single workspace.
-|`/workspacemanager/{workspaceKey}/edit`        |Workspace Editing     |Form for editing the metadata of an existing workspace.
-|`/workspacemanager/{workspaceKey}/clone`       |Workspace Cloning     |Dialog for replicating an existing workspace with customizable fields.
-|`/workspacemanager/{workspaceKey}/delete`      |Workspace Deletion    |Modal for confirming and executing the irreversible deletion of a workspace.
-|`/workspacemanager/{workspaceKey}/permissions` |Workspace Permissions |Modal for managing profiles (group-policy assignments) for a specific workspace.
-|`/workspacemanager/{workspaceKey}/import`      |Workspace Import      |Import of external workspace schemas.
-|`/workspacemanager/{workspaceKey}/export`      |Workspace Export      |Export of the current workspace schema for reuse or transfer.
+|Path                                     |Page                  |Description
+|-----------------------------------------|----------------------|-------------------------------------------------------------
+|`/`                                      |Dashboard             |Central entry point of the application.
+|`/workspaces`                            |Workspace Management  |Overview of all workspaces with search, filter, and management functions.
+|`/workspaces/add`                        |Workspace Creation    |Form for creating a new workspace.
+|`/workspaces/{workspaceKey}`             |Workspace Detail View |Detailed view and actions for a single workspace.
+|`/workspaces/{workspaceKey}/edit`        |Workspace Editing     |Form for editing the metadata of an existing workspace.
+|`/workspaces/{workspaceKey}/clone`       |Workspace Cloning     |Dialog for replicating an existing workspace with customizable fields.
+|`/workspaces/{workspaceKey}/delete`      |Workspace Deletion    |Modal for confirming and executing the irreversible deletion of a workspace.
+|`/workspaces/{workspaceKey}/permissions` |Workspace Permissions |Modal for managing profiles (group-policy assignments) for a specific workspace.
+|`/workspaces/{workspaceKey}/import`      |Workspace Import      |Import of external workspace schemas.
+|`/workspaces/{workspaceKey}/export`      |Workspace Export      |Export of the current workspace schema for reuse or transfer.
 
 
 ## API Interfaces (REST Endpoints)

@@ -187,7 +187,7 @@ The Manage Priorities function thus complements the existing management options 
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Classes───────────────┐ ┌Classes Content────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│  - All               │░│                                    [Search] [+ Add Class] │║
+║│  - All               │░│ My Classes                         [Search] [+ Add Class] │║
 ║│  - Issues            │░│                                                           │║
 ║│  - Sub-Issues        │░│ Class Name       | Description                 | Status   │║
 ║│  - Hidden            │░│------------------|-----------------------------|----------│║
@@ -232,7 +232,7 @@ Access to the priority management page is via Manage Priorities in class adminis
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Priorities────────────┐ ┌Priority Content───────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│  - All               │░│                                 [Search] [+ Add Priority] │║
+║│  - All               │░│ My Priorities                   [Search] [+ Add Priority] │║
 ║│  - Active            │░│                                                           │║
 ║│  - Archived          │░│ Priority Name | Category      | Score | Status            │║
 ║│                      │░│---------------|---------------|-------|-------------------│║

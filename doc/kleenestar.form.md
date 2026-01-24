@@ -218,7 +218,7 @@ The tabular overview shows key attributes per class such as name, description, a
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Classes───────────────┐ ┌Classes Content────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│  - All               │░│                                    [Search] [+ Add Class] │║
+║│  - All               │░│ My Classes                         [Search] [+ Add Class] │║
 ║│  - Issues            │░│                                                           │║
 ║│  - Sub-Issues        │░│ Class Name       | Description                 | Status   │║
 ║│  - Hidden            │░│------------------|-----------------------------|----------│║
@@ -263,7 +263,7 @@ Access to the form management page is via Manage Forms in class administration o
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Forms─────────────────┐ ┌Form Content───────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│  - All               │░│                                     [Search] [+ Add Form] │║
+║│  - All               │░│ My Forms                            [Search] [+ Add Form] │║
 ║│  - Active            │░│                                                           │║
 ║│  - Archived          │░│ Form Name      | Description            | Status          │║
 ║│                      │░│----------------|------------------------|-----------------│║
