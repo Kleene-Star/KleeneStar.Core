@@ -1,5 +1,6 @@
 ﻿using KleeneStar.Core.WebAttribute;
 using KleeneStar.Core.WebParameter.Workspace;
+using KleeneStar.Core.Workspace;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
@@ -14,13 +15,20 @@ namespace KleeneStar.Core.WWW.Workspaces._key_
     [WebIcon<IconGlobe>]
     [SegmentKey<KeyParameter>()]
     [Scope<IScopeGeneral>]
+    [Cache]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
+        private readonly IWorkspaceManager _workspaceManager;
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Index()
+        /// <param name="workspaceManager">
+        /// The workspace manager used to retrieve workspace information. Cannot be null.
+        /// </param>
+        public Index(IWorkspaceManager workspaceManager)
         {
+            _workspaceManager = workspaceManager;
         }
 
         /// <summary>
@@ -31,9 +39,10 @@ namespace KleeneStar.Core.WWW.Workspaces._key_
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
             var keyParameter = renderContext.Request.GetParameter<KeyParameter>();
-            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(keyParameter.Key);
+            var workspace = _workspaceManager.GetWorkspaceByKey(keyParameter.Value);
 
             visualTree.Title = workspace?.Name;
+            visualTree.Content.MainPanel.Headline.Title = workspace?.Name;
         }
     }
 }
