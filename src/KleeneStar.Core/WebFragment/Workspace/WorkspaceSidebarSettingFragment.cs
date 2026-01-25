@@ -61,7 +61,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
                 {
                     Text = "webexpress.webapp:edit.label",
                     Icon = new IconPencil(),
-                    Modal = new ModalTarget("modal-form"),
+                    Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge),
                     Uri = CoreHub.GetUri<WWW.Workspaces._key_.Edit>()?
                         .SetParameters(keyParameter)
                 },
@@ -69,7 +69,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
                 {
                     Text = "webexpress.webapp:clone.label",
                     Icon = new IconCopy(),
-                    Modal = new ModalTarget("modal-form"),
+                    Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge),
                     Uri = CoreHub.GetUri<WWW.Workspaces._key_.Clone>()?
                         .SetParameters(keyParameter)
                 },
