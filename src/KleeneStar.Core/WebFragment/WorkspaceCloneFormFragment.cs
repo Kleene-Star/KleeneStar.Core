@@ -10,7 +10,7 @@ using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Workspace
+namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
     /// Represents a edit form fragment for a workspace.
@@ -25,7 +25,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// </summary>
         public ControlRestFormItemInputUnique WorkspaceName { get; } = new()
         {
-            Name = nameof(IWorkspace.Name),
+            Name = nameof(Workspace.Name),
             Label = "kleenestar.core:workspace.name.label",
             Placeholder = "kleenestar.core:workspace.name.placeholder",
             Help = "kleenestar.core:workspace.name.help",
@@ -38,7 +38,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// </summary>
         public ControlRestFormItemInputUnique Key { get; } = new()
         {
-            Name = nameof(IWorkspace.Key),
+            Name = nameof(Workspace.Key),
             Label = "kleenestar.core:workspace.key.label",
             Placeholder = "kleenestar.core:workspace.key.placeholder",
             Help = "kleenestar.core:workspace.key.help",
@@ -52,7 +52,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// </summary>
         public ControlFormItemInputTag Category { get; } = new()
         {
-            Name = nameof(IWorkspace.Categories),
+            Name = nameof(Workspace.Categories),
             Label = "kleenestar.core:workspace.category.label",
             Placeholder = "kleenestar.core:workspace.category.placeholder",
             Help = "kleenestar.core:workspace.category.help"
@@ -63,7 +63,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(IWorkspace.Description),
+            Name = nameof(Workspace.Description),
             Label = "kleenestar.core:workspace.description.label",
             Placeholder = "kleenestar.core:workspace.description.placeholder",
             Format = TypeEditTextFormat.Wysiwyg,

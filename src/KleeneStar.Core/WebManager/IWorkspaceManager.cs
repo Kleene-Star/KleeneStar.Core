@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using WebExpress.WebCore.WebComponent;
 
-namespace KleeneStar.Core.Workspace
+namespace KleeneStar.Core.WebManager
 {
     /// <summary>
     /// Defines the contract for managing workspaces, including adding, retrieving, and removing workspaces, as well as
@@ -20,41 +20,41 @@ namespace KleeneStar.Core.Workspace
         /// <summary>
         /// An event that fires when an workspace is added.
         /// </summary>
-        event EventHandler<IWorkspace> WorkspaceAdded;
+        event EventHandler<Workspace> WorkspaceAdded;
 
         /// <summary>
         /// An event that fires when an workspace is udpated.
         /// </summary>
-        event EventHandler<IWorkspace> WorkspaceUpdated;
+        event EventHandler<Workspace> WorkspaceUpdated;
 
         /// <summary>
         /// An event that fires when an workspace is removed.
         /// </summary>
-        event EventHandler<IWorkspace> WorkspaceRemoved;
+        event EventHandler<Workspace> WorkspaceRemoved;
 
         /// <summary>
         /// Returns all workspaces.
         /// </summary>
-        IEnumerable<IWorkspace> Workspaces { get; }
+        IEnumerable<Workspace> Workspaces { get; }
 
         /// <summary>
         /// Returns the collection of category names associated with the workspace.
         /// </summary>
-        IEnumerable<string> WorkspaceCategories { get; }
+        IEnumerable<string> Categories { get; }
 
         /// <summary>
         /// Adds a workspace to the workspace manager.
         /// </summary>
         /// <param name="workspace">The workspace to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        IWorkspaceManager AddWorkspace(IWorkspace workspace);
+        IWorkspaceManager AddWorkspace(Workspace workspace);
 
         /// <summary>
         /// Returns a workspace based on its id.
         /// </summary>
         /// <param name="workspaceId">The id of the workspace.</param>
         /// <returns>The workspace.</returns>
-        IWorkspace GetWorkspace(Guid workspaceId);
+        Workspace GetWorkspace(Guid workspaceId);
 
         /// <summary>
         /// Retrieves the workspace associated with the specified unique key.
@@ -66,7 +66,7 @@ namespace KleeneStar.Core.Workspace
         /// An workspace corresponding to the specified key, or null if no matching 
         /// workspace is found.
         /// </returns>
-        IWorkspace GetWorkspaceByKey(string key);
+        Workspace GetWorkspaceByKey(string key);
 
         /// <summary>
         /// Retrieves a collection of workspaces that satisfy the specified filter criteria.
@@ -79,7 +79,7 @@ namespace KleeneStar.Core.Workspace
         /// An enumerable collection of workspaces that match the given predicate. If no workspaces 
         /// match, the collection will be empty.
         /// </returns>
-        IEnumerable<IWorkspace> GetWorkspaces(Expression<Func<IWorkspace, bool>> predicate);
+        IEnumerable<Workspace> GetWorkspaces(Expression<Func<Workspace, bool>> predicate);
 
         /// <summary>
         /// Removes the specified workspace from the workspace manager.

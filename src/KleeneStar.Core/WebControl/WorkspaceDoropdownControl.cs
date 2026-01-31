@@ -4,7 +4,7 @@ using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebControl.Workspace
+namespace KleeneStar.Core.WebControl
 {
     /// <summary>
     /// Represents a dropdown control for selecting a workspace.

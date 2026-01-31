@@ -7,7 +7,7 @@ using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Workspace
+namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
     /// Represents a delete form fragment for a workspace.

@@ -1,5 +1,5 @@
-﻿using KleeneStar.Core.WebParameter.Workspace;
-using KleeneStar.Core.Workspace;
+﻿using KleeneStar.Core.WebManager;
+using KleeneStar.Core.WebParameter.Workspace;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -9,7 +9,7 @@ using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Workspace
+namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
     /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the workspace sidebar.

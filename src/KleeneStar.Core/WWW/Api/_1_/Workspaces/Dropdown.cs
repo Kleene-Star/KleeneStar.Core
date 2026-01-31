@@ -11,7 +11,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 {
     [Title("Workspace")]
     [Cache]
-    public sealed class Dropdown : RestApiDropdown<IWorkspace>
+    public sealed class Dropdown : RestApiDropdown<Workspace>
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <returns>
         /// An object representing the URI for the given request and index item, or null if no URI is available.
         /// </returns>
-        public override IUri GetUri(IRequest request, IWorkspace item)
+        public override IUri GetUri(IRequest request, Workspace item)
         {
             return CoreHub.GetUri<WWW.Workspaces._key_.Index>()?
                 .SetParameters
@@ -54,7 +54,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <returns>
         /// An enumerable containing the objects that match the query criteria.
         /// </returns>
-        public override IEnumerable<IWorkspace> GetData(string filter, IRequest request)
+        public override IEnumerable<Workspace> GetData(string filter, IRequest request)
         {
             var data = CoreHub.WorkspaceManager?.Workspaces;
 

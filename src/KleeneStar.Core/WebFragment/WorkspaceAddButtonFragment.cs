@@ -4,18 +4,18 @@ using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Workspace
+namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a fragment control that displays the workspace description using Markdown formatting within the
-    /// workspace management interface.
+    /// Represents a control fragment that provides a button link for adding a new workspace within the application.
     /// </summary>
-    [Section<SectionContentPreferences>]
+    [Section<SectionHeadlinePrimary>]
     [Scope<WWW.Workspaces.Index>]
     [Cache]
-    public sealed class WorkspaceDescriptionFragment : FragmentControlText
+    public sealed class WorkspaceAddButtonFragment : FragmentControlButtonLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -24,11 +24,15 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public WorkspaceDescriptionFragment(IFragmentContext fragmentContext)
+        public WorkspaceAddButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:workspace.manage.description";
-            Format = TypeFormatText.Markdown;
+            Text = "kleenestar.core:workspace.add.label";
+            Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge);
+            Uri = CoreHub.GetUri<WWW.Workspaces.Add>();
+            Icon = new IconPlus();
+            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
+            BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
         }
 
         /// <summary>

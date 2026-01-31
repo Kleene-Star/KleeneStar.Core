@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.Workspace;
+﻿using KleeneStar.Core.WebManager;
 using System;
 using System.IO;
 using System.Linq;
@@ -7,7 +7,6 @@ using WebExpress.WebCore;
 using WebExpress.WebCore.WebApplication;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebCore.WebEndpoint;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
@@ -74,7 +73,7 @@ namespace KleeneStar.Core
         /// <returns>
         /// An IIcon instance representing the generated SVG icon, accessible via a relative URI endpoint.
         /// </returns>
-        public static IIcon GenerateIcon(Guid id)
+        public static ImageIcon GenerateIcon(Guid id)
         {
             // color palette: 32 distinct, contrast-rich colors
             var colors = new[]

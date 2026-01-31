@@ -35,6 +35,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <ProjectReference Include="..\..\..\KleeneStar.Model\src\KleeneStar.Model.Sqlite\KleeneStar.Model.Sqlite.csproj" />
 	  <ProjectReference Include="..\..\..\KleeneStar.Model\src\KleeneStar.Model\KleeneStar.Model.csproj" />
 	</ItemGroup>
 

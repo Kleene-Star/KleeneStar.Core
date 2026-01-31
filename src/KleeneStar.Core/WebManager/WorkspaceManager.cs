@@ -1,15 +1,15 @@
 ﻿using KleeneStar.Model;
 using KleeneStar.Model.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using WebExpress.WebCore;
 using WebExpress.WebCore.WebComponent;
 
-namespace KleeneStar.Core.Workspace
+namespace KleeneStar.Core.WebManager
 {
     /// <summary>
     /// Defines the contract for managing workspaces, including adding, retrieving, and removing workspaces, as well as
@@ -24,27 +24,26 @@ namespace KleeneStar.Core.Workspace
     {
         private readonly IComponentHub _componentHub;
         private readonly IHttpServerContext _httpServerContext;
-        private readonly Dictionary<string, IWorkspace> _workspaceMap = [];
 
         /// <summary>
         /// An event that fires when an workspace is added.
         /// </summary>
-        public event EventHandler<IWorkspace> WorkspaceAdded;
+        public event EventHandler<Workspace> WorkspaceAdded;
 
         /// <summary>
         /// An event that fires when an workspace is udpated.
         /// </summary>
-        public event EventHandler<IWorkspace> WorkspaceUpdated;
+        public event EventHandler<Workspace> WorkspaceUpdated;
 
         /// <summary>
         /// An event that fires when an workspace is removed.
         /// </summary>
-        public event EventHandler<IWorkspace> WorkspaceRemoved;
+        public event EventHandler<Workspace> WorkspaceRemoved;
 
         /// <summary>
         /// Returns all workspaces.
         /// </summary>
-        public IEnumerable<IWorkspace> Workspaces => _workspaceMap.Values;
+        public IEnumerable<Workspace> Workspaces => ModelHub.Workspaces;
 
         /// <summary>
         /// Returns the collection of workspace keys that are reserved and cannot be used for custom workspaces.
@@ -62,11 +61,7 @@ namespace KleeneStar.Core.Workspace
         /// <summary>
         /// Returns the collection of category names associated with the workspace.
         /// </summary>
-        public IEnumerable<string> WorkspaceCategories => Workspaces
-            .Select(x => x.Categories)
-            .SelectMany(x => x)
-            .Where(x => x is not null)
-            .Distinct();
+        public IEnumerable<string> Categories => ModelHub.Categories.Select(c => c.Name);
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -78,12 +73,6 @@ namespace KleeneStar.Core.Workspace
         {
             _componentHub = componentHub;
             _httpServerContext = httpServerContext;
-
-            var workspaceDirectory = Path.Combine(AppContext.BaseDirectory, _httpServerContext.DataPath, "workspaces");
-            foreach (var workspace in ModelHub.LoadAllWorkspaces(workspaceDirectory))
-            {
-                _workspaceMap[workspace?.Key] = workspace;
-            }
         }
 
         /// <summary>
@@ -91,17 +80,11 @@ namespace KleeneStar.Core.Workspace
         /// </summary>
         /// <param name="workspace">The workspace to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IWorkspaceManager AddWorkspace(IWorkspace workspace)
+        public IWorkspaceManager AddWorkspace(Workspace workspace)
         {
-            var workspaceDirectory = Path.Combine(AppContext.BaseDirectory, _httpServerContext.DataPath, "workspaces");
             ArgumentNullException.ThrowIfNull(workspace);
 
-            ModelHub.SaveWorkspace(workspace, workspaceDirectory);
-
-            if (!_workspaceMap.ContainsKey(workspace.Key))
-            {
-                _workspaceMap[workspace.Key] = workspace;
-            }
+            ModelHub.Add(workspace);
 
             WorkspaceAdded?.Invoke(this, workspace);
 
@@ -113,10 +96,9 @@ namespace KleeneStar.Core.Workspace
         /// </summary>
         /// <param name="workspaceId">The id of the workspace.</param>
         /// <returns>The workspace.</returns>
-        public IWorkspace GetWorkspace(Guid workspaceId)
+        public Workspace GetWorkspace(Guid workspaceId)
         {
-            return Workspaces
-                .Where(x => x.Id == workspaceId)
+            return ModelHub.GetWorkspaces(x => x.Id == workspaceId)
                 .FirstOrDefault();
         }
 
@@ -130,14 +112,15 @@ namespace KleeneStar.Core.Workspace
         /// An workspace corresponding to the specified key, or null if no matching 
         /// workspace is found.
         /// </returns>
-        public IWorkspace GetWorkspaceByKey(string key)
+        public Workspace GetWorkspaceByKey(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
             {
                 return null;
             }
 
-            return _workspaceMap.TryGetValue(key, out var workspace) ? workspace : null;
+            return Workspaces.Where(x => x.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase))
+                .FirstOrDefault();
         }
 
         /// <summary>
@@ -151,9 +134,9 @@ namespace KleeneStar.Core.Workspace
         /// An enumerable collection of workspaces that match the given predicate. If no workspaces 
         /// match, the collection will be empty.
         /// </returns>
-        public IEnumerable<IWorkspace> GetWorkspaces(Expression<Func<IWorkspace, bool>> predicate)
+        public IEnumerable<Workspace> GetWorkspaces(Expression<Func<Workspace, bool>> predicate)
         {
-            return null;
+            return ModelHub.GetWorkspaces(predicate);
         }
 
         /// <summary>
@@ -169,14 +152,8 @@ namespace KleeneStar.Core.Workspace
 
             if (workspace is not null)
             {
-                _workspaceMap.Remove(workspace?.Key);
+                ModelHub.Remove(workspace);
                 WorkspaceRemoved?.Invoke(this, workspace);
-
-                var workspaceDirectory = Path.Combine(AppContext.BaseDirectory, _httpServerContext.DataPath, "workspaces");
-                if (File.Exists(Path.Combine(workspaceDirectory, $"{workspace?.Key}.xml")))
-                {
-                    File.Delete(Path.Combine(workspaceDirectory, $"{workspace?.Key}.xml"));
-                }
             }
 
             return this;

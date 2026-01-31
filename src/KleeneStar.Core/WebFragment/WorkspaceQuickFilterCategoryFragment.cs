@@ -1,21 +1,24 @@
 ﻿using KleeneStar.Core.WebParameter.Workspace;
+using System.Collections.Generic;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Workspace
+namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the workspace sidebar.
+    /// Represents a sidebar link fragment for quick filtering workspace categories within the workspace manager
+    /// interface.
     /// </summary>
     [Section<SectionSidebarPreferences>]
     [Scope<WWW.Workspaces.Index>]
     [Cache]
-    public sealed class WorkspaceQuickFilertAllFragment : FragmentControlSidebarItemLink
+    public sealed class WorkspaceQuickFilertCategoryFragment : FragmentControlSidebarItemLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -24,10 +27,10 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public WorkspaceQuickFilertAllFragment(IFragmentContext fragmentContext)
+        public WorkspaceQuickFilertCategoryFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:workspace.quickfilter.all.label";
+            Text = "kleenestar.core:workspace.quickfilter.category.label";
             Uri = CoreHub.GetUri<WWW.Workspaces.Index>();
         }
 
@@ -40,12 +43,25 @@ namespace KleeneStar.Core.WebFragment.Workspace
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             var categoryParameter = renderContext.Request.GetParameter<CategoryParameter>();
+            var list = new List<IHtmlNode>();
 
-            Active = categoryParameter is null
-                ? TypeActive.Active
-                : TypeActive.None;
+            foreach (var category in CoreHub.WorkspaceManager.Categories)
+            {
+                var label = category.Trim().ToLower();
+                var uri = CoreHub.GetUri<WWW.Workspaces.Index>();
 
-            return base.Render(renderContext, visualTree);
+                list.Add(new ControlSidebarItemLink()
+                {
+                    Text = category,
+                    Active = label.Equals(categoryParameter?.Value, System.StringComparison.InvariantCultureIgnoreCase)
+                        ? TypeActive.Active
+                        : TypeActive.None,
+                    Uri = uri.Add(new UriQuery("category", category))
+                }
+                    .Render(renderContext, visualTree));
+            }
+
+            return new HtmlList(list);
         }
     }
 }

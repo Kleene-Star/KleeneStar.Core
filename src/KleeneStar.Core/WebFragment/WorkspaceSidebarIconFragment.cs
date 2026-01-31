@@ -1,5 +1,5 @@
-﻿using KleeneStar.Core.WebParameter.Workspace;
-using KleeneStar.Core.Workspace;
+﻿using KleeneStar.Core.WebManager;
+using KleeneStar.Core.WebParameter.Workspace;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -8,7 +8,7 @@ using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Workspace
+namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
     /// Represents a sidebar icon fragment for a workspace, providing rendering and 

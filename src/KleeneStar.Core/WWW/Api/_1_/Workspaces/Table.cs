@@ -21,7 +21,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
     /// </summary>
     [Title("kleenestar.core:workspace.table.header")]
     [Cache]
-    public sealed class Table : RestApiTable<IWorkspace>
+    public sealed class Table : RestApiTable<Workspace>
     {
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
@@ -46,7 +46,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <param name="row">
         /// The row object for which options are being retrieved. Cannot be null.
         /// </param>
-        public override IEnumerable<RestApiOption> GetOptions(IRequest request, IWorkspace row)
+        public override IEnumerable<RestApiOption> GetOptions(IRequest request, Workspace row)
         {
             yield return new RestApiOptionHeader(request)
             {
@@ -110,7 +110,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <returns>
         /// An object implementing <see cref="IUri"/> that represents the URI for the specified request and workspace.
         /// </returns>
-        public override IUri GetUri(IRequest request, IWorkspace row)
+        public override IUri GetUri(IRequest request, Workspace row)
         {
             return CoreHub.GetUri<WWW.Workspaces.Index>()?
                 .Concat(row.Key);
@@ -128,7 +128,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <returns>
         /// An object representing the URI of the REST API endpoint for the given request and workspace.
         /// </returns>
-        public override IUri GetRestApiForInlineEdit(IRequest request, IWorkspace row)
+        public override IUri GetRestApiForInlineEdit(IRequest request, Workspace row)
         {
             return CoreHub.GetUri<WWW.Api._1_.Workspaces.Index>()?
                 .Add(new UriQuery("id", row.Id.ToString()));
@@ -147,7 +147,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <returns>
         /// An enumerable containing the objects that match the query criteria.
         /// </returns>
-        public override IEnumerable<IWorkspace> GetData(string filter, IRequest request)
+        public override IEnumerable<Workspace> GetData(string filter, IRequest request)
         {
             var data = CoreHub.WorkspaceManager?.Workspaces;
 
@@ -156,7 +156,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 data = data.Where
                 (
                     x => x.Categories
-                        .Select(x => x.ToLower())
+                        .Select(x => x?.Name?.ToLower())
                         .Contains(category.Value?.ToLower())
                 );
             }

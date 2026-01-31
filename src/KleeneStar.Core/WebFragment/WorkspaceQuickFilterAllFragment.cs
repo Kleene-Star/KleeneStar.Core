@@ -1,31 +1,34 @@
 ﻿using KleeneStar.Core.WebParameter.Workspace;
-using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebCore.WebUri;
+using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Workspace
+namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a fragment control for managing workspace tables, providing functionality to 
-    /// render the fragment as HTML.
+    /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the workspace sidebar.
     /// </summary>
-    [Section<SectionContentPrimary>]
+    [Section<SectionSidebarPreferences>]
     [Scope<WWW.Workspaces.Index>]
     [Cache]
-    public sealed class WorkspaceTableFragment : FragmentControlRestTable
+    public sealed class WorkspaceQuickFilertAllFragment : FragmentControlSidebarItemLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        /// <param name="fragmentContext">The context of the fragment.</param>
-        public WorkspaceTableFragment(IFragmentContext fragmentContext)
+        /// <param name="fragmentContext">
+        /// The context associated with the fragment, providing necessary data and services for its operation. 
+        /// Cannot be null.
+        /// </param>
+        public WorkspaceQuickFilertAllFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Table>();
+            Text = "kleenestar.core:workspace.quickfilter.all.label";
+            Uri = CoreHub.GetUri<WWW.Workspaces.Index>();
         }
 
         /// <summary>
@@ -38,11 +41,9 @@ namespace KleeneStar.Core.WebFragment.Workspace
         {
             var categoryParameter = renderContext.Request.GetParameter<CategoryParameter>();
 
-            RestUri = CoreHub
-                    .GetUri<WWW.Api._1_.Workspaces.Table>()
-                    .Add(categoryParameter is not null
-                        ? new UriQuery("category", categoryParameter.Value)
-                        : null);
+            Active = categoryParameter is null
+                ? TypeActive.Active
+                : TypeActive.None;
 
             return base.Render(renderContext, visualTree);
         }

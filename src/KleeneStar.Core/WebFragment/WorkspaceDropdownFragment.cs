@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.WebControl.Workspace;
+﻿using KleeneStar.Core.WebControl;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -8,7 +8,7 @@ using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Workspace
+namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
     /// Represents a dropdown fragment within a workspace, providing functionality to interact with and 

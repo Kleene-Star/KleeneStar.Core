@@ -8,7 +8,7 @@ using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Workspace
+namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
     /// Represents a avatar form fragment for a workspace.
@@ -23,7 +23,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// </summary>
         public ControlFormItemInputAvatar Avatar { get; } = new()
         {
-            Name = nameof(IWorkspace.Icon),
+            Name = nameof(Workspace.Icon),
         };
 
         /// <summary>
