@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Linq.Expressions;
 using WebExpress.WebCore;
 using WebExpress.WebCore.WebComponent;
+using WebExpress.WebIndex.Queries;
 
 namespace KleeneStar.Core.WebManager
 {
@@ -41,11 +41,6 @@ namespace KleeneStar.Core.WebManager
         public event EventHandler<Workspace> WorkspaceRemoved;
 
         /// <summary>
-        /// Returns all workspaces.
-        /// </summary>
-        public IEnumerable<Workspace> Workspaces => ModelHub.Workspaces;
-
-        /// <summary>
         /// Returns the collection of workspace keys that are reserved and cannot be used for custom workspaces.
         /// </summary>
         /// <remarks>
@@ -57,11 +52,6 @@ namespace KleeneStar.Core.WebManager
             "default", "admin", "system", "assets", "api", "workspace",
             "workspaces", "icons", "setting"
         ];
-
-        /// <summary>
-        /// Returns the collection of category names associated with the workspace.
-        /// </summary>
-        public IEnumerable<string> Categories => ModelHub.Categories.Select(c => c.Name);
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -98,7 +88,11 @@ namespace KleeneStar.Core.WebManager
         /// <returns>The workspace.</returns>
         public Workspace GetWorkspace(Guid workspaceId)
         {
-            return ModelHub.GetWorkspaces(x => x.Id == workspaceId)
+            var query = new Query<Workspace>()
+                .Where(x => x.Id == workspaceId)
+                .WithPaging(0, 1);
+
+            return ModelHub.GetWorkspaces(query)
                 .FirstOrDefault();
         }
 
@@ -119,24 +113,42 @@ namespace KleeneStar.Core.WebManager
                 return null;
             }
 
-            return Workspaces.Where(x => x.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase))
+            var query = new Query<Workspace>()
+                .WhereEqualsIgnoreCase(x => x.Key, key)
+                .WithPaging(0, 1);
+
+            return ModelHub.GetWorkspaces(query)
                 .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Retrieves a collection of categories that match the specified query criteria.
+        /// </summary>
+        /// <param name="query">
+        /// The query used to filter and select categories. Cannot be null.
+        /// </param>
+        /// <returns>
+        /// An enumerable collection of categories that satisfy the query conditions. The 
+        /// collection is empty if no categories match.
+        /// </returns>
+        public IEnumerable<Category> GetCategories(IQuery<Category> query)
+        {
+            return ModelHub.GetCategories(query);
         }
 
         /// <summary>
         /// Retrieves a collection of workspaces that satisfy the specified filter criteria.
         /// </summary>
-        /// <param name="predicate"
-        /// >An expression used to filter workspaces. Only workspaces for which the predicate 
-        /// evaluates to true are included in the result.
+        /// <param name="query">
+        /// The query criteria used to filter the returned workspaces. Must not be null.
         /// </param>
         /// <returns>
         /// An enumerable collection of workspaces that match the given predicate. If no workspaces 
         /// match, the collection will be empty.
         /// </returns>
-        public IEnumerable<Workspace> GetWorkspaces(Expression<Func<Workspace, bool>> predicate)
+        public IEnumerable<Workspace> GetWorkspaces(IQuery<Workspace> query)
         {
-            return ModelHub.GetWorkspaces(predicate);
+            return ModelHub.GetWorkspaces(query);
         }
 
         /// <summary>

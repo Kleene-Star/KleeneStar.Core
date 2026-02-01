@@ -1,10 +1,12 @@
 ﻿using KleeneStar.Model.Entity;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebRestApi;
+using WebExpress.WebIndex.Queries;
 
 namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 {
@@ -21,15 +23,19 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         }
 
         /// <summary>
-        /// Retrieves a collection of index items of type TIndexItem.
+        /// Retrieves a queryable collection of index items that match the specified query criteria.
         /// </summary>
+        /// <param name="query">
+        /// An object containing the query parameters used to filter and select index items. Cannot 
+        /// be null.
+        /// </param>
         /// <returns>
-        /// An enumerable collection of TIndexItem objects. The collection is empty if 
-        /// no items are available.
+        /// A collection representing the filtered set of index items. 
+        /// The collection may be empty if no items match the query.
         /// </returns>
-        protected override IEnumerable<Workspace> Retrieve()
+        protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query)
         {
-            return CoreHub.WorkspaceManager.Workspaces;
+            return CoreHub.WorkspaceManager.GetWorkspaces(new Query<Workspace>());
         }
 
         /// <summary>
@@ -53,18 +59,21 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// Retrieves a result object containing default values and metadata for 
         /// cloning a item.
         /// </summary>
-        /// <param name="id">
-        /// The identifier of the item to retrieve. The comparison is case-insensitive.
+        /// <param name="query">
+        /// An object containing the query parameters used to filter and select index items. Cannot 
+        /// be null.
         /// </param>
         /// <param name="request">The request.</param>
         /// <returns>
         /// A result instance representing the data and metadata required
         /// to initialize a new item for creation.
         /// </returns>
-        protected override IRestApiCrudResultRetrieve<Workspace> RetrieveForClone(string id, IRequest request)
+        protected override IRestApiCrudResultRetrieve<Workspace> RetrieveForClone(IQuery<Workspace> query, IRequest request)
         {
-            var data = CoreHub.WorkspaceManager.GetWorkspace(Guid.Parse(id));
-            var newItem = new Model.Entity.Workspace()
+            var data = CoreHub.WorkspaceManager.GetWorkspaces(query)
+                .FirstOrDefault();
+
+            var newItem = new Workspace()
             {
                 Key = data.Key + "-copy",
                 Name = data.Name + " (Copy)",
@@ -84,8 +93,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <summary>
         /// Retrieves a workspace identified by the specified key for update operations.
         /// </summary>
-        /// <param name="id">
-        /// The unique identifier that identifies the workspace to retrieve. Cannot be null or empty.
+        /// <param name="query">
+        /// An object containing the query parameters used to filter and select index items. Cannot 
+        /// be null.
         /// </param>
         /// <param name="request">
         /// The request context containing additional information for the retrieval operation.
@@ -93,21 +103,21 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <returns>
         /// An object containing the workspace associated with the specified key.
         /// </returns>
-        protected override IRestApiCrudResultRetrieve<Workspace> RetrieveForUpdate(string id, IRequest request)
+        protected override IRestApiCrudResultRetrieve<Workspace> RetrieveForUpdate(IQuery<Workspace> query, IRequest request)
         {
             return new RestApiCrudResultRetrieve<Workspace>()
             {
                 Title = I18N.Translate(request, "kleenestar.core:workspace.edit.title"),
-                Data = CoreHub.WorkspaceManager.GetWorkspace(Guid.Parse(id))
+                Data = CoreHub.WorkspaceManager.GetWorkspaces(query).FirstOrDefault()
             };
         }
 
         /// <summary>
         /// Retrieves the workspace entity identified by the specified ID in preparation for deletion.
         /// </summary>
-        /// <param name="id">
-        /// The unique identifier of the workspace to retrieve for deletion. Cannot 
-        /// be null or empty.
+        /// <param name="query">
+        /// An object containing the query parameters used to filter and select index items. Cannot 
+        /// be null.
         /// </param>
         /// <param name="request">
         /// The request context containing additional information for 
@@ -117,9 +127,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// An object containing the workspace entity and related information required 
         /// for the delete operation.
         /// </returns>
-        protected override IRestApiCrudResultRetrieveDelete<Workspace> RetrieveForDelete(string id, IRequest request)
+        protected override IRestApiCrudResultRetrieveDelete<Workspace> RetrieveForDelete(IQuery<Workspace> query, IRequest request)
         {
-            var data = CoreHub.WorkspaceManager.GetWorkspace(Guid.Parse(id));
+            var data = CoreHub.WorkspaceManager.GetWorkspaces(query)
+                .FirstOrDefault();
+
             return new RestApiCrudResultRetrieveDelete<Workspace>()
             {
                 Data = data,
@@ -211,7 +223,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         protected override IRestApiCrudResultCreate Clone(Workspace existingItem, RestApiCrudFormData fieldMap, IRequest request, out Workspace newItem)
         {
             var id = Guid.NewGuid();
-            newItem = new Model.Entity.Workspace(id)
+            newItem = new Workspace(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
                 State = TypeWorkspaceState.Active

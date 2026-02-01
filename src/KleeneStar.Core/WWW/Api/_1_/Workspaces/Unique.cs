@@ -1,9 +1,12 @@
 ﻿using KleeneStar.Core.WebManager;
+using KleeneStar.Model.Entity;
+using System;
 using System.Linq;
 using System.Text.RegularExpressions;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
+using WebExpress.WebIndex.Queries;
 
 namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 {
@@ -38,9 +41,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <returns>True if the specified value is available; otherwise, false.</returns>
         protected override bool CheckAvailable(string value, Request request)
         {
-            var data = CoreHub.WorkspaceManager?.Workspaces;
-            var unique = data.Select(x => x.Name.ToLower()).Any(x => x.StartsWith(value));
-
             if (WorkspaceManager.ReservedWorkspaceKeys.Contains(value?.Trim().ToLower()))
             {
                 return false;
@@ -51,7 +51,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 return false;
             }
 
-            return !unique;
+            var query = new Query<Workspace>()
+                .Where(x => x.Name.StartsWith(value, StringComparison.CurrentCultureIgnoreCase));
+
+            return CoreHub.WorkspaceManager?.GetWorkspaces(query)
+                .Any() != true;
         }
     }
 }

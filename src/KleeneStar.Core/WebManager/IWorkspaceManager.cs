@@ -1,8 +1,8 @@
 ﻿using KleeneStar.Model.Entity;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using WebExpress.WebCore.WebComponent;
+using WebExpress.WebIndex.Queries;
 
 namespace KleeneStar.Core.WebManager
 {
@@ -33,16 +33,6 @@ namespace KleeneStar.Core.WebManager
         event EventHandler<Workspace> WorkspaceRemoved;
 
         /// <summary>
-        /// Returns all workspaces.
-        /// </summary>
-        IEnumerable<Workspace> Workspaces { get; }
-
-        /// <summary>
-        /// Returns the collection of category names associated with the workspace.
-        /// </summary>
-        IEnumerable<string> Categories { get; }
-
-        /// <summary>
         /// Adds a workspace to the workspace manager.
         /// </summary>
         /// <param name="workspace">The workspace to add. Cannot be null.</param>
@@ -69,17 +59,28 @@ namespace KleeneStar.Core.WebManager
         Workspace GetWorkspaceByKey(string key);
 
         /// <summary>
+        /// Retrieves a collection of categories that match the specified query criteria.
+        /// </summary>
+        /// <param name="query">
+        /// The query used to filter and select categories. Cannot be null.
+        /// </param>
+        /// <returns>
+        /// An enumerable collection of categories that satisfy the query conditions. The 
+        /// collection is empty if no categories match.
+        /// </returns>
+        IEnumerable<Category> GetCategories(IQuery<Category> query);
+
+        /// <summary>
         /// Retrieves a collection of workspaces that satisfy the specified filter criteria.
         /// </summary>
-        /// <param name="predicate"
-        /// >An expression used to filter workspaces. Only workspaces for which the predicate 
-        /// evaluates to true are included in the result.
+        /// <param name="query">
+        /// The query criteria used to filter the returned workspaces. Must not be null.
         /// </param>
         /// <returns>
         /// An enumerable collection of workspaces that match the given predicate. If no workspaces 
         /// match, the collection will be empty.
         /// </returns>
-        IEnumerable<Workspace> GetWorkspaces(Expression<Func<Workspace, bool>> predicate);
+        IEnumerable<Workspace> GetWorkspaces(IQuery<Workspace> query);
 
         /// <summary>
         /// Removes the specified workspace from the workspace manager.

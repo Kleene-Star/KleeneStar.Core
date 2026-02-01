@@ -38,13 +38,11 @@ namespace KleeneStar.Core.WebFragment
         {
             var categoryParameter = renderContext.Request.GetParameter<CategoryParameter>();
 
-            RestUri = CoreHub
-                    .GetUri<WWW.Api._1_.Workspaces.Table>()
-                    .Add(categoryParameter is not null
-                        ? new UriQuery("category", categoryParameter.Value)
-                        : null);
+            var uri = RestUri.Concat(categoryParameter is not null
+                ? new UriQuery("category", categoryParameter.Value)
+                : null);
 
-            return base.Render(renderContext, visualTree);
+            return base.Render(renderContext, visualTree, uri);
         }
     }
 }
