@@ -152,6 +152,25 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Retrieves a collection of workspaces that satisfy the specified filter criteria.
+        /// </summary>
+        /// <param name="query">
+        /// The query criteria used to filter the returned workspaces. Must not be null.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the query is executed. Provides additional information or constraints 
+        /// for the retrieval operation. Cannot be null.
+        /// </param>
+        /// <returns>
+        /// An enumerable collection of workspaces that match the given predicate. If no workspaces 
+        /// match, the collection will be empty.
+        /// </returns>
+        public IEnumerable<Workspace> GetWorkspaces(IQuery<Workspace> query, IQueryContext context)
+        {
+            return ModelHub.GetWorkspaces(query, context as KleeneStarDbContext);
+        }
+
+        /// <summary>
         /// Removes the specified workspace from the workspace manager.
         /// </summary>
         /// <remarks>This method removes the specified workspace from the manager. If the workspace does

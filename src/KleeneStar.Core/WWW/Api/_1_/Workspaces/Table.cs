@@ -136,19 +136,34 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         }
 
         /// <summary>
+        /// Creates a new instance of an object that implements the IQueryContext interface.
+        /// </summary>
+        /// <returns>
+        /// An IQueryContext instance that can be used to execute queries.
+        /// </returns>
+        protected override IQueryContext CreateContext()
+        {
+            return ModelHub.CreateDbContext();
+        }
+
+        /// <summary>
         /// Retrieves a queryable collection of index items that match the specified query criteria.
         /// </summary>
         /// <param name="query">
         /// An object containing the query parameters used to filter and select index items. Cannot 
         /// be null.
         /// </param>
+        /// <param name="context">
+        /// The context in which the query is executed. Provides additional information or constraints 
+        /// for the retrieval operation. Cannot be null.
+        /// </param>
         /// <returns>
         /// An <see cref="IQueryable{TIndexItem}"/> representing the filtered set of index items. The 
         /// result may be empty if no items match the query.
         /// </returns>
-        protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query)
+        protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query, IQueryContext context)
         {
-            return ModelHub.GetWorkspaces(query);
+            return CoreHub.WorkspaceManager.GetWorkspaces(query, context);
         }
 
         /// <summary>
@@ -165,33 +180,26 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// The request that provides the operational context for resolving
         /// the appropriate REST API URI.
         /// </param>
-        /// <returns>
-        /// A new query representing the result of applying the WQL filter to the input 
-        /// query. The returned query may be further composed or executed to retrieve 
-        /// filtered results.
-        /// </returns>
-        public override IQuery<Workspace> Filter(string filter, IQuery<Workspace> query, IRequest request)
+        protected override void Filter(string filter, IQuery<Workspace> query, IRequest request)
         {
             if (filter is null || filter == "null")
             {
-                return query;
+                return;
             }
 
-            query = query.WhereContainsIgnoreCase
+            query.WhereContainsIgnoreCase
             (
                 x => x.Name, filter
             );
 
             if (request.GetParameter<CategoryParameter>() is Parameter category)
             {
-                query = query.WhereContainsIgnoreCase
+                query.WhereContainsIgnoreCase
                 (
                     x => x.Categories.Select(x => x.Name),
                     category.Value
                 );
             }
-
-            return query;
         }
     }
 }

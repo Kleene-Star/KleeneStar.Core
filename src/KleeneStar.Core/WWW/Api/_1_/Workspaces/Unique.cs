@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Core.WebManager;
+using KleeneStar.Model;
 using KleeneStar.Model.Entity;
 using System;
 using System.Linq;
@@ -52,9 +53,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             }
 
             var query = new Query<Workspace>()
-                .Where(x => x.Name.StartsWith(value, StringComparison.CurrentCultureIgnoreCase));
+                .WhereStartsWithIgnoreCase(x => x.Name, value);
 
-            return CoreHub.WorkspaceManager?.GetWorkspaces(query)
+            using var contet = ModelHub.CreateDbContext();
+
+            return CoreHub.WorkspaceManager?.GetWorkspaces(query, contet)
                 .Any() != true;
         }
     }

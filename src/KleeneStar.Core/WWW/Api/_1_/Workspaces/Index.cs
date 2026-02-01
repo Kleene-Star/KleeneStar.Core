@@ -1,4 +1,5 @@
-﻿using KleeneStar.Model.Entity;
+﻿using KleeneStar.Model;
+using KleeneStar.Model.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,19 +24,34 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         }
 
         /// <summary>
+        /// Creates a new instance of an object that implements the IQueryContext interface.
+        /// </summary>
+        /// <returns>
+        /// An IQueryContext instance that can be used to execute queries.
+        /// </returns>
+        protected override IQueryContext CreateContext()
+        {
+            return ModelHub.CreateDbContext();
+        }
+
+        /// <summary>
         /// Retrieves a queryable collection of index items that match the specified query criteria.
         /// </summary>
         /// <param name="query">
         /// An object containing the query parameters used to filter and select index items. Cannot 
         /// be null.
         /// </param>
+        /// <param name="context">
+        /// The context in which the query is executed. Provides additional information or constraints 
+        /// for the retrieval operation. Cannot be null.
+        /// </param>
         /// <returns>
         /// A collection representing the filtered set of index items. 
         /// The collection may be empty if no items match the query.
         /// </returns>
-        protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query)
+        protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query, IQueryContext context)
         {
-            return CoreHub.WorkspaceManager.GetWorkspaces(new Query<Workspace>());
+            return CoreHub.WorkspaceManager.GetWorkspaces(new Query<Workspace>(), context);
         }
 
         /// <summary>
@@ -70,7 +86,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         protected override IRestApiCrudResultRetrieve<Workspace> RetrieveForClone(IQuery<Workspace> query, IRequest request)
         {
-            var data = CoreHub.WorkspaceManager.GetWorkspaces(query)
+            using var context = ModelHub.CreateDbContext();
+            var data = CoreHub.WorkspaceManager.GetWorkspaces(query, context)
                 .FirstOrDefault();
 
             var newItem = new Workspace()
@@ -129,7 +146,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         protected override IRestApiCrudResultRetrieveDelete<Workspace> RetrieveForDelete(IQuery<Workspace> query, IRequest request)
         {
-            var data = CoreHub.WorkspaceManager.GetWorkspaces(query)
+            using var context = ModelHub.CreateDbContext();
+            var data = CoreHub.WorkspaceManager.GetWorkspaces(query, context)
                 .FirstOrDefault();
 
             return new RestApiCrudResultRetrieveDelete<Workspace>()
@@ -185,7 +203,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         protected override IRestApiCrudResultCreate Create(RestApiCrudFormData fieldMap, IRequest request, out Workspace newItem)
         {
             var id = Guid.NewGuid();
-            newItem = new Model.Entity.Workspace(id)
+            newItem = new Workspace(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
                 State = TypeWorkspaceState.Active
