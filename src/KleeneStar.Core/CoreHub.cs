@@ -10,6 +10,7 @@ using WebExpress.WebCore.WebEndpoint;
 using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
+using WebExpress.WebUI.WebNotification;
 
 namespace KleeneStar.Core
 {
@@ -56,6 +57,34 @@ namespace KleeneStar.Core
             where TEndpoint : IEndpoint
         {
             return ComponentHub.SitemapManager.GetUri<TEndpoint>(ApplicationContet, parameters);
+        }
+
+        /// <summary>
+        /// Creates and displays a notification with the specified header and message.
+        /// </summary>
+        /// <param name="header">
+        /// The title or heading text to display in the notification. Cannot be null.
+        /// </param>
+        /// <param name="message">
+        /// The main content or body text of the notification. Cannot be null.
+        /// </param>
+        /// <param name="durability">
+        /// The duration, in milliseconds, that the notification remains visible. Specify -1 
+        /// to use the default duration.
+        /// </param>
+        /// <returns>
+        /// An object representing the created notification.
+        /// </returns>
+        public static INotification AddNotification(string header, string message, int durability = -1)
+        {
+            return ComponentHub.GetComponentManager<NotificationManager>()?.AddNotification
+            (
+                applicationContext: WebEx.ComponentHub.ApplicationManager.GetApplication<KleeneStarApplication>(),
+                icon: ApplicationContet.Icon?.ToUri()?.ToString(),
+                heading: header,
+                message: message,
+                durability: durability
+            );
         }
 
         /// <summary>
@@ -125,7 +154,7 @@ namespace KleeneStar.Core
             var outputPath = Path.Combine(iconDirectory, iconFileName);
             File.WriteAllText(outputPath, newContent);
 
-            return new ImageIcon(ApplicationContet.Route.Concat($"/icons/{iconFileName}").ToUri());
+            return new ImageIcon(ApplicationContet.Route.Concat($"/assets/icons/{iconFileName}").ToUri());
         }
     }
 }

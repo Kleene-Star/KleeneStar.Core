@@ -1,5 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter.Workspace;
-using KleeneStar.Model.Entity;
+using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;

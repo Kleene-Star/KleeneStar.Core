@@ -1,5 +1,5 @@
 ﻿using KleeneStar.Model;
-using KleeneStar.Model.Entity;
+using KleeneStar.Model.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -63,22 +63,6 @@ namespace KleeneStar.Core.WebManager
         {
             _componentHub = componentHub;
             _httpServerContext = httpServerContext;
-        }
-
-        /// <summary>
-        /// Adds a workspace to the workspace manager.
-        /// </summary>
-        /// <param name="workspace">The workspace to add. Cannot be null.</param>
-        /// <returns>The current instance to allow for method chaining.</returns>
-        public IWorkspaceManager AddWorkspace(Workspace workspace)
-        {
-            ArgumentNullException.ThrowIfNull(workspace);
-
-            ModelHub.Add(workspace);
-
-            WorkspaceAdded?.Invoke(this, workspace);
-
-            return this;
         }
 
         /// <summary>
@@ -168,6 +152,38 @@ namespace KleeneStar.Core.WebManager
         public IEnumerable<Workspace> GetWorkspaces(IQuery<Workspace> query, IQueryContext context)
         {
             return ModelHub.GetWorkspaces(query, context as KleeneStarDbContext);
+        }
+
+        /// <summary>
+        /// Adds a workspace to the workspace manager.
+        /// </summary>
+        /// <param name="workspace">The workspace to add. Cannot be null.</param>
+        /// <returns>The current instance to allow for method chaining.</returns>
+        public IWorkspaceManager AddWorkspace(Workspace workspace)
+        {
+            ArgumentNullException.ThrowIfNull(workspace);
+
+            ModelHub.Add(workspace);
+
+            WorkspaceAdded?.Invoke(this, workspace);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Update a workspace to the workspace manager.
+        /// </summary>
+        /// <param name="workspace">The workspace to updated. Cannot be null.</param>
+        /// <returns>The current instance to allow for method chaining.</returns>
+        public IWorkspaceManager UpdateWorkspace(Workspace workspace)
+        {
+            ArgumentNullException.ThrowIfNull(workspace);
+
+            ModelHub.Update(workspace);
+
+            WorkspaceAdded?.Invoke(this, workspace);
+
+            return this;
         }
 
         /// <summary>

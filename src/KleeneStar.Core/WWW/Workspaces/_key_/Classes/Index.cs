@@ -1,4 +1,5 @@
-﻿using WebExpress.WebApp.WebPage;
+﻿using KleeneStar.Model.Entities;
+using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
@@ -12,7 +13,7 @@ namespace KleeneStar.Core.WWW.Workspaces._key_.Classes
     [WebIcon<IconBoxesStacked>]
     [Title("kleenestar.core:class.manage.label")]
     [Scope<IScopeGeneral>]
-    [Domain<Model.Entity.Class>]
+    [Domain<Class>]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>

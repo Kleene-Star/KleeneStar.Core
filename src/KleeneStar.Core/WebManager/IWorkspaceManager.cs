@@ -1,4 +1,4 @@
-﻿using KleeneStar.Model.Entity;
+﻿using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using WebExpress.WebCore.WebComponent;
@@ -31,13 +31,6 @@ namespace KleeneStar.Core.WebManager
         /// An event that fires when an workspace is removed.
         /// </summary>
         event EventHandler<Workspace> WorkspaceRemoved;
-
-        /// <summary>
-        /// Adds a workspace to the workspace manager.
-        /// </summary>
-        /// <param name="workspace">The workspace to add. Cannot be null.</param>
-        /// <returns>The current instance to allow for method chaining.</returns>
-        IWorkspaceManager AddWorkspace(Workspace workspace);
 
         /// <summary>
         /// Returns a workspace based on its id.
@@ -97,6 +90,20 @@ namespace KleeneStar.Core.WebManager
         /// match, the collection will be empty.
         /// </returns>
         IEnumerable<Workspace> GetWorkspaces(IQuery<Workspace> query, IQueryContext context);
+
+        /// <summary>
+        /// Adds a workspace to the workspace manager.
+        /// </summary>
+        /// <param name="workspace">The workspace to add. Cannot be null.</param>
+        /// <returns>The current instance to allow for method chaining.</returns>
+        IWorkspaceManager AddWorkspace(Workspace workspace);
+
+        /// <summary>
+        /// Update a workspace to the workspace manager.
+        /// </summary>
+        /// <param name="workspace">The workspace to updated. Cannot be null.</param>
+        /// <returns>The current instance to allow for method chaining.</returns>
+        IWorkspaceManager UpdateWorkspace(Workspace workspace);
 
         /// <summary>
         /// Removes the specified workspace from the workspace manager.

@@ -33,7 +33,7 @@ namespace KleeneStar.Core
             CoreHub.ComponentHub = componentHub;
             ModelHub.ComponentHub = componentHub;
             CoreHub.ApplicationContet = applicationContext;
-            ModelHub.ApplicationContet = applicationContext;
+            ModelHub.ApplicationContext = applicationContext;
 
             // load configuration
             try

@@ -48,6 +48,9 @@ workspace.table.header=My Workspaces
 class.manage.label=Manage Classes
 class.manage.description=This view lists all registered classes of the current workspace.
 
+setting.database.title=Database Settings
+setting.group.database.label=Database
+setting.database.provider.label=Database Provider
+setting.database.datasource.label=Data Source
+
 dashboard.label=Dashboard
-
-

@@ -1,6 +1,6 @@
 ﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Model;
-using KleeneStar.Model.Entity;
+using KleeneStar.Model.Entities;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -11,22 +11,25 @@ using WebExpress.WebIndex.Queries;
 
 namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 {
+    /// <summary>
+    /// Represents a unique workspace name within the system, providing functionality to validate 
+    /// and check the availability of workspace names.
+    /// </summary>
     [Title("Workspace")]
     [Cache]
-    public sealed partial class Unique : RestApiUnique
+    public sealed partial class UniqueName : RestApiUnique
     {
         /// <summary>
-        /// Provides a compiled regular expression that matches strings containing only alphanumeric 
-        /// characters (letters
-        /// and digits).
+        /// Provides a regular expression that matches keys consisting of 1 to 64 non-control
+        /// Unicode characters.
         /// </summary>
-        [GeneratedRegex("^[a-zA-Z0-9]{1,10}$")]
+        [GeneratedRegex(@"^[\P{C}]{1,64}$")]
         private static partial Regex KeyRegex();
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Unique()
+        public UniqueName()
         {
         }
 
@@ -53,11 +56,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             }
 
             var query = new Query<Workspace>()
-                .WhereStartsWithIgnoreCase(x => x.Name, value);
+                .WhereEqualsIgnoreCase(x => x.Name, value);
 
-            using var contet = ModelHub.CreateDbContext();
+            using var context = ModelHub.CreateDbContext();
 
-            return CoreHub.WorkspaceManager?.GetWorkspaces(query, contet)
+            return CoreHub.WorkspaceManager?.GetWorkspaces(query, context)
                 .Any() != true;
         }
     }

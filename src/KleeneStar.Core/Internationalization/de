@@ -48,6 +48,9 @@ workspace.table.header=Meine Arbeitsbereiche
 class.manage.label=Klassen verwalten
 class.manage.description=Diese Ansicht listet alle registrierten Klassen des aktuellen Workspace auf. 
 
+setting.database.title=Datenbankeinstellungen
+setting.group.database.label=Datenbank
+setting.database.provider.label=Datenbankanbieter
+setting.database.datasource.label=Datenquelle
 
 dashboard.label=Dashboard
-

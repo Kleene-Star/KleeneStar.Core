@@ -1,10 +1,9 @@
 ﻿using KleeneStar.Model;
-using KleeneStar.Model.Entity;
+using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
-using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebRestApi;
 using WebExpress.WebIndex.Queries;
@@ -51,7 +50,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query, IQueryContext context)
         {
-            return CoreHub.WorkspaceManager.GetWorkspaces(new Query<Workspace>(), context);
+            return CoreHub.WorkspaceManager.GetWorkspaces(query, context);
         }
 
         /// <summary>
@@ -63,12 +62,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <returns>
         /// An object containing the information necessary to initialize a new workspace for creation.
         /// </returns>
-        protected override IRestApiCrudResultRetrieve<Workspace> RetrieveForCreate(IRequest request)
+        protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return new RestApiCrudResultRetrieve<Workspace>()
-            {
-                Title = I18N.Translate(request, "kleenestar.core:workspace.add.title")
-            };
+            return RetrieveForCreate(request, "kleenestar.core:workspace.add.title");
         }
 
         /// <summary>
@@ -84,7 +80,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// A result instance representing the data and metadata required
         /// to initialize a new item for creation.
         /// </returns>
-        protected override IRestApiCrudResultRetrieve<Workspace> RetrieveForClone(IQuery<Workspace> query, IRequest request)
+        protected override IRestApiCrudResultRetrieve RetrieveForClone(IQuery<Workspace> query, IRequest request)
         {
             using var context = ModelHub.CreateDbContext();
             var data = CoreHub.WorkspaceManager.GetWorkspaces(query, context)
@@ -100,11 +96,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 State = TypeWorkspaceState.Active
             };
 
-            return new RestApiCrudResultRetrieve<Workspace>()
-            {
-                Title = I18N.Translate(request, "kleenestar.core:workspace.clone.title"),
-                Data = newItem
-            };
+            return RetrieveForClone(request, data, "kleenestar.core:workspace.clone.title");
         }
 
         /// <summary>
@@ -120,13 +112,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <returns>
         /// An object containing the workspace associated with the specified key.
         /// </returns>
-        protected override IRestApiCrudResultRetrieve<Workspace> RetrieveForUpdate(IQuery<Workspace> query, IRequest request)
+        protected override IRestApiCrudResultRetrieve RetrieveForUpdate(IQuery<Workspace> query, IRequest request)
         {
-            return new RestApiCrudResultRetrieve<Workspace>()
-            {
-                Title = I18N.Translate(request, "kleenestar.core:workspace.edit.title"),
-                Data = CoreHub.WorkspaceManager.GetWorkspaces(query).FirstOrDefault()
-            };
+            using var context = ModelHub.CreateDbContext();
+            var data = CoreHub.WorkspaceManager.GetWorkspaces(query, context)
+                .FirstOrDefault();
+
+            return RetrieveForUpdate(request, data, "kleenestar.core:workspace.edit.title");
         }
 
         /// <summary>
@@ -144,18 +136,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// An object containing the workspace entity and related information required 
         /// for the delete operation.
         /// </returns>
-        protected override IRestApiCrudResultRetrieveDelete<Workspace> RetrieveForDelete(IQuery<Workspace> query, IRequest request)
+        protected override IRestApiCrudResultRetrieveDelete RetrieveForDelete(IQuery<Workspace> query, IRequest request)
         {
             using var context = ModelHub.CreateDbContext();
             var data = CoreHub.WorkspaceManager.GetWorkspaces(query, context)
                 .FirstOrDefault();
 
-            return new RestApiCrudResultRetrieveDelete<Workspace>()
-            {
-                Data = data,
-                Title = I18N.Translate(request, "kleenestar.core:workspace.delete.title"),
-                ConfirmItem = data?.Key
-            };
+            return RetrieveForDelete(request, data, "kleenestar.core:workspace.delete.title", data?.Key);
         }
 
         /// <summary>
@@ -213,6 +200,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             CoreHub.WorkspaceManager.AddWorkspace(newItem);
 
+            // create notification
+            CoreHub.AddNotification("Create", "success", 5000);
+
             return new RestApiCrudResultCreate();
         }
 
@@ -251,6 +241,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             CoreHub.WorkspaceManager.AddWorkspace(newItem);
 
+            // create notification
+            CoreHub.AddNotification("Clone", "success", 5000);
+
             return new RestApiCrudResultCreate();
         }
 
@@ -269,7 +262,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </param>
         protected override IRestApiCrudResultUpdate Update(Workspace existingItem, RestApiCrudFormData payload, IRequest request)
         {
-            return base.Update(existingItem, payload, request);
+            var res = base.Update(existingItem, payload, request);
+
+            CoreHub.WorkspaceManager.UpdateWorkspace(existingItem);
+
+            // update notification
+            CoreHub.AddNotification("Update", "success", 5000);
+
+            return res;
         }
 
         /// <summary>

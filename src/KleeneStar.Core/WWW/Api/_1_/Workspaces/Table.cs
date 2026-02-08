@@ -1,6 +1,6 @@
 ﻿using KleeneStar.Core.WebParameter.Workspace;
 using KleeneStar.Model;
-using KleeneStar.Model.Entity;
+using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;

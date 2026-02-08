@@ -1,5 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter.Workspace;
-using KleeneStar.Model.Entity;
+using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
@@ -30,7 +30,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = "kleenestar.core:workspace.name.placeholder",
             Help = "kleenestar.core:workspace.name.help",
             Required = true,
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Unique>()
+            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.UniqueName>()
         };
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace KleeneStar.Core.WebFragment
             Help = "kleenestar.core:workspace.key.help",
             Required = true,
             MaxLength = 10,
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Unique>()
+            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.UniqueKey>()
         };
 
         /// <summary>
