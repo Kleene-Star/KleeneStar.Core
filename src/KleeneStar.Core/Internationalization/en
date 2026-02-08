@@ -46,7 +46,16 @@ workspace.quickfilter.all.label=All Workspaces
 workspace.table.header=My Workspaces
 
 class.manage.label=Manage Classes
-class.manage.description=This view lists all registered classes of the current workspace.
+class.manage.description=This view serves as the central management hub for all classes defined in the system. It provides a comprehensive overview of the available class types and offers functions for creation, editing, and organization. 
+class.quickfilter.all.label=All Classes
+class.add.title=Add Class
+class.add.label=Add Class
+class.name.label=Class Name
+class.name.placeholder=Enter the name of the class.
+class.name.help=The name helps you quickly identify this class.
+class.description.label=Description
+class.description.placeholder=
+class.table.header=Class Overview
 
 setting.database.title=Database Settings
 setting.group.database.label=Database

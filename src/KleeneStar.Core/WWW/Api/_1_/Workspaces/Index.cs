@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebRestApi;
 using WebExpress.WebIndex.Queries;
@@ -13,6 +14,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
     /// <summary>
     /// Provides CRUD operations for workspace items via a REST API.
     /// </summary>
+    [Cache]
     public sealed class Index : RestApiCrud<Workspace>
     {
         /// <summary>
@@ -44,11 +46,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// The context in which the query is executed. Provides additional information or constraints 
         /// for the retrieval operation. Cannot be null.
         /// </param>
+        /// <param name="request">
+        /// The request that provides the operational context.
+        /// </param>
         /// <returns>
         /// A collection representing the filtered set of index items. 
         /// The collection may be empty if no items match the query.
         /// </returns>
-        protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query, IQueryContext context)
+        protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query, IQueryContext context, IRequest request)
         {
             return CoreHub.WorkspaceManager.GetWorkspaces(query, context);
         }
@@ -200,9 +205,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             CoreHub.WorkspaceManager.AddWorkspace(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -241,12 +243,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             CoreHub.WorkspaceManager.AddWorkspace(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
-
 
         /// <summary>
         /// Updates the data record.
@@ -265,9 +263,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.WorkspaceManager.UpdateWorkspace(existingItem);
-
-            // update notification
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

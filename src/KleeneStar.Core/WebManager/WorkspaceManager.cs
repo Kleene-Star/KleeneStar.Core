@@ -167,6 +167,9 @@ namespace KleeneStar.Core.WebManager
 
             WorkspaceAdded?.Invoke(this, workspace);
 
+            // create notification
+            CoreHub.AddNotification("Create", "success", 5000);
+
             return this;
         }
 
@@ -182,6 +185,9 @@ namespace KleeneStar.Core.WebManager
             ModelHub.Update(workspace);
 
             WorkspaceAdded?.Invoke(this, workspace);
+
+            // create notification
+            CoreHub.AddNotification("Update", "success", 5000);
 
             return this;
         }
@@ -202,6 +208,10 @@ namespace KleeneStar.Core.WebManager
                 ModelHub.Remove(workspace);
                 WorkspaceRemoved?.Invoke(this, workspace);
             }
+
+
+            // update notification
+            CoreHub.AddNotification("Remove", "success", 5000);
 
             return this;
         }

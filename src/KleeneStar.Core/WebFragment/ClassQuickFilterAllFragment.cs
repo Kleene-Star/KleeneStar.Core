@@ -3,19 +3,19 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the workspace sidebar.
+    /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the class sidebar.
     /// </summary>
-    [Section<SectionSidebarPreferences>]
-    [Scope<WWW.Workspaces._key_.Index>]
+    [Section<SectionSidebarSecondary>]
     [Scope<WWW.Workspaces._key_.Classes.Index>]
     [Cache]
-    public sealed class WorkspaceSidebarHeaderFragment : FragmentControlSidebarItemHeader
+    public sealed class ClassQuickFilertAllFragment : FragmentControlSidebarItemLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -24,9 +24,11 @@ namespace KleeneStar.Core.WebFragment
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public WorkspaceSidebarHeaderFragment(IFragmentContext fragmentContext)
+        public ClassQuickFilertAllFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            Text = "kleenestar.core:class.quickfilter.all.label";
+            Uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Index>();
         }
 
         /// <summary>
@@ -37,10 +39,13 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var keyParameter = renderContext.Request.GetParameter<KeyParameter>();
-            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(keyParameter?.Value);
+            var categoryParameter = renderContext.Request.GetParameter<CategoryParameter>();
 
-            return base.Render(renderContext, visualTree, workspace?.Name);
+            Active = categoryParameter is null
+                ? TypeActive.Active
+                : TypeActive.None;
+
+            return base.Render(renderContext, visualTree);
         }
     }
 }

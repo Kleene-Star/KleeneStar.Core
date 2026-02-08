@@ -1,32 +1,30 @@
 ﻿using KleeneStar.Core.WebParameter.Workspace;
+using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the workspace sidebar.
+    /// Represents a fragment control for managing class tables, providing functionality to 
+    /// render the fragment as HTML.
     /// </summary>
-    [Section<SectionSidebarPreferences>]
-    [Scope<WWW.Workspaces._key_.Index>]
+    [Section<SectionContentPrimary>]
     [Scope<WWW.Workspaces._key_.Classes.Index>]
     [Cache]
-    public sealed class WorkspaceSidebarHeaderFragment : FragmentControlSidebarItemHeader
+    public sealed class ClassTableFragment : FragmentControlRestTable
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        /// <param name="fragmentContext">
-        /// The context associated with the fragment, providing necessary data and services for its operation. 
-        /// Cannot be null.
-        /// </param>
-        public WorkspaceSidebarHeaderFragment(IFragmentContext fragmentContext)
+        /// <param name="fragmentContext">The context of the fragment.</param>
+        public ClassTableFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            RestUri = CoreHub.GetUri<WWW.Api._1_.Classes.Table>();
         }
 
         /// <summary>
@@ -37,10 +35,10 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var keyParameter = renderContext.Request.GetParameter<KeyParameter>();
-            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(keyParameter?.Value);
+            var key = renderContext.Request.GetParameter<KeyParameter>();
+            var uri = RestUri.SetParameters(key);
 
-            return base.Render(renderContext, visualTree, workspace?.Name);
+            return base.Render(renderContext, visualTree, uri);
         }
     }
 }

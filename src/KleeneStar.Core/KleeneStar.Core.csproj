@@ -40,7 +40,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="WWW\Api\_1_\Classes\" />
 	  <Folder Include="WWW\Workspaces\_key_\Classes\_id_\" />
 	</ItemGroup>
 

@@ -46,7 +46,16 @@ workspace.quickfilter.all.label=Alle Workspaces
 workspace.table.header=Meine Arbeitsbereiche
 
 class.manage.label=Klassen verwalten
-class.manage.description=Diese Ansicht listet alle registrierten Klassen des aktuellen Workspace auf. 
+class.manage.description=Diese Ansicht dient als zentrale Verwaltungsstelle für alle im System definierten Klassen. Sie bietet einen umfassenden Überblick über die verfügbaren Klassentypen und stellt Funktionen für deren Erstellung, Bearbeitung und Organisation bereit.
+class.quickfilter.all.label=Alle Klassen
+class.add.title=Neue Klasse
+class.add.label=Klasse hinzufügen
+class.name.label=Klassenname
+class.name.placeholder=Geben Sie den Namen der Klasse ein.
+class.name.help=Der Name hilft Ihnen, diese Klasse schnell zu identifizieren.
+class.description.label=Beschreibung
+class.description.placeholder=
+class.table.header=Klassenübersicht
 
 setting.database.title=Datenbankeinstellungen
 setting.group.database.label=Datenbank

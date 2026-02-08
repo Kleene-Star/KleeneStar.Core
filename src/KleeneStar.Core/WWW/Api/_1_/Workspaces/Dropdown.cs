@@ -69,11 +69,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// The context in which the query is executed. Provides additional information or constraints 
         /// for the retrieval operation. Cannot be null.
         /// </param>
+        /// <param name="request">
+        /// The request that provides the operational context.
+        /// </param>
         /// <returns>
         /// An <see cref="IQueryable{TIndexItem}"/> representing the filtered set of index items. The 
         /// result may be empty if no items match the query.
         /// </returns>
-        protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query, IQueryContext context)
+        protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query, IQueryContext context, IRequest request)
         {
             return CoreHub.WorkspaceManager?.GetWorkspaces(query, context);
         }

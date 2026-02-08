@@ -1,28 +1,26 @@
 ﻿using KleeneStar.Core.WebParameter.Workspace;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
-using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
-using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Api._1_.Workspaces
+namespace KleeneStar.Core.WWW.Api._1_.Classes
 {
     /// <summary>
-    /// Represents a REST API table for managing workspace entities, providing data retrieval 
-    /// and option generation functionality for workspace records.
+    /// Represents a REST API table for managing class entities, providing data retrieval 
+    /// and option generation functionality for class records.
     /// </summary>
-    [Title("kleenestar.core:workspace.table.header")]
+    [Title("kleenestar.core:class.table.header")]
     [Cache]
-    public sealed class Table : RestApiTable<Workspace>
+    public sealed class Table : RestApiTable<Class>
     {
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
@@ -47,7 +45,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <param name="request">
         /// The request object containing the criteria for retrieving options. Cannot be null.
         /// </param>
-        public override IEnumerable<RestApiOption> GetOptions(Workspace row, IRequest request)
+        public override IEnumerable<RestApiOption> GetOptions(Class row, IRequest request)
         {
             yield return new RestApiOptionHeader(request)
             {
@@ -58,7 +56,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             {
                 Uri = _editFormUri?.SetParameters
                 (
-                    new KeyParameter(row.Key)
+                    new ParameterGuid(row.Id)
                 )?
                     .ToString(),
                 Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge)
@@ -68,31 +66,20 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             {
                 Uri = _cloneFormUri?.SetParameters
                 (
-                    new KeyParameter(row.Key)
+                    new ParameterGuid(row.Id)
                 )?
                     .ToString(),
                 Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge)
             };
 
-            yield return new RestApiOptionCustom(request)
-            {
-                Uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Index>()?
-                    .SetParameters
-                    (
-                        new KeyParameter(row.Key)
-                    )?
-                    .ToString(),
-                Label = I18N.Translate(request, "kleenestar.core:class.manage.label"),
-                Icon = new IconBoxesStacked().Class
-
-            };
+            // extended options
 
             yield return new RestApiOptionSeperator(request);
             yield return new RestApiOptionDelete(request)
             {
                 Uri = _deleteFormUri?.SetParameters
                 (
-                    new KeyParameter(row.Key)
+                    new ParameterGuid(row.Id)
                 )?
                     .ToString(),
                 Modal = new ModalTarget("modal-form", TypeModalSize.Small)
@@ -111,10 +98,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <returns>
         /// An object implementing <see cref="IUri"/> that represents the URI for the specified request and workspace.
         /// </returns>
-        public override IUri GetUri(Workspace row, IRequest request)
+        public override IUri GetUri(Class row, IRequest request)
         {
-            return CoreHub.GetUri<WWW.Workspaces.Index>()?
-                .Concat(row.Key);
+            return CoreHub.GetUri<WWW.Workspaces._key_.Classes.Index>()?
+                .SetParameters(new Parameter("key", row.Id, ParameterScope.Parameter));
         }
 
         /// <summary>
@@ -129,9 +116,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// <returns>
         /// An object representing the URI of the REST API endpoint for the given request and workspace.
         /// </returns>
-        public override IUri GetRestApiForInlineEdit(Workspace row, IRequest request)
+        public override IUri GetRestApiForInlineEdit(Class row, IRequest request)
         {
-            return CoreHub.GetUri<WWW.Api._1_.Workspaces.Index>()?
+            return CoreHub.GetUri<WWW.Api._1_.Classes.Index>()?
                 .Add(new UriQuery("id", row.Id.ToString()));
         }
 
@@ -164,9 +151,15 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// An <see cref="IQueryable{TIndexItem}"/> representing the filtered set of index items. The 
         /// result may be empty if no items match the query.
         /// </returns>
-        protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query, IQueryContext context, IRequest request)
+        protected override IEnumerable<Class> Retrieve(IQuery<Class> query, IQueryContext context, IRequest request)
         {
-            return CoreHub.WorkspaceManager.GetWorkspaces(query, context);
+            var key = request.GetParameter<KeyParameter>();
+            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value);
+            var id = workspace?.Id ?? Guid.Empty;
+
+            query.WhereEquals(x => x.WorkspaceId, id);
+
+            return CoreHub.ClassManager.GetClasses(query, context);
         }
 
         /// <summary>
@@ -183,7 +176,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// The request that provides the operational context for resolving
         /// the appropriate REST API URI.
         /// </param>
-        protected override void Filter(string filter, IQuery<Workspace> query, IRequest request)
+        protected override void Filter(string filter, IQuery<Class> query, IRequest request)
         {
             if (string.IsNullOrWhiteSpace(filter) || filter == "null")
             {
@@ -195,14 +188,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 x => x.Name, filter
             );
 
-            if (request.GetParameter<CategoryParameter>() is Parameter category)
-            {
-                query.WhereContainsIgnoreCase
-                (
-                    x => x.Categories.Select(x => x.Name),
-                    category.Value
-                );
-            }
         }
     }
 }
