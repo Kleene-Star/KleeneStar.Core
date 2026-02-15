@@ -29,8 +29,7 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext)
         {
             Text = "kleenestar.core:class.add.label";
-            Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge);
-            Uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Add>();
+            PrimaryAction = new ActionModal("modal-form", CoreHub.GetUri<WWW.Workspaces._key_.Classes.Add>(), TypeModalSize.ExtraLarge);
             Icon = new IconPlus();
             Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
@@ -45,14 +44,15 @@ namespace KleeneStar.Core.WebFragment
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             var key = renderContext.Request.GetParameter<KeyParameter>();
-            var uri = Uri.SetParameters(key);
+            var uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Add>()?
+                .SetParameters(key);
 
             if (!FragmentContext.Conditions.Check(renderContext?.Request))
             {
                 return null;
             }
 
-            return base.Render(renderContext, visualTree, Text, uri, Tooltip, Modal, Icon);
+            return base.Render(renderContext, visualTree, Text, uri, Tooltip, PrimaryAction, SecondaryAction, Icon);
         }
     }
 }

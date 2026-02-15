@@ -38,7 +38,7 @@ namespace KleeneStar.Core.WebFragment
             _workspaceManager = workspaceManager;
 
             IconEdit = true;
-            Modal = new ModalTarget("modal-form");
+            PrimaryAction = new ActionModal("modal-form");
         }
 
         /// <summary>

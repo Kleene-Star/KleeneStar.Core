@@ -49,29 +49,26 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </param>
         public override IEnumerable<RestApiOption> GetOptions(Workspace row, IRequest request)
         {
+            var editUri = _editFormUri?
+                .SetParameters(new KeyParameter(row.Key));
+            var cloneUri = _cloneFormUri?
+                .SetParameters(new KeyParameter(row.Key));
+            var deleteUri = _deleteFormUri?
+                .SetParameters(new KeyParameter(row.Key));
+
             yield return new RestApiOptionHeader(request)
             {
-                Label = "webexpress.webapp:header.setting.label"
+                Text = "webexpress.webapp:header.setting.label"
             };
 
             yield return new RestApiOptionEdit(request)
             {
-                Uri = _editFormUri?.SetParameters
-                (
-                    new KeyParameter(row.Key)
-                )?
-                    .ToString(),
-                Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge)
+                PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionClone(request)
             {
-                Uri = _cloneFormUri?.SetParameters
-                (
-                    new KeyParameter(row.Key)
-                )?
-                    .ToString(),
-                Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge)
+                PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionCustom(request)
@@ -82,20 +79,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                         new KeyParameter(row.Key)
                     )?
                     .ToString(),
-                Label = I18N.Translate(request, "kleenestar.core:class.manage.label"),
+                Text = I18N.Translate(request, "kleenestar.core:class.manage.label"),
                 Icon = new IconBoxesStacked().Class
-
             };
 
             yield return new RestApiOptionSeperator(request);
             yield return new RestApiOptionDelete(request)
             {
-                Uri = _deleteFormUri?.SetParameters
-                (
-                    new KeyParameter(row.Key)
-                )?
-                    .ToString(),
-                Modal = new ModalTarget("modal-form", TypeModalSize.Small)
+                PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Small)
             };
         }
 
@@ -133,6 +124,51 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         {
             return CoreHub.GetUri<WWW.Api._1_.Workspaces.Index>()?
                 .Add(new UriQuery("id", row.Id.ToString()));
+        }
+
+        /// <summary>
+        /// Retrieves the primary action associated with the specified 
+        /// workspace and request.
+        /// </summary>
+        /// <param name="row">
+        /// The workspace instance that provides the context for determining 
+        /// the primary action.
+        /// </param>
+        /// <param name="request">
+        /// The request object that may influence the selection of the 
+        /// primary action.
+        /// </param>
+        /// <returns>
+        /// An instance of <see cref="IAction"/> representing the primary 
+        /// action for the given workspace and request.
+        /// </returns>
+        public override IAction GetPrimaryAction(Workspace row, IRequest request)
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Retrieves the secondary action associated with the specified 
+        /// workspace and request.
+        /// </summary>
+        /// <param name="row">
+        /// The workspace instance that provides the context for determining 
+        /// the primary action.
+        /// </param>
+        /// <param name="request">
+        /// The request object that may influence the selection of the 
+        /// primary action.
+        /// </param>
+        /// <returns>
+        /// An instance of <see cref="IAction"/> representing the primary 
+        /// action for the given workspace and request.
+        /// </returns>
+        public override IAction GetSecondaryAction(Workspace row, IRequest request)
+        {
+            var editUri = _editFormUri?
+                .SetParameters(new KeyParameter(row.Key));
+
+            return new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge);
         }
 
         /// <summary>

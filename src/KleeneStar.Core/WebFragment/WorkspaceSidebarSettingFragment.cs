@@ -50,6 +50,12 @@ namespace KleeneStar.Core.WebFragment
         {
             var keyParameter = renderContext.Request.GetParameter<KeyParameter>();
             var workspace = _workspaceManager.GetWorkspaceByKey(keyParameter?.Value);
+            var editUri = CoreHub.GetUri<WWW.Workspaces._key_.Edit>()?
+                .SetParameters(keyParameter);
+            var cloneUri = CoreHub.GetUri<WWW.Workspaces._key_.Clone>()?
+                .SetParameters(keyParameter);
+            var deleteUri = CoreHub.GetUri<WWW.Workspaces._key_.Delete>()?
+                .SetParameters(keyParameter);
 
             var items = new IControlDropdownItem[]
             {
@@ -61,17 +67,13 @@ namespace KleeneStar.Core.WebFragment
                 {
                     Text = "webexpress.webapp:edit.label",
                     Icon = new IconPencil(),
-                    Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge),
-                    Uri = CoreHub.GetUri<WWW.Workspaces._key_.Edit>()?
-                        .SetParameters(keyParameter)
+                    PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
                     Text = "webexpress.webapp:clone.label",
                     Icon = new IconCopy(),
-                    Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge),
-                    Uri = CoreHub.GetUri<WWW.Workspaces._key_.Clone>()?
-                        .SetParameters(keyParameter)
+                    PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
@@ -85,10 +87,8 @@ namespace KleeneStar.Core.WebFragment
                 {
                     Text = "webexpress.webapp:delete.label",
                     Icon = new IconTrashAlt(),
-                    Modal = new ModalTarget("modal-form"),
-                    Color = TypeColorText.Danger,
-                    Uri = CoreHub.GetUri<WWW.Workspaces._key_.Delete>()?
-                        .SetParameters(keyParameter)
+                    PrimaryAction = new ActionModal("modal-form", deleteUri),
+                    Color = TypeColorText.Danger
                 }
             };
 

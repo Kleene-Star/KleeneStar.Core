@@ -11,6 +11,10 @@ using WebExpress.WebIndex.Queries;
 
 namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 {
+    /// <summary>
+    /// Represents a unique key used for workspace management, ensuring that 
+    /// each workspace identifier is valid and not reserved.
+    /// </summary>
     [Title("Workspace")]
     [Cache]
     public sealed partial class UniqueKey : RestApiUnique

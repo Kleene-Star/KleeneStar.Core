@@ -18,8 +18,7 @@ namespace KleeneStar.Core.WebControl
         {
             Text = "kleenestar.core:workspace.add.label",
             Icon = new IconPlus(),
-            Modal = new ModalTarget("modal-form", TypeModalSize.ExtraLarge),
-            Uri = CoreHub.GetUri<WWW.Workspaces.Add>()
+            PrimaryAction = new ActionModal("modal-form", CoreHub.GetUri<WWW.Workspaces.Add>(), TypeModalSize.ExtraLarge),
         };
 
         /// <summary>
