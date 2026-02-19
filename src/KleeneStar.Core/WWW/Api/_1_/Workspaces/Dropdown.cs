@@ -95,14 +95,18 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// The request that provides the operational context for resolving
         /// the appropriate REST API URI.
         /// </param>
-        protected override void Filter(string filter, IQuery<Workspace> query, IRequest request)
+        /// /// <returns>
+        /// A query representing the filtered set of items that match the criteria defined by 
+        /// the filter statement.
+        /// </returns>
+        protected override IQuery<Workspace> Filter(string filter, IQuery<Workspace> query, IRequest request)
         {
             if (filter is null || filter == "null")
             {
-                return;
+                return query;
             }
 
-            query.WhereContainsIgnoreCase
+            return query.WhereContainsIgnoreCase
             (
                 x => x.Name, filter
             );

@@ -11,6 +11,7 @@ using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
+using WebExpress.WebIndex.Wql;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
 
@@ -77,8 +78,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                     .SetParameters
                     (
                         new KeyParameter(row.Key)
-                    )?
-                    .ToString(),
+                    ),
                 Text = I18N.Translate(request, "kleenestar.core:class.manage.label"),
                 Icon = new IconBoxesStacked().Class
 
@@ -126,6 +126,29 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         }
 
         /// <summary>
+        /// Applies filtering criteria to the specified query based on the provided WQL statement.
+        /// </summary>
+        /// <param name="wqlStatement">
+        /// The WQL statement that defines the filtering conditions to apply to the query. Cannot 
+        /// be null.
+        /// </param>
+        /// <param name="query">
+        /// The query object to which the filtering criteria will be applied. Cannot be null.
+        /// </param>
+        /// <param name="request">
+        /// The request that provides the operational context for resolving
+        /// the appropriate REST API URI.
+        /// </param>
+        /// <returns>
+        /// A query representing the filtered set of items that match the criteria defined by 
+        /// the WQL statement.
+        /// </returns>
+        protected override IQuery<Workspace> Filter(IWqlStatement<Workspace> wqlStatement, IQuery<Workspace> query, IRequest request)
+        {
+            return query;
+        }
+
+        /// <summary>
         /// Applies the specified filter criteria to the given query object.
         /// </summary>
         /// <param name="filter">
@@ -139,26 +162,32 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// The request that provides the operational context for resolving
         /// the appropriate REST API URI.
         /// </param>
-        protected override void Filter(string filter, IQuery<Workspace> query, IRequest request)
+        /// <returns>
+        /// A query representing the filtered set of items that match the criteria defined by 
+        /// the filter statement.
+        /// </returns>
+        protected override IQuery<Workspace> Filter(string filter, IQuery<Workspace> query, IRequest request)
         {
             if (string.IsNullOrWhiteSpace(filter) || filter == "null")
             {
-                return;
+                return query;
             }
 
-            query.WhereContainsIgnoreCase
+            query = query.WhereContainsIgnoreCase
             (
                 x => x.Name, filter
             );
 
             if (request.GetParameter<CategoryParameter>() is Parameter category)
             {
-                query.WhereContainsIgnoreCase
+                query = query.WhereContainsIgnoreCase
                 (
                     x => x.Categories.Select(x => x.Name),
                     category.Value
                 );
             }
+
+            return query;
         }
     }
 }

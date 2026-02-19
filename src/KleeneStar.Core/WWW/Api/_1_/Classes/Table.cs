@@ -168,14 +168,18 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
         /// The request that provides the operational context for resolving
         /// the appropriate REST API URI.
         /// </param>
-        protected override void Filter(string filter, IQuery<Class> query, IRequest request)
+        /// <returns>
+        /// A query representing the filtered set of items that match the criteria defined by 
+        /// the filter statement.
+        /// </returns>
+        protected override IQuery<Class> Filter(string filter, IQuery<Class> query, IRequest request)
         {
             if (string.IsNullOrWhiteSpace(filter) || filter == "null")
             {
-                return;
+                return query;
             }
 
-            query.WhereContainsIgnoreCase
+            return query.WhereContainsIgnoreCase
             (
                 x => x.Name, filter
             );

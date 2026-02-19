@@ -35,7 +35,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         protected override IEnumerable<string> GetHistory(IRequest request)
         {
-            yield return "Name ~ \"Controlling";
+            yield return "Name ~ \"Controlling\"";
             yield return "Key ~ \"CMDB\"";
         }
     }
