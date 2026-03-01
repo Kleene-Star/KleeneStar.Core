@@ -39,8 +39,4 @@
 	  <ProjectReference Include="..\..\..\KleeneStar.Model\src\KleeneStar.Model\KleeneStar.Model.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="WWW\Workspaces\_key_\Classes\_id_\" />
-	</ItemGroup>
-
 </Project>

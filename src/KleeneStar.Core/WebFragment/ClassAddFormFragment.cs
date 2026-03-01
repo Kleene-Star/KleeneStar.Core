@@ -1,4 +1,5 @@
-﻿using KleeneStar.Core.WebParameter.Workspace;
+﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WWW.Api._1_.Workspaces._key_.Classes;
 using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
@@ -57,7 +58,7 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
 
             Mode = TypeRestFormMode.Add;
-            Uri = CoreHub.GetUri<WWW.Api._1_.Classes.Index>();
+            Uri = CoreHub.GetUri<Index>();
         }
 
         /// <summary>

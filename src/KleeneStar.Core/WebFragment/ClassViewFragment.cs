@@ -23,7 +23,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
-            //RestUri = CoreHub.GetUri<WWW.Api._1_.Classes.Wql>()
+            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces._key_.Classes.Wql>()
         };
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Classes.Table>()
+            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces._key_.Classes.Table>()
         };
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTile Tile { get; } = new ControlRestTile()
         {
-            //RestUri = CoreHub.GetUri<WWW.Api._1_.Classes.Tile>()
+            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces._key_.Classes.Tile>()
         };
 
         /// <summary>

@@ -1,20 +1,18 @@
-﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Core.WebParameter.Workspace;
-using KleeneStar.Model;
+﻿using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System.Collections.Generic;
+using System.Linq;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
 
-namespace KleeneStar.Core.WWW.Api._1_.Classes
+namespace KleeneStar.Core.WWW.Api._1_.Workspaces._key_.Classes
 {
     /// <summary>
     /// Provides CRUD operations for class items via a REST API.
     /// </summary>
     [Cache]
-    [SegmentKey<KeyParameter>()]
     public sealed class Index : RestApiCrud<Class>
     {
         /// <summary>
@@ -104,27 +102,27 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
         //    return RetrieveForClone(request, data, "kleenestar.core:workspace.clone.title");
         //}
 
-        ///// <summary>
-        ///// Retrieves a workspace identified by the specified key for update operations.
-        ///// </summary>
-        ///// <param name="query">
-        ///// An object containing the query parameters used to filter and select index items. Cannot 
-        ///// be null.
-        ///// </param>
-        ///// <param name="request">
-        ///// The request context containing additional information for the retrieval operation.
-        ///// </param>
-        ///// <returns>
-        ///// An object containing the workspace associated with the specified key.
-        ///// </returns>
-        //protected override IRestApiCrudResultRetrieve RetrieveForUpdate(IQuery<Class> query, IRequest request)
-        //{
-        //    using var context = ModelHub.CreateDbContext();
-        //    var data = CoreHub.WorkspaceManager.GetWorkspaces(query, context)
-        //        .FirstOrDefault();
+        /// <summary>
+        /// Retrieves a workspace identified by the specified key for update operations.
+        /// </summary>
+        /// <param name="query">
+        /// An object containing the query parameters used to filter and select index items. Cannot 
+        /// be null.
+        /// </param>
+        /// <param name="request">
+        /// The request context containing additional information for the retrieval operation.
+        /// </param>
+        /// <returns>
+        /// An object containing the workspace associated with the specified key.
+        /// </returns>
+        protected override IRestApiCrudResultRetrieve RetrieveForUpdate(IQuery<Class> query, IRequest request)
+        {
+            using var context = ModelHub.CreateDbContext();
+            var data = CoreHub.ClassManager.GetClasses(query, context)
+                .FirstOrDefault();
 
-        //    return RetrieveForUpdate(request, data, "kleenestar.core:workspace.edit.title");
-        //}
+            return RetrieveForUpdate(request, data, "kleenestar.core:class.edit.title");
+        }
 
         ///// <summary>
         ///// Retrieves the workspace entity identified by the specified ID in preparation for deletion.

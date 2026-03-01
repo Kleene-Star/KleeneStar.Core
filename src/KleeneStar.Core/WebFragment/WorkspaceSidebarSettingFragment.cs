@@ -1,5 +1,5 @@
 ﻿using KleeneStar.Core.WebManager;
-using KleeneStar.Core.WebParameter.Workspace;
+using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -51,11 +51,11 @@ namespace KleeneStar.Core.WebFragment
             var keyParameter = renderContext.Request.GetParameter<KeyParameter>();
             var workspace = _workspaceManager.GetWorkspaceByKey(keyParameter?.Value);
             var editUri = CoreHub.GetUri<WWW.Workspaces._key_.Edit>()?
-                .SetParameters(keyParameter);
+                .BindParameters(keyParameter);
             var cloneUri = CoreHub.GetUri<WWW.Workspaces._key_.Clone>()?
-                .SetParameters(keyParameter);
+                .BindParameters(keyParameter);
             var deleteUri = CoreHub.GetUri<WWW.Workspaces._key_.Delete>()?
-                .SetParameters(keyParameter);
+                .BindParameters(keyParameter);
 
             var items = new IControlDropdownItem[]
             {
@@ -80,7 +80,7 @@ namespace KleeneStar.Core.WebFragment
                     Text = "kleenestar.core:class.manage.label",
                     Icon = new IconBoxesStacked(),
                     Uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Index>()?
-                        .SetParameters(keyParameter)
+                        .BindParameters(keyParameter)
                 },
                 new ControlDropdownItemDivider(),
                 new ControlDropdownItemLink("Delete")

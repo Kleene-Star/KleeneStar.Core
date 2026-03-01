@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.WebParameter.Workspace;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System.Collections.Generic;
@@ -41,7 +41,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         public override IUri GetUri(Workspace item, IRequest request)
         {
             return CoreHub.GetUri<WWW.Workspaces._key_.Index>()?
-                .SetParameters
+                .BindParameters
                 (
                     new KeyParameter(item?.Key)
                 );

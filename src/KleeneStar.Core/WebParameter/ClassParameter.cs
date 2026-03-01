@@ -1,19 +1,20 @@
-﻿using WebExpress.WebCore.WebIcon;
+﻿using System;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebParameter;
 
-namespace KleeneStar.Core.WebParameter.Workspace
+namespace KleeneStar.Core.WebParameter
 {
     /// <summary>
-    /// Represents a parameter that specifies a workspace key.
+    /// Represents a parameter that specifies a class id.
     /// </summary>
-    public class KeyParameter : Parameter
+    public class ClassParameter : Parameter
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public KeyParameter()
-            : base("Key", null, ParameterScope.Url)
+        public ClassParameter()
+            : base("Class", null, ParameterScope.Url)
         {
         }
 
@@ -21,8 +22,8 @@ namespace KleeneStar.Core.WebParameter.Workspace
         /// Initializes a new instance of the class with a specified value.
         /// </summary>
         /// <param name="value">The value of the parameter.</param>
-        public KeyParameter(string value)
-            : base("Key", value, ParameterScope.Url)
+        public ClassParameter(string value)
+            : base("class", value, ParameterScope.Url)
         {
         }
 
@@ -36,9 +37,10 @@ namespace KleeneStar.Core.WebParameter.Workspace
         /// </returns>
         public override string GetDisplayText(IRenderContext renderContext)
         {
-            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(Value);
+            var guid = Guid.TryParse(Value, out var id) ? id : Guid.Empty;
+            var @class = CoreHub.ClassManager.GetClass(guid);
 
-            return workspace?.Name;
+            return @class?.Name;
         }
 
         /// <summary>
@@ -53,9 +55,10 @@ namespace KleeneStar.Core.WebParameter.Workspace
         /// </returns>
         public override IIcon GetIcon(IRenderContext renderContext)
         {
-            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(Value);
+            var guid = Guid.TryParse(Value, out var id) ? id : Guid.Empty;
+            var @class = CoreHub.ClassManager.GetClass(guid);
 
-            return workspace.Icon;
+            return @class.Icon;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using KleeneStar.Model;
+﻿using KleeneStar.Core.WebAttribute;
+using KleeneStar.Core.WebParameter;
+using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,12 +11,13 @@ using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebRestApi;
 using WebExpress.WebIndex.Queries;
 
-namespace KleeneStar.Core.WWW.Api._1_.Workspaces
+namespace KleeneStar.Core.WWW.Api._1_.Workspaces._key_
 {
     /// <summary>
     /// Provides CRUD operations for workspace items via a REST API.
     /// </summary>
     [Cache]
+    [SegmentKey<KeyParameter>()]
     public sealed class Index : RestApiCrud<Workspace>
     {
         /// <summary>

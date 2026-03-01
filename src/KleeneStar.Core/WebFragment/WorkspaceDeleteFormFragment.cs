@@ -1,4 +1,5 @@
-﻿using KleeneStar.Core.WebParameter.Workspace;
+﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WWW.Api._1_.Workspaces._key_;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -25,7 +26,7 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext)
         {
             Mode = TypeRestFormMode.Delete;
-            Uri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Index>();
+            Uri = CoreHub.GetUri<Index>();
         }
 
         /// <summary>

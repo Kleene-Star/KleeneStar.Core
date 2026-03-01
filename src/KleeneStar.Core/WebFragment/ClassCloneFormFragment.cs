@@ -1,6 +1,8 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WWW.Api._1_.Workspaces._key_;
 using KleeneStar.Model.Entities;
+using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -12,30 +14,49 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a avatar form fragment for a workspace.
+    /// Represents a clone form fragment for a class.
     /// </summary>
     [Section<SectionContentPreferences>]
-    [Scope<WWW.Workspaces._key_.Avatar>]
+    [Scope<WWW.Workspaces._key_.Classes._id_.Clone>]
     [Cache]
-    public sealed class WorkspaceAvatarFormFragment : FragmentControlRestFormEdit
+    public sealed class ClassCloneFormFragment : FragmentControlRestFormClone
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the workspace.
+        /// Returns the input text control for specifying the name of the class.
         /// </summary>
-        public ControlFormItemInputAvatar Avatar { get; } = new()
+        public ControlRestFormItemInputUnique ClassName { get; } = new()
         {
-            Name = nameof(Workspace.Icon),
+            Name = nameof(Class.Name),
+            Label = "kleenestar.core:class.name.label",
+            Placeholder = "kleenestar.core:class.name.placeholder",
+            Help = "kleenestar.core:class.name.help",
+            Required = true,
+            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.UniqueName>()
+        };
+
+        /// <summary>
+        /// Returns the input text control for specifying the description of the workspace.
+        /// </summary>
+        public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
+        {
+            Name = nameof(Workspace.Description),
+            Label = "kleenestar.core:class.description.label",
+            Placeholder = "kleenestar.core:class.description.placeholder",
+            Format = TypeEditTextFormat.Wysiwyg,
+            Required = false
         };
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public WorkspaceAvatarFormFragment(IFragmentContext fragmentContext)
+        public ClassCloneFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Add(Avatar);
+            Add(ClassName);
+            Add(Description);
 
+            Mode = TypeRestFormMode.Clone;
             Uri = CoreHub.GetUri<Index>();
         }
 

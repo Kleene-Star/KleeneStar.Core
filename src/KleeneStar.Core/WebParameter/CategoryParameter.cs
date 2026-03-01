@@ -1,6 +1,6 @@
 ﻿using WebExpress.WebCore.WebParameter;
 
-namespace KleeneStar.Core.WebParameter.Workspace
+namespace KleeneStar.Core.WebParameter
 {
     /// <summary>
     /// Represents a parameter that specifies a workspace category.

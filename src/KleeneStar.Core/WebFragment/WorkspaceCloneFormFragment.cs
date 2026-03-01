@@ -1,4 +1,5 @@
-﻿using KleeneStar.Core.WebParameter.Workspace;
+﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WWW.Api._1_.Workspaces._key_;
 using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
@@ -13,7 +14,7 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a edit form fragment for a workspace.
+    /// Represents a clone form fragment for a workspace.
     /// </summary>
     [Section<SectionContentPreferences>]
     [Scope<WWW.Workspaces._key_.Clone>]
@@ -83,7 +84,7 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
 
             Mode = TypeRestFormMode.Clone;
-            Uri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Index>();
+            Uri = CoreHub.GetUri<Index>();
         }
 
         /// <summary>

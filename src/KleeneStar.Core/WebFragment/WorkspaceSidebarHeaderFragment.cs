@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.WebParameter.Workspace;
+﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;

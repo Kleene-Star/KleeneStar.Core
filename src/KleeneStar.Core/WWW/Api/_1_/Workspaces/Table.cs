@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.WebParameter.Workspace;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System.Collections.Generic;
@@ -11,7 +11,6 @@ using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
-using WebExpress.WebIndex.Wql;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
 
@@ -51,11 +50,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         public override IEnumerable<RestApiOption> GetOptions(Workspace row, IRequest request)
         {
             var editUri = _editFormUri?
-                .SetParameters(new KeyParameter(row.Key));
+                .BindParameters(new KeyParameter(row.Key));
             var cloneUri = _cloneFormUri?
-                .SetParameters(new KeyParameter(row.Key));
+                .BindParameters(new KeyParameter(row.Key));
             var deleteUri = _deleteFormUri?
-                .SetParameters(new KeyParameter(row.Key));
+                .BindParameters(new KeyParameter(row.Key));
 
             yield return new RestApiOptionHeader(request)
             {
@@ -75,7 +74,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             yield return new RestApiOptionCustom(request)
             {
                 Uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Index>()?
-                    .SetParameters
+                    .BindParameters
                     (
                         new KeyParameter(row.Key)
                     ),
@@ -83,7 +82,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 Icon = new IconBoxesStacked().Class
             };
 
-            yield return new RestApiOptionSeperator(request);
+            yield return new RestApiOptionSeparator(request);
             yield return new RestApiOptionDelete(request)
             {
                 PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Small)
@@ -122,7 +121,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         public override IUri GetRestApiForInlineEdit(Workspace row, IRequest request)
         {
-            return CoreHub.GetUri<WWW.Api._1_.Workspaces.Index>()?
+            return CoreHub.GetUri<_key_.Index>()?
                 .Add(new UriQuery("id", row.Id.ToString()));
         }
 
@@ -166,7 +165,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         public override IAction GetSecondaryAction(Workspace row, IRequest request)
         {
             var editUri = _editFormUri?
-                .SetParameters(new KeyParameter(row.Key));
+                .BindParameters(new KeyParameter(row.Key));
 
             return new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge);
         }
@@ -203,29 +202,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query, IQueryContext context, IRequest request)
         {
             return CoreHub.WorkspaceManager.GetWorkspaces(query, context);
-        }
-
-        /// <summary>
-        /// Applies filtering criteria to the specified query based on the provided WQL statement.
-        /// </summary>
-        /// <param name="wqlStatement">
-        /// The WQL statement that defines the filtering conditions to apply to the query. Cannot 
-        /// be null.
-        /// </param>
-        /// <param name="query">
-        /// The query object to which the filtering criteria will be applied. Cannot be null.
-        /// </param>
-        /// <param name="request">
-        /// The request that provides the operational context for resolving
-        /// the appropriate REST API URI.
-        /// </param>
-        /// <returns>
-        /// A query representing the filtered set of items that match the criteria defined by 
-        /// the WQL statement.
-        /// </returns>
-        protected override IQuery<Workspace> Filter(IWqlStatement<Workspace> wqlStatement, IQuery<Workspace> query, IRequest request)
-        {
-            return query;
         }
 
         /// <summary>

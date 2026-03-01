@@ -1,16 +1,17 @@
 ﻿using KleeneStar.Core.WebAttribute;
 using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
+using System;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Workspaces._key_
+namespace KleeneStar.Core.WWW.Workspaces._key_.Classes._id_
 {
     /// <summary>
-    /// Provides functionality for managing the current workspace page.
+    /// Provides functionality for managing the current class page.
     /// </summary>
     [WebIcon<IconGlobe>]
     [SegmentKey<KeyParameter>()]
@@ -18,17 +19,17 @@ namespace KleeneStar.Core.WWW.Workspaces._key_
     [Cache]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
-        private readonly IWorkspaceManager _workspaceManager;
+        private readonly IClassManager _classManager;
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        /// <param name="workspaceManager">
-        /// The workspace manager used to retrieve workspace information. Cannot be null.
+        /// <param name="classManager">
+        /// The class manager used to retrieve class information. Cannot be null.
         /// </param>
-        public Index(IWorkspaceManager workspaceManager)
+        public Index(IClassManager classManager)
         {
-            _workspaceManager = workspaceManager;
+            _classManager = classManager;
         }
 
         /// <summary>
@@ -38,8 +39,9 @@ namespace KleeneStar.Core.WWW.Workspaces._key_
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
-            var keyParameter = renderContext.Request.GetParameter<KeyParameter>();
-            var workspace = _workspaceManager.GetWorkspaceByKey(keyParameter.Value);
+            var classParameter = renderContext.Request.GetParameter<ClassParameter>();
+            var guid = Guid.TryParse(classParameter.Value, out var id) ? id : Guid.Empty;
+            var workspace = _classManager.GetClass(guid);
 
             visualTree.Title = workspace?.Name;
             visualTree.Content.MainPanel.Headline.Title = workspace?.Name;

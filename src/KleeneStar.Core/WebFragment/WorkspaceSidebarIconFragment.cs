@@ -1,5 +1,5 @@
 ﻿using KleeneStar.Core.WebManager;
-using KleeneStar.Core.WebParameter.Workspace;
+using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -52,7 +52,7 @@ namespace KleeneStar.Core.WebFragment
             var keyParameter = renderContext.Request.GetParameter<KeyParameter>();
             var workspace = _workspaceManager.GetWorkspaceByKey(keyParameter?.Value);
             var uri = CoreHub.GetUri<WWW.Workspaces._key_.Avatar>()?
-                .SetParameters
+                .BindParameters
                 (
                     new KeyParameter(workspace.Key)
                 );

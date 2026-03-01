@@ -1,5 +1,4 @@
-﻿using KleeneStar.Core.WebParameter.Workspace;
-using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -43,16 +42,20 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var key = renderContext.Request.GetParameter<KeyParameter>();
-            var uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Add>()?
-                .SetParameters(key);
-
             if (!FragmentContext.Conditions.Check(renderContext?.Request))
             {
                 return null;
             }
 
-            return base.Render(renderContext, visualTree, Text, uri, Tooltip, PrimaryAction, SecondaryAction, Icon);
+            var primaryAction = new ActionModal
+            (
+                "modal-form",
+                CoreHub.GetUri<WWW.Workspaces._key_.Classes.Add>()
+                    .BindParameters(renderContext.Request),
+                TypeModalSize.ExtraLarge
+                );
+
+            return base.Render(renderContext, visualTree, Text, null, Tooltip, primaryAction, SecondaryAction, Icon);
         }
     }
 }
