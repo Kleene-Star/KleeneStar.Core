@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WWW.Classes._workspacekey_;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -13,7 +14,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the class sidebar.
     /// </summary>
     [Section<SectionSidebarSecondary>]
-    [Scope<WWW.Workspaces._key_.Classes.Index>]
+    [Scope<Index>]
     [Cache]
     public sealed class ClassQuickFilertAllFragment : FragmentControlSidebarItemLink
     {
@@ -28,7 +29,7 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext)
         {
             Text = "kleenestar.core:class.quickfilter.all.label";
-            Uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Index>();
+            Uri = CoreHub.GetUri<Index>();
         }
 
         /// <summary>

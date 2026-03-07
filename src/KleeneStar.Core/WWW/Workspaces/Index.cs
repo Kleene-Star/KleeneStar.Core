@@ -1,16 +1,16 @@
-﻿using KleeneStar.Model.Entities;
+﻿using KleeneStar.Core.WebIcon;
+using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
-using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Workspaces
 {
     /// <summary>
     /// Represents the main workspace management page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconGlobe>]
+    [WebIcon<WorkspaceIcon>]
     [Title("kleenestar.core:workspace.manage.label")]
     [Scope<IScopeGeneral>]
     [Domain<Workspace>]

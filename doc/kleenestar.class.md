@@ -493,17 +493,17 @@ Assignments are displayed in a tabular overview and can be adjusted or removed a
 
 The sitemap defines navigation paths and visibility logic within the application. It forms the basis for routing and ensures a consistent structure relative to workspace routes. Clear path definitions enable deep-linkable addressing of individual class states, for example for detail views, editing dialogs, or permission management.
 
-|Path                                                       |Page              |Description
-|-----------------------------------------------------------|------------------|------------------------------------------------------------
-|`/workspaces/{workspaceKey}/classes`                       |Class Management  |Overview of all classes defined in the workspace.
-|`/workspaces/{workspaceKey}/classes/add`                   |Class Creation    |Form for creating a new local class.
-|`/workspaces/{workspaceKey}/classes/{classKey}`            |Class Detail View |Detailed view and actions for a single class.
-|`/workspaces/{workspaceKey}/classes/{classKey}/edit`       |Class Editing     |Form for editing the metadata of an existing class.
-|`/workspaces/{workspaceKey}/classes/{classKey}/clone`      |Class Cloning     |Dialog for replicating an existing class.
-|`/workspaces/{workspaceKey}/classes/{classKey}/delete`     |Class Deletion    |Modal for confirming and executing the irreversible deletion of a class.
-|`/workspaces/{workspaceKey}/classes/{classKey}/permissions`|Class Permissions |Modal for managing profiles (group-policy assignments) for a specific class.
-|`/workspaces/{workspaceKey}/classes/import`                |Class Import      |Import of external class schemas.
-|`/workspaces/{workspaceKey}/classes/export`                |Class Export      |Export of the current class schema for reuse or transfer.
+|Path                                                      |Page              |Description
+|----------------------------------------------------------|------------------|------------------------------------------------------------
+|`/workspaces/classes/{workspaceKey}`                      |Class Management  |Overview of all classes defined in the workspace.
+|`/workspaces/classes/{workspaceKey}/add`                  |Class Creation    |Form for creating a new local class.
+|`/workspaces/classes/{workspaceKey}/{classId}`            |Class Detail View |Detailed view and actions for a single class.
+|`/workspaces/classes/{workspaceKey}/{classId}/edit`       |Class Editing     |Form for editing the metadata of an existing class.
+|`/workspaces/classes/{workspaceKey}/{classId}/clone`      |Class Cloning     |Dialog for replicating an existing class.
+|`/workspaces/classes/{workspaceKey}/{classId}/delete`     |Class Deletion    |Modal for confirming and executing the irreversible deletion of a class.
+|`/workspaces/classes/{workspaceKey}/{classId}/permissions`|Class Permissions |Modal for managing profiles (group-policy assignments) for a specific class.
+|`/workspaces/classes/{workspaceKey}/import`               |Class Import      |Import of external class schemas.
+|`/workspaces/classes/{workspaceKey}/export`               |Class Export      |Export of the current class schema for reuse or transfer.
 
 ## API Interfaces (REST Endpoints)
 
@@ -511,19 +511,19 @@ For programmatic interaction, third-party integration, and automation purposes, 
 
 The management of classes is handled via the following endpoints:
 
-|Endpoint                                                                      |HTTP Method |Description
-|------------------------------------------------------------------------------|------------|-------------------------------------------------------------------------------------------
-|`/api/1/workspaces/{workspaceKey}/classes`                                    |GET         |Lists all classes defined in the specified workspace. Supports filtering and pagination.
-|`/api/1/workspaces/{workspaceKey}/classes`                                    |POST        |Creates a new class. Requires at least a name.
-|`/api/1/workspaces/{workspaceKey}/classes/{classKey}`                         |GET         |Retrieves detailed metadata and field definitions of a specific class.
-|`/api/1/workspaces/{workspaceKey}/classes/{classKey}`                         |PUT         |Updates the metadata or field schema of an existing class. The class key remains immutable.
-|`/api/1/workspaces/{workspaceKey}/classes/{classKey}`                         |DELETE      |Deletes a class definition. Requires confirmation and appropriate permissions.
-|`/api/1/workspaces/{workspaceKey}/classes/{classKey}/clone`                   |POST        |Creates a duplicate of the specified class, including all fields and settings.
-|`/api/1/workspaces/{workspaceKey}/classes/{classKey}/permissions`             |GET         |Lists all access profiles assigned to the class.
-|`/api/1/workspaces/{workspaceKey}/classes/{classKey}/permissions`             |POST        |Assigns a group-policy profile to the class. Requires groupId and policyId in the request body.
-|`/api/1/workspaces/{workspaceKey}/classes/{classKey}/permissions/{profileId}` |DELETE      |Removes a specific profile assignment from the class.
-|`/api/1/workspaces/{workspaceKey}/classes/import`                             |POST        |Imports one or more class definitions from an external schema (e.g., JSON or YAML).
-|`/api/1/workspaces/{workspaceKey}/classes/export`                             |GET         |Exports the current class schema for backup or reuse.
+|Endpoint                                                           |HTTP Method |Description
+|-------------------------------------------------------------------|------------|-------------------------------------------------------------------------------------------
+|`/api/1/classes/{workspaceKey}`                                    |GET         |Lists all classes defined in the specified workspace. Supports filtering and pagination.
+|`/api/1/classes/{workspaceKey}?id={classId}`                       |POST        |Creates a new class. Requires at least a name.
+|`/api/1/classes/{workspaceKey}?id={classId}`                       |GET         |Retrieves detailed metadata and field definitions of a specific class.
+|`/api/1/classes/{workspaceKey}?id={classId}`                       |PUT         |Updates the metadata or field schema of an existing class. The class key remains immutable.
+|`/api/1/classes/{workspaceKey}?id={classId}`                       |DELETE      |Deletes a class definition. Requires confirmation and appropriate permissions.
+|`/api/1/classes/{workspaceKey}?id={classId}`                       |POST        |Creates a duplicate of the specified class, including all fields and settings.
+|`/api/1/classes/{workspaceKey}/{classKey}/permissions`             |GET         |Lists all access profiles assigned to the class.
+|`/api/1/classes/{workspaceKey}/{classKey}/permissions`             |POST        |Assigns a group-policy profile to the class. Requires groupId and policyId in the request body.
+|`/api/1/classes/{workspaceKey}/{classKey}/permissions/{profileId}` |DELETE      |Removes a specific profile assignment from the class.
+|`/api/1/classes/{workspaceKey}/import`                             |POST        |Imports one or more class definitions from an external schema (e.g., JSON or YAML).
+|`/api/1/classes/{workspaceKey}/export`                             |GET         |Exports the current class schema for backup or reuse.
 
 Standard error responses include:
 - **400 Bad Request** - e.g., invalid schema or duplicate key

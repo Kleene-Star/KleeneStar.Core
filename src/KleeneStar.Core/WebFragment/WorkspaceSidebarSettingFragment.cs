@@ -1,4 +1,5 @@
-﻿using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebIcon;
+using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -15,7 +16,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the workspace sidebar.
     /// </summary>
     [Section<SectionSidebarToolbarPrimary>]
-    [Scope<WWW.Workspaces._key_.Index>]
+    [Scope<WWW.Objects._workspacekey_.Index>]
     [Cache]
     public sealed class WorkspaceSidebarSettingFragment : FragmentControlToolbarItemDropdown
     {
@@ -48,13 +49,12 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var keyParameter = renderContext.Request.GetParameter<KeyParameter>();
-            var workspace = _workspaceManager.GetWorkspaceByKey(keyParameter?.Value);
-            var editUri = CoreHub.GetUri<WWW.Workspaces._key_.Edit>()?
+            var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
+            var editUri = CoreHub.GetUri<WWW.Workspaces._workspacekey_.Edit>()?
                 .BindParameters(keyParameter);
-            var cloneUri = CoreHub.GetUri<WWW.Workspaces._key_.Clone>()?
+            var cloneUri = CoreHub.GetUri<WWW.Workspaces._workspacekey_.Clone>()?
                 .BindParameters(keyParameter);
-            var deleteUri = CoreHub.GetUri<WWW.Workspaces._key_.Delete>()?
+            var deleteUri = CoreHub.GetUri<WWW.Workspaces._workspacekey_.Delete>()?
                 .BindParameters(keyParameter);
 
             var items = new IControlDropdownItem[]
@@ -78,8 +78,8 @@ namespace KleeneStar.Core.WebFragment
                 new ControlDropdownItemLink()
                 {
                     Text = "kleenestar.core:class.manage.label",
-                    Icon = new IconBoxesStacked(),
-                    Uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Index>()?
+                    Icon = new ClassIcon(),
+                    Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
                         .BindParameters(keyParameter)
                 },
                 new ControlDropdownItemDivider(),
@@ -87,7 +87,7 @@ namespace KleeneStar.Core.WebFragment
                 {
                     Text = "webexpress.webapp:delete.label",
                     Icon = new IconTrashAlt(),
-                    PrimaryAction = new ActionModal("modal-form", deleteUri),
+                    PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Default),
                     Color = TypeColorText.Danger
                 }
             };

@@ -26,7 +26,7 @@ workspace.delete.title=Delete Workspace
 workspace.delete.header=Delete Workspace
 workspace.delete.label=Delete Workspace
 workspace.clone.title=Clone Workspace
-workspace.avatar.header=Edit Workspace Avatar
+workspace.avatar.title=Edit Workspace Avatar
 workspace.manage.label=Workspaces
 workspace.manage.description=This overview lists all available workspaces. Each workspace represents a distinct environment with its own roles, classes, and configuration scope.
 workspace.name.label=Workspace Name
@@ -45,21 +45,41 @@ workspace.overview.label=Overview
 workspace.quickfilter.all.label=All Workspaces
 workspace.table.header=My Workspaces
 
-class.manage.label=Manage Classes
+class.manage.label=Classes
 class.manage.description=This view serves as the central management hub for all classes defined in the system. It provides a comprehensive overview of the available class types and offers functions for creation, editing, and organization. 
 class.quickfilter.all.label=All Classes
 class.avatar.title=Edit Class Avatar
 class.add.title=Add Class
 class.add.label=Add Class
 class.edit.title=Edit Class
+class.edit.label=Edit Class
 class.clone.title=Clone Class
-calss.delete.title=Delete Class
+class.delete.title=Delete Class
 class.name.label=Class Name
 class.name.placeholder=Enter the name of the class.
 class.name.help=The name helps you quickly identify this class.
 class.description.label=Description
 class.description.placeholder=
 class.table.header=Class Overview
+class.link.label=Class Overview
+class.dropdown.label=Settings
+
+field.link.label=Fields
+
+form.link.label=Forms
+
+priority.link.label=Priorities
+
+workflow.link.label=Workflows
+
+object.add.title=Add Object
+object.add.label=Add Object
+object.edit.label=Edit Object
+object.summary.label=Summary
+object.summary.placeholder=Enter a brief summary of the object.
+object.summary.help=The summary provides a quick overview of the object's content.
+object.description.label=Description
+object.description.placeholder=Enter a detailed description of the object.
 
 setting.database.title=Database Settings
 setting.group.database.label=Database

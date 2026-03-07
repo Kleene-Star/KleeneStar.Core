@@ -1,4 +1,6 @@
-﻿using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebIcon;
+using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WWW.Workspaces._workspacekey_;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System.Collections.Generic;
@@ -12,7 +14,6 @@ using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
-using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 {
@@ -33,9 +34,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </summary>
         public Tile()
         {
-            _editFormUri = CoreHub.GetUri<WWW.Workspaces._key_.Edit>();
-            _cloneFormUri = CoreHub.GetUri<WWW.Workspaces._key_.Clone>();
-            _deleteFormUri = CoreHub.GetUri<WWW.Workspaces._key_.Delete>();
+            _editFormUri = CoreHub.GetUri<Edit>();
+            _cloneFormUri = CoreHub.GetUri<Clone>();
+            _deleteFormUri = CoreHub.GetUri<Delete>();
         }
 
         /// <summary>
@@ -50,11 +51,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         public override IEnumerable<RestApiOption> GetOptions(Workspace row, IRequest request)
         {
             var editUri = _editFormUri?
-                .BindParameters(new KeyParameter(row.Key));
+                .BindParameters(new WorkspaceKeyParameter(row.Key));
             var cloneUri = _cloneFormUri?
-                .BindParameters(new KeyParameter(row.Key));
+                .BindParameters(new WorkspaceKeyParameter(row.Key));
             var deleteUri = _deleteFormUri?
-                .BindParameters(new KeyParameter(row.Key));
+                .BindParameters(new WorkspaceKeyParameter(row.Key));
 
             yield return new RestApiOptionHeader(request)
             {
@@ -73,13 +74,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             yield return new RestApiOptionCustom(request)
             {
-                Uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Index>()?
+                Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
                     .BindParameters
                     (
-                        new KeyParameter(row.Key)
+                        new WorkspaceKeyParameter(row.Key)
                     ),
                 Text = I18N.Translate(request, "kleenestar.core:class.manage.label"),
-                Icon = new IconBoxesStacked().Class
+                Icon = new ClassIcon()
 
             };
 
@@ -154,7 +155,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 x => x.Name, filter
             );
 
-            if (request.GetParameter<CategoryParameter>() is Parameter category)
+            if (request.GetParameter<CategoryParameter>() is IParameterStatic category)
             {
                 query = query.WhereContainsIgnoreCase
                 (

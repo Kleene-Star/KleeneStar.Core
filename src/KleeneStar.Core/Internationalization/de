@@ -45,21 +45,41 @@ workspace.overview.label=Übersicht
 workspace.quickfilter.all.label=Alle Workspaces
 workspace.table.header=Meine Arbeitsbereiche
 
-class.manage.label=Klassen verwalten
+class.manage.label=Klassen
 class.manage.description=Diese Ansicht dient als zentrale Verwaltungsstelle für alle im System definierten Klassen. Sie bietet einen umfassenden Überblick über die verfügbaren Klassentypen und stellt Funktionen für deren Erstellung, Bearbeitung und Organisation bereit.
 class.quickfilter.all.label=Alle Klassen
 class.avatar.title=Avatar der Klasse bearbeiten
 class.add.title=Neue Klasse
 class.add.label=Klasse hinzufügen
 class.edit.title=Klasse bearbeiten
+class.edit.label=Klasse bearbeiten
 class.clone.title=Klasse klonen
-calss.delete.title=Klasse löschen
+class.delete.title=Klasse löschen
 class.name.label=Klassenname
 class.name.placeholder=Geben Sie den Namen der Klasse ein.
 class.name.help=Der Name hilft Ihnen, diese Klasse schnell zu identifizieren.
 class.description.label=Beschreibung
 class.description.placeholder=
 class.table.header=Klassenübersicht
+class.link.label=Klassenübersicht
+class.dropdown.label=Einstellungen
+
+field.link.label=Felder
+
+form.link.label=Formulare
+
+priority.link.label=Prioritäten
+
+workflow.link.label=Workflows
+
+object.add.title=Neues Objekt
+object.add.label=Objekt hinzufügen
+object.edit.label=Objekt bearbeiten
+object.summary.label=Zusammenfassung
+object.summary.placeholder=Geben Sie eine kurze Zusammenfassung des Objekts ein.
+object.summary.help=Die Zusammenfassung hilft Ihnen, dieses Objekt schnell zu identifizieren.
+object.description.label=Beschreibung
+object.description.placeholder=Geben Sie eine ausführliche Beschreibung des Objekts ein.
 
 setting.database.title=Datenbankeinstellungen
 setting.group.database.label=Datenbank

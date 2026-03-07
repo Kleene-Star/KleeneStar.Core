@@ -1,5 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Api._1_.Workspaces._key_;
+using KleeneStar.Core.WWW.Workspaces._workspacekey_;
 using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a avatar form fragment for a workspace.
     /// </summary>
     [Section<SectionContentPreferences>]
-    [Scope<WWW.Workspaces._key_.Avatar>]
+    [Scope<Avatar>]
     [Cache]
     public sealed class WorkspaceAvatarFormFragment : FragmentControlRestFormEdit
     {
@@ -36,7 +36,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Add(Avatar);
 
-            Uri = CoreHub.GetUri<Index>();
+            Uri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Index>();
         }
 
         /// <summary>
@@ -51,13 +51,13 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>
         /// An HTML node representing the rendered control.
         /// </returns>
-        public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
+        public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var key = renderContext.Request.GetParameter<KeyParameter>();
+            var key = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
             var id = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
                 .Id.ToString();
 
-            return base.Render(renderContext, visualTree, Items, id);
+            return base.Render(renderContext, visualTree, Items, id, Uri);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WWW.Workspaces._workspacekey_;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -15,8 +16,9 @@ namespace KleeneStar.Core.WebFragment
     /// editing capabilities within the workspace sidebar.
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Scope<WWW.Workspaces._key_.Index>]
-    [Scope<WWW.Workspaces._key_.Classes.Index>]
+    [Scope<WWW.Objects._workspacekey_.Index>]
+    [Scope<WWW.Workspaces._workspacekey_.Index>]
+    [Scope<WWW.Classes._workspacekey_.Index>]
     [Cache]
     public sealed class WorkspaceSidebarIconFragment : FragmentControlSidebarItemIcon
     {
@@ -49,15 +51,13 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var keyParameter = renderContext.Request.GetParameter<KeyParameter>();
+            var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
             var workspace = _workspaceManager.GetWorkspaceByKey(keyParameter?.Value);
-            var uri = CoreHub.GetUri<WWW.Workspaces._key_.Avatar>()?
-                .BindParameters
-                (
-                    new KeyParameter(workspace.Key)
-                );
+            var uri = CoreHub.GetUri<Avatar>()?
+                .BindParameters(renderContext.Request);
+            var primaryAction = new ActionModal("modal-form", uri);
 
-            return base.Render(renderContext, visualTree, workspace?.Icon, uri);
+            return base.Render(renderContext, visualTree, workspace?.Icon, Uri, primaryAction, SecondaryAction);
         }
     }
 }

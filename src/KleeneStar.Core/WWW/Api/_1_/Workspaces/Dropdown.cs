@@ -40,11 +40,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         public override IUri GetUri(Workspace item, IRequest request)
         {
-            return CoreHub.GetUri<WWW.Workspaces._key_.Index>()?
-                .BindParameters
-                (
-                    new KeyParameter(item?.Key)
-                );
+            return CoreHub.GetUri<WWW.Objects._workspacekey_.Index>()?
+                .BindParameters(new WorkspaceKeyParameter(item?.Key));
         }
 
         /// <summary>

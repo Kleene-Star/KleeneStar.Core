@@ -1,6 +1,4 @@
-﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Api._1_.Workspaces._key_;
-using KleeneStar.Model.Entities;
+﻿using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
@@ -84,7 +82,7 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
 
             Mode = TypeRestFormMode.Add;
-            Uri = CoreHub.GetUri<Index>();
+            Uri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Index>();
         }
 
         /// <summary>
@@ -101,11 +99,7 @@ namespace KleeneStar.Core.WebFragment
         /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var key = renderContext.Request.GetParameter<KeyParameter>();
-            var id = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
-                .Id.ToString();
-
-            return base.Render(renderContext, visualTree, Items, id);
+            return base.Render(renderContext, visualTree, Items);
         }
     }
 }

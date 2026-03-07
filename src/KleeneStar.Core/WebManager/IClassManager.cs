@@ -1,4 +1,5 @@
-﻿using KleeneStar.Model.Entities;
+﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using WebExpress.WebCore.WebComponent;
@@ -40,6 +41,13 @@ namespace KleeneStar.Core.WebManager
         Class GetClass(Guid classId);
 
         /// <summary>
+        /// Returns a class based on its id.
+        /// </summary>
+        /// <param name="classId">The id of the class.</param>
+        /// <returns>The class.</returns>
+        Class GetClass(ClassIdParameter classId);
+
+        /// <summary>
         /// Retrieves a collection of classes that satisfy the specified filter criteria.
         /// </summary>
         /// <param name="query">
@@ -77,7 +85,7 @@ namespace KleeneStar.Core.WebManager
         /// <summary>
         /// Update a class to the class manager.
         /// </summary>
-        /// <param name="workspace">The class to updated. Cannot be null.</param>
+        /// <param name="classEntity">The class to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
         IClassManager UpdateClass(Class classEntity);
 

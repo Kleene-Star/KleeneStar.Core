@@ -21,6 +21,7 @@ namespace KleeneStar.Core
     {
         private static WorkspaceManager _workspaceManager;
         private static ClassManager _classManager;
+        private static ObjectManager _objectManager;
 
         /// <summary>
         /// Returns the shared instance of the component hub used for managing and coordinating application components.
@@ -46,6 +47,11 @@ namespace KleeneStar.Core
         /// Returns the class manager responsible for managing classes within the workspace.
         /// </summary>
         public static IClassManager ClassManager => _classManager ??= ComponentHub.GetComponentManager<ClassManager>();
+
+        /// <summary>
+        /// Returns the object manager responsible for managing objects within the workspace.
+        /// </summary>
+        public static IObjectManager ObjectManager => _objectManager ??= ComponentHub.GetComponentManager<ObjectManager>();
 
         /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.

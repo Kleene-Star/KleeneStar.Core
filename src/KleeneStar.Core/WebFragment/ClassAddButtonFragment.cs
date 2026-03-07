@@ -13,7 +13,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a control fragment that provides a button link for adding a new class within the workspace.
     /// </summary>
     [Section<SectionHeadlinePrimary>]
-    [Scope<WWW.Workspaces._key_.Classes.Index>]
+    [Scope<WWW.Classes._workspacekey_.Index>]
     [Cache]
     public sealed class ClassAddButtonFragment : FragmentControlButtonLink
     {
@@ -28,7 +28,6 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext)
         {
             Text = "kleenestar.core:class.add.label";
-            PrimaryAction = new ActionModal("modal-form", CoreHub.GetUri<WWW.Workspaces._key_.Classes.Add>(), TypeModalSize.ExtraLarge);
             Icon = new IconPlus();
             Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
@@ -50,7 +49,7 @@ namespace KleeneStar.Core.WebFragment
             var primaryAction = new ActionModal
             (
                 "modal-form",
-                CoreHub.GetUri<WWW.Workspaces._key_.Classes.Add>()
+                CoreHub.GetUri<WWW.Classes._workspacekey_.Add>()
                     .BindParameters(renderContext.Request),
                 TypeModalSize.ExtraLarge
                 );

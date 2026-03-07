@@ -1,5 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Api._1_.Workspaces._key_;
+using KleeneStar.Core.WWW.Classes._workspacekey_._classid_;
 using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
@@ -17,7 +17,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a clone form fragment for a class.
     /// </summary>
     [Section<SectionContentPreferences>]
-    [Scope<WWW.Workspaces._key_.Classes._id_.Clone>]
+    [Scope<Clone>]
     [Cache]
     public sealed class ClassCloneFormFragment : FragmentControlRestFormClone
     {
@@ -57,7 +57,7 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
 
             Mode = TypeRestFormMode.Clone;
-            Uri = CoreHub.GetUri<Index>();
+            Uri = CoreHub.GetUri<WWW.Api._1_.Classes._workspacekey_.Index>();
         }
 
         /// <summary>
@@ -72,13 +72,11 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>
         /// An HTML node representing the rendered control.
         /// </returns>
-        public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
+        public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var key = renderContext.Request.GetParameter<KeyParameter>();
-            var id = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
-                .Id.ToString();
+            var param = renderContext.Request.GetParameter<ClassIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, id);
+            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
         }
     }
 }

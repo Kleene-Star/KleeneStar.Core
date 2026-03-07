@@ -9,11 +9,12 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the workspace sidebar.
+    /// Represents a sidebar header fragment that displays workspace-related information within 
+    /// the user interface sidebar.
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Scope<WWW.Workspaces._key_.Index>]
-    [Scope<WWW.Workspaces._key_.Classes.Index>]
+    [Scope<WWW.Workspaces._workspacekey_.Index>]
+    [Scope<WWW.Classes._workspacekey_.Index>]
     [Cache]
     public sealed class WorkspaceSidebarHeaderFragment : FragmentControlSidebarItemHeader
     {
@@ -37,7 +38,7 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var keyParameter = renderContext.Request.GetParameter<KeyParameter>();
+            var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
             var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(keyParameter?.Value);
 
             return base.Render(renderContext, visualTree, workspace?.Name);

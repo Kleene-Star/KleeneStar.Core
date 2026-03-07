@@ -4,6 +4,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -34,7 +35,8 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Table>(),
+            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Table>()
+                .Add(new UriQuery<CategoryParameter>()),
             Infinite = true
         };
 
@@ -44,7 +46,8 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTile Tile { get; } = new ControlRestTile()
         {
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Tile>(),
+            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Tile>()
+                .Add(new UriQuery<CategoryParameter>()),
             Infinite = true
         };
 

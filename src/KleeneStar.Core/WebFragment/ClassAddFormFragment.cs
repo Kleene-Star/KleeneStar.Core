@@ -1,6 +1,4 @@
-﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Api._1_.Workspaces._key_.Classes;
-using KleeneStar.Model.Entities;
+﻿using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
@@ -18,7 +16,7 @@ namespace KleeneStar.Core.WebFragment
     /// </summary>
     [Title("kleenestar.core:class.add.title")]
     [Section<SectionContentPreferences>]
-    [Scope<WWW.Workspaces._key_.Classes.Add>]
+    [Scope<WWW.Classes._workspacekey_.Add>]
     [Cache]
     public sealed class ClassAddFormFragment : FragmentControlRestFormAdd
     {
@@ -36,7 +34,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the workspace.
+        /// Returns the input text control for specifying the description of the class.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
@@ -58,7 +56,7 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
 
             Mode = TypeRestFormMode.Add;
-            Uri = CoreHub.GetUri<Index>();
+            Uri = CoreHub.GetUri<WWW.Api._1_.Classes._workspacekey_.Index>();
         }
 
         /// <summary>
@@ -73,13 +71,9 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>
         /// An HTML node representing the rendered control.
         /// </returns>
-        public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
+        public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var key = renderContext.Request.GetParameter<KeyParameter>();
-            var id = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
-                .Id.ToString();
-
-            return base.Render(renderContext, visualTree, Items, id);
+            return base.Render(renderContext, visualTree, Items, null, Uri);
         }
     }
 }

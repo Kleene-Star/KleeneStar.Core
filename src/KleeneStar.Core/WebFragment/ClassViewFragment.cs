@@ -1,10 +1,12 @@
-﻿using WebExpress.WebApp.WebControl;
+﻿using KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment
@@ -14,7 +16,7 @@ namespace KleeneStar.Core.WebFragment
     /// render the fragment as HTML.
     /// </summary>
     [Section<SectionContentPrimary>]
-    [Scope<WWW.Workspaces._key_.Classes.Index>]
+    [Scope<WWW.Classes._workspacekey_.Index>]
     [Cache]
     public sealed class ClassViewFragment : FragmentControlView
     {
@@ -23,7 +25,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces._key_.Classes.Wql>()
+            RestUri = CoreHub.GetUri<Wql>()
         };
 
         /// <summary>
@@ -32,7 +34,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces._key_.Classes.Table>()
+            RestUri = CoreHub.GetUri<Table>()
         };
 
         /// <summary>
@@ -41,7 +43,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTile Tile { get; } = new ControlRestTile()
         {
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces._key_.Classes.Tile>()
+            RestUri = CoreHub.GetUri<Tile>()
         };
 
         /// <summary>
@@ -51,9 +53,27 @@ namespace KleeneStar.Core.WebFragment
         public ClassViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            Table.Bind = new BindSearch()
+            {
+                Source = Search.Id
+            };
+
+            Tile.Bind = new BindSearch()
+            {
+                Source = Search.Id
+            };
+
             Add(new ControlViewHeader().Add(Search));
-            Add(new ControlViewItem().Add(Table));
-            Add(new ControlViewItem().Add(Tile));
+            Add(new ControlViewItem()
+            {
+                Icon = new IconTable()
+            }
+                .Add(Table));
+            Add(new ControlViewItem()
+            {
+                Icon = new IconTableCellsLarge()
+            }
+                .Add(Tile));
         }
 
         /// <summary>
@@ -64,9 +84,6 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            //var key = renderContext.Request.GetParameter<KeyParameter>();
-            //var uri = RestUri.SetParameters(key);
-
             return base.Render(renderContext, visualTree);
         }
     }

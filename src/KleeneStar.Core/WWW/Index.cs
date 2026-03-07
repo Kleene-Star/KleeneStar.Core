@@ -1,15 +1,15 @@
-﻿using WebExpress.WebApp.WebPage;
+﻿using KleeneStar.Core.WebIcon;
+using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
-using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW
 {
     /// <summary>
     /// Represents the dashboard page of the application.
     /// </summary>
-    [WebIcon<IconAsterisk>]
+    [WebIcon<KleeneStarIcon>]
     [Title("kleenestar.core:kleenestar.label")]
     [Scope<IScopeGeneral>]
     public sealed class Index : IPage<VisualTreeWebApp>

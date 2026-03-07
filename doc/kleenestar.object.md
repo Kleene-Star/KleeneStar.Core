@@ -929,36 +929,38 @@ Each route fulfills a specific function, from the overview of all objects of a c
 
 The sitemap supports both technical integration and conceptual design of the user interface and significantly contributes to the system’s usability and maintainability.
 
-|Path                                     |Page/View               |Description
-|-----------------------------------------|------------------------|--------------------------------------------------------------
-|`/objects`                               |Object overview         |Global, workspace-wide search for objects.
-|`/objects/add`                           |Object creation         |Opens the modal for selecting an object template to create a new object.
-|`/objects/{objectKey}`                   |Object detail view      |Detailed view of a single object.
-|`/objects/{objectKey}/edit`              |Object editing          |Form for editing the metadata of an existing object.
-|`/objects/{objectKey}/delete`            |Object deletion         |Confirmation and execution of the deletion process.
-|`/objects/{objectKey}/move`              |Object move             |Move an object to another workspace or class.
-|`/objects/{objectKey}/export`            |Object export           |Export an object in different formats.
-|`/objects/{objectKey}/permissions`       |Permissions management  |Manage access rights for an object.
-|`/objects/{objectKey}/link`              |Linking                 |Add links to an object.
-|`/objects/{objectKey}/subobject`         |Subobject creation      |Start the process to create a subobject.
-|`/objects/{objectKey}/show-as`           |View-as                 |View the object from another user’s perspective.
+|Path                              |Page/View               |Description
+|----------------------------------|------------------------|--------------------------------------------------------------
+|`/objects`                        |Object overview         |Global, workspace-wide search for objects.
+|`/objects/{workspaceKey}`         |Object overview         |Workspace‑specific search for objects.
+|`/objects/{workspaceKey}/add`     |Object creation         |Opens the modal for selecting an object template to create a new object.
+|`/object/{objectKey}`             |Object detail view      |Detailed view of a single object.
+|`/object/{objectKey}/edit`        |Object editing          |Form for editing the metadata of an existing object.
+|`/object/{objectKey}/delete`      |Object deletion         |Confirmation and execution of the deletion process.
+|`/object/{objectKey}/move`        |Object move             |Move an object to another workspace or class.
+|`/object/{objectKey}/export`      |Object export           |Export an object in different formats.
+|`/object/{objectKey}/permissions` |Permissions management  |Manage access rights for an object.
+|`/object/{objectKey}/link`        |Linking                 |Add links to an object.
+|`/object/{objectKey}/subobject`   |Subobject creation      |Start the process to create a subobject.
+|`/object/{objectKey}/show-as`     |View-as                 |View the object from another user’s perspective.
 
 ## API Interfaces (REST Endpoints)
 
 For programmatic interaction with object management, **KleeneStar** provides a REST-compliant API. This interface uses JSON as the data format and is fully integrated into **KleeneStar**’s authentication and authorization model. The API enables access to objects within workspaces and supports all relevant CRUD operations.
 
-|Endpoint                                                 |HTTP Method |Description
-|---------------------------------------------------------|------------|-----------
-|`/api/1/objects/search`                                  |POST        |Performs a cross-workspace search for objects using WQL.
-|`/api/1/workspaces/{workspaceKey}/objects`               |GET         |Lists all objects in the workspace. Supports filtering (by class, fields) and pagination.
-|`/api/1/workspaces/{workspaceKey}/objects`               |POST        |Creates a new object. Requires `classKey` and initial field values in the request body.
-|`/api/1/objects/{objectKey}`                             |GET         |Retrieves detailed information for a specific object.
-|`/api/1/objects/{objectKey}`                             |PUT         |Updates the field values of an existing object.
-|`/api/1/objects/{objectKey}`                             |DELETE      |Deletes an object. Requires appropriate permissions.
-|`/api/1/objects/{objectKey}/archive`                     |POST        |Archives an object and puts it into a write-protected state.
-|`/api/1/objects/{objectKey}/restore`                     |POST        |Restores a previously archived object.
-|`/api/1/objects/{objectKey}/transitions`                 |GET         |Lists all available workflow transitions for the object.
-|`/api/1/objects/{objectKey}/transitions/{transitionKey}` |POST        |Executes a workflow transition for the object. May include field values in the body.
+|Endpoint                                                                |HTTP Method |Description
+|------------------------------------------------------------------------|------------|-----------
+|`/api/1/objects/`                                                       |GET         |Performs a cross-workspace search for objects using WQL.
+|`/api/1/objects/{workspaceKey}`                                         |GET         |Lists all objects in the workspace. Supports filtering (by class, fields) and pagination.
+|`/api/1/objects/{workspaceKey}`                                         |POST        |Creates a new object. Requires `classKey` and initial field values in the request body.
+|`/api/1/objects/{workspaceKey}?id={objectKey}`                          |GET         |Retrieves detailed information for a specific object.
+|`/api/1/objects/{workspaceKey}?id={objectKey}`                          |PUT         |Updates the field values of an existing object.
+|`/api/1/objects/{workspaceKey}?id={objectKey}`                          |DELETE      |Deletes an object. Requires appropriate permissions.
+|`/api/1/objects/{workspaceKey}?id={objectKey}`                          |POST        |Creates a duplicate of the specified object, including all fields and settings.
+|`/api/1/objects/{workspaceKey}/{objectKey}/archive`                     |POST        |Archives an object and puts it into a write-protected state.
+|`/api/1/objects/{workspaceKey}/{objectKey}/restore`                     |POST        |Restores a previously archived object.
+|`/api/1/objects/{workspaceKey}/{objectKey}/transitions`                 |GET         |Lists all available workflow transitions for the object.
+|`/api/1/objects/{workspaceKey}/{objectKey}/transitions/{transitionKey}` |POST        |Executes a workflow transition for the object. May include field values in the body.
 
 Standard error responses include `400 Bad Request` for validation errors (e.g., a key that is already taken), `401 Unauthorized` for missing authentication, `403 Forbidden` for insufficient permissions, and `404 Not Found` if the requested resource does not exist. A successful creation (POST) is acknowledged with `201 Created`, while a successful deletion (DELETE) results in a `204 No Content` response.
 

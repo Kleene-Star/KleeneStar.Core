@@ -1,0 +1,104 @@
+﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_;
+using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebFragment;
+using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebUri;
+using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
+using WebExpress.WebUI.WebPage;
+
+namespace KleeneStar.Core.WebFragment
+{
+    /// <summary>
+    /// Represents a fragment control for managing object tables, providing functionality to 
+    /// render the fragment as HTML.
+    /// </summary>
+    [Section<SectionContentPrimary>]
+    [Scope<WWW.Objects.Index>]
+    [Scope<WWW.Objects._workspacekey_.Index>]
+    [Cache]
+    public sealed class ObjectViewFragment : FragmentControlView
+    {
+        /// <summary>
+        /// Returns the search control used to query and filter data.
+        /// </summary>
+        public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
+        {
+            RestUri = CoreHub.GetUri<Wql>()
+        };
+
+        /// <summary>
+        /// Returns the table of control view items used to display 
+        /// workspace data.
+        /// </summary>
+        public ControlRestTable Table { get; } = new ControlRestTable()
+        {
+            RestUri = CoreHub.GetUri<Table>()
+                .Add(new UriQuery<CategoryParameter>()),
+            Infinite = true
+        };
+
+        /// <summary>
+        /// Returns the configuration tile that provides REST access to 
+        /// workspace data.
+        /// </summary>
+        public ControlRestTile Tile { get; } = new ControlRestTile()
+        {
+            RestUri = CoreHub.GetUri<Tile>()
+                .Add(new UriQuery<CategoryParameter>()),
+            Infinite = true
+        };
+
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        /// <param name="fragmentContext">The context of the fragment.</param>
+        public ObjectViewFragment(IFragmentContext fragmentContext)
+            : base(fragmentContext)
+        {
+            Table.Bind = new BindSearch()
+            {
+                Source = Search.Id
+            };
+
+            Tile.Bind = new BindSearch()
+            {
+                Source = Search.Id
+            };
+
+            DetailId = "object-view-frame";
+            DetailSelector = "#wx-content-main";
+
+            Add(new ControlViewHeader()
+                .Add(Search));
+
+            Add(new ControlViewItem()
+            {
+                Icon = new IconTable()
+            }
+                .Add(Table));
+
+            Add(new ControlViewItem()
+            {
+                Icon = new IconTableCellsLarge(),
+                DetailFrame = true
+            }
+                .Add(Tile));
+        }
+
+        /// <summary>
+        /// Convert the fragment to HTML.
+        /// </summary>
+        /// <param name="renderContext">The context in which the fragment is rendered.</param>
+        /// <param name="visualTree">The visual tree used for rendering the fragment.</param>
+        /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
+        public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
+        {
+            return base.Render(renderContext, visualTree);
+        }
+    }
+}

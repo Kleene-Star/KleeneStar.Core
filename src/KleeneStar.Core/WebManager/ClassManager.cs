@@ -1,8 +1,10 @@
-﻿using KleeneStar.Model;
+﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using WebExpress.WebCore;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebIndex.Queries;
@@ -38,6 +40,19 @@ namespace KleeneStar.Core.WebManager
         public event EventHandler<Class> ClassRemoved;
 
         /// <summary>
+        /// Returns the collection of workspace keys that are reserved and cannot be used for custom workspaces.
+        /// </summary>
+        /// <remarks>
+        /// The reserved keys typically represent system-defined workspaces and are not available
+        /// for user-defined or custom workspace creation.
+        /// </remarks>
+        public static IEnumerable<string> ReservedClassNames =>
+        [
+            "default", "admin", "system", "assets", "api", "workspace",
+            "workspaces", "icons", "setting"
+        ];
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="componentHub">The component hub.</param>
@@ -56,7 +71,24 @@ namespace KleeneStar.Core.WebManager
         /// <returns>The class.</returns>
         public Class GetClass(Guid classId)
         {
-            return null;
+            var query = new Query<Class>()
+                .Where(x => x.Id == classId)
+                .WithPaging(0, 1);
+
+            return ModelHub.GetClasses(query)
+                .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Returns a class based on its id.
+        /// </summary>
+        /// <param name="classId">The id of the class.</param>
+        /// <returns>The class.</returns>
+        public Class GetClass(ClassIdParameter classId)
+        {
+            var guid = Guid.TryParse(classId.Value, out Guid id) ? id : Guid.Empty;
+
+            return GetClass(guid);
         }
 
         /// <summary>
@@ -94,7 +126,7 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
-        /// Adds a class to the class manager.
+        /// Adds a class to the manager.
         /// </summary>
         /// <param name="classEntity">The class to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
@@ -113,9 +145,9 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
-        /// Update a class to the class manager.
+        /// Update a class to the manager.
         /// </summary>
-        /// <param name="workspace">The class to updated. Cannot be null.</param>
+        /// <param name="classEntity">The class to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
         public IClassManager UpdateClass(Class classEntity)
         {
@@ -123,7 +155,7 @@ namespace KleeneStar.Core.WebManager
 
             ModelHub.Update(classEntity);
 
-            ClassAdded?.Invoke(this, classEntity);
+            ClassUpdated?.Invoke(this, classEntity);
 
             // create notification
             CoreHub.AddNotification("Clone", "success", 5000);
@@ -132,7 +164,7 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
-        /// Removes the specified clas from the class manager.
+        /// Removes the specified class from the manager.
         /// </summary>
         /// <remarks>This method removes the specified class from the manager. If the class does
         /// not exist in the manager, no action is taken.</remarks>
