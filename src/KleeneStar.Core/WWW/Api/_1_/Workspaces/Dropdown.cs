@@ -1,8 +1,8 @@
-﻿using KleeneStar.Core.WebParameter;
+﻿using System.Collections.Generic;
+using System.Linq;
+using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
-using System.Collections.Generic;
-using System.Linq;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
@@ -40,7 +40,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         public override IUri GetUri(Workspace item, IRequest request)
         {
-            return CoreHub.GetUri<WWW.Objects._workspacekey_.Index>()?
+            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()?
                 .BindParameters(new WorkspaceKeyParameter(item?.Key));
         }
 

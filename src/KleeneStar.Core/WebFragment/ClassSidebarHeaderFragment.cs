@@ -1,6 +1,5 @@
-﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Classes._workspacekey_._classid_;
-using System;
+﻿using System;
+using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -15,7 +14,8 @@ namespace KleeneStar.Core.WebFragment
     /// the user interface sidebar.
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Scope<WWW.Classes._workspacekey_._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Fields._workspacekey_._classid_.Index>]
     [Cache]
     public sealed class ClassSidebarHeaderFragment : FragmentControlSidebarItemHeader
     {

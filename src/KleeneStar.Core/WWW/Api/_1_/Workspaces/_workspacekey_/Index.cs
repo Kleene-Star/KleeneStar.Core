@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Core.WebParameter;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebRestApi;
 
@@ -9,7 +8,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_
     /// Provides CRUD operations for workspace items via a REST API.
     /// </summary>
     [Cache]
-    [WorkspaceKeySegment<WorkspaceKeyParameter>()]
+    [WorkspaceKeySegment]
     public sealed class Index : IRestApi
     {
         /// <summary>

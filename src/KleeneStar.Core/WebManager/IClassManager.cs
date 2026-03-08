@@ -1,7 +1,7 @@
-﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Model.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using KleeneStar.Core.WebParameter;
+using KleeneStar.Model.Entities;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebIndex.Queries;
 
@@ -76,21 +76,21 @@ namespace KleeneStar.Core.WebManager
         IEnumerable<Class> GetClasses(IQuery<Class> query, IQueryContext context);
 
         /// <summary>
-        /// Adds a class to the class manager.
+        /// Adds a class to the manager.
         /// </summary>
         /// <param name="classEntity">The class to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
         IClassManager AddClass(Class classEntity);
 
         /// <summary>
-        /// Update a class to the class manager.
+        /// Update a class to the manager.
         /// </summary>
         /// <param name="classEntity">The class to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
         IClassManager UpdateClass(Class classEntity);
 
         /// <summary>
-        /// Removes the specified clas from the class manager.
+        /// Removes the specified class from the manager.
         /// </summary>
         /// <remarks>This method removes the specified class from the manager. If the class does
         /// not exist in the manager, no action is taken.</remarks>

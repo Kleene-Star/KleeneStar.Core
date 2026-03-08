@@ -1,26 +1,22 @@
-﻿using KleeneStar.Core.WebUri;
-using System;
+﻿using System;
+using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebUri;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
 
 namespace KleeneStar.Core.WebAttribute
 {
     /// <summary>
-    /// Specifies a workspace key for use in endpoint routing, associating a parameter type 
+    /// Specifies a class id for use in endpoint routing, associating a parameter type 
     /// with a variable name and display format for URI path segments.
     /// </summary>
-    /// <typeparam name="TParameter">
-    /// The type of parameter to associate with the segment key.
-    /// </typeparam>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ClassSegmentAttribute<TParameter> : Attribute, IEndpointAttribute, ISegmentAttribute
-        where TParameter : IParameterStatic, new()
+    public class ClassIdSegmentAttribute : Attribute, IEndpointAttribute, ISegmentAttribute
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ClassSegmentAttribute()
+        public ClassIdSegmentAttribute()
         {
         }
 
@@ -30,7 +26,7 @@ namespace KleeneStar.Core.WebAttribute
         /// <returns>The path segment.</returns>
         public IUriPathSegment ToPathSegment()
         {
-            return new ClassIdUriPathSegmentVariable<TParameter>();
+            return new ClassIdUriPathSegmentVariable<ClassIdParameter>();
         }
     }
 }

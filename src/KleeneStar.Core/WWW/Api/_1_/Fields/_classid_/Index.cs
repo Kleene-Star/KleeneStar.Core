@@ -10,13 +10,13 @@ using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebRestApi;
 using WebExpress.WebIndex.Queries;
 
-namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
+namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
 {
     /// <summary>
     /// Provides CRUD operations for class items via a REST API.
     /// </summary>
     [Cache]
-    [WorkspaceKeySegment]
+    [ClassIdSegment]
     public sealed class Index : RestApiCrud<Class>
     {
         /// <summary>
@@ -71,7 +71,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:class.add.title");
+            return RetrieveForCreate(request, "kleenestar.core:field.add.title");
         }
 
         /// <summary>
@@ -101,7 +101,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
                 State = TypeWorkspaceState.Active
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:class.clone.title");
+            return RetrieveForClone(request, newItem, "kleenestar.core:field.clone.title");
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
             var data = CoreHub.ClassManager.GetClasses(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:class.edit.title");
+            return RetrieveForUpdate(request, data, "kleenestar.core:field.edit.title");
         }
 
         /// <summary>

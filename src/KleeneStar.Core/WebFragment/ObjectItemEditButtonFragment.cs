@@ -1,5 +1,4 @@
-﻿using KleeneStar.Core.WWW.Object._objectkey_;
-using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -14,7 +13,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a control fragment that provides a button link for edit a object within the workspace.
     /// </summary>
     [Section<SectionHeadlinePrimary>]
-    [Scope<Index>]
+    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
     [Cache]
     public sealed class ObjectItemEditButtonFragment : FragmentControlButtonLink
     {
@@ -50,7 +49,7 @@ namespace KleeneStar.Core.WebFragment
             var primaryAction = new ActionModal
             (
                 "modal-form",
-                CoreHub.GetUri<WWW.Object._objectkey_.Edit>()
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Edit>()
                     .BindParameters(renderContext.Request),
                 TypeModalSize.ExtraLarge
                 );

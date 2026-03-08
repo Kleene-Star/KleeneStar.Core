@@ -7,16 +7,16 @@ using WebExpress.WebCore.WebUri;
 namespace KleeneStar.Core.WebAttribute
 {
     /// <summary>
-    /// Specifies a object key for use in endpoint routing, associating a parameter type 
+    /// Specifies a field id for use in endpoint routing, associating a parameter type 
     /// with a variable name and display format for URI path segments.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ObjectKeySegmentAttribute : Attribute, IEndpointAttribute, ISegmentAttribute
+    public class FieldIdSegmentAttribute : Attribute, IEndpointAttribute, ISegmentAttribute
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ObjectKeySegmentAttribute()
+        public FieldIdSegmentAttribute()
         {
         }
 
@@ -26,7 +26,7 @@ namespace KleeneStar.Core.WebAttribute
         /// <returns>The path segment.</returns>
         public IUriPathSegment ToPathSegment()
         {
-            return new ObjectKeyUriPathSegmentVariable<ObjectKeyParameter>();
+            return new FieldIdUriPathSegmentVariable<FieldIdParameter>();
         }
     }
 }

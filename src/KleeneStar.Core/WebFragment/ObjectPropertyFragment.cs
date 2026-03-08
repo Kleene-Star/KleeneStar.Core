@@ -12,7 +12,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a control fragment that provides a button link for adding a new object within the workspace.
     /// </summary>
     [Section<SectionPropertyPrimary>]
-    [Scope<WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
     [Cache]
     public sealed class ObjectPropertyFragment : FragmentControlAttribute
     {

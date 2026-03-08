@@ -17,7 +17,7 @@ namespace KleeneStar.Core.WebFragment
     /// </summary>
     [Title("kleenestar.core:object.add.title")]
     [Section<SectionContentPreferences>]
-    [Scope<WWW.Objects._workspacekey_.Edit>]
+    [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Edit>]
     [Cache]
     public sealed class ObjectAddFormFragment : FragmentControlRestFormAdd
     {
@@ -31,7 +31,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = "kleenestar.core:object.summary.placeholder",
             Help = "kleenestar.core:object.summary.help",
             Required = true,
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.UniqueName>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>()
         };
 
         /// <summary>

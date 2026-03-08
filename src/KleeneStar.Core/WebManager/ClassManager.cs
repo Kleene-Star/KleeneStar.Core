@@ -1,10 +1,10 @@
-﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Model;
-using KleeneStar.Model.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using KleeneStar.Core.WebParameter;
+using KleeneStar.Model;
+using KleeneStar.Model.Entities;
 using WebExpress.WebCore;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebIndex.Queries;
@@ -24,6 +24,7 @@ namespace KleeneStar.Core.WebManager
     {
         private readonly IComponentHub _componentHub;
         private readonly IHttpServerContext _httpServerContext;
+
         /// <summary>
         /// An event that fires when an class is added.
         /// </summary>

@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Workspaces._workspacekey_;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -15,7 +14,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a delete form fragment for a workspace.
     /// </summary>
     [Section<SectionContentPreferences>]
-    [Scope<Delete>]
+    [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Delete>]
     [Cache]
     public sealed class WorkspaceDeleteFormFragment : FragmentControlRestFormDelete
     {
@@ -27,7 +26,7 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext)
         {
             Mode = TypeRestFormMode.Delete;
-            Uri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
         }
 
         /// <summary>

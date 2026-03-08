@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Classes._workspacekey_._classid_;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
@@ -8,7 +7,6 @@ using System.Linq;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
-using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
@@ -32,9 +30,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// </summary>
         public Table()
         {
-            _editFormUri = CoreHub.GetUri<Edit>();
-            _cloneFormUri = CoreHub.GetUri<Clone>();
-            _deleteFormUri = CoreHub.GetUri<Delete>();
+            _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Edit>();
+            _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Clone>();
+            _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Delete>();
         }
 
         /// <summary>
@@ -96,8 +94,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// </returns>
         public override IUri GetUri(Class row, IRequest request)
         {
-            return CoreHub.GetUri<WWW.Classes._workspacekey_._classid_.Index>()?
-                .BindParameters(new Parameter("class", row.Id, ParameterScope.Parameter))
+            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Index>()?
+                .BindParameters(new ClassIdParameter(row.Id))
                 .BindParameters(request);
         }
 

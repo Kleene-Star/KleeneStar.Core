@@ -1,8 +1,8 @@
-﻿using KleeneStar.Core.WebManager;
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using KleeneStar.Core.WebManager;
 using WebExpress.WebCore;
 using WebExpress.WebCore.WebApplication;
 using WebExpress.WebCore.WebComponent;
@@ -21,6 +21,7 @@ namespace KleeneStar.Core
     {
         private static WorkspaceManager _workspaceManager;
         private static ClassManager _classManager;
+        private static FieldManager _fieldManager;
         private static ObjectManager _objectManager;
 
         /// <summary>
@@ -47,6 +48,11 @@ namespace KleeneStar.Core
         /// Returns the class manager responsible for managing classes within the workspace.
         /// </summary>
         public static IClassManager ClassManager => _classManager ??= ComponentHub.GetComponentManager<ClassManager>();
+
+        /// <summary>
+        /// Returns the field manager responsible for managing fields within the class.
+        /// </summary>
+        public static IFieldManager FieldManager => _fieldManager ??= ComponentHub.GetComponentManager<FieldManager>();
 
         /// <summary>
         /// Returns the object manager responsible for managing objects within the workspace.

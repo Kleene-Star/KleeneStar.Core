@@ -1,10 +1,9 @@
-﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Workspaces._workspacekey_;
-using KleeneStar.Model;
-using KleeneStar.Model.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using KleeneStar.Core.WebParameter;
+using KleeneStar.Model;
+using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
@@ -30,9 +29,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// </summary>
         public Tile()
         {
-            _editFormUri = CoreHub.GetUri<Edit>();
-            _cloneFormUri = CoreHub.GetUri<Clone>();
-            _deleteFormUri = CoreHub.GetUri<Delete>();
+            _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Edit>();
+            _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Clone>();
+            _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Delete>();
         }
 
         /// <summary>

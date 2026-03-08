@@ -13,7 +13,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a control fragment that provides a button link for adding a new object within the workspace.
     /// </summary>
     [Section<SectionHeadlinePrimary>]
-    [Scope<WWW.Objects._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>]
     [Cache]
     public sealed class ObjectAddButtonFragment : FragmentControlButtonLink
     {
@@ -49,7 +49,7 @@ namespace KleeneStar.Core.WebFragment
             var primaryAction = new ActionModal
             (
                 "modal-form",
-                CoreHub.GetUri<WWW.Objects._workspacekey_.Edit>()
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Edit>()
                     .BindParameters(renderContext.Request),
                 TypeModalSize.ExtraLarge
                 );

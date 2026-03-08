@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_
     /// </summary>
     [WebIcon<ClassIcon>]
     [Title("kleenestar.core:class.manage.label")]
-    [WorkspaceKeySegment<WorkspaceKeyParameter>()]
+    [WorkspaceKeySegment]
     [Scope<IScopeGeneral>]
     [Domain<Class>]
     [Cache]
@@ -42,7 +42,7 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_
                 .Concat(new WorkspaceKeyUriPathSegmentVariable<WorkspaceKeyParameter>()
                 {
                     Value = workspace?.Key,
-                    Uri = CoreHub.GetUri<WWW.Objects._workspacekey_.Index>()
+                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()
                     .BindParameters(renderContext.Request)
                 })
                 .Concat(new ClassIdUriPathSegmentVariable<ObjectKeyParameter>()

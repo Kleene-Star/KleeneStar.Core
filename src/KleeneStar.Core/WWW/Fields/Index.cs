@@ -1,15 +1,18 @@
-﻿using WebExpress.WebApp.WebPage;
+﻿using KleeneStar.Core.WebIcon;
+using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
 
-namespace KleeneStar.Core.WWW.Object
+namespace KleeneStar.Core.WWW.Fields
 {
     /// <summary>
-    /// Provides functionality for managing the current workspace page.
+    /// Represents the field page within the kleenestar web application.
     /// </summary>
+    [WebIcon<ClassIcon>]
     [SegmentHidden]
+    [Title("kleenestar.core:class.manage.label")]
     [Scope<IScopeGeneral>]
     [Cache]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral

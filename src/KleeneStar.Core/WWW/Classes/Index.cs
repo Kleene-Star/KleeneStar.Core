@@ -8,7 +8,7 @@ using WebExpress.WebCore.WebPage;
 namespace KleeneStar.Core.WWW.Classes
 {
     /// <summary>
-    /// Represents the main class management page within the kleenestar web application.
+    /// Represents the class page within the kleenestar web application.
     /// </summary>
     [WebIcon<ClassIcon>]
     [SegmentHidden]
@@ -33,7 +33,7 @@ namespace KleeneStar.Core.WWW.Classes
         {
             throw new RedirectException
             (
-                CoreHub.GetUri<WWW.Index>()
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Index>()
             );
         }
     }

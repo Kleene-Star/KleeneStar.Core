@@ -13,8 +13,8 @@ namespace KleeneStar.Core.WebFragment
     /// the user interface sidebar.
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Scope<WWW.Workspaces._workspacekey_.Index>]
-    [Scope<WWW.Classes._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>]
     [Cache]
     public sealed class WorkspaceSidebarHeaderFragment : FragmentControlSidebarItemHeader
     {

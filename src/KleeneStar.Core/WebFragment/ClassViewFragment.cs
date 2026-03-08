@@ -1,5 +1,4 @@
-﻿using KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_;
-using WebExpress.WebApp.WebControl;
+﻿using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -16,7 +15,7 @@ namespace KleeneStar.Core.WebFragment
     /// render the fragment as HTML.
     /// </summary>
     [Section<SectionContentPrimary>]
-    [Scope<WWW.Classes._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>]
     [Cache]
     public sealed class ClassViewFragment : FragmentControlView
     {
@@ -25,7 +24,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
-            RestUri = CoreHub.GetUri<Wql>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Wql>()
         };
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
-            RestUri = CoreHub.GetUri<Table>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Table>()
         };
 
         /// <summary>
@@ -43,7 +42,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTile Tile { get; } = new ControlRestTile()
         {
-            RestUri = CoreHub.GetUri<Tile>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Tile>()
         };
 
         /// <summary>

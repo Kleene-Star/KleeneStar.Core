@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a add form fragment for a workspace.
     /// </summary>
     [Section<SectionContentPreferences>]
-    [Scope<WWW.Workspaces.Add>]
+    [Scope<global::KleeneStar.Core.WWW.Workspaces.Add>]
     [Cache]
     public sealed class WorkspaceAddFormFragment : FragmentControlRestFormAdd
     {
@@ -29,7 +29,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = "kleenestar.core:workspace.name.placeholder",
             Help = "kleenestar.core:workspace.name.help",
             Required = true,
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.UniqueName>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>()
         };
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace KleeneStar.Core.WebFragment
             Help = "kleenestar.core:workspace.key.help",
             Required = true,
             MaxLength = 10,
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.UniqueKey>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueKey>()
         };
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
 
             Mode = TypeRestFormMode.Add;
-            Uri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
         }
 
         /// <summary>

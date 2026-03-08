@@ -13,7 +13,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a control fragment that provides a button link for edit a class within the workspace.
     /// </summary>
     [Section<SectionHeadlinePrimary>]
-    [Scope<WWW.Classes._workspacekey_._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Index>]
     [Cache]
     public sealed class ClassEditButtonFragment : FragmentControlButtonLink
     {
@@ -49,7 +49,7 @@ namespace KleeneStar.Core.WebFragment
             var primaryAction = new ActionModal
             (
                 "modal-form",
-                CoreHub.GetUri<WWW.Classes._workspacekey_._classid_.Edit>()
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Edit>()
                     .BindParameters(renderContext.Request),
                 TypeModalSize.ExtraLarge
                 );

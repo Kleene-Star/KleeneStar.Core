@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Workspaces._workspacekey_;
 using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
@@ -17,7 +16,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a clone form fragment for a workspace.
     /// </summary>
     [Section<SectionContentPreferences>]
-    [Scope<Clone>]
+    [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Clone>]
     [Cache]
     public sealed class WorkspaceCloneFormFragment : FragmentControlRestFormClone
     {
@@ -31,7 +30,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = "kleenestar.core:workspace.name.placeholder",
             Help = "kleenestar.core:workspace.name.help",
             Required = true,
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.UniqueName>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>()
         };
 
         /// <summary>
@@ -45,7 +44,7 @@ namespace KleeneStar.Core.WebFragment
             Help = "kleenestar.core:workspace.key.help",
             Required = true,
             MaxLength = 10,
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.UniqueKey>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueKey>()
         };
 
         /// <summary>
@@ -84,7 +83,7 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
 
             Mode = TypeRestFormMode.Clone;
-            Uri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
         }
 
         /// <summary>

@@ -155,7 +155,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 x => x.Name, filter
             );
 
-            if (request.GetParameter<CategoryParameter>() is IParameterStatic category)
+            if (request.GetParameter<CategoryIdParameter>() is IParameterStatic category)
             {
                 query = query.WhereContainsIgnoreCase
                 (

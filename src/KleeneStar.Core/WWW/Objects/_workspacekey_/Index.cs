@@ -13,7 +13,7 @@ namespace KleeneStar.Core.WWW.Objects._workspacekey_
     /// Provides functionality for managing the current workspace page.
     /// </summary>
     [WebIcon<WorkspaceIcon>]
-    [WorkspaceKeySegment<WorkspaceKeyParameter>()]
+    [WorkspaceKeySegment]
     [Scope<IScopeGeneral>]
     [Domain<Model.Entities.Object>]
     [Cache]

@@ -1,11 +1,10 @@
-﻿using KleeneStar.Core.WebIcon;
-using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Workspaces._workspacekey_;
-using KleeneStar.Model;
-using KleeneStar.Model.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using KleeneStar.Core.WebIcon;
+using KleeneStar.Core.WebParameter;
+using KleeneStar.Model;
+using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
@@ -34,9 +33,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </summary>
         public Table()
         {
-            _editFormUri = CoreHub.GetUri<Edit>();
-            _cloneFormUri = CoreHub.GetUri<Clone>();
-            _deleteFormUri = CoreHub.GetUri<Delete>();
+            _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Edit>();
+            _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Clone>();
+            _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Delete>();
         }
 
         /// <summary>
@@ -74,7 +73,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             yield return new RestApiOptionCustom(request)
             {
-                Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
+                Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                     .BindParameters
                     (
                         new WorkspaceKeyParameter(row.Key)
@@ -104,7 +103,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         public override IUri GetUri(Workspace row, IRequest request)
         {
-            return CoreHub.GetUri<WWW.Objects._workspacekey_.Index>()?
+            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()?
                 .BindParameters(new WorkspaceKeyParameter(row.Key));
         }
 
@@ -122,7 +121,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         public override IUri GetRestApiForInlineEdit(Workspace row, IRequest request)
         {
-            return CoreHub.GetUri<WWW.Workspaces._workspacekey_.Index>()?
+            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Index>()?
                 .Add(new UriQuery("id", row.Id.ToString()));
         }
 
@@ -225,7 +224,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         protected override IQuery<Workspace> Filter(string filter, IQuery<Workspace> query, IRequest request)
         {
-            if (request.GetParameter<CategoryParameter>() is IParameterStatic category)
+            if (request.GetParameter<CategoryIdParameter>() is IParameterStatic category)
             {
                 query = query.WhereContainsIgnoreCase
                 (

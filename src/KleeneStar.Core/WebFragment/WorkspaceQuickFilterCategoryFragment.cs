@@ -1,6 +1,6 @@
-﻿using KleeneStar.Core.WebParameter;
+﻿using System.Collections.Generic;
+using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
-using System.Collections.Generic;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -18,7 +18,7 @@ namespace KleeneStar.Core.WebFragment
     /// interface.
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Scope<WWW.Workspaces.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Workspaces.Index>]
     [Cache]
     public sealed class WorkspaceQuickFilertCategoryFragment : FragmentControlSidebarItemLink
     {
@@ -33,7 +33,7 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext)
         {
             Text = "kleenestar.core:workspace.quickfilter.category.label";
-            Uri = CoreHub.GetUri<WWW.Workspaces.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces.Index>();
         }
 
         /// <summary>
@@ -44,13 +44,13 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var categoryParameter = renderContext.Request.GetParameter<CategoryParameter>();
+            var categoryParameter = renderContext.Request.GetParameter<CategoryIdParameter>();
             var list = new List<IHtmlNode>();
 
             foreach (var category in CoreHub.WorkspaceManager.GetCategories(new Query<Category>()))
             {
                 var label = category.Name.Trim().ToLower();
-                var uri = CoreHub.GetUri<WWW.Workspaces.Index>();
+                var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces.Index>();
 
                 list.Add(new ControlSidebarItemLink()
                 {

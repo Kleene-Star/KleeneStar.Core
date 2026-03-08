@@ -1,10 +1,8 @@
-﻿using KleeneStar.Core.WebParameter;
-using WebExpress.WebApp.WebControl;
+﻿using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -13,20 +11,20 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a fragment control for managing workspace tables, providing functionality to 
+    /// Represents a fragment control for managing field tables, providing functionality to 
     /// render the fragment as HTML.
     /// </summary>
     [Section<SectionContentPrimary>]
-    [Scope<WWW.Workspaces.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Fields._workspacekey_._classid_.Index>]
     [Cache]
-    public sealed class WorkspaceViewFragment : FragmentControlView
+    public sealed class FieldViewFragment : FragmentControlView
     {
         /// <summary>
         /// Returns the search control used to query and filter data.
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Wql>()
+            //RestUri = CoreHub.GetUri<Wql>()
         };
 
         /// <summary>
@@ -35,9 +33,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Table>()
-                .Add(new UriQuery<CategoryIdParameter>()),
-            Infinite = true
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields._classid_.Table>()
         };
 
         /// <summary>
@@ -46,16 +42,14 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTile Tile { get; } = new ControlRestTile()
         {
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Tile>()
-                .Add(new UriQuery<CategoryIdParameter>()),
-            Infinite = true
+            //RestUri = CoreHub.GetUri<Tile>()
         };
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public WorkspaceViewFragment(IFragmentContext fragmentContext)
+        public FieldViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Table.Bind = new BindSearch()
@@ -74,11 +68,11 @@ namespace KleeneStar.Core.WebFragment
                 Icon = new IconTable()
             }
                 .Add(Table));
-            Add(new ControlViewItem()
-            {
-                Icon = new IconTableCellsLarge()
-            }
-                .Add(Tile));
+            //Add(new ControlViewItem()
+            //{
+            //    Icon = new IconTableCellsLarge()
+            //}
+            //    .Add(Tile));
         }
 
         /// <summary>
@@ -89,12 +83,6 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var categoryParameter = renderContext.Request.GetParameter<CategoryIdParameter>();
-
-            //var uri = DataUri.Concat(categoryParameter is not null
-            //    ? new UriQuery("category", categoryParameter.Value)
-            //    : null);
-
             return base.Render(renderContext, visualTree);
         }
     }

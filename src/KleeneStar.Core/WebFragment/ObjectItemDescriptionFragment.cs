@@ -14,7 +14,7 @@ namespace KleeneStar.Core.WebFragment
     /// class management interface.
     /// </summary>
     [Section<SectionContentPreferences>]
-    [Scope<WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
     [Cache]
     public sealed class ObjectItemDescriptionFragment : FragmentControlText
     {

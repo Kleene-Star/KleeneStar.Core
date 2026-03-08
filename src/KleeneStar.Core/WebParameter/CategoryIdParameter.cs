@@ -5,13 +5,13 @@ namespace KleeneStar.Core.WebParameter
     /// <summary>
     /// Represents a parameter that specifies a workspace category.
     /// </summary>
-    public class CategoryParameter : IParameterStatic
+    public class CategoryIdParameter : IParameterStatic
     {
         /// <summary>
         /// Returns the key that uniquely identifies the parameter in configuration or
         /// settings contexts.
         /// </summary>
-        public static string Key => "category";
+        public static string Key => "categoryid";
 
         /// <summary>
         /// Returns or sets the scope of the parameter.
@@ -26,7 +26,7 @@ namespace KleeneStar.Core.WebParameter
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public CategoryParameter()
+        public CategoryIdParameter()
         {
         }
 
@@ -34,7 +34,7 @@ namespace KleeneStar.Core.WebParameter
         /// Initializes a new instance of the class with a specified value.
         /// </summary>
         /// <param name="value">The value of the parameter.</param>
-        public CategoryParameter(string value)
+        public CategoryIdParameter(string value)
         {
             Value = value;
         }

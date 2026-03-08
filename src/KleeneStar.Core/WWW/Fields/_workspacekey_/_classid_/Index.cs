@@ -10,10 +10,10 @@ using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Classes._workspacekey_._classid_
+namespace KleeneStar.Core.WWW.Fields._workspacekey_._classid_
 {
     /// <summary>
-    /// Provides functionality for managing the current class page.
+    /// Provides functionality for overview fields.
     /// </summary>
     [WebIcon<IconGlobe>]
     [ClassIdSegment]
@@ -21,8 +21,6 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_._classid_
     [Cache]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
-        private readonly IClassManager _classManager;
-
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -31,7 +29,6 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_._classid_
         /// </param>
         public Index(IClassManager classManager)
         {
-            _classManager = classManager;
         }
 
         /// <summary>
@@ -44,29 +41,34 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_._classid_
             var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
             var classParameter = renderContext.Request.GetParameter<ClassIdParameter>();
             var guid = Guid.TryParse(classParameter.Value, out var id) ? id : Guid.Empty;
-            var @class = _classManager.GetClass(guid);
-
-            visualTree.Title = @class?.Name;
-            visualTree.Content.MainPanel.Headline.Title = @class?.Name;
-
+            var @class = CoreHub.ClassManager.GetClass(guid);
+            var workspace = @class?.Workspace;
             var uri = renderContext.PageContext.ApplicationContext.Route
                 .Concat(new WorkspaceKeyUriPathSegmentVariable<WorkspaceKeyParameter>()
                 {
                     Value = @class?.Workspace?.Key,
                     Uri = CoreHub.GetUri<Objects._workspacekey_.Index>()
+                        .BindParameters(new WorkspaceKeyParameter(workspace?.Key))
                         .BindParameters(renderContext.Request)
                 })
                 .Concat(new UriPathSegmentConstant("classes")
                 {
-                    Uri = CoreHub.GetUri<_workspacekey_.Index>()
+                    Uri = CoreHub.GetUri<Classes._workspacekey_.Index>()
+                        .BindParameters(new WorkspaceKeyParameter(workspace?.Key))
                         .BindParameters(renderContext.Request)
                 })
                 .Concat(new ClassIdUriPathSegmentVariable<ClassIdParameter>()
                 {
+                    Uri = CoreHub.GetUri<Classes._workspacekey_._classid_.Index>()
+                        .BindParameters(new WorkspaceKeyParameter(workspace?.Key))
+                        .BindParameters(renderContext.Request)
+                })
+                .Concat(new UriPathSegmentConstant("fields")
+                {
                     Uri = renderContext.Request.Uri
                 })
                 .ToUri()
-
+                .BindParameters(new WorkspaceKeyParameter(workspace?.Key))
                 .BindParameters(renderContext.Request);
 
             visualTree.BreadcrumbUri = uri;

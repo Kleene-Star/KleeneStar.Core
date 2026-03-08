@@ -4,15 +4,15 @@ using WebExpress.WebCore.WebParameter;
 namespace KleeneStar.Core.WebParameter
 {
     /// <summary>
-    /// Represents a parameter that specifies a class id.
+    /// Represents a parameter that specifies a field id.
     /// </summary>
-    public sealed class ClassIdParameter : IParameterStatic
+    public sealed class FieldIdParameter : IParameterStatic
     {
         /// <summary>
         /// Returns the key that uniquely identifies the parameter in configuration or
         /// settings contexts.
         /// </summary>
-        public static string Key => "classid";
+        public static string Key => "fieldid";
 
         /// <summary>
         /// Returns or sets the scope of the parameter.
@@ -27,7 +27,7 @@ namespace KleeneStar.Core.WebParameter
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ClassIdParameter()
+        public FieldIdParameter()
         {
         }
 
@@ -35,7 +35,7 @@ namespace KleeneStar.Core.WebParameter
         /// Initializes a new instance of the class with a specified value.
         /// </summary>
         /// <param name="value">The value of the parameter.</param>
-        public ClassIdParameter(string value)
+        public FieldIdParameter(string value)
         {
             Value = value;
         }
@@ -44,7 +44,7 @@ namespace KleeneStar.Core.WebParameter
         /// Initializes a new instance of the class with a specified value.
         /// </summary>
         /// <param name="value">The value of the parameter.</param>
-        public ClassIdParameter(Guid value)
+        public FieldIdParameter(Guid value)
         {
             Value = value.ToString();
         }

@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Classes._workspacekey_._classid_;
 using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -15,7 +14,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a avatar form fragment for a class.
     /// </summary>
     [Section<SectionContentPreferences>]
-    [Scope<Avatar>]
+    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Avatar>]
     [Cache]
     public sealed class ClassAvatarFormFragment : FragmentControlRestFormEdit
     {
@@ -36,7 +35,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Add(Avatar);
 
-            Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>();
         }
 
         /// <summary>

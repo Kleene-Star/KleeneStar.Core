@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebFragment
     /// editing capabilities within the object sidebar.
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Scope<WWW.Workspaces._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Index>]
     [Cache]
     public sealed class ObjectSidebarIconFragment : FragmentControlSidebarItemIcon
     {
@@ -50,7 +50,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var keyParameter = renderContext.Request.GetParameter<ObjectKeyParameter>();
             var @object = _objectManager.GetObjectByKey(keyParameter?.Value);
-            var uri = CoreHub.GetUri<WWW.Workspaces._workspacekey_.Avatar>()?
+            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Avatar>()?
                 .BindParameters(renderContext.Request);
             var primaryAction = new ActionModal("modal-form", uri);
 

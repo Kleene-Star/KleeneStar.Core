@@ -13,7 +13,8 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a sidebar item link fragment that displays the 'Forms' link in the class sidebar.
     /// </summary>
     [Section<SectionSidebarPrimary>]
-    [Scope<WWW.Classes._workspacekey_._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Fields._workspacekey_._classid_.Index>]
     [Cache]
     public sealed class ClassSidebarFormLinkFragment : FragmentControlSidebarItemLink
     {
@@ -40,8 +41,8 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var uri = renderContext.Request.Uri.PathSegments;
-            var targetUri = Uri?.BindParameters(renderContext.Request).PathSegments;
+            var uri = string.Join("/", renderContext.Request.Uri.PathSegments);
+            var targetUri = string.Join("/", Uri?.BindParameters(renderContext.Request).PathSegments ?? []);
 
             Active = uri?.ToString() == targetUri?.ToString()
                 ? TypeActive.Active

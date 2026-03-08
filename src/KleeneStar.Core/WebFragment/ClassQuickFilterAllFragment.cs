@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Classes._workspacekey_;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -14,7 +13,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the class sidebar.
     /// </summary>
     [Section<SectionSidebarSecondary>]
-    [Scope<Index>]
+    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>]
     [Cache]
     public sealed class ClassQuickFilertAllFragment : FragmentControlSidebarItemLink
     {
@@ -29,7 +28,7 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext)
         {
             Text = "kleenestar.core:class.quickfilter.all.label";
-            Uri = CoreHub.GetUri<Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>();
         }
 
         /// <summary>
@@ -40,7 +39,7 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var categoryParameter = renderContext.Request.GetParameter<CategoryParameter>();
+            var categoryParameter = renderContext.Request.GetParameter<CategoryIdParameter>();
 
             Active = categoryParameter is null
                 ? TypeActive.Active

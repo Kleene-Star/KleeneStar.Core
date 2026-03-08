@@ -16,7 +16,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the workspace sidebar.
     /// </summary>
     [Section<SectionSidebarToolbarPrimary>]
-    [Scope<WWW.Objects._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>]
     [Cache]
     public sealed class WorkspaceSidebarSettingFragment : FragmentControlToolbarItemDropdown
     {
@@ -50,11 +50,11 @@ namespace KleeneStar.Core.WebFragment
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
-            var editUri = CoreHub.GetUri<WWW.Workspaces._workspacekey_.Edit>()?
+            var editUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Edit>()?
                 .BindParameters(keyParameter);
-            var cloneUri = CoreHub.GetUri<WWW.Workspaces._workspacekey_.Clone>()?
+            var cloneUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Clone>()?
                 .BindParameters(keyParameter);
-            var deleteUri = CoreHub.GetUri<WWW.Workspaces._workspacekey_.Delete>()?
+            var deleteUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Delete>()?
                 .BindParameters(keyParameter);
 
             var items = new IControlDropdownItem[]
@@ -79,7 +79,7 @@ namespace KleeneStar.Core.WebFragment
                 {
                     Text = "kleenestar.core:class.manage.label",
                     Icon = new ClassIcon(),
-                    Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
+                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                         .BindParameters(keyParameter)
                 },
                 new ControlDropdownItemDivider(),

@@ -13,7 +13,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a control fragment that provides a button link for adding a new workspace within the application.
     /// </summary>
     [Section<SectionHeadlinePrimary>]
-    [Scope<WWW.Workspaces.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Workspaces.Index>]
     [Cache]
     public sealed class WorkspaceAddButtonFragment : FragmentControlButtonLink
     {
@@ -28,7 +28,7 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext)
         {
             Text = "kleenestar.core:workspace.add.label";
-            PrimaryAction = new ActionModal("modal-form", CoreHub.GetUri<WWW.Workspaces.Add>(), TypeModalSize.ExtraLarge);
+            PrimaryAction = new ActionModal("modal-form", CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces.Add>(), TypeModalSize.ExtraLarge);
             Icon = new IconPlus();
             Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);

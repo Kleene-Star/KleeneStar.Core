@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -18,8 +17,8 @@ namespace KleeneStar.Core.WebFragment
     /// render the fragment as HTML.
     /// </summary>
     [Section<SectionContentPrimary>]
-    [Scope<WWW.Objects.Index>]
-    [Scope<WWW.Objects._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Objects.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>]
     [Cache]
     public sealed class ObjectViewFragment : FragmentControlView
     {
@@ -28,7 +27,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
-            RestUri = CoreHub.GetUri<Wql>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Wql>()
         };
 
         /// <summary>
@@ -37,8 +36,8 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
-            RestUri = CoreHub.GetUri<Table>()
-                .Add(new UriQuery<CategoryParameter>()),
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Table>()
+                .Add(new UriQuery<CategoryIdParameter>()),
             Infinite = true
         };
 
@@ -48,8 +47,8 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTile Tile { get; } = new ControlRestTile()
         {
-            RestUri = CoreHub.GetUri<Tile>()
-                .Add(new UriQuery<CategoryParameter>()),
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Tile>()
+                .Add(new UriQuery<CategoryIdParameter>()),
             Infinite = true
         };
 

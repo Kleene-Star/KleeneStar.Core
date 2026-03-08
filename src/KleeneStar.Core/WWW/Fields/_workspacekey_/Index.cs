@@ -1,35 +1,31 @@
 ﻿using KleeneStar.Core.WebAttribute;
 using KleeneStar.Core.WebIcon;
-using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebUri;
+using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
 
-namespace KleeneStar.Core.WWW.Object._objectkey_
+namespace KleeneStar.Core.WWW.Fields._workspacekey_
 {
     /// <summary>
-    /// Provides functionality for a object view.
+    /// Represents the main class management page within the kleenestar web application.
     /// </summary>
-    [WebIcon<WorkspaceIcon>]
-    [ObjectKeySegment]
+    [WebIcon<ClassIcon>]
+    [Title("kleenestar.core:field.manage.label")]
+    [WorkspaceKeySegment]
     [Scope<IScopeGeneral>]
+    [Domain<Class>]
     [Cache]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
-        private readonly IObjectManager _objectManager;
-
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        /// <param name="objectManager">
-        /// The object manager used to retrieve object information. Cannot be null.
-        /// </param>
-        public Index(IObjectManager objectManager)
+        public Index()
         {
-            _objectManager = objectManager;
         }
 
         /// <summary>
@@ -39,28 +35,24 @@ namespace KleeneStar.Core.WWW.Object._objectkey_
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
-            var objectParameter = renderContext.Request.GetParameter<ObjectKeyParameter>();
-            var @object = _objectManager.GetObjectByKey(objectParameter?.Value);
+            var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
+            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(keyParameter?.Value);
 
             var uri = renderContext.PageContext.ApplicationContext.Route
                 .Concat(new WorkspaceKeyUriPathSegmentVariable<WorkspaceKeyParameter>()
                 {
-                    Value = @object.Workspace?.Key,
+                    Value = workspace?.Key,
                     Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()
-                        .BindParameters(new WorkspaceKeyParameter(@object?.Workspace?.Key))
+                    .BindParameters(renderContext.Request)
                 })
-                .Concat(new ObjectKeyUriPathSegmentVariable<ObjectKeyParameter>()
+                .Concat(new ClassIdUriPathSegmentVariable<ObjectKeyParameter>()
                 {
-                    Value = @object?.Key,
-                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Index>()
-                        .BindParameters(new ObjectKeyParameter(@object?.Key))
+                    Uri = renderContext.Request.Uri
                 })
                 .ToUri()
                 .BindParameters(renderContext.Request);
 
             visualTree.BreadcrumbUri = uri;
-            visualTree.Title = @object?.Summary;
-            visualTree.Content.MainPanel.Headline.Title = @object?.Summary;
         }
     }
 }
