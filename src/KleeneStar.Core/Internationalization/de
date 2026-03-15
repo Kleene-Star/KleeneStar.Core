@@ -27,6 +27,7 @@ workspace.delete.header=Arbeitsbereich löschen
 workspace.delete.label=Arbeitsbereich löschen
 workspace.clone.title=Arbeitsbereich klonen
 workspace.avatar.title=Avatar des Arbeitsbereichs bearbeiten
+workspace.manage.title=Arbeitsbereiche
 workspace.manage.label=Arbeitsbereiche
 workspace.manage.description=Diese Übersicht listet alle verfügbaren Arbeitsbereiche auf. Jeder Arbeitsbereich stellt eine eigene Umgebung mit eigenen Rollen, Klassen und Konfigurationsumfang dar.
 workspace.name.label=Arbeitsbereichsname
@@ -64,7 +65,19 @@ class.table.header=Klassenübersicht
 class.link.label=Klassenübersicht
 class.dropdown.label=Einstellungen
 
+field.manage.title=Felder
+field.manage.description=Diese Ansicht dient als zentrale Verwaltungsstelle für alle im System definierten Felder. Sie bietet einen umfassenden Überblick über die verfügbaren Feldtypen und stellt Funktionen für deren Erstellung, Bearbeitung und Organisation bereit.
 field.link.label=Felder
+field.add.title=Feld hinzufügen
+field.add.label=Feld hinzufügen
+field.name.label=Feldname
+field.name.placeholder=Geben Sie den Namen des Feldes ein.
+field.name.help=Der Name hilft Ihnen, dieses Feld schnell zu identifizieren.
+field.description.label=Beschreibung
+field.description.placeholder=Geben Sie eine kurze Beschreibung des Feldes ein.
+field.edit.title=Feld bearbeiten
+field.clone.title=Feld klonen
+field.delete.title=Feld löschen
 
 form.link.label=Formulare
 

@@ -1,5 +1,4 @@
-﻿using KleeneStar.Model.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
@@ -10,7 +9,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
     /// Provides functionality to retrieve WQL data.
     /// </summary>
     [Cache]
-    public sealed class Wql : RestApiWqlPrompt<Class>
+    public sealed class Wql : RestApiWqlPrompt<Model.Entities.Class>
     {
         /// <summary>
         /// Initializes a new instance of the class.

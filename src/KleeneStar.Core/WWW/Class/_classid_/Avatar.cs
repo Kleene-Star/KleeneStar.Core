@@ -1,26 +1,25 @@
-﻿using KleeneStar.Core.WebIcon;
-using WebExpress.WebApp.WebPage;
+﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebCore.WebScope;
+using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Fields
+namespace KleeneStar.Core.WWW.Class._classid_
 {
     /// <summary>
-    /// Represents the field page within the kleenestar web application.
+    /// Represents the page for editing a workspace within the web application. 
+    /// Provides access to the workspace edit form and handles form processing and rendering.
     /// </summary>
-    [WebIcon<ClassIcon>]
-    [SegmentHidden]
-    [Title("kleenestar.core:field.manage.label")]
+    [WebIcon<IconPencil>]
+    [Title("kleenestar.core:class.avatar.title")]
     [Scope<IScopeGeneral>]
-    [Cache]
-    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
+    public sealed class Avatar : IPage<VisualTreeWebApp>, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Index()
+        public Avatar()
         {
         }
 
@@ -31,10 +30,6 @@ namespace KleeneStar.Core.WWW.Fields
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
-            throw new RedirectException
-            (
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Index>()
-            );
         }
     }
 }

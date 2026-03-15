@@ -11,7 +11,7 @@ namespace KleeneStar.Core.WWW.Workspaces
     /// Represents the main workspace management page within the kleenestar web application.
     /// </summary>
     [WebIcon<WorkspaceIcon>]
-    [Title("kleenestar.core:workspace.manage.label")]
+    [Title("kleenestar.core:workspace.manage.title")]
     [Scope<IScopeGeneral>]
     [Domain<Workspace>]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral

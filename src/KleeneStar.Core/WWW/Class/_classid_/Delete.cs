@@ -1,26 +1,24 @@
-﻿using KleeneStar.Core.WebIcon;
-using WebExpress.WebApp.WebPage;
+﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebCore.WebScope;
+using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Fields
+namespace KleeneStar.Core.WWW.Class._classid_
 {
     /// <summary>
-    /// Represents the field page within the kleenestar web application.
+    /// Represents a page that handles the class deletion functionality within the web application.
     /// </summary>
-    [WebIcon<ClassIcon>]
-    [SegmentHidden]
-    [Title("kleenestar.core:field.manage.label")]
+    [WebIcon<IconTrashAlt>]
+    [Title("kleenestar.core:class.delete.title")]
     [Scope<IScopeGeneral>]
-    [Cache]
-    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
+    public sealed class Delete : IPage<VisualTreeWebApp>, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Index()
+        public Delete()
         {
         }
 
@@ -31,10 +29,6 @@ namespace KleeneStar.Core.WWW.Fields
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
-            throw new RedirectException
-            (
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Index>()
-            );
         }
     }
 }

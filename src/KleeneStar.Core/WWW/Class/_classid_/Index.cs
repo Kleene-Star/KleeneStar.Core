@@ -1,8 +1,8 @@
-﻿using System;
-using KleeneStar.Core.WebAttribute;
+﻿using KleeneStar.Core.WebAttribute;
 using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebUri;
+using System;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
@@ -10,12 +10,12 @@ using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Classes._workspacekey_._classid_
+namespace KleeneStar.Core.WWW.Class._classid_
 {
     /// <summary>
     /// Provides functionality for managing the current class page.
     /// </summary>
-    [WebIcon<IconGlobe>]
+    [WebIcon<IconCubes>]
     [ClassIdSegment]
     [Scope<IScopeGeneral>]
     [Cache]
@@ -41,24 +41,22 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_._classid_
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
-            var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
             var classParameter = renderContext.Request.GetParameter<ClassIdParameter>();
             var guid = Guid.TryParse(classParameter.Value, out var id) ? id : Guid.Empty;
             var @class = _classManager.GetClass(guid);
-
-            visualTree.Title = @class?.Name;
-            visualTree.Content.MainPanel.Headline.Title = @class?.Name;
-
+            var workspace = @class?.Workspace;
             var uri = renderContext.PageContext.ApplicationContext.Route
                 .Concat(new WorkspaceKeyUriPathSegmentVariable<WorkspaceKeyParameter>()
                 {
                     Value = @class?.Workspace?.Key,
-                    Uri = CoreHub.GetUri<Objects._workspacekey_.Index>()
+                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()
+                        .BindParameters(new WorkspaceKeyParameter(workspace?.Key))
                         .BindParameters(renderContext.Request)
                 })
                 .Concat(new UriPathSegmentConstant("classes")
                 {
-                    Uri = CoreHub.GetUri<_workspacekey_.Index>()
+                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()
+                        .BindParameters(new WorkspaceKeyParameter(workspace?.Key))
                         .BindParameters(renderContext.Request)
                 })
                 .Concat(new ClassIdUriPathSegmentVariable<ClassIdParameter>()
@@ -66,10 +64,13 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_._classid_
                     Uri = renderContext.Request.Uri
                 })
                 .ToUri()
-
+                .BindParameters(new WorkspaceKeyParameter(workspace?.Key))
                 .BindParameters(renderContext.Request);
 
             visualTree.BreadcrumbUri = uri;
+
+            visualTree.Title = @class?.Name;
+            visualTree.Content.MainPanel.Headline.Title = @class?.Name;
         }
     }
 }

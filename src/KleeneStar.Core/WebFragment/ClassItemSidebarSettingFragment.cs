@@ -15,8 +15,8 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a sidebar item link fragment that displays the 'All' quick filter option in the workspace sidebar.
     /// </summary>
     [Section<SectionSidebarToolbarPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Fields._workspacekey_._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
     [Cache]
     public sealed class ClassItemSidebarSettingFragment : FragmentControlToolbarItemDropdown
     {
@@ -50,13 +50,13 @@ namespace KleeneStar.Core.WebFragment
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
-            var editUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Edit>()?
+            var editUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Edit>()?
                 .BindParameters(keyParameter)
                 .BindParameters(renderContext.Request);
-            var cloneUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Clone>()?
+            var cloneUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Clone>()?
                 .BindParameters(keyParameter)
                 .BindParameters(renderContext.Request);
-            var deleteUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Delete>()?
+            var deleteUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Delete>()?
                 .BindParameters(keyParameter)
                 .BindParameters(renderContext.Request);
 
@@ -82,7 +82,7 @@ namespace KleeneStar.Core.WebFragment
                 {
                     Text = "kleenestar.core:field.link.label",
                     Icon = new IconList(),
-                    Uri = CoreHub.GetUri<global :: KleeneStar.Core.WWW.Fields._workspacekey_._classid_.Index>()?
+                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Fields._classid_.Index>()?
                         .BindParameters(keyParameter)
                         .BindParameters(renderContext.Request)
                 },

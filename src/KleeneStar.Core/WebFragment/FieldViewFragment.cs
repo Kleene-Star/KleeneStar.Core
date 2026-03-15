@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebFragment
     /// render the fragment as HTML.
     /// </summary>
     [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Fields._workspacekey_._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
     [Cache]
     public sealed class FieldViewFragment : FragmentControlView
     {

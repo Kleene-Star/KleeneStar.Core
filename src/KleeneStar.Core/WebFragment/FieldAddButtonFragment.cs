@@ -10,12 +10,12 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a control fragment that provides a button link for adding a new class within the workspace.
+    /// Represents a control fragment that provides a button link for adding a new field within the workspace.
     /// </summary>
     [Section<SectionHeadlinePrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
     [Cache]
-    public sealed class ClassAddButtonFragment : FragmentControlButtonLink
+    public sealed class FieldAddButtonFragment : FragmentControlButtonLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -24,10 +24,10 @@ namespace KleeneStar.Core.WebFragment
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public ClassAddButtonFragment(IFragmentContext fragmentContext)
+        public FieldAddButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:class.add.label";
+            Text = "kleenestar.core:field.add.label";
             Icon = new IconPlus();
             Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
@@ -49,7 +49,7 @@ namespace KleeneStar.Core.WebFragment
             var primaryAction = new ActionModal
             (
                 "modal-form",
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Add>()
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Fields._classid_.Add>()
                     .BindParameters(renderContext.Request),
                 TypeModalSize.ExtraLarge
                 );

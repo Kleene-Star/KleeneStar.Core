@@ -1,25 +1,26 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
-using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Classes._workspacekey_._classid_
+namespace KleeneStar.Core.WWW.Class
 {
     /// <summary>
-    /// Represents the page for editing a workspace within the web application. 
-    /// Provides access to the workspace edit form and handles form processing and rendering.
+    /// Represents the field page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconPencil>]
-    [Title("kleenestar.core:class.edit.title")]
+    [WebIcon<IconCubes>]
+    [SegmentHidden]
+    [Title("kleenestar.core:class.manage.title")]
     [Scope<IScopeGeneral>]
-    public sealed class Edit : IPage<VisualTreeWebApp>, IScope
+    [Cache]
+    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Edit()
+        public Index()
         {
         }
 
@@ -30,6 +31,10 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_._classid_
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
+            throw new RedirectException
+            (
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Index>()
+            );
         }
     }
 }

@@ -13,8 +13,8 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a sidebar item link fragment that displays the 'Class overview' link in the class sidebar.
     /// </summary>
     [Section<SectionSidebarPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Fields._workspacekey_._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
     [Cache]
     public sealed class ClassSidebarClassLinkFragment : FragmentControlSidebarItemLink
     {
@@ -30,7 +30,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Icon = new IconCubes();
             Text = "kleenestar.core:class.link.label";
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Index>();
         }
 
         /// <summary>

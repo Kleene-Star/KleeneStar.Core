@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
@@ -16,7 +15,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a clone form fragment for a class.
     /// </summary>
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Clone>]
+    [Scope<global::KleeneStar.Core.WWW.Class._classid_.Clone>]
     [Cache]
     public sealed class ClassCloneFormFragment : FragmentControlRestFormClone
     {
@@ -25,12 +24,12 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique ClassName { get; } = new()
         {
-            Name = nameof(Class.Name),
+            Name = nameof(Model.Entities.Class.Name),
             Label = "kleenestar.core:class.name.label",
             Placeholder = "kleenestar.core:class.name.placeholder",
             Help = "kleenestar.core:class.name.help",
             Required = true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.UniqueName>()
         };
 
         /// <summary>
@@ -38,7 +37,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Workspace.Description),
+            Name = nameof(Model.Entities.Class.Description),
             Label = "kleenestar.core:class.description.label",
             Placeholder = "kleenestar.core:class.description.placeholder",
             Format = TypeEditTextFormat.Wysiwyg,
@@ -56,7 +55,7 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
 
             Mode = TypeRestFormMode.Clone;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
         }
 
         /// <summary>

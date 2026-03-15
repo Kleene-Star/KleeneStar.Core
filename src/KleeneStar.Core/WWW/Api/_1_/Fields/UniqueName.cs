@@ -6,13 +6,13 @@ using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
 
-namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
+namespace KleeneStar.Core.WWW.Api._1_.Fields
 {
     /// <summary>
-    /// Represents a unique class name within the system, providing functionality to validate 
-    /// and check the availability of class names.
+    /// Represents a unique field name within the system, providing functionality to validate 
+    /// and check the availability of field names.
     /// </summary>
-    [Title("Workspace")]
+    [Title("Fields")]
     [Cache]
     public sealed partial class UniqueName : RestApiUnique
     {
@@ -52,12 +52,12 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
                 return false;
             }
 
-            var query = new Query<Model.Entities.Class>()
+            var query = new Query<Model.Entities.Field>()
                 .WhereEqualsIgnoreCase(x => x.Name, value);
 
             using var context = ModelHub.CreateDbContext();
 
-            return CoreHub.ClassManager?.GetClasses(query, context)
+            return CoreHub.FieldManager?.GetFields(query, context)
                 .Any() != true;
         }
     }

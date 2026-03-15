@@ -1,7 +1,7 @@
 ﻿using System;
 using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Classes._workspacekey_._classid_;
+using KleeneStar.Core.WWW.Class._classid_;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -17,8 +17,8 @@ namespace KleeneStar.Core.WebFragment
     /// editing capabilities within the class sidebar.
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Fields._workspacekey_._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
     [Cache]
     public sealed class ClassSidebarIconFragment : FragmentControlSidebarItemIcon
     {

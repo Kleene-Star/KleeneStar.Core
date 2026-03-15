@@ -27,6 +27,7 @@ workspace.delete.header=Delete Workspace
 workspace.delete.label=Delete Workspace
 workspace.clone.title=Clone Workspace
 workspace.avatar.title=Edit Workspace Avatar
+workspace.manage.title=Workspaces
 workspace.manage.label=Workspaces
 workspace.manage.description=This overview lists all available workspaces. Each workspace represents a distinct environment with its own roles, classes, and configuration scope.
 workspace.name.label=Workspace Name
@@ -64,7 +65,19 @@ class.table.header=Class Overview
 class.link.label=Class Overview
 class.dropdown.label=Settings
 
+field.manage.title=Fields
+field.manage.description=This view serves as the central management hub for all fields defined in the system. It provides a comprehensive overview of the available field types and offers functions for creation, editing, and organization.
 field.link.label=Fields
+field.add.title=Add Field
+field.add.label=Add Field
+field.name.label=Field Name
+field.name.placeholder=Enter the name of the field.
+field.name.help=The name helps you quickly identify this field.
+field.description.label=Description
+field.description.placeholder=Enter a brief description of the field.
+field.edit.title=Edit Field
+field.clone.title=Clone Field
+field.delete.title=Delete Field
 
 form.link.label=Forms
 

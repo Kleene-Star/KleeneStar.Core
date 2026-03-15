@@ -1,23 +1,22 @@
 ﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Core.WebIcon;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebUri;
-using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Fields._workspacekey_
+namespace KleeneStar.Core.WWW.Field._fieldid_
 {
     /// <summary>
-    /// Represents the main class management page within the kleenestar web application.
+    /// Represents the main page for a field within the class.
     /// </summary>
-    [WebIcon<ClassIcon>]
+    [WebIcon<IconList>]
     [Title("kleenestar.core:field.manage.label")]
-    [WorkspaceKeySegment]
+    [FieldIdSegment]
     [Scope<IScopeGeneral>]
-    [Domain<Class>]
+    [Domain<Model.Entities.Field>]
     [Cache]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {

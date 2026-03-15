@@ -1,4 +1,5 @@
-﻿using WebExpress.WebApp.WebApiControl;
+﻿using KleeneStar.Core.WebParameter;
+using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -11,35 +12,34 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a add form fragment for a class.
+    /// Represents a edit form fragment for a field.
     /// </summary>
-    [Title("kleenestar.core:class.add.title")]
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_.Add>]
+    [Scope<global::KleeneStar.Core.WWW.Field._fieldid_.Edit>]
     [Cache]
-    public sealed class ClassAddFormFragment : FragmentControlRestFormAdd
+    public sealed class FieldEditFormFragment : FragmentControlRestFormEdit
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the class.
+        /// Returns the input text control for specifying the name of the field.
         /// </summary>
-        public ControlRestFormItemInputUnique ClassName { get; } = new()
+        public ControlRestFormItemInputUnique FieldName { get; } = new()
         {
-            Name = nameof(Model.Entities.Class.Name),
-            Label = "kleenestar.core:class.name.label",
-            Placeholder = "kleenestar.core:class.name.placeholder",
-            Help = "kleenestar.core:class.name.help",
+            Name = nameof(Model.Entities.Field.Name),
+            Label = "kleenestar.core:field.name.label",
+            Placeholder = "kleenestar.core:field.name.placeholder",
+            Help = "kleenestar.core:field.name.help",
             Required = true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.UniqueName>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.UniqueName>()
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the class.
+        /// Returns the input text control for specifying the description of the field.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Class.Description),
-            Label = "kleenestar.core:class.description.label",
-            Placeholder = "kleenestar.core:class.description.placeholder",
+            Name = nameof(Model.Entities.Field.Description),
+            Label = "kleenestar.core:field.description.label",
+            Placeholder = "kleenestar.core:field.description.placeholder",
             Format = TypeEditTextFormat.Wysiwyg,
             Required = false
         };
@@ -48,14 +48,14 @@ namespace KleeneStar.Core.WebFragment
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ClassAddFormFragment(IFragmentContext fragmentContext)
+        public FieldEditFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Add(ClassName);
+            Add(FieldName);
             Add(Description);
 
-            Mode = TypeRestFormMode.Add;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
+            Mode = TypeRestFormMode.Edit;
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
         }
 
         /// <summary>
@@ -72,7 +72,9 @@ namespace KleeneStar.Core.WebFragment
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            return base.Render(renderContext, visualTree, Items, null, Uri);
+            var param = renderContext.Request.GetParameter<FieldIdParameter>();
+
+            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
         }
     }
 }

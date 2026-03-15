@@ -5,21 +5,20 @@ using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Classes._workspacekey_._classid_
+namespace KleeneStar.Core.WWW.Field._fieldid_
 {
     /// <summary>
-    /// Represents the page for deleting a workspace within the web application. Provides access to the
-    /// workspace edit form and handles form processing and rendering.
+    /// Represents the page for cloning a field within the class. 
     /// </summary>
-    [WebIcon<IconTrashAlt>]
-    [Title("kleenestar.core:calss.delete.title")]
+    [WebIcon<IconCopy>]
+    [Title("kleenestar.core:field.clone.title")]
     [Scope<IScopeGeneral>]
-    public sealed class Delete : IPage<VisualTreeWebApp>, IScope
+    public sealed class Clone : IPage<VisualTreeWebApp>, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Delete()
+        public Clone()
         {
         }
 

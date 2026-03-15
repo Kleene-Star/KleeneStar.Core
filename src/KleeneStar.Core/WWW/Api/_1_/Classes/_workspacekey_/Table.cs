@@ -1,6 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
-using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +18,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
     /// </summary>
     [Title("kleenestar.core:class.table.header")]
     [Cache]
-    public sealed class Table : RestApiTable<Class>
+    public sealed class Table : RestApiTable<Model.Entities.Class>
     {
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
@@ -30,9 +29,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// </summary>
         public Table()
         {
-            _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Edit>();
-            _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Clone>();
-            _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Delete>();
+            _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Edit>();
+            _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Clone>();
+            _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Delete>();
         }
 
         /// <summary>
@@ -44,7 +43,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// <param name="request">
         /// The request object containing the criteria for retrieving options. Cannot be null.
         /// </param>
-        public override IEnumerable<RestApiOption> GetOptions(Class row, IRequest request)
+        public override IEnumerable<RestApiOption> GetOptions(Model.Entities.Class row, IRequest request)
         {
             var editUri = _editFormUri?
                 .BindParameters(request)
@@ -92,9 +91,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// <returns>
         /// An object implementing <see cref="IUri"/> that represents the URI for the specified request and workspace.
         /// </returns>
-        public override IUri GetUri(Class row, IRequest request)
+        public override IUri GetUri(Model.Entities.Class row, IRequest request)
         {
-            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Index>()?
+            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Index>()?
                 .BindParameters(new ClassIdParameter(row.Id))
                 .BindParameters(request);
         }
@@ -111,7 +110,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// <returns>
         /// An object representing the URI of the REST API endpoint for the given request and workspace.
         /// </returns>
-        public override IUri GetRestApiForInlineEdit(Class row, IRequest request)
+        public override IUri GetRestApiForInlineEdit(Model.Entities.Class row, IRequest request)
         {
             return CoreHub.GetUri<Index>()?
                 .Add(new UriQuery("id", row.Id.ToString()));
@@ -146,7 +145,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// An <see cref="IQueryable{TIndexItem}"/> representing the filtered set of index items. The 
         /// result may be empty if no items match the query.
         /// </returns>
-        protected override IEnumerable<Class> Retrieve(IQuery<Class> query, IQueryContext context, IRequest request)
+        protected override IEnumerable<Model.Entities.Class> Retrieve(IQuery<Model.Entities.Class> query, IQueryContext context, IRequest request)
         {
             var key = request.GetParameter<WorkspaceKeyParameter>();
             var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value);
@@ -175,7 +174,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// A query representing the filtered set of items that match the criteria defined by 
         /// the filter statement.
         /// </returns>
-        protected override IQuery<Class> Filter(string filter, IQuery<Class> query, IRequest request)
+        protected override IQuery<Model.Entities.Class> Filter(string filter, IQuery<Model.Entities.Class> query, IRequest request)
         {
             if (string.IsNullOrWhiteSpace(filter) || filter == "null")
             {

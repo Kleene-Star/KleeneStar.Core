@@ -11,22 +11,22 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a delete form fragment for a class.
+    /// Represents a delete form fragment for a field.
     /// </summary>
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Class._classid_.Delete>]
+    [Scope<global::KleeneStar.Core.WWW.Field._fieldid_.Delete>]
     [Cache]
-    public sealed class ClassDeleteFormFragment : FragmentControlRestFormDelete
+    public sealed class FieldDeleteFormFragment : FragmentControlRestFormDelete
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ClassDeleteFormFragment(IFragmentContext fragmentContext)
+        public FieldDeleteFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Mode = TypeRestFormMode.Delete;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace KleeneStar.Core.WebFragment
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var param = renderContext.Request.GetParameter<ClassIdParameter>();
+            var param = renderContext.Request.GetParameter<FieldIdParameter>();
 
             return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
         }

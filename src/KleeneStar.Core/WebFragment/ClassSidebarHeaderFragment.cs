@@ -14,8 +14,8 @@ namespace KleeneStar.Core.WebFragment
     /// the user interface sidebar.
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Fields._workspacekey_._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
     [Cache]
     public sealed class ClassSidebarHeaderFragment : FragmentControlSidebarItemHeader
     {

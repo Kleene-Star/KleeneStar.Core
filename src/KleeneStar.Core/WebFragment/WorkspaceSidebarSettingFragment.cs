@@ -1,5 +1,4 @@
-﻿using KleeneStar.Core.WebIcon;
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -78,7 +77,7 @@ namespace KleeneStar.Core.WebFragment
                 new ControlDropdownItemLink()
                 {
                     Text = "kleenestar.core:class.manage.label",
-                    Icon = new ClassIcon(),
+                    Icon = new IconCubes(),
                     Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                         .BindParameters(keyParameter)
                 },

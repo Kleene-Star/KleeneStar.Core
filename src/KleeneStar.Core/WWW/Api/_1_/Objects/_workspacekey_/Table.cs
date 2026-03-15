@@ -1,5 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Classes._workspacekey_._classid_;
+using KleeneStar.Core.WWW.Class._classid_;
 using KleeneStar.Model;
 using System.Collections.Generic;
 using System.Linq;

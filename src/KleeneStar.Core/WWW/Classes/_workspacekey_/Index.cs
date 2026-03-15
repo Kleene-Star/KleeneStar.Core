@@ -1,23 +1,22 @@
 ﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Core.WebIcon;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebUri;
-using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Classes._workspacekey_
 {
     /// <summary>
     /// Represents the main class management page within the kleenestar web application.
     /// </summary>
-    [WebIcon<ClassIcon>]
+    [WebIcon<IconCubes>]
     [Title("kleenestar.core:class.manage.label")]
     [WorkspaceKeySegment]
     [Scope<IScopeGeneral>]
-    [Domain<Class>]
+    [Domain<Model.Entities.Class>]
     [Cache]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {

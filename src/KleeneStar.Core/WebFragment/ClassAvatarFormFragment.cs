@@ -14,7 +14,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a avatar form fragment for a class.
     /// </summary>
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_._classid_.Avatar>]
+    [Scope<global::KleeneStar.Core.WWW.Class._classid_.Avatar>]
     [Cache]
     public sealed class ClassAvatarFormFragment : FragmentControlRestFormEdit
     {
