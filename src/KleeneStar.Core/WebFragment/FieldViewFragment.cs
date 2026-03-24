@@ -52,15 +52,15 @@ namespace KleeneStar.Core.WebFragment
         public FieldViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Table.Bind = new BindSearch()
+            Table.Bind = new Binding().Add(new BindSearch()
             {
                 Source = Search.Id
-            };
+            });
 
-            Tile.Bind = new BindSearch()
+            Tile.Bind = new Binding().Add(new BindSearch()
             {
                 Source = Search.Id
-            };
+            });
 
             Add(new ControlViewHeader().Add(Search));
             Add(new ControlViewItem()

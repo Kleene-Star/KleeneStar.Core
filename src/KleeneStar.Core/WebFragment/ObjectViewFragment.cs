@@ -59,15 +59,15 @@ namespace KleeneStar.Core.WebFragment
         public ObjectViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Table.Bind = new BindSearch()
+            Table.Bind = new Binding().Add(new BindSearch()
             {
                 Source = Search.Id
-            };
+            });
 
-            Tile.Bind = new BindSearch()
+            Tile.Bind = new Binding().Add(new BindSearch()
             {
                 Source = Search.Id
-            };
+            });
 
             DetailId = "object-view-frame";
             DetailSelector = "#wx-content-main";
