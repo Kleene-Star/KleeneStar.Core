@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
+using System.Collections.Generic;
+using System.Linq;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
@@ -24,24 +24,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </summary>
         public Dropdown()
         {
-        }
-
-        /// <summary>
-        /// Gets the URI associated with the specified request and index item.
-        /// </summary>
-        /// <param name="request">
-        /// The request for which to retrieve the URI. Cannot be null.
-        /// </param>
-        /// <param name="item">
-        /// The index item that provides context for generating the URI. Cannot be null.
-        /// </param>
-        /// <returns>
-        /// An object representing the URI for the given request and index item, or null if no URI is available.
-        /// </returns>
-        public override IUri GetUri(Workspace item, IRequest request)
-        {
-            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()?
-                .BindParameters(new WorkspaceKeyParameter(item?.Key));
         }
 
         /// <summary>
@@ -70,12 +52,19 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// The request that provides the operational context.
         /// </param>
         /// <returns>
-        /// An <see cref="IQueryable{TIndexItem}"/> representing the filtered set of index items. The 
-        /// result may be empty if no items match the query.
+        /// An enumerable collection of dropdown items, each representing a workspace that matches the query. The
+        /// collection is empty if no workspaces are found.
         /// </returns>
-        protected override IEnumerable<Workspace> Retrieve(IQuery<Workspace> query, IQueryContext context, IRequest request)
+        protected override IEnumerable<RestApiDropdownItem> RetrieveItems(IQuery<Workspace> query, IQueryContext context, IRequest request)
         {
-            return CoreHub.WorkspaceManager?.GetWorkspaces(query, context);
+            return CoreHub.WorkspaceManager?.GetWorkspaces(query, context)
+                .Select(x => new RestApiDropdownItem()
+                {
+                    Id = x.Id,
+                    Text = x.Name,
+                    Image = x.Icon?.Uri?.ToString(),
+                    Uri = GetUri(x, request)?.ToString()
+                });
         }
 
         /// <summary>
@@ -107,6 +96,24 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             (
                 x => x.Name, filter
             );
+        }
+
+        /// <summary>
+        /// Gets the URI associated with the specified request and index item.
+        /// </summary>
+        /// <param name="request">
+        /// The request for which to retrieve the URI. Cannot be null.
+        /// </param>
+        /// <param name="item">
+        /// The index item that provides context for generating the URI. Cannot be null.
+        /// </param>
+        /// <returns>
+        /// An object representing the URI for the given request and index item, or null if no URI is available.
+        /// </returns>
+        private static IUri GetUri(Workspace item, IRequest request)
+        {
+            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()?
+                .BindParameters(new WorkspaceKeyParameter(item?.Key));
         }
     }
 }

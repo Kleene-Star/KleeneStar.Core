@@ -37,8 +37,7 @@ namespace KleeneStar.Core.WebFragment
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Table>()
-                .Add(new UriQuery<CategoryIdParameter>()),
-            Infinite = true
+                .Add(new UriQuery<CategoryIdParameter>())
         };
 
         /// <summary>
@@ -48,8 +47,7 @@ namespace KleeneStar.Core.WebFragment
         public ControlRestTile Tile { get; } = new ControlRestTile()
         {
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Tile>()
-                .Add(new UriQuery<CategoryIdParameter>()),
-            Infinite = true
+                .Add(new UriQuery<CategoryIdParameter>())
         };
 
         /// <summary>

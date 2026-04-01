@@ -1,5 +1,6 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
@@ -34,6 +35,91 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         }
 
         /// <summary>
+        /// Creates a new instance of an object that implements the IQueryContext interface.
+        /// </summary>
+        /// <returns>
+        /// An IQueryContext instance that can be used to execute queries.
+        /// </returns>
+        protected override IQueryContext CreateContext()
+        {
+            return ModelHub.CreateDbContext();
+        }
+
+        /// <summary>
+        /// Retrieves a collection of tile items representing classes that match the 
+        /// specified query and workspace context.
+        /// </summary>
+        /// <param name="query">
+        /// The query used to filter classes. The query is further constrained to the 
+        /// workspace identified by the request parameters.
+        /// </param>
+        /// <param name="context">
+        /// The context for the query execution, providing additional information or 
+        /// services required to process the query.
+        /// </param>
+        /// <param name="request">
+        /// The current API request, used to extract workspace identification 
+        /// parameters.
+        /// </param>
+        /// <returns>
+        /// An enumerable collection of tile items representing the classes that 
+        /// satisfy the query and belong to the specified workspace. The collection 
+        /// is empty if no matching classes are found.
+        /// </returns>
+        protected override IEnumerable<RestApiTileItem> RetrieveItems(IQuery<Model.Entities.Object> query, IQueryContext context, IRequest request)
+        {
+            var key = request.GetParameter<WorkspaceKeyParameter>();
+            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value);
+            var id = workspace?.Id ?? Guid.Empty;
+
+            query = query.WhereEquals(x => x.WorkspaceId, id);
+
+            return CoreHub.ObjectManager.GetObjects(query, context)
+                .Select(x => new RestApiTileItem()
+                {
+                    Id = x.Id.ToString(),
+                    Title = x.Summary,
+                    Text = x.Description,
+                    Image = x.Icon?.Uri?.ToString(),
+                    SecondaryAction = GetPrimaryAction(x, request)?.ToJson()
+                    //Options = GetOptions(x, request)
+                });
+        }
+
+        /// <summary>
+        /// Applies the specified filter criteria to the given query object.
+        /// </summary>
+        /// <param name="filter">
+        /// A string representing the filter expression to apply. The format and supported 
+        /// operators depend on the implementation.
+        /// </param>
+        /// <param name="query">
+        /// The query object to which the filter will be applied.
+        /// </param>
+        /// <param name="request">
+        /// The request that provides the operational context for resolving
+        /// the appropriate REST API URI.
+        /// </param>
+        /// <returns>
+        /// A query representing the filtered set of items that match the criteria defined by 
+        /// the filter statement.
+        /// </returns>
+        protected override IQuery<Model.Entities.Object> Filter(string filter, IQuery<Model.Entities.Object> query, IRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(filter) || filter == "null")
+            {
+                return query;
+            }
+
+            query = query.WhereContainsIgnoreCase
+            (
+                x => x.Summary, filter
+            );
+
+            return query;
+        }
+
+        /// <summary>
         /// Retrieves a collection of options.
         /// </summary>
         /// <param name="row">
@@ -42,7 +128,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         /// <param name="request">
         /// The request object containing the criteria for retrieving options. Cannot be null.
         /// </param>
-        public override IEnumerable<RestApiOption> GetOptions(Model.Entities.Object row, IRequest request)
+        private static IEnumerable<RestApiOption> GetOptions(Model.Entities.Object row, IRequest request)
         {
             //var editUri = _editFormUri?
             //    .BindParameters(new WorkspaceKeyParameter(row.Key));
@@ -100,80 +186,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         /// An <see cref="IAction"/> representing the primary action for the specified 
         /// row item, or null if no action is available.
         /// </returns>
-        public override IAction GetPrimaryAction(Model.Entities.Object item, IRequest request)
+        private static IAction GetPrimaryAction(Model.Entities.Object item, IRequest request)
         {
             return new ActionFrame("object-view-frame")
             {
                 Uri = CoreHub.GetUri<Object._objectkey_.Index>()?
                         .BindParameters(new ObjectKeyParameter(item.Key))
             };
-        }
-
-        /// <summary>
-        /// Creates a new instance of an object that implements the IQueryContext interface.
-        /// </summary>
-        /// <returns>
-        /// An IQueryContext instance that can be used to execute queries.
-        /// </returns>
-        protected override IQueryContext CreateContext()
-        {
-            return ModelHub.CreateDbContext();
-        }
-
-        /// <summary>
-        /// Retrieves a queryable collection of index items that match the specified query criteria.
-        /// </summary>
-        /// <param name="query">
-        /// An object containing the query parameters used to filter and select index items. Cannot 
-        /// be null.
-        /// </param>
-        /// <param name="context">
-        /// The context in which the query is executed. Provides additional information or constraints 
-        /// for the retrieval operation. Cannot be null.
-        /// </param>
-        /// <param name="request">
-        /// The request that provides the operational context.
-        /// </param>
-        /// <returns>
-        /// An <see cref="IQueryable{TIndexItem}"/> representing the filtered set of index items. The 
-        /// result may be empty if no items match the query.
-        /// </returns>
-        protected override IEnumerable<Model.Entities.Object> Retrieve(IQuery<Model.Entities.Object> query, IQueryContext context, IRequest request)
-        {
-            return CoreHub.ObjectManager.GetObjects(query, context);
-        }
-
-        /// <summary>
-        /// Applies the specified filter criteria to the given query object.
-        /// </summary>
-        /// <param name="filter">
-        /// A string representing the filter expression to apply. The format and supported 
-        /// operators depend on the implementation.
-        /// </param>
-        /// <param name="query">
-        /// The query object to which the filter will be applied.
-        /// </param>
-        /// <param name="request">
-        /// The request that provides the operational context for resolving
-        /// the appropriate REST API URI.
-        /// </param>
-        /// <returns>
-        /// A query representing the filtered set of items that match the criteria defined by 
-        /// the filter statement.
-        /// </returns>
-        protected override IQuery<Model.Entities.Object> Filter(string filter, IQuery<Model.Entities.Object> query, IRequest request)
-        {
-            if (string.IsNullOrWhiteSpace(filter) || filter == "null")
-            {
-                return query;
-            }
-
-            query = query.WhereContainsIgnoreCase
-            (
-                x => x.Summary, filter
-            );
-
-            return query;
         }
     }
 }

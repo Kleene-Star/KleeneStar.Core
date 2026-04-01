@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
+using System.Collections.Generic;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
@@ -50,15 +49,17 @@ namespace KleeneStar.Core.WebFragment
             foreach (var category in CoreHub.WorkspaceManager.GetCategories(new Query<Category>()))
             {
                 var label = category.Name.Trim().ToLower();
-                var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces.Index>();
-
-                list.Add(new ControlSidebarItemLink()
+                list.Add(new ControlSidebarItemLink($"cat-{category.Id.ToString()}")
                 {
                     Text = category.Name,
                     Active = label.Equals(categoryParameter?.Value, System.StringComparison.InvariantCultureIgnoreCase)
                         ? TypeActive.Active
                         : TypeActive.None,
-                    Uri = uri.Add(new UriQuery("category", category.Name))
+                    PrimaryAction = new ActionFilter()
+                    {
+                        Exclusive = true,
+                        Group = "category"
+                    }
                 }
                     .Render(renderContext, visualTree));
             }

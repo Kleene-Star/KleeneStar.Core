@@ -34,58 +34,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         }
 
         /// <summary>
-        /// Retrieves a collection of options.
-        /// </summary>
-        /// <param name="row">
-        /// The row object for which options are being retrieved. Cannot be null.
-        /// </param>
-        /// <param name="request">
-        /// The request object containing the criteria for retrieving options. Cannot be null.
-        /// </param>
-        public override IEnumerable<RestApiOption> GetOptions(Model.Entities.Class row, IRequest request)
-        {
-            //var editUri = _editFormUri?
-            //    .SetParameters(new KeyParameter(row.Key));
-            //var cloneUri = _cloneFormUri?
-            //    .SetParameters(new KeyParameter(row.Key));
-            //var deleteUri = _deleteFormUri?
-            //    .SetParameters(new KeyParameter(row.Key));
-
-            //yield return new RestApiOptionHeader(request)
-            //{
-            //    Text = "webexpress.webapp:header.setting.label"
-            //};
-
-            //yield return new RestApiOptionEdit(request)
-            //{
-            //    PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge)
-            //};
-
-            //yield return new RestApiOptionClone(request)
-            //{
-            //    PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
-            //};
-
-            //yield return new RestApiOptionCustom(request)
-            //{
-            //    Uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Index>()?
-            //        .SetParameters
-            //        (
-            //            new KeyParameter(row.Key)
-            //        ),
-            //    Text = I18N.Translate(request, "kleenestar.core:class.manage.label"),
-            //    Icon = new IconBoxesStacked().Class
-
-            //};
-
-            yield return new RestApiOptionSeparator(request);
-            //yield return new RestApiOptionDelete(request)
-            //{
-            //    PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.Small)
-            //};
-        }
-
-        /// <summary>
         /// Creates a new instance of an object that implements the IQueryContext interface.
         /// </summary>
         /// <returns>
@@ -97,24 +45,27 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         }
 
         /// <summary>
-        /// Retrieves a queryable collection of index items that match the specified query criteria.
+        /// Retrieves a collection of tile items representing classes that match the 
+        /// specified query and workspace context.
         /// </summary>
         /// <param name="query">
-        /// An object containing the query parameters used to filter and select index items. Cannot 
-        /// be null.
+        /// The query used to filter classes. The query is further constrained to the 
+        /// workspace identified by the request parameters.
         /// </param>
         /// <param name="context">
-        /// The context in which the query is executed. Provides additional information or constraints 
-        /// for the retrieval operation. Cannot be null.
+        /// The context for the query execution, providing additional information or 
+        /// services required to process the query.
         /// </param>
         /// <param name="request">
-        /// The request that provides the operational context.
+        /// The current API request, used to extract workspace identification 
+        /// parameters.
         /// </param>
         /// <returns>
-        /// An <see cref="IQueryable{TIndexItem}"/> representing the filtered set of index items. The 
-        /// result may be empty if no items match the query.
+        /// An enumerable collection of tile items representing the classes that 
+        /// satisfy the query and belong to the specified workspace. The collection 
+        /// is empty if no matching classes are found.
         /// </returns>
-        protected override IEnumerable<Model.Entities.Class> Retrieve(IQuery<Model.Entities.Class> query, IQueryContext context, IRequest request)
+        protected override IEnumerable<RestApiTileItem> RetrieveItems(IQuery<Model.Entities.Class> query, IQueryContext context, IRequest request)
         {
             var key = request.GetParameter<WorkspaceKeyParameter>();
             var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value);
@@ -122,7 +73,15 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
 
             query = query.WhereEquals(x => x.WorkspaceId, id);
 
-            return CoreHub.ClassManager.GetClasses(query, context);
+            return CoreHub.ClassManager.GetClasses(query, context)
+                .Select(x => new RestApiTileItem()
+                {
+                    Id = x.Id.ToString(),
+                    Title = x.Name,
+                    Text = x.Description,
+                    Image = x.Icon?.Uri?.ToString()
+                    //Options = GetOptions(x, request)
+                });
         }
 
         /// <summary>
@@ -166,5 +125,58 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
 
             return query;
         }
+
+        /// <summary>
+        /// Retrieves a collection of options.
+        /// </summary>
+        /// <param name="row">
+        /// The row object for which options are being retrieved. Cannot be null.
+        /// </param>
+        /// <param name="request">
+        /// The request object containing the criteria for retrieving options. Cannot be null.
+        /// </param>
+        private static IEnumerable<RestApiOption> GetOptions(Model.Entities.Class row, IRequest request)
+        {
+            //var editUri = _editFormUri?
+            //    .SetParameters(new KeyParameter(row.Key));
+            //var cloneUri = _cloneFormUri?
+            //    .SetParameters(new KeyParameter(row.Key));
+            //var deleteUri = _deleteFormUri?
+            //    .SetParameters(new KeyParameter(row.Key));
+
+            //yield return new RestApiOptionHeader(request)
+            //{
+            //    Text = "webexpress.webapp:header.setting.label"
+            //};
+
+            //yield return new RestApiOptionEdit(request)
+            //{
+            //    PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge)
+            //};
+
+            //yield return new RestApiOptionClone(request)
+            //{
+            //    PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
+            //};
+
+            //yield return new RestApiOptionCustom(request)
+            //{
+            //    Uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Index>()?
+            //        .SetParameters
+            //        (
+            //            new KeyParameter(row.Key)
+            //        ),
+            //    Text = I18N.Translate(request, "kleenestar.core:class.manage.label"),
+            //    Icon = new IconBoxesStacked().Class
+
+            //};
+
+            yield return new RestApiOptionSeparator(request);
+            //yield return new RestApiOptionDelete(request)
+            //{
+            //    PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.Small)
+            //};
+        }
+
     }
 }
