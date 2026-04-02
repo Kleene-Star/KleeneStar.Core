@@ -60,7 +60,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Returns the pagination settings for controlling how data is divided into pages.
         /// </summary>
-        public ControlPagination Pagination { get; } = new ControlPagination()
+        public ControlPagination Pagination { get; } = new ControlPagination("id_7571039F3D784CE18B44898D4B326C19")
         {
         };
 
@@ -76,14 +76,22 @@ namespace KleeneStar.Core.WebFragment
                 {
                     Source = Search.Id
                 })
-                .Add(new BindFilter());
+                .Add(new BindFilter())
+                .Add(new BindPaging()
+                {
+                    Source = Pagination.Id
+                });
 
             Tile.Bind = new Binding()
                 .Add(new BindSearch()
                 {
                     Source = Search.Id
                 })
-                .Add(new BindFilter());
+                .Add(new BindFilter())
+                .Add(new BindPaging()
+                {
+                    Source = Pagination.Id
+                });
 
             Add(new ControlViewHeader().Add(Search, Quickfilter));
             Add(new ControlViewItem()

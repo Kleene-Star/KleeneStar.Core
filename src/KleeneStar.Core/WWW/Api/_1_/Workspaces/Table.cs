@@ -2,6 +2,7 @@
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -9,7 +10,6 @@ using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
-using WebExpress.WebCore.WebParameter;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
@@ -161,15 +161,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         protected override IQuery<Workspace> Filter(string filter, IQuery<Workspace> query, IRequest request)
         {
-            if (request.GetParameter<CategoryIdParameter>() is IParameterStatic category)
-            {
-                query = query.WhereContainsIgnoreCase
-                (
-                    x => x.Categories.Select(x => x.Name),
-                    category.Value
-                );
-            }
-
             if (string.IsNullOrWhiteSpace(filter) || filter == "null")
             {
                 return query;
@@ -179,6 +170,52 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             (
                 x => x.Name, filter
             );
+
+            return query;
+        }
+
+        /// <summary>
+        /// Applies the specified filter criteria to the given query object.
+        /// </summary>
+        /// <param name="filters">
+        /// A collection of quickfilter identifiers that should be applied in addition to the WQL criteria.
+        /// </param>
+        /// <param name="query">
+        /// The query object to which the filter will be applied.
+        /// </param>
+        /// <param name="request">
+        /// The request that provides the operational context for resolving
+        /// the appropriate REST API URI.
+        /// </param>
+        /// <returns>
+        /// A query representing the filtered set of items that match the criteria defined by 
+        /// the filter statement.
+        /// </returns>
+        protected override IQuery<Workspace> Filter(IEnumerable<string> filters, IQuery<Workspace> query, IRequest request)
+        {
+            foreach (var guids in filters
+                .Where(f => f.StartsWith("cat-", StringComparison.OrdinalIgnoreCase))
+                .Select(f => f.Substring(4))
+                .Select(s => Guid.TryParse(s, out var g) ? g : (Guid?)null)
+                .Where(g => g.HasValue)
+                .Select(g => g.Value))
+            {
+                query = query.Where(w => w.Categories.Any(c => c.Id == guids));
+            }
+
+            foreach (var filter in filters.Where(f => f.StartsWith("qf_", StringComparison.OrdinalIgnoreCase)))
+            {
+                var key = filter[3..];
+
+                switch (key.ToLowerInvariant())
+                {
+                    case "active":
+                        query = query.Where(x => x.State == TypeWorkspaceState.Active);
+                        break;
+                    default:
+                        continue;
+                }
+            }
 
             return query;
         }

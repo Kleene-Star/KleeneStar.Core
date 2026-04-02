@@ -3,13 +3,13 @@ using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
 
-namespace KleeneStar.Core.WWW.Api._1_.Workspaces
+namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
 {
     /// <summary>
     /// Provides a quick filter implementation for workspace entities in the REST API. 
     /// This class enables filtering of workspace items using predefined criteria.
     /// </summary>
-    public sealed class Quickfilter : RestApiQuickfilter<Model.Entities.Workspace>
+    public sealed class Quickfilter : RestApiQuickfilter<Model.Entities.Class>
     {
         /// <summary>
         /// Initializes a new instance of the class.

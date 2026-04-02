@@ -28,6 +28,14 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
+        /// Returns the quick filter control for REST-based class queries.
+        /// </summary>
+        public ControlRestQuickfilter Quickfilter { get; } = new ControlRestQuickfilter()
+        {
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Quickfilter>()
+        };
+
+        /// <summary>
         /// Returns the table of control view items used to display 
         /// workspace data.
         /// </summary>
@@ -46,23 +54,42 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
+        /// Returns the pagination settings for controlling how data is divided into pages.
+        /// </summary>
+        public ControlPagination Pagination { get; } = new ControlPagination("id_A6FC15A3D1644C328E8E95AC62085A1D")
+        {
+        };
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
         public ClassViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Table.Bind = new Binding().Add(new BindSearch()
-            {
-                Source = Search.Id
-            });
+            Table.Bind = new Binding()
+                .Add(new BindSearch()
+                {
+                    Source = Search.Id
+                })
+                .Add(new BindFilter())
+                .Add(new BindPaging()
+                {
+                    Source = Pagination.Id
+                });
 
-            Tile.Bind = new Binding().Add(new BindSearch()
-            {
-                Source = Search.Id
-            });
+            Tile.Bind = new Binding()
+                .Add(new BindSearch()
+                {
+                    Source = Search.Id
+                })
+                .Add(new BindFilter())
+                .Add(new BindPaging()
+                {
+                    Source = Pagination.Id
+                });
 
-            Add(new ControlViewHeader().Add(Search));
+            Add(new ControlViewHeader().Add(Search, Quickfilter));
             Add(new ControlViewItem()
             {
                 Icon = new IconTable()
@@ -73,6 +100,7 @@ namespace KleeneStar.Core.WebFragment
                 Icon = new IconTableCellsLarge()
             }
                 .Add(Tile));
+            Add(new ControlViewFooter().Add(Pagination));
         }
 
         /// <summary>
