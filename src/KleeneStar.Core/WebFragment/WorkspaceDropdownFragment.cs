@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WebFragment
     [Scope<IScopeAdmin>]
     [Scope<IScopeStatusPage>]
     [Cache]
-    public sealed class WorkspaceDropdownFragment : WorkspaceDoropdownControl, IFragmentControl<WorkspaceDoropdownControl>, IFragmentControlNavigationItem
+    public sealed class WorkspaceDropdownFragment : WorkspaceDropdownControl, IFragmentControl<WorkspaceDropdownControl>, IFragmentControlNavigationItem
     {
         /// <summary>
         /// Returns the context of the fragment.

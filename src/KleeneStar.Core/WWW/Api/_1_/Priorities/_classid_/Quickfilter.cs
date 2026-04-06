@@ -9,7 +9,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities._classid_
     /// Provides a quick filter implementation for priority entities in the REST API. 
     /// This class enables filtering of priority items using predefined criteria.
     /// </summary>
-    public sealed class Quickfilter : RestApiQuickfilter<Model.Entities.Field>
+    public sealed class Quickfilter : RestApiQuickfilter<Model.Entities.Priority>
     {
         /// <summary>
         /// Initializes a new instance of the class.

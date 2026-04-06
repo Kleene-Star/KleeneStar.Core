@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebFragment
     [Section<SectionSidebarPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces.Index>]
     [Cache]
-    public sealed class WorkspaceQuickFilertAllFragment : FragmentControlSidebarItemLink
+    public sealed class WorkspaceQuickFilterAllFragment : FragmentControlSidebarItemLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -24,7 +24,7 @@ namespace KleeneStar.Core.WebFragment
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public WorkspaceQuickFilertAllFragment(IFragmentContext fragmentContext)
+        public WorkspaceQuickFilterAllFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Text = "kleenestar.core:workspace.quickfilter.all.label";

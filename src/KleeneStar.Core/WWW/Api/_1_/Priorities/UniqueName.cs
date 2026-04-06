@@ -12,7 +12,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities
     /// Represents a unique priority name within the system, providing functionality to validate 
     /// and check the availability of priority names.
     /// </summary>
-    [Title("Fields")]
+    [Title("Priorities")]
     [Cache]
     public sealed partial class UniqueName : RestApiUnique
     {

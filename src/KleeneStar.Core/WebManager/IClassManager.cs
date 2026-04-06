@@ -19,17 +19,17 @@ namespace KleeneStar.Core.WebManager
     public interface IClassManager : IComponentManager
     {
         /// <summary>
-        /// An event that fires when an class is added.
+        /// An event that fires when a class is added.
         /// </summary>
         event EventHandler<Class> ClassAdded;
 
         /// <summary>
-        /// An event that fires when an class is udpated.
+        /// An event that fires when a class is updated.
         /// </summary>
         event EventHandler<Class> ClassUpdated;
 
         /// <summary>
-        /// An event that fires when an class is removed.
+        /// An event that fires when a class is removed.
         /// </summary>
         event EventHandler<Class> ClassRemoved;
 

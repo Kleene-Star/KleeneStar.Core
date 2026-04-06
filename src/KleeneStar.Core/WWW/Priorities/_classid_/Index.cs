@@ -64,7 +64,7 @@ namespace KleeneStar.Core.WWW.Priorities._classid_
                         .BindParameters(new WorkspaceKeyParameter(workspace?.Key))
                         .BindParameters(renderContext.Request)
                 })
-                .Concat(new UriPathSegmentConstant("fields")
+                .Concat(new UriPathSegmentConstant("priorities")
                 {
                     Uri = renderContext.Request.Uri
                 })

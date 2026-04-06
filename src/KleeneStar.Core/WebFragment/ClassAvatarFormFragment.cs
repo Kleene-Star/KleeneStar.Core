@@ -23,7 +23,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputAvatar Avatar { get; } = new()
         {
-            Name = nameof(Workspace.Icon),
+            Name = nameof(Class.Icon),
         };
 
         /// <summary>

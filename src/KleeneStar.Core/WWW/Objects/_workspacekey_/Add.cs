@@ -13,12 +13,12 @@ namespace KleeneStar.Core.WWW.Objects._workspacekey_
     [WebIcon<IconPlus>]
     [Title("kleenestar.core:object.add.label")]
     [Scope<IScopeGeneral>]
-    public sealed class Edit : IPage<VisualTreeWebApp>, IScope
+    public sealed class Add : IPage<VisualTreeWebApp>, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Edit()
+        public Add()
         {
         }
 

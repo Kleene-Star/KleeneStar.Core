@@ -17,7 +17,7 @@ namespace KleeneStar.Core.WebUri
         /// </summary>
         /// <param name="tag">The tag or null</param>
         public WorkspaceKeyUriPathSegmentVariable(object tag = null)
-            : base(@"^[a-z-0-9]{1,10}$", tag)
+            : base(@"^[a-z0-9-]{1,10}$", tag)
         {
         }
 
