@@ -9,13 +9,13 @@ using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebRestApi;
 using WebExpress.WebIndex.Queries;
 
-namespace KleeneStar.Core.WWW.Api._1_.Fields
+namespace KleeneStar.Core.WWW.Api._1_.Priorities
 {
     /// <summary>
-    /// Provides CRUD operations for field items via a REST API.
+    /// Provides CRUD operations for priority items via a REST API.
     /// </summary>
     [Cache]
-    public sealed class Index : RestApiCrud<Model.Entities.Field>
+    public sealed class Index : RestApiCrud<Model.Entities.Priority>
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -53,9 +53,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// A collection representing the filtered set of index items. 
         /// The collection may be empty if no items match the query.
         /// </returns>
-        protected override IEnumerable<Model.Entities.Field> Retrieve(IQuery<Model.Entities.Field> query, IQueryContext context, IRequest request)
+        protected override IEnumerable<Model.Entities.Priority> Retrieve(IQuery<Model.Entities.Priority> query, IQueryContext context, IRequest request)
         {
-            return CoreHub.FieldManager.GetFields(query, context);
+            return CoreHub.PriorityManager.GetPriorities(query, context);
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:field.add.title");
+            return RetrieveForCreate(request, "kleenestar.core:priority.add.title");
         }
 
         /// <summary>
@@ -85,13 +85,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// A result instance representing the data and metadata required
         /// to initialize a new item for creation.
         /// </returns>
-        protected override IRestApiCrudResultRetrieve RetrieveForClone(IQuery<Model.Entities.Field> query, IRequest request)
+        protected override IRestApiCrudResultRetrieve RetrieveForClone(IQuery<Model.Entities.Priority> query, IRequest request)
         {
             using var context = ModelHub.CreateDbContext();
-            var data = CoreHub.FieldManager.GetFields(query, context)
+            var data = CoreHub.PriorityManager.GetPriorities(query, context)
                 .FirstOrDefault();
 
-            var newItem = new Model.Entities.Field()
+            var newItem = new Model.Entities.Priority()
             {
                 Name = data.Name + " (Copy)",
                 Description = data.Description,
@@ -99,7 +99,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
                 State = TypeWorkspaceState.Active
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:field.clone.title");
+            return RetrieveForClone(request, newItem, "kleenestar.core:priority.clone.title");
         }
 
         /// <summary>
@@ -115,13 +115,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// <returns>
         /// An object containing the workspace associated with the specified key.
         /// </returns>
-        protected override IRestApiCrudResultRetrieve RetrieveForUpdate(IQuery<Model.Entities.Field> query, IRequest request)
+        protected override IRestApiCrudResultRetrieve RetrieveForUpdate(IQuery<Model.Entities.Priority> query, IRequest request)
         {
             using var context = ModelHub.CreateDbContext();
-            var data = CoreHub.FieldManager.GetFields(query, context)
+            var data = CoreHub.PriorityManager.GetPriorities(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:field.edit.title");
+            return RetrieveForUpdate(request, data, "kleenestar.core:priority.edit.title");
         }
 
         /// <summary>
@@ -139,13 +139,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// An object containing the workspace entity and related information required 
         /// for the delete operation.
         /// </returns>
-        protected override IRestApiCrudResultRetrieveDelete RetrieveForDelete(IQuery<Model.Entities.Field> query, IRequest request)
+        protected override IRestApiCrudResultRetrieveDelete RetrieveForDelete(IQuery<Model.Entities.Priority> query, IRequest request)
         {
             using var context = ModelHub.CreateDbContext();
-            var data = CoreHub.FieldManager.GetFields(query, context)
+            var data = CoreHub.PriorityManager.GetPriorities(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:field.delete.title", data?.Id.ToString());
+            return RetrieveForDelete(request, data, "kleenestar.core:priority.delete.title", data?.Id.ToString());
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// The currently persisted item (null for create).
         /// </param>
         /// <param name="payload">
-        /// The dynamic payload containing updated fields.
+        /// The dynamic payload containing updated priorities.
         /// </param>
         /// <param name="request">
         /// The HTTP request providing additional context.
@@ -166,7 +166,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// <returns>
         /// An IRestApiValidationResult indicating validation success or errors.
         /// </returns>
-        protected override IRestApiValidationResult Validate(Model.Entities.Field existingItem, RestApiCrudFormData payload, IRequest request)
+        protected override IRestApiValidationResult Validate(Model.Entities.Priority existingItem, RestApiCrudFormData payload, IRequest request)
         {
             return base.Validate(existingItem, payload, request);
         }
@@ -177,7 +177,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// persistence logic and return a result describing the creation.
         /// </summary>
         /// <param name="fieldMap">
-        /// The dynamic payload containing the fields required to create the resource.
+        /// The dynamic payload containing the priorities required to create the resource.
         /// </param>
         /// <param name="request">
         /// The HTTP request providing additional context for the creation process.
@@ -190,10 +190,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// A result object containing information about the create operation,
         /// including the created resource.
         /// </returns>
-        protected override IRestApiCrudResultCreate Create(RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Field newItem)
+        protected override IRestApiCrudResultCreate Create(RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Priority newItem)
         {
             var id = Guid.NewGuid();
-            newItem = new Model.Entities.Field(id)
+            newItem = new Model.Entities.Priority(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
                 State = TypeWorkspaceState.Active
@@ -201,7 +201,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
 
             fieldMap.BindTo(newItem);
 
-            CoreHub.FieldManager.AddField(newItem);
+            CoreHub.PriorityManager.AddPriority(newItem);
 
             // create notification
             CoreHub.AddNotification("Create", "success", 5000);
@@ -210,15 +210,15 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         }
 
         /// <summary>
-        /// Creates a new instance by cloning data from the specified form fields and 
-        /// adds it to the class manager.
+        /// Creates a new instance by cloning data from the specified priority and 
+        /// adds it to the manager.
         /// </summary>
         /// <param name="existingItem">
         /// The existing item to use as a reference for the clone operation. This parameter 
         /// is not modified.
         /// </param>
         /// <param name="fieldMap">
-        /// The form data containing field values to bind to the new instance. Cannot be null.
+        /// The form data containing priority values to bind to the new instance. Cannot be null.
         /// </param>
         /// <param name="request">
         /// The current request context for the operation. Provides additional information or 
@@ -231,10 +231,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// <returns>
         /// A result object indicating the outcome of the create operation.
         /// </returns>
-        protected override IRestApiCrudResultCreate Clone(Model.Entities.Field existingItem, RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Field newItem)
+        protected override IRestApiCrudResultCreate Clone(Model.Entities.Priority existingItem, RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Priority newItem)
         {
             var id = Guid.NewGuid();
-            newItem = new Model.Entities.Field(id)
+            newItem = new Model.Entities.Priority(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
                 State = TypeWorkspaceState.Active
@@ -242,7 +242,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
 
             fieldMap.BindTo(newItem);
 
-            CoreHub.FieldManager.AddField(newItem);
+            CoreHub.PriorityManager.AddPriority(newItem);
 
             // create notification
             CoreHub.AddNotification("Clone", "success", 5000);
@@ -257,16 +257,16 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// The currently persisted item.
         /// </param>
         /// <param name="payload">
-        /// The dynamic payload containing updated fields.
+        /// The dynamic payload containing updated priorities.
         /// </param>
         /// <param name="request">
         /// The HTTP request providing additional context.
         /// </param>
-        protected override IRestApiCrudResultUpdate Update(Model.Entities.Field existingItem, RestApiCrudFormData payload, IRequest request)
+        protected override IRestApiCrudResultUpdate Update(Model.Entities.Priority existingItem, RestApiCrudFormData payload, IRequest request)
         {
             var res = base.Update(existingItem, payload, request);
 
-            CoreHub.FieldManager.UpdateField(existingItem);
+            CoreHub.PriorityManager.UpdatePriority(existingItem);
 
             // update notification
             CoreHub.AddNotification("Update", "success", 5000);
@@ -286,9 +286,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// <returns>
         /// A result object containing information about the delete operation.
         /// </returns>
-        protected override IRestApiCrudResultDelete Delete(Model.Entities.Field existingItem, IRequest request)
+        protected override IRestApiCrudResultDelete Delete(Model.Entities.Priority existingItem, IRequest request)
         {
-            CoreHub.FieldManager.RemoveField(existingItem.Id);
+            CoreHub.PriorityManager.RemovePriority(existingItem.Id);
 
             return base.Delete(existingItem, request);
         }

@@ -66,6 +66,7 @@ class.link.label=Class Overview
 class.dropdown.label=Settings
 
 field.manage.title=Fields
+field.manage.label=Field
 field.manage.description=This view serves as the central management hub for all fields defined in the system. It provides a comprehensive overview of the available field types and offers functions for creation, editing, and organization.
 field.link.label=Fields
 field.add.title=Add Field
@@ -81,7 +82,20 @@ field.delete.title=Delete Field
 
 form.link.label=Forms
 
+priority.manage.title=Priorities
+priority.manage.label=Priority
+priority.manage.description=This view serves as the central management hub for all priorities defined in the system. It provides a comprehensive overview of the available priorities and offers functions for creation, editing, and organization.
 priority.link.label=Priorities
+priority.add.title=Add Priority
+priority.add.label=Add Priority
+priority.name.label=Priority Name
+priority.name.placeholder=Enter the name of the priority.
+priority.name.help=The name helps you quickly identify this priority.
+priority.description.label=Description
+priority.description.placeholder=Enter a brief description of the priority.
+priority.edit.title=Edit Priority
+priority.clone.title=Clone Priority
+priority.delete.title=Delete Priority
 
 workflow.link.label=Workflows
 

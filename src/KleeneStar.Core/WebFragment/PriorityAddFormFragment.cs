@@ -11,35 +11,35 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a add form fragment for a field.
+    /// Represents a add form fragment for a priority.
     /// </summary>
-    [Title("kleenestar.core:field.add.title")]
+    [Title("kleenestar.core:priority.add.title")]
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Add>]
+    [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Add>]
     [Cache]
-    public sealed class FieldAddFormFragment : FragmentControlRestFormAdd
+    public sealed class PriorityAddFormFragment : FragmentControlRestFormAdd
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the field.
+        /// Returns the input text control for specifying the name of the priority.
         /// </summary>
-        public ControlRestFormItemInputUnique FieldName { get; } = new()
+        public ControlRestFormItemInputUnique PriorityName { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.Name),
-            Label = "kleenestar.core:field.name.label",
-            Placeholder = "kleenestar.core:field.name.placeholder",
-            Help = "kleenestar.core:field.name.help",
+            Name = nameof(Model.Entities.Priority.Name),
+            Label = "kleenestar.core:priority.name.label",
+            Placeholder = "kleenestar.core:priority.name.placeholder",
+            Help = "kleenestar.core:priority.name.help",
             Required = true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.UniqueName>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.UniqueName>()
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the field.
+        /// Returns the input text control for specifying the description of the priority.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Field.Description),
-            Label = "kleenestar.core:field.description.label",
-            Placeholder = "kleenestar.core:field.description.placeholder",
+            Name = nameof(Model.Entities.Priority.Description),
+            Label = "kleenestar.core:priority.description.label",
+            Placeholder = "kleenestar.core:priority.description.placeholder",
             Format = TypeEditTextFormat.Wysiwyg,
             Required = false
         };
@@ -48,14 +48,14 @@ namespace KleeneStar.Core.WebFragment
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public FieldAddFormFragment(IFragmentContext fragmentContext)
+        public PriorityAddFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Add(FieldName);
+            Add(PriorityName);
             Add(Description);
 
             Mode = TypeRestFormMode.Add;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>();
         }
 
         /// <summary>

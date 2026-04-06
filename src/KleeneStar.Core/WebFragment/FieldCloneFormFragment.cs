@@ -20,20 +20,20 @@ namespace KleeneStar.Core.WebFragment
     public sealed class FieldCloneFormFragment : FragmentControlRestFormClone
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the class.
+        /// Returns the input text control for specifying the name of the field.
         /// </summary>
         public ControlRestFormItemInputUnique FieldName { get; } = new()
         {
-            Name = nameof(Model.Entities.Field),
+            Name = nameof(Model.Entities.Field.Name),
             Label = "kleenestar.core:field.name.label",
             Placeholder = "kleenestar.core:field.name.placeholder",
             Help = "kleenestar.core:field.name.help",
             Required = true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.UniqueName>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.UniqueName>()
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the workspace.
+        /// Returns the input text control for specifying the description of the field.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
@@ -55,7 +55,7 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
 
             Mode = TypeRestFormMode.Clone;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
         }
 
         /// <summary>
@@ -72,7 +72,7 @@ namespace KleeneStar.Core.WebFragment
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var param = renderContext.Request.GetParameter<ClassIdParameter>();
+            var param = renderContext.Request.GetParameter<FieldIdParameter>();
 
             return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
         }

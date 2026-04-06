@@ -1,8 +1,8 @@
-﻿using System;
+﻿using KleeneStar.Core.WebManager;
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using KleeneStar.Core.WebManager;
 using WebExpress.WebCore;
 using WebExpress.WebCore.WebApplication;
 using WebExpress.WebCore.WebComponent;
@@ -22,6 +22,7 @@ namespace KleeneStar.Core
         private static WorkspaceManager _workspaceManager;
         private static ClassManager _classManager;
         private static FieldManager _fieldManager;
+        private static PriorityManager _priorityManager;
         private static ObjectManager _objectManager;
 
         /// <summary>
@@ -53,6 +54,11 @@ namespace KleeneStar.Core
         /// Returns the field manager responsible for managing fields within the class.
         /// </summary>
         public static IFieldManager FieldManager => _fieldManager ??= ComponentHub.GetComponentManager<FieldManager>();
+
+        /// <summary>
+        /// Returns the priority manager responsible for managing priorities within the class.
+        /// </summary>
+        public static IPriorityManager PriorityManager => _priorityManager ??= ComponentHub.GetComponentManager<PriorityManager>();
 
         /// <summary>
         /// Returns the object manager responsible for managing objects within the workspace.

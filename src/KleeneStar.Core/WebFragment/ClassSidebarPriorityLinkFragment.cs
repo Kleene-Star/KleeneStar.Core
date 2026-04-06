@@ -15,6 +15,7 @@ namespace KleeneStar.Core.WebFragment
     [Section<SectionSidebarPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
     [Cache]
     public sealed class ClassSidebarPriorityLinkFragment : FragmentControlSidebarItemLink
     {
@@ -30,7 +31,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Icon = new IconFlag();
             Text = "kleenestar.core:priority.link.label";
-            //Uri = CoreHub.GetUri<WWW.Classes._workspacekey_._classid_.Priorities.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Priorities._classid_.Index>();
         }
 
         /// <summary>

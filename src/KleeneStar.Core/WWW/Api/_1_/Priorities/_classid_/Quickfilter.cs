@@ -3,11 +3,11 @@ using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
 
-namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
+namespace KleeneStar.Core.WWW.Api._1_.Priorities._classid_
 {
     /// <summary>
-    /// Provides a quick filter implementation for field entities in the REST API. 
-    /// This class enables filtering of filed items using predefined criteria.
+    /// Provides a quick filter implementation for priority entities in the REST API. 
+    /// This class enables filtering of priority items using predefined criteria.
     /// </summary>
     public sealed class Quickfilter : RestApiQuickfilter<Model.Entities.Field>
     {

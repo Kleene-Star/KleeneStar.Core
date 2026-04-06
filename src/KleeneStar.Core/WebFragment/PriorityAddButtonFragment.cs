@@ -1,24 +1,21 @@
-﻿using KleeneStar.Core.WebParameter;
-using System;
-using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a sidebar header fragment that displays class-related information within 
-    /// the user interface sidebar.
+    /// Represents a control fragment that provides a button link for adding a new priority within the workspace.
     /// </summary>
-    [Section<SectionSidebarPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
+    [Section<SectionHeadlinePrimary>]
     [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
     [Cache]
-    public sealed class ClassSidebarHeaderFragment : FragmentControlSidebarItemHeader
+    public sealed class PriorityAddButtonFragment : FragmentControlButtonLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -27,9 +24,13 @@ namespace KleeneStar.Core.WebFragment
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public ClassSidebarHeaderFragment(IFragmentContext fragmentContext)
+        public PriorityAddButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            Text = "kleenestar.core:priority.add.label";
+            Icon = new IconPlus();
+            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
+            BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
         }
 
         /// <summary>
@@ -40,11 +41,20 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var classParameter = renderContext.Request.GetParameter<ClassIdParameter>();
-            var guid = Guid.TryParse(classParameter.Value, out var id) ? id : Guid.Empty;
-            var @class = CoreHub.ClassManager.GetClass(guid);
+            if (!FragmentContext.Conditions.Check(renderContext?.Request))
+            {
+                return null;
+            }
 
-            return base.Render(renderContext, visualTree, @class?.Name);
+            var primaryAction = new ActionModal
+            (
+                "modal-form",
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Priorities._classid_.Add>()
+                    .BindParameters(renderContext.Request),
+                TypeModalSize.ExtraLarge
+                );
+
+            return base.Render(renderContext, visualTree, Text, null, Tooltip, primaryAction, SecondaryAction, Icon);
         }
     }
 }
