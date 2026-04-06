@@ -99,7 +99,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
                 State = TypeWorkspaceState.Active
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:class.clone.title");
+            return RetrieveForClone(request, newItem, "kleenestar.core:object.clone.title");
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             var data = CoreHub.ObjectManager.GetObjects(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:class.edit.title");
+            return RetrieveForUpdate(request, data, "kleenestar.core:object.edit.title");
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             var data = CoreHub.ObjectManager.GetObjects(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:class.delete.title", data?.Id.ToString());
+            return RetrieveForDelete(request, data, "kleenestar.core:object.delete.title", data?.Id.ToString());
         }
 
         /// <summary>

@@ -48,11 +48,10 @@ namespace KleeneStar.Core.WebFragment
 
             foreach (var category in CoreHub.WorkspaceManager.GetCategories(new Query<Category>()))
             {
-                var label = category.Name.Trim().ToLower();
                 list.Add(new ControlSidebarItemLink($"cat-{category.Id.ToString()}")
                 {
                     Text = category.Name,
-                    Active = label.Equals(categoryParameter?.Value, System.StringComparison.InvariantCultureIgnoreCase)
+                    Active = $"cat-{category.Id}".Equals(categoryParameter?.Value, System.StringComparison.InvariantCultureIgnoreCase)
                         ? TypeActive.Active
                         : TypeActive.None,
                     PrimaryAction = new ActionFilter()

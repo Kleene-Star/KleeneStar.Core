@@ -1,10 +1,8 @@
-﻿using KleeneStar.Core.WebParameter;
-using WebExpress.WebApp.WebControl;
+﻿using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -44,7 +42,6 @@ namespace KleeneStar.Core.WebFragment
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Table>()
-                .Add(new UriQuery<CategoryIdParameter>())
         };
 
         /// <summary>
@@ -54,7 +51,6 @@ namespace KleeneStar.Core.WebFragment
         public ControlRestTile Tile { get; } = new ControlRestTile()
         {
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Tile>()
-                .Add(new UriQuery<CategoryIdParameter>())
         };
 
         /// <summary>
@@ -115,12 +111,6 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var categoryParameter = renderContext.Request.GetParameter<CategoryIdParameter>();
-
-            //var uri = DataUri.Concat(categoryParameter is not null
-            //    ? new UriQuery("category", categoryParameter.Value)
-            //    : null);
-
             return base.Render(renderContext, visualTree);
         }
     }
