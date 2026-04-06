@@ -10,15 +10,12 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a sidebar item link fragment that displays the 'Forms' link in the class sidebar.
+    /// Represents a control fragment that provides a button link for adding a new form within the workspace.
     /// </summary>
-    [Section<SectionSidebarPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
+    [Section<SectionHeadlinePrimary>]
     [Scope<global::KleeneStar.Core.WWW.Forms._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
     [Cache]
-    public sealed class ClassSidebarFormLinkFragment : FragmentControlSidebarItemLink
+    public sealed class FormAddButtonFragment : FragmentControlButtonLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -27,12 +24,13 @@ namespace KleeneStar.Core.WebFragment
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public ClassSidebarFormLinkFragment(IFragmentContext fragmentContext)
+        public FormAddButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = new IconRectangleList();
-            Text = "kleenestar.core:form.link.label";
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Index>();
+            Text = "kleenestar.core:form.add.label";
+            Icon = new IconPlus();
+            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
+            BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
         }
 
         /// <summary>
@@ -43,14 +41,20 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var uri = string.Join("/", renderContext.Request.Uri.PathSegments);
-            var targetUri = string.Join("/", Uri?.BindParameters(renderContext.Request).PathSegments ?? []);
+            if (!FragmentContext.Conditions.Check(renderContext?.Request))
+            {
+                return null;
+            }
 
-            Active = uri?.ToString() == targetUri?.ToString()
-                ? TypeActive.Active
-                : TypeActive.None;
+            var primaryAction = new ActionModal
+            (
+                "modal-form",
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Add>()
+                    .BindParameters(renderContext.Request),
+                TypeModalSize.ExtraLarge
+                );
 
-            return base.Render(renderContext, visualTree);
+            return base.Render(renderContext, visualTree, Text, null, Tooltip, primaryAction, SecondaryAction, Icon);
         }
     }
 }

@@ -80,7 +80,20 @@ field.edit.title=Edit Field
 field.clone.title=Clone Field
 field.delete.title=Delete Field
 
+form.manage.title=Forms
+form.manage.label=Form
+form.manage.description=This view serves as the central management hub for all forms defined in the system. It provides a comprehensive overview of the available forms and offers functions for creation, editing, and organization.
 form.link.label=Forms
+form.add.title=Add Form
+form.add.label=Add Form
+form.name.label=Form Name
+form.name.placeholder=Enter the name of the form.
+form.name.help=The name helps you quickly identify this form.
+form.description.label=Description
+form.description.placeholder=Enter a brief description of the form.
+form.edit.title=Edit Form
+form.clone.title=Clone Form
+form.delete.title=Delete Form
 
 priority.manage.title=Priorities
 priority.manage.label=Priority

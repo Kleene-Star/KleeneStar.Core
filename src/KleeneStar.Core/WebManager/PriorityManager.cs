@@ -191,12 +191,12 @@ namespace KleeneStar.Core.WebManager
         /// <returns>The current instance to allow for method chaining.</returns>
         public IPriorityManager RemovePriority(Guid priorityId)
         {
-            var classEntry = GetPriority(priorityId);
+            var priorityEntry = GetPriority(priorityId);
 
-            if (classEntry is not null)
+            if (priorityEntry is not null)
             {
-                ModelHub.Remove(classEntry);
-                PriorityRemoved?.Invoke(this, classEntry);
+                ModelHub.Remove(priorityEntry);
+                PriorityRemoved?.Invoke(this, priorityEntry);
             }
 
             return this;

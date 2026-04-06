@@ -20,25 +20,25 @@ namespace KleeneStar.Core.WebManager
     /// to the field collection. Implementations of this interface should ensure thread
     /// safety if used in a multi-threaded environment.
     /// </remarks>
-    public sealed class FieldManager : IFieldManager
+    public sealed class FormManager : IFormManager
     {
         private readonly IComponentHub _componentHub;
         private readonly IHttpServerContext _httpServerContext;
 
         /// <summary>
-        /// An event that fires when an field is added.
+        /// An event that fires when an form is added.
         /// </summary>
-        public event EventHandler<Field> FieldAdded;
+        public event EventHandler<Form> FormAdded;
 
         /// <summary>
-        /// An event that fires when an field is udpated.
+        /// An event that fires when an form is udpated.
         /// </summary>
-        public event EventHandler<Field> FieldUpdated;
+        public event EventHandler<Form> FormUpdated;
 
         /// <summary>
-        /// An event that fires when an field is removed.
+        /// An event that fires when an form is removed.
         /// </summary>
-        public event EventHandler<Field> FieldRemoved;
+        public event EventHandler<Form> FormRemoved;
 
         /// <summary>
         /// Returns the collection of workspace keys that are reserved and cannot be used for custom workspaces.
@@ -47,7 +47,7 @@ namespace KleeneStar.Core.WebManager
         /// The reserved keys typically represent system-defined workspaces and are not available
         /// for user-defined or custom workspace creation.
         /// </remarks>
-        public static IEnumerable<string> ReservedFieldNames =>
+        public static IEnumerable<string> ReservedFormNames =>
         [
             "default", "admin", "system", "assets", "api", "workspace",
             "workspaces", "icons", "setting"
@@ -59,103 +59,103 @@ namespace KleeneStar.Core.WebManager
         /// <param name="componentHub">The component hub.</param>
         /// <param name="httpServerContext">The reference to the context of the host.</param>
         [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used via Reflection.")]
-        private FieldManager(IComponentHub componentHub, IHttpServerContext httpServerContext)
+        private FormManager(IComponentHub componentHub, IHttpServerContext httpServerContext)
         {
             _componentHub = componentHub;
             _httpServerContext = httpServerContext;
         }
 
         /// <summary>
-        /// Returns a field based on its id.
+        /// Returns a form based on its id.
         /// </summary>
-        /// <param name="fieldId">The id of the field.</param>
-        /// <returns>The field.</returns>
-        public Field GetField(Guid fieldId)
+        /// <param name="formId">The id of the form.</param>
+        /// <returns>The form.</returns>
+        public Form GetForm(Guid formId)
         {
-            var query = new Query<Field>()
-                .Where(x => x.Id == fieldId)
+            var query = new Query<Form>()
+                .Where(x => x.Id == formId)
                 .WithPaging(0, 1);
 
-            return ModelHub.GetFields(query)
+            return ModelHub.GetForms(query)
                 .FirstOrDefault();
         }
 
         /// <summary>
-        /// Returns a field based on its id.
+        /// Returns a form based on its id.
         /// </summary>
-        /// <param name="fieldId">The id of the field.</param>
-        /// <returns>The field.</returns>
-        public Field GetField(FieldIdParameter fieldId)
+        /// <param name="formId">The id of the form.</param>
+        /// <returns>The form.</returns>
+        public Form GetForm(FormIdParameter formId)
         {
-            var guid = Guid.TryParse(fieldId.Value, out Guid id) ? id : Guid.Empty;
+            var guid = Guid.TryParse(formId.Value, out Guid id) ? id : Guid.Empty;
 
-            return GetField(guid);
+            return GetForm(guid);
         }
 
         /// <summary>
-        /// Retrieves a collection of fields that satisfy the specified filter criteria.
+        /// Retrieves a collection of forms that satisfy the specified filter criteria.
         /// </summary>
         /// <param name="classId">The id of the class.</param>
         /// <returns>
-        /// An enumerable collection of fields that match the given predicate. If no class 
+        /// An enumerable collection of forms that match the given predicate. If no class 
         /// match, the collection will be empty.
         /// </returns>
-        public IEnumerable<Field> GetFields(ClassIdParameter classId)
+        public IEnumerable<Form> GetForms(ClassIdParameter classId)
         {
             var guid = Guid.TryParse(classId.Value, out Guid id) ? id : Guid.Empty;
-            var query = new Query<Field>()
+            var query = new Query<Form>()
                 .WhereEquals(x => x.ClassId, guid)
                 .WithPaging(0, 1);
 
-            return ModelHub.GetFields(query);
+            return ModelHub.GetForms(query);
         }
 
         /// <summary>
-        /// Retrieves a collection of fields that satisfy the specified filter criteria.
+        /// Retrieves a collection of forms that satisfy the specified filter criteria.
         /// </summary>
         /// <param name="query">
-        /// The query criteria used to filter the returned fields. Must not be null.
+        /// The query criteria used to filter the returned forms. Must not be null.
         /// </param>
         /// <returns>
-        /// An enumerable collection of fields that match the given predicate. If no class 
+        /// An enumerable collection of forms that match the given predicate. If no class 
         /// match, the collection will be empty.
         /// </returns>
-        public IEnumerable<Field> GetFields(IQuery<Field> query)
+        public IEnumerable<Form> GetForms(IQuery<Form> query)
         {
-            return ModelHub.GetFields(query);
+            return ModelHub.GetForms(query);
         }
 
         /// <summary>
-        /// Retrieves a collection of fields that satisfy the specified filter criteria.
+        /// Retrieves a collection of forms that satisfy the specified filter criteria.
         /// </summary>
         /// <param name="query">
-        /// The query criteria used to filter the returned fields. Must not be null.
+        /// The query criteria used to filter the returned forms. Must not be null.
         /// </param>
         /// <param name="context">
         /// The context in which the query is executed. Provides additional information or constraints 
         /// for the retrieval operation. Cannot be null.
         /// </param>
         /// <returns>
-        /// An enumerable collection of fields that match the given predicate. If no class 
+        /// An enumerable collection of forms that match the given predicate. If no class 
         /// match, the collection will be empty.
         /// </returns>
-        public IEnumerable<Field> GetFields(IQuery<Field> query, IQueryContext context)
+        public IEnumerable<Form> GetForms(IQuery<Form> query, IQueryContext context)
         {
-            return ModelHub.GetFields(query, context as KleeneStarDbContext);
+            return ModelHub.GetForms(query, context as KleeneStarDbContext);
         }
 
         /// <summary>
-        /// Adds a field to the manager.
+        /// Adds a form to the manager.
         /// </summary>
-        /// <param name="fieldEntity">The field to add. Cannot be null.</param>
+        /// <param name="formEntity">The form to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IFieldManager AddField(Field fieldEntity)
+        public IFormManager AddForm(Form formEntity)
         {
-            ArgumentNullException.ThrowIfNull(fieldEntity);
+            ArgumentNullException.ThrowIfNull(formEntity);
 
-            ModelHub.Add(fieldEntity);
+            ModelHub.Add(formEntity);
 
-            FieldAdded?.Invoke(this, fieldEntity);
+            FormAdded?.Invoke(this, formEntity);
 
             // create notification
             CoreHub.AddNotification("Create", "success", 5000);
@@ -164,17 +164,17 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
-        /// Update a field to the manager.
+        /// Update a form to the manager.
         /// </summary>
-        /// <param name="fieldEntity">The field to updated. Cannot be null.</param>
+        /// <param name="formEntity">The form to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IFieldManager UpdateField(Field fieldEntity)
+        public IFormManager UpdateForm(Form formEntity)
         {
-            ArgumentNullException.ThrowIfNull(fieldEntity);
+            ArgumentNullException.ThrowIfNull(formEntity);
 
-            ModelHub.Update(fieldEntity);
+            ModelHub.Update(formEntity);
 
-            FieldUpdated?.Invoke(this, fieldEntity);
+            FormUpdated?.Invoke(this, formEntity);
 
             // create notification
             CoreHub.AddNotification("Clone", "success", 5000);
@@ -183,20 +183,20 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
-        /// Removes the specified field from the manager.
+        /// Removes the specified form from the manager.
         /// </summary>
-        /// <remarks>This method removes the specified field from the manager. If the field does
+        /// <remarks>This method removes the specified form from the manager. If the form does
         /// not exist in the manager, no action is taken.</remarks>
-        /// <param name="fieldId">The field id to be removed. Must not be null.</param>
+        /// <param name="formId">The form id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IFieldManager RemoveField(Guid fieldId)
+        public IFormManager RemoveForm(Guid formId)
         {
-            var fieldEntry = GetField(fieldId);
+            var formEntry = GetForm(formId);
 
-            if (fieldEntry is not null)
+            if (formEntry is not null)
             {
-                ModelHub.Remove(fieldEntry);
-                FieldRemoved?.Invoke(this, fieldEntry);
+                ModelHub.Remove(formEntry);
+                FormRemoved?.Invoke(this, formEntry);
             }
 
             return this;

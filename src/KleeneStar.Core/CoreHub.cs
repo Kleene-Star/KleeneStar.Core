@@ -22,6 +22,7 @@ namespace KleeneStar.Core
         private static WorkspaceManager _workspaceManager;
         private static ClassManager _classManager;
         private static FieldManager _fieldManager;
+        private static FormManager _formManager;
         private static PriorityManager _priorityManager;
         private static ObjectManager _objectManager;
 
@@ -54,6 +55,11 @@ namespace KleeneStar.Core
         /// Returns the field manager responsible for managing fields within the class.
         /// </summary>
         public static IFieldManager FieldManager => _fieldManager ??= ComponentHub.GetComponentManager<FieldManager>();
+
+        /// <summary>
+        /// Returns the form manager responsible for managing forms within the class.
+        /// </summary>
+        public static IFormManager FormManager => _formManager ??= ComponentHub.GetComponentManager<FormManager>();
 
         /// <summary>
         /// Returns the priority manager responsible for managing priorities within the class.
