@@ -211,7 +211,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             yield return new RestApiOptionSeparator(request);
             yield return new RestApiOptionDelete(request)
             {
-                PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.Small)
+                PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Small)
             };
         }
     }

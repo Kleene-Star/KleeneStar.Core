@@ -41,6 +41,8 @@ namespace KleeneStar.Core.WebFragment
         {
             var categoryParameter = renderContext.Request.GetParameter<CategoryIdParameter>();
 
+            Active = categoryParameter is null ? TypeActive.Active : TypeActive.None;
+
             PrimaryAction = new ActionFilterReset()
             {
                 Exclusive = true,
