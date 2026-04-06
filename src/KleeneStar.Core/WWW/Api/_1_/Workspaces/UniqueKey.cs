@@ -24,7 +24,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// characters (letters
         /// and digits).
         /// </summary>
-        [GeneratedRegex("^[a-zA-Z0-9]{1,10}$")]
+        [GeneratedRegex(@"^[a-z0-9-]{1,10}$")]
         private static partial Regex KeyRegex();
 
         /// <summary>
@@ -59,9 +59,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             var query = new Query<Workspace>()
                 .WhereStartsWithIgnoreCase(x => x.Key, value);
 
-            using var contet = ModelHub.CreateDbContext();
+            using var context = ModelHub.CreateDbContext();
 
-            return CoreHub.WorkspaceManager?.GetWorkspaces(query, contet)
+            return CoreHub.WorkspaceManager?.GetWorkspaces(query, context)
                 .Any() != true;
         }
     }

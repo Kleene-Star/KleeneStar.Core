@@ -9,7 +9,7 @@ namespace KleeneStar.Core.WebControl
     /// <summary>
     /// Represents a dropdown control for selecting a workspace.
     /// </summary>
-    public class WorkspaceDoropdownControl : ControlRestDropdown
+    public class WorkspaceDropdownControl : ControlRestDropdown
     {
         /// <summary>
         /// Returns the control link for adding a new workspace.
@@ -34,7 +34,7 @@ namespace KleeneStar.Core.WebControl
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="id">The unique identifier for the dropdown control.</param>
-        public WorkspaceDoropdownControl(string id)
+        public WorkspaceDropdownControl(string id)
             : base(id)
         {
             RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.Dropdown>();

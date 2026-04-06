@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WWW.Object._objectkey_
             var uri = renderContext.PageContext.ApplicationContext.Route
                 .Concat(new WorkspaceKeyUriPathSegmentVariable<WorkspaceKeyParameter>()
                 {
-                    Value = @object.Workspace?.Key,
+                    Value = @object?.Workspace?.Key,
                     Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()
                         .BindParameters(new WorkspaceKeyParameter(@object?.Workspace?.Key))
                 })

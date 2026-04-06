@@ -44,7 +44,7 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_
                     Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()
                     .BindParameters(renderContext.Request)
                 })
-                .Concat(new ClassIdUriPathSegmentVariable<ObjectKeyParameter>()
+                .Concat(new ClassIdUriPathSegmentVariable<ClassIdParameter>()
                 {
                     Uri = renderContext.Request.Uri
                 })

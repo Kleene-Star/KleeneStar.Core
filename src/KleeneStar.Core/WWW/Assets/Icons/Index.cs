@@ -36,12 +36,30 @@ namespace KleeneStar.Core.WWW.Assets.Icons
         {
             var route = _resourceContext.Route;
             var filename = request.Uri.PathSegments.Skip(route.PathSegments.Count()).LastOrDefault()?.ToString();
-            var mimeType = GetMimeType(filename);
 
-            var data = File.ReadAllBytes(Path.Combine(_path, filename));
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                return new ResponseBadRequest();
+            }
+
+            var fullPath = Path.GetFullPath(Path.Combine(_path, filename));
+
+            if (!fullPath.StartsWith(Path.GetFullPath(_path) + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
+                && !fullPath.Equals(Path.GetFullPath(_path), StringComparison.OrdinalIgnoreCase))
+            {
+                return new ResponseBadRequest();
+            }
+
+            if (!File.Exists(fullPath))
+            {
+                return new ResponseNotFound();
+            }
+
+            var mimeType = GetMimeType(filename);
+            var data = File.ReadAllBytes(fullPath);
 
             var response = new ResponseOK();
-            response.Header.ContentLength = data != null ? data.Length : 0;
+            response.Header.ContentLength = data.Length;
             response.Header.ContentType = mimeType;
             response.Header.CacheControl = "public, max-age=31536000, immutable";
 

@@ -17,7 +17,7 @@ namespace KleeneStar.Core.WebFragment
     /// </summary>
     [Title("kleenestar.core:object.add.title")]
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Edit>]
+    [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Add>]
     [Cache]
     public sealed class ObjectAddFormFragment : FragmentControlRestFormAdd
     {
@@ -31,7 +31,6 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = "kleenestar.core:object.summary.placeholder",
             Help = "kleenestar.core:object.summary.help",
             Required = true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>()
         };
 
         /// <summary>
@@ -39,7 +38,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Workspace.Description),
+            Name = nameof(Object.Description),
             Label = "kleenestar.core:object.description.label",
             Placeholder = "kleenestar.core:object.description.placeholder",
             Format = TypeEditTextFormat.Wysiwyg,

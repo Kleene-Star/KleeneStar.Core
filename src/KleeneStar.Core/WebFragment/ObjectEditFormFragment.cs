@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WebFragment
     [Section<SectionContentPreferences>]
     [Scope<WWW.Object._objectkey_.Edit>]
     [Cache]
-    public sealed class ObjectEditFormFragment : FragmentControlRestFormAdd
+    public sealed class ObjectEditFormFragment : FragmentControlRestFormEdit
     {
         /// <summary>
         /// Returns the input text control for specifying the summary of the object.
@@ -39,7 +39,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Workspace.Description),
+            Name = nameof(Object.Description),
             Label = "kleenestar.core:object.description.label",
             Placeholder = "kleenestar.core:object.description.placeholder",
             Format = TypeEditTextFormat.Wysiwyg,

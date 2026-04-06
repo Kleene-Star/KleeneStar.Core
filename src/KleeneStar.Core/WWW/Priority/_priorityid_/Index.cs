@@ -43,7 +43,7 @@ namespace KleeneStar.Core.WWW.Priority._priorityid_
                     Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()
                     .BindParameters(renderContext.Request)
                 })
-                .Concat(new ClassIdUriPathSegmentVariable<ObjectKeyParameter>()
+                .Concat(new PriorityIdUriPathSegmentVariable<PriorityIdParameter>()
                 {
                     Uri = renderContext.Request.Uri
                 })

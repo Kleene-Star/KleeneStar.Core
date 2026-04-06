@@ -49,7 +49,7 @@ namespace KleeneStar.Core.WebFragment
             var primaryAction = new ActionModal
             (
                 "modal-form",
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Edit>()
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Add>()
                     .BindParameters(renderContext.Request),
                 TypeModalSize.ExtraLarge
                 );
