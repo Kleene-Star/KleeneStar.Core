@@ -8,8 +8,19 @@ The following sitemap provides a clear, hierarchical overview of the KleeneStar 
  ├─📁 api
  │ └─📁 _1_
  │   ├─📁 class
+ │   ├─📁 dashboards
  │   └─📁 workspace
  ├─📁 assets
+ ├─📁 dashboard
+ │ ├─📁 _did_
+ │ │ ├─📄 clone
+ │ │ ├─📄 delete
+ │ │ ├─📄 edit
+ │ │ └─📄 index
+ │ └─📄 index
+ ├─📁 dashboards
+ │ ├─📄 add
+ │ └─📄 index
  ├─📁 icons
  ├─📁 objects
  │ ├─📁 _objkey_

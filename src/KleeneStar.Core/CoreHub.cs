@@ -27,6 +27,7 @@ namespace KleeneStar.Core
         private static WorkflowManager _workflowManager;
         private static WorkflowStateManager _workflowStateManager;
         private static ObjectManager _objectManager;
+        private static DashboardManager _dashboardManager;
 
         /// <summary>
         /// Returns the shared instance of the component hub used for managing and coordinating application components.
@@ -82,6 +83,11 @@ namespace KleeneStar.Core
         /// Returns the object manager responsible for managing objects within the workspace.
         /// </summary>
         public static IObjectManager ObjectManager => _objectManager ??= ComponentHub.GetComponentManager<ObjectManager>();
+
+        /// <summary>
+        /// Returns the dashboard manager responsible for managing dashboards within the application.
+        /// </summary>
+        public static IDashboardManager DashboardManager => _dashboardManager ??= ComponentHub.GetComponentManager<DashboardManager>();
 
         /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.
