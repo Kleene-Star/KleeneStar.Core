@@ -53,9 +53,4 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 /.vs
-/src/.vs/KleeneStar.Core/CopilotIndices/17.14.1368.60722
-/src/.vs/KleeneStar.Core/DesignTimeBuild
-/src/.vs/KleeneStar.Core/FileContentIndex
-/src/.vs/KleeneStar.Core/v17/TestStore/0
-/src/.vs/KleeneStar.Core/v17
-/src/.vs/ProjectEvaluation
+/src/.vs
