@@ -25,10 +25,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards._dashboardid_
         /// Retrieves the column and widget layout for the dashboard identified by the
         /// <c>dashboardId</c> path segment in the current request.
         /// </summary>
+        /// <remarks>
+        /// Widget configuration is not yet stored in the model. The method validates that the
+        /// dashboard exists but always returns an empty column set until widget persistence
+        /// is implemented.
+        /// </remarks>
         /// <param name="request">The current HTTP request. Cannot be null.</param>
         /// <returns>
-        /// An enumerable of <see cref="RestApiDashboardColumn"/> objects that describe the
-        /// layout of the dashboard. Returns an empty enumerable when no dashboard is found.
+        /// An empty enumerable. Returns without yielding when no dashboard matches the id.
         /// </returns>
         protected override IEnumerable<RestApiDashboardColumn> RetrieveColumns(IRequest request)
         {
@@ -40,7 +44,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards._dashboardid_
                 yield break;
             }
 
-            // Widget configuration will be populated here once the model supports it.
+            // TODO: Yield RestApiDashboardColumn entries once widget configuration is
+            // persisted in the model.
             yield break;
         }
     }
