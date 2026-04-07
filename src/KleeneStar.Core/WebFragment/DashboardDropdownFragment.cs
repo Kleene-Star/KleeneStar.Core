@@ -14,7 +14,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a dropdown fragment within a dashboard, providing functionality to interact with and 
     /// manage dashboard options.
     /// </summary>
-    [Section<SectionAppNavigationPreferences>]
+    [Section<SectionAppNavigationPrimary>]
     [Scope<IScopeGeneral>]
     [Scope<IScopeAdmin>]
     [Scope<IScopeStatusPage>]

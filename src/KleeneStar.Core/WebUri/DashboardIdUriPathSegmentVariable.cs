@@ -1,6 +1,7 @@
 using KleeneStar.Core.WebManager;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;

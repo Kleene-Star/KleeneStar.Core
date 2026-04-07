@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebIcon;
-using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
@@ -13,7 +12,7 @@ namespace KleeneStar.Core.WWW.Dashboards
     [WebIcon<DashboardIcon>]
     [Title("kleenestar.core:dashboard.manage.title")]
     [Scope<IScopeGeneral>]
-    [Domain<Dashboard>]
+    [Domain<Model.Entities.Dashboard>]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>

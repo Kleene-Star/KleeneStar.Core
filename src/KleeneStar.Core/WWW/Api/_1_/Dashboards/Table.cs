@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
     /// </summary>
     [Title("kleenestar.core:dashboard.table.header")]
     [Cache]
-    public sealed class Table : RestApiTable<Dashboard>
+    public sealed class Table : RestApiTable<Model.Entities.Dashboard>
     {
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
@@ -96,7 +96,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// An enumerable collection of table rows that satisfy the query and context. 
         /// The collection may be empty if no rows match the criteria.
         /// </returns>
-        protected override IEnumerable<RestApiTableRow> RetrieveRows(IQuery<Dashboard> query, IQueryContext context, IEnumerable<RestApiTableColumn> columns, IRequest request)
+        protected override IEnumerable<RestApiTableRow> RetrieveRows(IQuery<Model.Entities.Dashboard> query, IQueryContext context, IEnumerable<RestApiTableColumn> columns, IRequest request)
         {
             return CoreHub.DashboardManager.GetDashboards(query, context)
                 .Select(x => new RestApiTableRow
@@ -135,7 +135,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// A query representing the filtered set of items that match the criteria defined by 
         /// the filter statement.
         /// </returns>
-        protected override IQuery<Dashboard> Filter(string filter, IQuery<Dashboard> query, IRequest request)
+        protected override IQuery<Model.Entities.Dashboard> Filter(string filter, IQuery<Model.Entities.Dashboard> query, IRequest request)
         {
             if (string.IsNullOrWhiteSpace(filter) || filter == "null")
             {
@@ -167,7 +167,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// A query representing the filtered set of items that match the criteria defined by 
         /// the filter statement.
         /// </returns>
-        protected override IQuery<Dashboard> Filter(IEnumerable<string> filters, IQuery<Dashboard> query, IRequest request)
+        protected override IQuery<Model.Entities.Dashboard> Filter(IEnumerable<string> filters, IQuery<Model.Entities.Dashboard> query, IRequest request)
         {
             foreach (var filter in filters.Where(f => f.StartsWith("qf_", StringComparison.OrdinalIgnoreCase)))
             {
@@ -195,7 +195,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// <param name="request">
         /// The request object containing the criteria for retrieving options. Cannot be null.
         /// </param>
-        private IEnumerable<RestApiOption> GetOptions(Dashboard row, IRequest request)
+        private IEnumerable<RestApiOption> GetOptions(Model.Entities.Dashboard row, IRequest request)
         {
             var editUri = _editFormUri?
                 .BindParameters(new DashboardIdParameter(row.Id));
@@ -238,7 +238,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// <returns>
         /// An object implementing <see cref="IUri"/> that represents the URI for the specified dashboard.
         /// </returns>
-        private static IUri GetUri(Dashboard row, IRequest request)
+        private static IUri GetUri(Model.Entities.Dashboard row, IRequest request)
         {
             return CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboard._dashboardid_.Index>()?
                 .BindParameters(new DashboardIdParameter(row.Id));

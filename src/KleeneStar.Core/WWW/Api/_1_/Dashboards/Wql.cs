@@ -1,6 +1,6 @@
-﻿using KleeneStar.Model.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 
 namespace KleeneStar.Core.WWW.Api._1_.Dashboards
@@ -9,7 +9,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
     /// Provides functionality to retrieve WQL data for dashboards.
     /// </summary>
     [Cache]
-    public sealed class Wql : RestApiWqlPrompt<Dashboard>
+    public sealed class Wql : RestApiWqlPrompt<Model.Entities.Dashboard>
     {
         /// <summary>
         /// Initializes a new instance of the class.

@@ -1,6 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
-using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
@@ -17,7 +16,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
     /// </summary>
     [Title("Dashboard")]
     [Cache]
-    public sealed class Dropdown : RestApiDropdown<Dashboard>
+    public sealed class Dropdown : RestApiDropdown<Model.Entities.Dashboard>
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -55,7 +54,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// An enumerable collection of dropdown items, each representing a dashboard that matches the query. The
         /// collection is empty if no dashboards are found.
         /// </returns>
-        protected override IEnumerable<RestApiDropdownItem> RetrieveItems(IQuery<Dashboard> query, IQueryContext context, IRequest request)
+        protected override IEnumerable<RestApiDropdownItem> RetrieveItems(IQuery<Model.Entities.Dashboard> query, IQueryContext context, IRequest request)
         {
             return CoreHub.DashboardManager?.GetDashboards(query, context)
                 .Select(x => new RestApiDropdownItem()
@@ -85,7 +84,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// A query representing the filtered set of items that match the criteria defined by 
         /// the filter statement.
         /// </returns>
-        protected override IQuery<Dashboard> Filter(string filter, IQuery<Dashboard> query, IRequest request)
+        protected override IQuery<Model.Entities.Dashboard> Filter(string filter, IQuery<Model.Entities.Dashboard> query, IRequest request)
         {
             if (filter is null || filter == "null")
             {
@@ -110,10 +109,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// <returns>
         /// An object representing the URI for the given request and dashboard item, or null if no URI is available.
         /// </returns>
-        private static IUri GetUri(Dashboard item, IRequest request)
+        private static IUri GetUri(Model.Entities.Dashboard item, IRequest request)
         {
             return CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboard._dashboardid_.Index>()?
-                .BindParameters(new DashboardIdParameter(item?.Id));
+                .BindParameters(new DashboardIdParameter(item?.Id.ToString()));
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Model;
-using KleeneStar.Model.Entities;
 using System.Linq;
 using System.Text.RegularExpressions;
 using WebExpress.WebApp.WebRestApi;
@@ -48,7 +47,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
                 return false;
             }
 
-            var query = new Query<Dashboard>()
+            var query = new Query<Model.Entities.Dashboard>()
                 .WhereEqualsIgnoreCase(x => x.Name, value);
 
             using var context = ModelHub.CreateDbContext();

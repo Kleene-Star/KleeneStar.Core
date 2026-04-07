@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
     /// Provides CRUD operations for dashboard items via a REST API.
     /// </summary>
     [Cache]
-    public sealed class Index : RestApiCrud<Dashboard>
+    public sealed class Index : RestApiCrud<Model.Entities.Dashboard>
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -69,7 +69,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// A collection representing the filtered set of index items. 
         /// The collection may be empty if no items match the query.
         /// </returns>
-        protected override IEnumerable<Dashboard> Retrieve(IQuery<Dashboard> query, IQueryContext context, IRequest request)
+        protected override IEnumerable<Model.Entities.Dashboard> Retrieve(IQuery<Model.Entities.Dashboard> query, IQueryContext context, IRequest request)
         {
             return CoreHub.DashboardManager.GetDashboards(query, context);
         }
@@ -101,13 +101,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// A result instance representing the data and metadata required
         /// to initialize a new dashboard for creation.
         /// </returns>
-        protected override IRestApiCrudResultRetrieve RetrieveForClone(IQuery<Dashboard> query, IRequest request)
+        protected override IRestApiCrudResultRetrieve RetrieveForClone(IQuery<Model.Entities.Dashboard> query, IRequest request)
         {
             using var context = ModelHub.CreateDbContext();
             var data = CoreHub.DashboardManager.GetDashboards(query, context)
                 .FirstOrDefault();
 
-            var newItem = new Dashboard()
+            var newItem = new Model.Entities.Dashboard()
             {
                 Name = data.Name + " (Copy)",
                 Description = data.Description,
@@ -131,7 +131,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// <returns>
         /// An object containing the dashboard associated with the specified id.
         /// </returns>
-        protected override IRestApiCrudResultRetrieve RetrieveForUpdate(IQuery<Dashboard> query, IRequest request)
+        protected override IRestApiCrudResultRetrieve RetrieveForUpdate(IQuery<Model.Entities.Dashboard> query, IRequest request)
         {
             using var context = ModelHub.CreateDbContext();
             var data = CoreHub.DashboardManager.GetDashboards(query, context)
@@ -155,7 +155,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// An object containing the dashboard entity and related information required 
         /// for the delete operation.
         /// </returns>
-        protected override IRestApiCrudResultRetrieveDelete RetrieveForDelete(IQuery<Dashboard> query, IRequest request)
+        protected override IRestApiCrudResultRetrieveDelete RetrieveForDelete(IQuery<Model.Entities.Dashboard> query, IRequest request)
         {
             using var context = ModelHub.CreateDbContext();
             var data = CoreHub.DashboardManager.GetDashboards(query, context)
@@ -182,7 +182,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// <returns>
         /// An IRestApiValidationResult indicating validation success or errors.
         /// </returns>
-        protected override IRestApiValidationResult Validate(Dashboard existingItem, RestApiCrudFormData payload, IRequest request)
+        protected override IRestApiValidationResult Validate(Model.Entities.Dashboard existingItem, RestApiCrudFormData payload, IRequest request)
         {
             return base.Validate(existingItem, payload, request);
         }
@@ -206,10 +206,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// A result object containing information about the create operation,
         /// including the created resource.
         /// </returns>
-        protected override IRestApiCrudResultCreate Create(RestApiCrudFormData fieldMap, IRequest request, out Dashboard newItem)
+        protected override IRestApiCrudResultCreate Create(RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Dashboard newItem)
         {
             var id = Guid.NewGuid();
-            newItem = new Dashboard(id)
+            newItem = new Model.Entities.Dashboard(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
                 State = TypeDashboardState.Active
@@ -244,10 +244,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// <returns>
         /// A result object indicating the outcome of the create operation.
         /// </returns>
-        protected override IRestApiCrudResultCreate Clone(Dashboard existingItem, RestApiCrudFormData fieldMap, IRequest request, out Dashboard newItem)
+        protected override IRestApiCrudResultCreate Clone(Model.Entities.Dashboard existingItem, RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Dashboard newItem)
         {
             var id = Guid.NewGuid();
-            newItem = new Dashboard(id)
+            newItem = new Model.Entities.Dashboard(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
                 State = TypeDashboardState.Active
@@ -272,7 +272,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// <param name="request">
         /// The HTTP request providing additional context.
         /// </param>
-        protected override IRestApiCrudResultUpdate Update(Dashboard existingItem, RestApiCrudFormData payload, IRequest request)
+        protected override IRestApiCrudResultUpdate Update(Model.Entities.Dashboard existingItem, RestApiCrudFormData payload, IRequest request)
         {
             var res = base.Update(existingItem, payload, request);
 
@@ -293,7 +293,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// <returns>
         /// A result object containing information about the delete operation.
         /// </returns>
-        protected override IRestApiCrudResultDelete Delete(Dashboard existingItem, IRequest request)
+        protected override IRestApiCrudResultDelete Delete(Model.Entities.Dashboard existingItem, IRequest request)
         {
             CoreHub.DashboardManager.Remove(existingItem.Id);
 
