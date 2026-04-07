@@ -12,7 +12,7 @@ namespace KleeneStar.Core.WWW
     [WebIcon<KleeneStarIcon>]
     [Title("kleenestar.core:kleenestar.label")]
     [Scope<IScopeGeneral>]
-    public sealed class Index : IPage<VisualTreeWebApp>
+    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>
         /// Initializes a new instance of the class.
