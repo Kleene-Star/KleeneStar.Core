@@ -173,6 +173,8 @@ namespace KleeneStar.Core.WebManager
             {
                 ModelHub.Remove(dashboard);
                 DashboardRemoved?.Invoke(this, dashboard);
+
+                CoreHub.AddNotification("Delete", "success", 5000);
             }
 
             return this;
