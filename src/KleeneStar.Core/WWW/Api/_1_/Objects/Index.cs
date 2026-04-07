@@ -201,7 +201,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
 
             fieldMap.BindTo(newItem);
 
-            CoreHub.ObjectManager.AddObject(newItem);
+            CoreHub.ObjectManager.Add(newItem);
 
             // create notification
             CoreHub.AddNotification("Create", "success", 5000);
@@ -242,7 +242,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
 
             fieldMap.BindTo(newItem);
 
-            CoreHub.ObjectManager.AddObject(newItem);
+            CoreHub.ObjectManager.Add(newItem);
 
             // create notification
             CoreHub.AddNotification("Clone", "success", 5000);
@@ -266,7 +266,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         {
             var res = base.Update(existingItem, payload, request);
 
-            CoreHub.ObjectManager.UpdateObject(existingItem);
+            CoreHub.ObjectManager.Update(existingItem);
 
             // update notification
             CoreHub.AddNotification("Update", "success", 5000);
@@ -288,7 +288,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         /// </returns>
         protected override IRestApiCrudResultDelete Delete(Model.Entities.Object existingItem, IRequest request)
         {
-            CoreHub.ObjectManager.RemoveObject(existingItem.Id);
+            CoreHub.ObjectManager.Remove(existingItem.Id);
 
             return base.Delete(existingItem, request);
         }

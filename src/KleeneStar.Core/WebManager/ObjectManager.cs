@@ -145,7 +145,7 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="objectEntity">The object to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IObjectManager AddObject(Model.Entities.Object objectEntity)
+        public IObjectManager Add(Model.Entities.Object objectEntity)
         {
             ArgumentNullException.ThrowIfNull(objectEntity);
 
@@ -164,7 +164,7 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="objectEntity">The object to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IObjectManager UpdateObject(Model.Entities.Object objectEntity)
+        public IObjectManager Update(Model.Entities.Object objectEntity)
         {
             ArgumentNullException.ThrowIfNull(objectEntity);
 
@@ -185,7 +185,7 @@ namespace KleeneStar.Core.WebManager
         /// not exist in the manager, no action is taken.</remarks>
         /// <param name="objectId">The object id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IObjectManager RemoveObject(Guid objectId)
+        public IObjectManager Remove(Guid objectId)
         {
             var objectEntry = GetObject(objectId);
 

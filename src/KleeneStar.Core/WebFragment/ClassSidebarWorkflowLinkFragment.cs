@@ -17,6 +17,8 @@ namespace KleeneStar.Core.WebFragment
     [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Forms._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Workflows._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.States._classid_.Index>]
     [Cache]
     public sealed class ClassSidebarWorkflowLinkFragment : FragmentControlSidebarItemLink
     {
@@ -32,7 +34,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Icon = new IconDiagramProject();
             Text = "kleenestar.core:workflow.link.label";
-            //Uri = CoreHub.GetUri<WWW.Classes._workspacekey_._classid_.Priorities.Index>();
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workflows._classid_.Index>();
         }
 
         /// <summary>

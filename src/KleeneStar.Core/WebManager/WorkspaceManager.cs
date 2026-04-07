@@ -159,7 +159,7 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="workspace">The workspace to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IWorkspaceManager AddWorkspace(Workspace workspace)
+        public IWorkspaceManager Add(Workspace workspace)
         {
             ArgumentNullException.ThrowIfNull(workspace);
 
@@ -178,7 +178,7 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="workspace">The workspace to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IWorkspaceManager UpdateWorkspace(Workspace workspace)
+        public IWorkspaceManager Update(Workspace workspace)
         {
             ArgumentNullException.ThrowIfNull(workspace);
 
@@ -199,7 +199,7 @@ namespace KleeneStar.Core.WebManager
         /// not exist in the manager, no action is taken.</remarks>
         /// <param name="workspaceId">The workspace id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IWorkspaceManager RemoveWorkspace(Guid workspaceId)
+        public IWorkspaceManager Remove(Guid workspaceId)
         {
             var workspace = GetWorkspace(workspaceId);
 

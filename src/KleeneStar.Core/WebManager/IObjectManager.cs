@@ -88,14 +88,14 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="objectEntity">The object to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        IObjectManager AddObject(Object objectEntity);
+        IObjectManager Add(Object objectEntity);
 
         /// <summary>
         /// Update a object to the manager.
         /// </summary>
         /// <param name="objectEntity">The object to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        IObjectManager UpdateObject(Object objectEntity);
+        IObjectManager Update(Object objectEntity);
 
         /// <summary>
         /// Removes the specified object from the manager.
@@ -104,6 +104,6 @@ namespace KleeneStar.Core.WebManager
         /// not exist in the manager, no action is taken.</remarks>
         /// <param name="objectId">The object id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        IObjectManager RemoveObject(System.Guid objectId);
+        IObjectManager Remove(System.Guid objectId);
     }
 }

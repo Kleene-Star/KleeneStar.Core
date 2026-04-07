@@ -149,7 +149,7 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="priorityEntity">The priority to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IPriorityManager AddPriority(Priority priorityEntity)
+        public IPriorityManager Add(Priority priorityEntity)
         {
             ArgumentNullException.ThrowIfNull(priorityEntity);
 
@@ -168,7 +168,7 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="priorityEntity">The priority to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IPriorityManager UpdatePriority(Priority priorityEntity)
+        public IPriorityManager Update(Priority priorityEntity)
         {
             ArgumentNullException.ThrowIfNull(priorityEntity);
 
@@ -189,7 +189,7 @@ namespace KleeneStar.Core.WebManager
         /// not exist in the manager, no action is taken.</remarks>
         /// <param name="priorityId">The priority id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IPriorityManager RemovePriority(Guid priorityId)
+        public IPriorityManager Remove(Guid priorityId)
         {
             var priorityEntry = GetPriority(priorityId);
 

@@ -25,7 +25,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Wql>()
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Wql>()
         };
 
         /// <summary>

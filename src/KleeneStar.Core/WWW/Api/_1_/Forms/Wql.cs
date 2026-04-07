@@ -3,13 +3,13 @@ using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 
-namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
+namespace KleeneStar.Core.WWW.Api._1_.Forms
 {
     /// <summary>
     /// Provides functionality to retrieve WQL data.
     /// </summary>
     [Cache]
-    public sealed class Wql : RestApiWqlPrompt<Model.Entities.Class>
+    public sealed class Wql : RestApiWqlPrompt<Model.Entities.Form>
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -34,8 +34,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// </returns>
         protected override IEnumerable<string> GetHistory(IRequest request)
         {
-            yield return "Name ~ \"Controlling\"";
-            yield return "Key ~ \"CMDB\"";
+            yield return "Summary ~ \"Login Flow\"";
+            yield return "Key ~ \"SD-39008\"";
         }
     }
 }

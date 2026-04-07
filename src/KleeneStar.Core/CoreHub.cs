@@ -24,6 +24,8 @@ namespace KleeneStar.Core
         private static FieldManager _fieldManager;
         private static FormManager _formManager;
         private static PriorityManager _priorityManager;
+        private static WorkflowManager _workflowManager;
+        private static WorkflowStateManager _workflowStateManager;
         private static ObjectManager _objectManager;
 
         /// <summary>
@@ -65,6 +67,16 @@ namespace KleeneStar.Core
         /// Returns the priority manager responsible for managing priorities within the class.
         /// </summary>
         public static IPriorityManager PriorityManager => _priorityManager ??= ComponentHub.GetComponentManager<PriorityManager>();
+
+        /// <summary>
+        /// Returns the workflow manager responsible for managing workflows within the class.
+        /// </summary>
+        public static IWorkflowManager WorkflowManager => _workflowManager ??= ComponentHub.GetComponentManager<WorkflowManager>();
+
+        /// <summary>
+        /// Returns the workflow state manager responsible for managing workflow states within the class.
+        /// </summary>
+        public static IWorkflowStateManager WorkflowStateManager => _workflowStateManager ??= ComponentHub.GetComponentManager<WorkflowStateManager>();
 
         /// <summary>
         /// Returns the object manager responsible for managing objects within the workspace.

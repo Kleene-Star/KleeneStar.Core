@@ -3,13 +3,13 @@ using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 
-namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
+namespace KleeneStar.Core.WWW.Api._1_.States
 {
     /// <summary>
     /// Provides functionality to retrieve WQL data.
     /// </summary>
     [Cache]
-    public sealed class Wql : RestApiWqlPrompt<Model.Entities.Object>
+    public sealed class Wql : RestApiWqlPrompt<Model.Entities.WorkflowState>
     {
         /// <summary>
         /// Initializes a new instance of the class.

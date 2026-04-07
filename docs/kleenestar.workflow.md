@@ -1,8 +1,8 @@
 ![KleeneStar](https://raw.githubusercontent.com/kleenestar-project/.github/main/docs/assets/img/banner.png)
 
 # KleeneStar Managed Workflow Concept
-
-The Managed Workflow concept in **KleeneStar** describes the modeled, versioned, and server-side controlled management of object life cycles within a class. A workflow defines which states, transitions, conditions, validations, and follow-up actions are permitted for objects. The goal is to ensure consistent, safe, and traceable process execution, from capture through processing to closure. Workflows are auditable, multi-tenant capable, and closely tied to fields (e.g., status). Workflows are versionable, strictly enforced server-side (including validations and post functions), can be integrated on the UI side, and extended via plugins. This creates a robust, rule-based control system for object-related processes.
+ 
+The Managed Workflow concept in **KleeneStar** describes the modeled, versioned, and server-side controlled management of object life cycles within a class. A workflow defines which states, transitions, conditions, validations, and follow-up actions are permitted for objects. The goal is to ensure consistent, safe, and traceable process execution, from capture through processing to closure. Workflows are auditable, multi-tenant capable, and closely tied to fields (e.g., state). Workflows are versionable, strictly enforced server-side (including validations and post functions), can be integrated on the UI side, and extended via plugins. This creates a robust, rule-based control system for object-related processes.
 
 A workflow’s authorization is directly coupled to the authorization structure of the associated class. This eliminates a separate authorization management on the workflow level. Access and execution rights automatically follow from the existing class permissions and remain consistent across all states and transitions.
 
@@ -85,7 +85,7 @@ The data model of Managed Workflows in **KleeneStar** is anchored locally at the
 
 The application follows a modular, decoupled architectural principle. At its center is the `WorkflowManager`, exclusively responsible for the life cycle and management of all workflows. It manages a collection of versioned workflow instances and provides a controlled interface for all interactions.
 
-Each workflow instance contains central characteristics such as name, associated class, versioning status, and access modifiers. New workflows are created exclusively through the `WorkflowManager` to ensure data integrity and consistent access rules.
+Each workflow instance contains central characteristics such as name, associated class, versioning state, and access modifiers. New workflows are created exclusively through the `WorkflowManager` to ensure data integrity and consistent access rules.
 
 The `WorkflowManager` performs server-side tasks such as persistent storage of all workflows. At system startup, stored workflows are loaded, state machines initialized, and event subscriptions activated. For every request, the `WorkflowManager` enforces an authorization check for the user. Access is governed by policies that may include context-sensitive filters, time-limited permissions, or audit requirements. This creates a flexible and fine-grained implementation of differentiated read and write rights.
 
@@ -100,87 +100,84 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ║                                ├────────────────────┤                                ║
 ║                                └────────Δ───────────┘                                ║
 ║                                         ¦                                            ║
-║                                         ¦                                            ║
-║                     ┌───────────────────┴───────────────────┐                        ║
-║                     │ <<Interface>>                         │                        ║
-║         ┌-----------┤ IWorkflowManager                      │                        ║
-║         ¦           ├───────────────────────────────────────┤                        ║
-║         ¦           │ StatusAdded:Event                     │                        ║
-║         ¦           │ StatusUpdated:Event                   │                        ║
-║         ¦           │ StatusRemove:Event                    │                        ║
-║         ¦           │ WorkflowAdded:Event                   │                        ║
-║         ¦           │ WorkflowUpdated:Event                 │                        ║
-║         ¦           │ WorkflowRemoved:Event                 │                        ║
-║         ¦           ├───────────────────────────────────────┤ 1                      ║
-║         ¦         1 │ Workflows:IEnumerable<IWorkflow>      ├───────┐                ║
-║         ¦       ┌───┤ States:IEnumerable<IState>            │       │                ║
-║         ¦       │   ├───────────────────────────────────────┤       │                ║
-║         ¦       │   │ AddWorkflow(IClass, IWorkflow):       │       │                ║
-║         ¦       │   │   IWorkflowManager                    │       │                ║
-║         ¦       │   │ GetWorkflows(IClass,filter):          │       │                ║
-║         ¦       │   │   IEnumerable<IClass>                 │       │                ║
-║         ¦       │   │ CloneWorkflow(IClass,IWorkflow):      │       │                ║
-║         ¦       │   │   IWorkflowManager                    │       │                ║
-║         ¦       │   │ RemoveWorkflow(IClass,IWorkflow):     │       │                ║
-║         ¦       │   │   IWorkflowManager                    │       │                ║
-║         ¦       │   └───────────────────────────────────────┘       │                ║
-║         ¦       │                                                   │                ║
-║         ¦       │ *                                                 │                ║
-║         ¦  ┌────▼────────────────────────┐   ┌────────────────────┐ │                ║
-║         ¦  │ <<Interface>>               │   │ <<Enum>>           │ │                ║
-║         ¦  │ IState                      │   | TypeStatusCategory | │                ║
-║         ¦  ├─────────────────────────────┤   ├────────────────────┤ │                ║
-║         ¦  │ Id:Guid                     │   │ ToDo               │ │                ║
-║         ¦  │ Name:string                 │   │ InProgress         │ │                ║
-║         ¦  | Category:TypeStatusCategory |   │ Wating             │ │                ║
-║         ¦  └─────▲───────────────────────┘   │ Done               │ │                ║
-║         ¦        │ *                         └────────────────────┘ │                ║
-║         ¦        │                                                  │                ║
-║         ¦        │             ┌───────────────┐                    │                ║
-║         ¦        │             │ <<Interface>> │                    │                ║
-║         ¦        │             │ IModel        │                    │                ║
-║         ¦        │             ├───────────────┤                    │                ║
-║         ¦        │             └──────Δ────────┘                    │                ║
-║         ¦        │                    ¦                             │                ║
-║         ¦        │                    ¦                             │                ║
-║         ¦        │  ┌─────────────────┴──────────────────┐ *        │                ║
-║         ¦        │  │ <<Interface>>                      ◄──────────┘                ║
-║         ¦        │  │ IWorkflow                          │     ┌───────────────────┐ ║
-║         ¦        │  ├────────────────────────────────────┤     │ <<Enum>>          │ ║
-║         ¦        │  │ Id:Guid                            │     │ TypeWorkflowState │ ║
-║         ¦        │  │ Name:String                        │     ├───────────────────┤ ║
-║         ¦        │  │ State:TypeWorkflowState            │     │ Draft             │ ║
-║         ¦        │  │ Class:IClass                       │     │ Active            │ ║
-║         ¦        │  │ Created:DateTime                   │     │ Archived          │ ║
-║         ¦        │1 │ Updated:DateTime                   │     └───────────────────┘ ║
-║         ¦        └──┤ States:IEnumerable<IState>         │                           ║
-║         ¦        ┌──┤ Transitions:                       │                           ║
-║         ¦        │1 │   IEnumerable<ITransition>         │                           ║
-║         ¦        │  └────────────────────────────Δ───────┘                           ║
-║         ¦        │                               ¦                                   ║
-║         ¦        │                               ¦                                   ║
-║         ¦        │ *                             ¦                                   ║
-║         ¦  ┌─────▼────────────────────────┐      ¦                                   ║
-║         ¦  │ <<Interface>>                │      ¦                                   ║
-║         ¦  │ ITransition                  │      ¦                                   ║
-║         ¦  ├──────────────────────────────┤      ¦                                   ║
-║         ¦  │ Id:Guid                      │      ¦                                   ║
-║         ¦  │ Source:IState                │      ¦                                   ║
-║         ¦  │ Target:IState                │      ¦                                   ║
-║         ¦  │ Guards:                      │      ¦                                   ║
-║         ¦  │   IEnumerable<IGuard>        │      ¦                                   ║
-║         ¦  │ Validators:                  │      ¦                                   ║
-║         ¦  │   IEnumerable<IValidator>    │      ¦                                   ║
-║         ¦  │ PostFunctions:               │      ¦                                   ║
-║         ¦  │   IEnumerable<IPostFunction> │      ¦                                   ║
-║         ¦  │ Screen:IScreen               │      ¦                                   ║
-║         ¦  └──────────────────────────────┘      ¦                                   ║
-║         ¦                                        ¦                                   ║
-║         ¦                             ┌----------┘                                   ║
-║         ¦                             ¦                                              ║
-║         ¦                             ¦                                              ║
-║         ¦ create    ┌─────────────────┴──────────────────┐                           ║
-║         └-----------► Workflow                           │                           ║
+║                    ┌--------------------┴------------------┐                         ║
+║                    ¦                                       ¦                         ║
+║     ┌──────────────┴─────────────┐       ┌─────────────────┴────────────────┐        ║
+║     │ <<Interface>>              │       │ <<Interface>>                    │        ║
+║     │ IWorkflowSateManager       │       │ IWorkflowManager                 ├-----┐  ║
+║     ├────────────────────────────┤       ├──────────────────────────────────┤     ¦  ║
+║     │ StateAdded:Event           │       │ WorkflowAdded:Event              │     ¦  ║
+║     │ StateUpdated:Event         │       │ WorkflowUpdated:Event            │     ¦  ║
+║     │ StateRemove:Event          │       │ WorkflowRemoved:Event            │     ¦  ║
+║   1 ├────────────────────────────┤     1 ├──────────────────────────────────┤     ¦  ║
+║   ┌─┤ States:IEnumerable<IState> │    ┌──┤ Workflows:IEnumerable<IWorkflow> │     ¦  ║
+║   │ ├────────────────────────────┤    │  ├──────────────────────────────────┤     ¦  ║
+║   │ │ Add(IClass, IWorkflow):    │    │  │ Add(IClass, IWorkflow):          │     ¦  ║
+║   │ │   IWorkflowSateManager     │    │  │   IWorkflowManager               │     ¦  ║
+║   │ │ Get(IClass,filter):        │    │  │ Get(IClass,filter):              │     ¦  ║
+║   │ │   IEnumerable<IClass>      │    │  │   IEnumerable<IClass>            │     ¦  ║
+║   │ │ Clone(IClass,IWorkflow):   │    │  │ Clone(IClass,IWorkflow):         │     ¦  ║
+║   │ │   IWorkflowSateManager     │    │  │   IWorkflowManager               │     ¦  ║
+║   │ │ Remove(IClass,IWorkflow):  │    │  │ Remove(IClass,IWorkflow):        │     ¦  ║
+║   │ │   IWorkflowSateManager     │    │  │   IWorkflowManager               │     ¦  ║
+║   │ └────────────────────────────┘    │  └──────────────────────────────────┘     ¦  ║
+║   │                                   │                                           ¦  ║
+║   └─────────────────────┐             └─────────────────────────────┐             ¦  ║
+║                       * │                                           │             ¦  ║
+║            ┌────────────▼───────────────┐    ┌───────────────────┐  │             ¦  ║
+║            │ <<Interface>>              │    │ <<Enum>>          │  │             ¦  ║
+║            │ IState                     │    | TypeStateCategory |  │             ¦  ║
+║            ├────────────────────────────┤    ├───────────────────┤  │             ¦  ║
+║            │ Id:Guid                    │    │ ToDo              │  │             ¦  ║
+║            │ Name:string                │    │ InProgress        │  │             ¦  ║
+║            | Category:TypeStateCategory |    │ Wating            │  │             ¦  ║
+║            └─────▲──────────────────────┘    │ Done              │  │             ¦  ║
+║                  │ *                         └───────────────────┘  │             ¦  ║
+║                  │                                                  │             ¦  ║
+║                  │             ┌───────────────┐                    │             ¦  ║
+║                  │             │ <<Interface>> │                    │             ¦  ║
+║                  │             │ IModel        │                    │             ¦  ║
+║                  │             ├───────────────┤                    │             ¦  ║
+║                  │             └──────Δ────────┘                    │             ¦  ║
+║                  │                    ¦                             │             ¦  ║
+║                  │                    ¦                             │             ¦  ║
+║                  │  ┌─────────────────┴──────────────────┐ *        │             ¦  ║
+║                  │  │ <<Interface>>                      ◄──────────┘             ¦  ║
+║                  │  │ IWorkflow                          │  ┌───────────────────┐ ¦  ║
+║                  │  ├────────────────────────────────────┤  │ <<Enum>>          │ ¦  ║
+║                  │  │ Id:Guid                            │  │ TypeWorkflowState │ ¦  ║
+║                  │  │ Name:String                        │  ├───────────────────┤ ¦  ║
+║                  │  │ State:TypeWorkflowState            │  │ Draft             │ ¦  ║
+║                  │  │ Class:IClass                       │  │ Active            │ ¦  ║
+║                  │  │ Created:DateTime                   │  │ Archived          │ ¦  ║
+║                  │1 │ Updated:DateTime                   │  └───────────────────┘ ¦  ║
+║                  └──┤ States:IEnumerable<IState>         │                        ¦  ║
+║                  ┌──┤ Transitions:                       │                        ¦  ║
+║                  │1 │   IEnumerable<ITransition>         │                        ¦  ║
+║                  │  └────────────────────────────Δ───────┘                        ¦  ║
+║                  │                               ¦                                ¦  ║
+║                  │                               ¦                                ¦  ║
+║                  │ *                             ¦                                ¦  ║
+║            ┌─────▼────────────────────────┐      ¦                                ¦  ║
+║            │ <<Interface>>                │      ¦                                ¦  ║
+║            │ ITransition                  │      ¦                                ¦  ║
+║            ├──────────────────────────────┤      ¦                                ¦  ║
+║            │ Id:Guid                      │      ¦                                ¦  ║
+║            │ Source:IState                │      ¦                                ¦  ║
+║            │ Target:IState                │      ¦                                ¦  ║
+║            │ Guards:                      │      ¦                                ¦  ║
+║            │   IEnumerable<IGuard>        │      ¦                                ¦  ║
+║            │ Validators:                  │      ¦                                ¦  ║
+║            │   IEnumerable<IValidator>    │      ¦                                ¦  ║
+║            │ PostFunctions:               │      ¦                                ¦  ║
+║            │   IEnumerable<IPostFunction> │      ¦                                ¦  ║
+║            │ Screen:IScreen               │      ¦                                ¦  ║
+║            └──────────────────────────────┘      ¦                                ¦  ║
+║                                                  ¦                                ¦  ║
+║                                       ┌----------┘                                ¦  ║
+║                                       ¦                                           ¦  ║
+║                     ┌─────────────────┴──────────────────┐   create               ¦  ║
+║                     │ Workflow                           ◄------------------------┘  ║
 ║                     ├────────────────────────────────────┤                           ║
 ║                     │ Id:Guid                            │                           ║
 ║                     │ Name:String                        │                           ║
@@ -196,11 +193,11 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-The workflow management architecture in **KleeneStar.Core** is based on a component-oriented model that enables a clear separation of responsibilities and high extensibility. At its center is the `IWorkflowManager`, which as part of the `IComponentManager` forms the central interface for managing workflows. It controls the creation, update, removal, and querying of workflows and provides events such as `StatusAdded`, `StatusUpdated`, `StatusRemoved`, `WorkflowAdded`, `WorkflowUpdated`, and `WorkflowRemoved` to enable reactive and loosely coupled system integration.
+The workflow management architecture in **KleeneStar.Core** is based on a component-oriented model that enables a clear separation of responsibilities and high extensibility. At its center is the `IWorkflowManager`, which as part of the `IComponentManager` forms the central interface for managing workflows. It controls the creation, update, removal, and querying of workflows and provides events such as `StateAdded`, `StateUpdated`, `StateRemoved`, `WorkflowAdded`, `WorkflowUpdated`, and `WorkflowRemoved` to enable reactive and loosely coupled system integration.
 
-A workflow is modeled through the IWorkflow interface and contains key properties such as a unique ID, name, status (`TypeWorkflowState`), associated class (`IClass`), timestamps for creation and update, and access control via AccessModifier. Access levels such as Private, Protected, Internal, or Public govern visibility and usability of the workflow within and across tenants.
+A workflow is modeled through the IWorkflow interface and contains key properties such as a unique ID, name, state (`TypeWorkflowState`), associated class (`IClass`), timestamps for creation and update, and access control via AccessModifier. Access levels such as Private, Protected, Internal, or Public govern visibility and usability of the workflow within and across tenants.
 
-Each workflow consists of a set of states (`IState`) and transitions (`ITransition`). States are defined by an ID, a name, and a category (`TypeStatusCategory`) such as "ToDo", "InProgress", "Waiting", or "Done". Transitions connect two states and include, besides source and target, a collection of conditions (Guards), validation rules (Validators), follow-up actions (PostFunctions), and optional UI elements (Form). This structure enables precise control of the object life cycle within a workflow.
+Each workflow consists of a set of states (`IState`) and transitions (`ITransition`). States are defined by an ID, a name, and a category (`TypeStateCategory`) such as "ToDo", "InProgress", "Waiting", or "Done". Transitions connect two states and include, besides source and target, a collection of conditions (Guards), validation rules (Validators), follow-up actions (PostFunctions), and optional UI elements (Form). This structure enables precise control of the object life cycle within a workflow.
 
 Workflows are versionable and follow defined states such as "Draft", "Active", or "Archived".
 
@@ -216,7 +213,7 @@ The mockups serve as visual templates for the final UI design. They show how nav
 
 The Class Management page forms the central administrative interface for all class types within a workspace and is closely integrated with **KleeneStar**’s Workflow Manager. In addition to structured class maintenance, including functions such as create, edit, clone, archive, and delete, it serves as the starting point for assigning and controlling versioned workflows.
 
-The tabular overview displays important attributes per class such as name, description, and status. Additionally, there is direct access to each class’s associated workflows: via the options menu, the Manage Workflows function is available to create, version, activate, or archive workflows.
+The tabular overview displays important attributes per class such as name, description, and state. Additionally, there is direct access to each class’s associated workflows: via the options menu, the Manage Workflows function is available to create, version, activate, or archive workflows.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
@@ -230,7 +227,7 @@ The tabular overview displays important attributes per class such as name, descr
 ║│                      │░│                                                           │║
 ║│  - All               │░│ My Classes                         [Search] [+ Add Class] │║
 ║│  - Issues            │░│                                                           │║
-║│  - Sub-Issues        │░│ Class Name       | Description                 | Status   │║
+║│  - Sub-Issues        │░│ Class Name       | Description                 | State    │║
 ║│  - Hidden            │░│------------------|-----------------------------|----------│║
 ║│  - Archived          │░│ Incident         | Report of a disruption      | ...  […] │║
 ║│                      │░│ Problem          | Analysis of recurring errors| ...   ¦  │║
@@ -238,7 +235,7 @@ The tabular overview displays important attributes per class such as name, descr
 ║│                      │░│ ServiceRequest   | Standard service │ Edit              │ │║
 ║│                      │░│ KnowledgeArticle | Documented knowle│ Clone             │ │║
 ║│                      │<│ Approval         | Approval step    │ Manage Fields     │ │║
-║│                      │<│ Request          | Inquiry or sub-pr│ Manage Status     │ │║
+║│                      │<│ Request          | Inquiry or sub-pr│ Manage State      │ │║
 ║│                      │<│ Task             | Executable activi│ Manage Workflows  │ │║
 ║│                      │░│ SLA              | Service Level Agr│ Manage Priorities │ │║
 ║│                      │░│ Comment          | Free-text note   │ Manage Forms      │ │║
@@ -255,13 +252,13 @@ The tabular overview displays important attributes per class such as name, descr
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Status Management (Page)
+### State Management (Page)
 
-Status Management forms the central interface for maintaining all states used within workflows of a class. Each status describes a phase in an object’s life cycle and serves as the target or starting point for transitions. The page allows the creation of new status values, the editing of existing entries, and the safe deletion of no longer needed states.
+State Management forms the central interface for maintaining all states used within workflows of a class. Each state describes a phase in an object’s life cycle and serves as the target or starting point for transitions. The page allows the creation of new state values, the editing of existing entries, and the safe deletion of no longer needed states.
 
-For each status, properties such as name, description, and category can be defined. Changes directly affect workflow modeling and are versionable. The page provides a tabular overview of all status values in a class, including usage proof in active workflows.
+For each state, properties such as name, description, and category can be defined. Changes directly affect workflow modeling and are versionable. The page provides a tabular overview of all state values in a class, including usage proof in active workflows.
 
-Status maintenance is accessed directly from Class Management via the "Manage Status" menu item. New statuses can be added using the "Add Status" button. Existing entries can be edited or deleted via action menus, provided they are no longer referenced. This achieves a consistent, traceable, and flexibly expandable state logic for all object-related processes.
+State maintenance is accessed directly from Class Management via the "Manage State" menu item. New states can be added using the "Add State" button. Existing entries can be edited or deleted via action menus, provided they are no longer referenced. This achieves a consistent, traceable, and flexibly expandable state logic for all object-related processes.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
@@ -269,18 +266,18 @@ Status maintenance is accessed directly from Class Management via the "Manage St
 ║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Breadcrumb──────────────────────────────────────────────────────────────────────────┐║
-║│ / Service Desk / Incident / Status                                                 │║
+║│ / Service Desk / Incident / State                                                  │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
-║┌Status────────────────┐ ┌Status Content─────────────────────────────────────────────┐║
+║┌State─────────────────┐ ┌State Content──────────────────────────────────────────────┐║
 ║│                      │░│                                                           │║
-║│  - All               │░│ My Statuses                        [Search] [+ Add Status]│║
+║│  - All               │░│ My States                           [Search] [+ Add State]│║
 ║│  - ToDo              │░│                                                           │║
-║│  - InProgress        │░│ Status Name   | Kategorie  | Beschreibung                 │║
-║│  - Waiting           │░│---------------|------------|------------------------------│║
-║│  - Done              │░│ ToDo          | ToDo       | Neu erfasst              […] │║
-║│                      │░│ InProgress    | InProgress | In Bearbeitung            ¦  │║
-║│                      │░│ Review        | InProgress | Zur Prüfung  ┌────────────┴┐ │║
-║│                      │░│ Done          | Done       | Abgeschlossen│ Edit        │ │║
+║│  - InProgress        │░│ State Name   | Category   | Description                   │║
+║│  - Waiting           │░│--------------|------------|-------------------------------│║
+║│  - Done              │░│ ToDo         | ToDo       | Newly created             […] │║
+║│                      │░│ InProgress   | InProgress | In progress                ¦  │║
+║│                      │░│ Review       | InProgress | Under review  ┌────────────┴┐ │║
+║│                      │░│ Done         | Done       | Completed     │ Edit        │ │║
 ║│                      │░│                                           │ Clone       │ │║
 ║│                      │░│                                   ‹ Prev  │ <section>   │ │║
 ║│                      │<│                                           ├─────────────┤ │║
@@ -298,17 +295,17 @@ Status maintenance is accessed directly from Class Management via the "Manage St
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Workflow Management - New/Edit Status (Modal)
+### Workflow Management - New/Edit State (Modal)
 
-The modal for creating and editing status values in Status Management is used to maintain the basic properties of a status used within a workflow. It opens when a new status is to be added or an existing one edited. Central details such as name, description, and category can be captured or adjusted.
+The modal for creating and editing state values in State Management is used to maintain the basic properties of a state used within a workflow. It opens when a new state is to be added or an existing one edited. Central details such as name, description, and category can be captured or adjusted.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
-║└─────╔StatusAddEditModal══════════════════════════════════════════════════════╗─────┘║
+║└─────╔StateAddEditModal═══════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Se║│ Add Status / Edit Status                                             │║     │║
+║│ / Se║│ Add State / Edit State                                               │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Statu║│                                                                      │║─────┐║
 ║│     ║│                                                                      │║     │║
@@ -337,27 +334,27 @@ The modal for creating and editing status values in Status Management is used to
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Workflow Management - Clone Status (Modal)
+### Workflow Management - Clone State (Modal)
 
-The clone modal exclusively serves to duplicate an existing status value within Status Management. It opens when an existing status is to be used as a template for a new entry. The aim is to quickly adopt the properties of an existing status and adjust them, without changing the original.
+The clone modal exclusively serves to duplicate an existing state value within State Management. It opens when an existing state is to be used as a template for a new entry. The aim is to quickly adopt the properties of an existing state and adjust them, without changing the original.
 
-In the modal, the fields name, category, and description are automatically prefilled with the source status values. The user can adjust these to uniquely name and describe the new status in context. Cloning facilitates reuse of proven status configurations and accelerates model maintenance, especially for similar process phases or parallel workflows.
+In the modal, the fields name, category, and description are automatically prefilled with the source state values. The user can adjust these to uniquely name and describe the new state in context. Cloning facilitates reuse of proven sate configurations and accelerates model maintenance, especially for similar process phases or parallel workflows.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
-║└─────╔StatusCloneModal════════════════════════════════════════════════════════╗─────┘║
+║└─────╔StateCloneModal═════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Se║│ Clone Status                                                         │║     │║
+║│ / Se║│ Clone State                                                          │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Statu║│                                                                      │║─────┐║
-║│     ║│ You are about to clone the status 'Review'.                          │║     │║
-║│  - A║│ Please adjust the details for the new status below.                  │║─────┤║
+║│     ║│ You are about to clone the state 'Review'.                           │║     │║
+║│  - A║│ Please adjust the details for the new state below.                   │║─────┤║
 ║│  - T║│                                                                      │║     │║
 ║│  - I║│     Neuer Name*: [ Review Copy                                     ] │║atus]│║
 ║│  - W║│        Category: [ ToDo                                           ▼] │║     │║
-║│  - D║│     Description: [ Kopie des Status 'Review'                       ] │║     │║
+║│  - D║│     Description: [ Copy of State 'Review'                          ] │║     │║
 ║│     ║│                                                                      │║-----│║
 ║│     ║│                                                                      │║ […] │║
 ║│     ║│                                                                      │║ […] │║
@@ -378,25 +375,25 @@ In the modal, the fields name, category, and description are automatically prefi
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-### Workflow Management - Delete Status (Modal)
+### Workflow Management - Delete State (Modal)
 
-The delete modal serves the final removal of an existing status value from Status Management. It opens when a status is no longer needed or should be removed for reasons of consistency and clarity.
+The delete modal serves the final removal of an existing state value from State Management. It opens when a state is no longer needed or should be removed for reasons of consistency and clarity.
 
-However, a status can only be deleted if it is not used in any workflow. This applies to active, archived, and draft workflows alike. This check happens automatically before the deletion is permitted. If the status is still in use, the user is informed accordingly and the deletion is blocked.
+However, a state can only be deleted if it is not used in any workflow. This applies to active, archived, and draft workflows alike. This check happens automatically before the deletion is permitted. If the state is still in use, the user is informed accordingly and the deletion is blocked.
 
-When the modal opens, the name of the status to be deleted is displayed clearly to avoid accidental deletions. The user receives a safety prompt stating that this operation cannot be undone. Only after explicit confirmation and successful availability check is the status permanently removed from the system.
+When the modal opens, the name of the sate to be deleted is displayed clearly to avoid accidental deletions. The user receives a safety prompt stating that this operation cannot be undone. Only after explicit confirmation and successful availability check is the state permanently removed from the system.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
 ║┌Header──────────────────────────────────────────────────────────────────────────────┐║
 ║│ * KleeneStar     Workspace ▼   Dashboard ▼       [+ AddObject]         [Search]    │║
-║└─────╔StatusDeleteModal═══════════════════════════════════════════════════════╗─────┘║
+║└─────╔StateDeleteModal════════════════════════════════════════════════════════╗─────┘║
 ║┌Bread║┌Form──────────────────────────────────────────────────────────────────┐║─────┐║
-║│ / Se║│ Delete Status                                                        │║     │║
+║│ / Se║│ Delete State                                                         │║     │║
 ║└─────║├──────────────────────────────────────────────────────────────────────┤║─────┘║
 ║┌Statu║│                                                                      │║─────┐║
-║│     ║│ Are you sure you want to delete the status 'Review'?                 │║     │║
-║│  - A║│ This action cannot be undone. Active status cannot be deleted.       │║─────┤║
+║│     ║│ Are you sure you want to delete the state 'Review'?                  │║     │║
+║│  - A║│ This action cannot be undone. Active state cannot be deleted.        │║─────┤║
 ║│  - T║│                                                                      │║     │║
 ║│  - I║│ To confirm, please type 'Review' in the box below:                   │║atus]│║
 ║│  - W║│ [                                                                  ] │║     │║
@@ -423,7 +420,7 @@ When the modal opens, the name of the status to be deleted is displayed clearly 
 
 ### Workflow Management (Page)
 
-This page provides the central administration view for all workflows assigned to a class. It offers a comprehensive overview of all workflow definitions of a class, including version, status (e.g. "Draft), and relevant metadata. For efficient model maintenance, targeted functions are available: creating new drafts, editing existing drafts in the graphical designer, simulating transitions, publishing reviewed versions, and archiving obsolete workflows.
+This page provides the central administration view for all workflows assigned to a class. It offers a comprehensive overview of all workflow definitions of a class, including version, state (e.g. "Draft), and relevant metadata. For efficient model maintenance, targeted functions are available: creating new drafts, editing existing drafts in the graphical designer, simulating transitions, publishing reviewed versions, and archiving obsolete workflows.
 
 Search and filter functions facilitate navigation, especially for classes with multiple workflow variants or extensive version histories. New workflows (e.g., for alternative process paths or special cases) can be conveniently created via the "Add Workflow" button. Access to this page occurs directly from Class Management via the "Manage Workflows" menu.
 
@@ -441,7 +438,7 @@ Published workflows directly affect the process control of the associated object
 ║│                      │░│                                                           │║
 ║│  - All               │░│ My Workflows                     [Search] [+ Add Workflow]│║
 ║│  - Drafts            │░│                                                           │║
-║│  - Active            │░│ Workflow Name     | Version | Status                      │║
+║│  - Active            │░│ Workflow Name     | Version | State                       │║
 ║│  - Archived          │░│-------------------|---------|-----------------------------│║
 ║│                      │░│ Incident Default  | v2      | Active                  […] │║
 ║│                      │░│ Incident Draft    | v3      | Draft                    ¦  │║
@@ -673,7 +670,7 @@ Within the modal, simple validation rules can be defined, such as whether a part
 
 In the Workflow Designer, the Postfunction Management modal enables targeted configuration of actions that run automatically after a successful transition. Post functions are used to trigger follow-up processes, change data, or initiate system interactions, e.g., setting a field value, sending a notification, or creating a linked object. The modal opens when an existing transition is to be supplemented with a new post function or an existing one adjusted.
 
-Within the modal, simple actions can be selected and configured directly, for example automatically setting a status or adding a comment. For more complex sequences, multiple post functions can be combined and ordered. The interface supports both standard functions and custom extensions, with a description to facilitate traceability of the configuration.
+Within the modal, simple actions can be selected and configured directly, for example automatically setting a state or adding a comment. For more complex sequences, multiple post functions can be combined and ordered. The interface supports both standard functions and custom extensions, with a description to facilitate traceability of the configuration.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
@@ -689,7 +686,7 @@ Within the modal, simple actions can be selected and configured directly, for ex
 ║│     ║│  [+ AddValidator]                                                    │║     │║
 ║│  new║│                                                                      │║     │║
 ║│  ---║│ Postfunction actions:                                                │║     │║
-║│     ║│    ⠿ Set field "Status" = "In Progress"                            x │║     │║
+║│     ║│    ⠿ Set field "State" = "In Progress"                             x │║     │║
 ║│     ║│    ⠿ Add comment: "Processing has started."                        x │║)    │║
 ║│     ║│    ⠿ Send notification to group "SupportTeam"                      x │║ (5) │║
 ║│     ║│                                                                      │║     │║
@@ -792,19 +789,19 @@ Active workflows (Active) cannot be deleted directly. They must first be archive
 
 ## Sitemap
 
-The sitemap defines navigation paths and visibility logic for workflow management within the application. It forms the basis for routing in the context of workspace and class and allows deep-linkable addresses for list views, detail/edit views (designer or table view), publication, versioning, as well as archiving and deletion. Additionally, status maintenance, transition detail routes, permission and trigger management, and validation/simulation are addressable.
+The sitemap defines navigation paths and visibility logic for workflow management within the application. It forms the basis for routing in the context of workspace and class and allows deep-linkable addresses for list views, detail/edit views (designer or table view), publication, versioning, as well as archiving and deletion. Additionally, state maintenance, transition detail routes, permission and trigger management, and validation/simulation are addressable.
 
 |Path                                                                                                           |Page/View                       |Description
 |---------------------------------------------------------------------------------------------------------------|--------------------------------|---------------------------------------------
 |`/workspaces/{workspaceKey}/classes`                                                                           |Class Management                |Overview of all classes in a workspace.
 |`/workspaces/{workspaceKey}/classes/{classKey}`                                                                |Class Detail                    |Detail/entry page of a class incl. actions.
-|`/workspaces/{workspaceKey}/classes/{classKey}/status`                                                         |Status Management               |List and administration of all statuses of a class.
-|`/workspaces/{workspaceKey}/classes/{classKey}/status/new`                                                     |Status New (Modal)              |Create a new status value.
-|`/workspaces/{workspaceKey}/classes/{classKey}/status/{statusId}/edit`                                         |Status Edit (Modal)             |Edit an existing status value.
-|`/workspaces/{workspaceKey}/classes/{classKey}/status/{statusId}/clone`                                        |Status Clone (Modal)            |Duplicate a status as a template.
-|`/workspaces/{workspaceKey}/classes/{classKey}/status/{statusId}/delete`                                       |Status Delete (Modal)           |Final removal of a non-referenced status.
+|`/workspaces/{workspaceKey}/classes/{classKey}/state`                                                         |State Management               |List and administration of all states of a class.
+|`/workspaces/{workspaceKey}/classes/{classKey}/state/new`                                                     |State New (Modal)              |Create a new state value.
+|`/workspaces/{workspaceKey}/classes/{classKey}/state/{stateId}/edit`                                         |State Edit (Modal)             |Edit an existing state value.
+|`/workspaces/{workspaceKey}/classes/{classKey}/state/{stateId}/clone`                                        |State Clone (Modal)            |Duplicate a state as a template.
+|`/workspaces/{workspaceKey}/classes/{classKey}/state/{stateId}/delete`                                       |State Delete (Modal)           |Final removal of a non-referenced state.
 |`/workspaces/{workspaceKey}/classes/{classKey}/workflows`                                                      |Workflow Management             |Designer, lists, matrix, versions; filter/searchable.
-|`/workspaces/{workspaceKey}/classes/{classKey}/workflows?filter={draft|active|archived}`                       |Workflow Management             |Filtered list view by status.
+|`/workspaces/{workspaceKey}/classes/{classKey}/workflows?filter={draft|active|archived}`                       |Workflow Management             |Filtered list view by state.
 |`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}`                                         |Workflow Designer               |Detail view of a workflow with graphical modeling.
 |`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/designer`                                |Workflow Designer               |Explicit designer route (default).
 |`/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowId}/designer?mode=visual`                    |Workflow Designer (Visual)      |Visual canvas mode.
@@ -830,26 +827,26 @@ The sitemap defines navigation paths and visibility logic for workflow managemen
 
 ## API Interfaces (REST Endpoints)
 
-For programmatic access, integration of external systems, and process automation, **KleeneStar** provides a standardized REST API. This interface enables workflow management at the class level and adheres to REST principles. JSON is used as the data exchange format. Authentication and authorization are handled by **KleeneStar**. The status of each request is communicated using standardized HTTP status codes, including successful execution, validation errors, access issues, or missing resources. In addition to direct, synchronous operations such as reading or saving drafts, the API also supports asynchronous processes.
+For programmatic access, integration of external systems, and process automation, **KleeneStar** provides a standardized REST API. This interface enables workflow management at the class level and adheres to REST principles. JSON is used as the data exchange format. Authentication and authorization are handled by **KleeneStar**. The state of each request is communicated using standardized HTTP status codes, including successful execution, validation errors, access issues, or missing resources. In addition to direct, synchronous operations such as reading or saving drafts, the API also supports asynchronous processes.
 
 Workflow management is performed via the following endpoints:
 
 |Endpoint                                                                                                                              |HTTP Method |Description
 |--------------------------------------------------------------------------------------------------------------------------------------|------------|----------------------------------------------------------------------
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/statuses`                                                                          |GET         |Lists all statuses of a class; filter by category/usage.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/statuses`                                                                          |POST        |Creates a status (name, category, description); checks uniqueness.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/statuses/{statusKey}`                                                              |GET         |Details for a status.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/statuses/{statusKey}`                                                              |PUT         |Updates name/category/description; denies incompatible changes when in use.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/statuses/{statusKey}`                                                              |DELETE      |Deletes a non-referenced status.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/statuses/{statusKey}/usage`                                                        |GET         |Usage proof (referencing workflows/versions/transitions).
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows`                                                                         |GET         |Lists all workflows of a class in the workspace. Supports filters (status, version) and pagination.
+|`/api/workspaces/{workspaceKey}/classes/{classKey}/states`                                                                          |GET         |Lists all states of a class; filter by category/usage.
+|`/api/workspaces/{workspaceKey}/classes/{classKey}/states`                                                                          |POST        |Creates a state (name, category, description); checks uniqueness.
+|`/api/workspaces/{workspaceKey}/classes/{classKey}/states/{stateKey}`                                                              |GET         |Details for a state.
+|`/api/workspaces/{workspaceKey}/classes/{classKey}/states/{stateKey}`                                                              |PUT         |Updates name/category/description; denies incompatible changes when in use.
+|`/api/workspaces/{workspaceKey}/classes/{classKey}/states/{stateKey}`                                                              |DELETE      |Deletes a non-referenced state.
+|`/api/workspaces/{workspaceKey}/classes/{classKey}/states/{stateKey}/usage`                                                        |GET         |Usage proof (referencing workflows/versions/transitions).
+|`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows`                                                                         |GET         |Lists all workflows of a class in the workspace. Supports filters (state, version) and pagination.
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows`                                                                         |POST        |Creates a new workflow definition in Draft state. Requires at least `name` and a class-unique `name`.
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowKey}`                                                           |GET         |Returns metadata and state (Draft/Active/Archived) of a workflow definition; optionally with embedded states/transitions via `?include=states,transitions`.
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowKey}`                                                           |PUT         |Updates the draft definition (states, transitions, guards, validators, post functions). The workflow key is immutable. Uses ETag for concurrent changes.
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowKey}`                                                           |DELETE      |Deletes a workflow definition in Draft or Archived state. Active workflows must be archived or replaced first.
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowKey}/clone`                                                     |POST        |Creates a new workflow draft by cloning an existing definition. Optional scope: rules, permissions, triggers, screen overrides.
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowKey}/validate`                                                  |POST        |Validates the current draft definition (graph consistency, key uniqueness, reference integrity, screen/field compatibility) and returns a report.
-|`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowKey}/publish`                                                   |POST        |Publishes the reviewed draft to the active version. Supports optional status mappings in the request body for incompatible changes. May respond synchronously (200) or asynchronously (202).
+|`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowKey}/publish`                                                   |POST        |Publishes the reviewed draft to the active version. Supports optional state mappings in the request body for incompatible changes. May respond synchronously (200) or asynchronously (202).
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowKey}/versions`                                                  |GET         |Lists versions (Active, Archive, Draft history) with diff metadata.
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowKey}/versions/{version}`                                        |GET         |Retrieves a specific version of the workflow definition with associated states/transitions.
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/{workflowKey}/archive`                                                   |POST        |Archives an active workflow version. Requires security-relevant checks regarding running dependencies.
@@ -877,7 +874,7 @@ Workflow management is performed via the following endpoints:
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/import?dryRun=true|false`                                                |POST        |Imports one or more workflows; dry run returns a report without persistence.
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/export?keys=a,b&versions=v2`                                             |GET         |Exports selected workflows/versions as a bundle (JSON/YAML).
 
-The API communicates the outcome of each request using standardized HTTP status codes. In case of errors, common responses include **400 Bad Request**, which indicates issues such as invalid definitions, incorrect mappings, or missing required attributes. A **401 Unauthorized** response signals missing or invalid authentication credentials, while **403 Forbidden** denotes insufficient permissions, for example when required roles like `class_workflow_update` or `class_workflow_publish` are not granted. If a requested workflow, class, or workspace cannot be found, the API returns **404 Not Found**. A **409 Conflict** may occur due to version mismatches (e.g., ETag conflicts), attempts to delete active workflows, or publication actions that interfere with the current state. Additionally, **422 Unprocessable Entity** is used when rule violations, guard conditions, validator failures, or unresolvable status mappings prevent successful processing.
+The API communicates the outcome of each request using standardized HTTP status codes. In case of errors, common responses include **400 Bad Request**, which indicates issues such as invalid definitions, incorrect mappings, or missing required attributes. A **401 Unauthorized** response signals missing or invalid authentication credentials, while **403 Forbidden** denotes insufficient permissions, for example when required roles like `class_workflow_update` or `class_workflow_publish` are not granted. If a requested workflow, class, or workspace cannot be found, the API returns **404 Not Found**. A **409 Conflict** may occur due to version mismatches (e.g., ETag conflicts), attempts to delete active workflows, or publication actions that interfere with the current state. Additionally, **422 Unprocessable Entity** is used when rule violations, guard conditions, validator failures, or unresolvable state mappings prevent successful processing.
 
 For successful operations, the API returns **201 Created** when new resources are generated via POST requests, such as drafts, clones, or triggers. A **200 OK** response confirms successful execution of GET, PUT, or POST requests, including validation or simulation reports. When an operation is initiated for asynchronous processing, such as publishing workflows in large environments, the API responds with **202 Accepted**. Finally, **204 No Content** is returned when DELETE operations complete successfully or when no response body is required.
 
@@ -887,15 +884,15 @@ Workflow management follows an event-driven architectural principle to communica
 
 |Event                        |Description
 |-----------------------------|--------------------------------------------------------------------------------------------------------------
-|`StatusCreated`              |Emitted when a new status is created within a class.
-|`StatusUpdated`              |Signals changes to an existing status (name, category, description).
-|`StatusCloned`               |Emitted when a status is duplicated from an existing status.
-|`StatusDeleted`              |Signals the final removal of a status, provided it is no longer referenced.
+|`StateCreated`               |Emitted when a new state is created within a class.
+|`StateUpdated`               |Signals changes to an existing state (name, category, description).
+|`StateCloned`                |Emitted when a state is duplicated from an existing state.
+|`StateDeleted`               |Signals the final removal of a state, provided it is no longer referenced.
 |`WorkflowCreated`            |Emitted when a new workflow definition (Draft) is created within a class.
 |`WorkflowUpdated`            |Signals changes to an existing draft definition (states, transitions, guards, validators, post functions).
 |`WorkflowValidated`          |Emitted after a draft definition has been successfully reviewed; contains the validation report.
 |`WorkflowValidationFailed`   |Emitted when validation fails; contains validation errors and affected elements.
-|`WorkflowPublished`          |Emitted when a reviewed draft is published as the active version; includes version information and status mappings.
+|`WorkflowPublished`          |Emitted when a reviewed draft is published as the active version; includes version information and state mappings.
 |`WorkflowArchived`           |Marks a previously active workflow version as archived; subsequently read-only.
 |`WorkflowRestored`           |Reports restoration of an archived version as active, if compatible.
 |`WorkflowDeleted`            |Signals final removal of a draft or archived workflow definition after retention and dependency checks.
@@ -941,24 +938,24 @@ The following table lists fine-grained permissions for workflow management:
 |`class_workflow_export`             |Export definitions/versions.
 |`class_workflow_manage_permissions` |Assign/update/remove permissions (workflow/transition-specific).
 |`class_transition_execute`          |Execute a transition on objects (workflow-wide or transition-specific).
-|`class_status_read`                 |Read the status catalog of a class.
-|`class_status_create`               |Create a status.
-|`class_status_update`               |Edit a status (name, category, description).
-|`class_status_clone`                |Clone a status.
-|`class_status_delete`               |Delete a non-referenced status.
-|`class_status_usage_read`           |Read the usage proof of a status.
+|`class_state_read`                  |Read the state catalog of a class.
+|`class_state_create`                |Create a state.
+|`class_state_update`                |Edit a state (name, category, description).
+|`class_state_clone`                 |Clone a state.
+|`class_state_delete`                |Delete a non-referenced state.
+|`class_state_usage_read`            |Read the usage proof of a state.
 
 These permissions are bundled into typical roles in policies:
 
 |Policy                            |Description                        |Included Permissions
 |----------------------------------|-----------------------------------|------------------------------
-|`class_workflow_admin_policy`     |Full administration.               |all `class_workflow_*`, `class_transition_execute`, `class_status_*`
+|`class_workflow_admin_policy`     |Full administration.               |all `class_workflow_*`, `class_transition_execute`, `class_state_*`
 |`class_workflow_publisher_policy` |Release/lifecycle control.         |`class_workflow_read`, `class_workflow_validate`, `class_workflow_publish`, `class_workflow_archive`, `class_workflow_restore`, `class_workflow_versions_read`
 |`class_workflow_edit_policy`      |Model maintenance without release. |`class_workflow_read`, `class_workflow_update`, `class_workflow_validate`, `class_workflow_clone`, `class_workflow_versions_read`
 |`class_workflow_view_policy`      |Read-only permissions.             |`class_workflow_read`, `class_workflow_versions_read`
 |`class_workflow_importer_policy`  |Import external definitions.       |`class_workflow_import`
 |`class_workflow_exporter_policy`  |Export definitions/versions.       |`class_workflow_export`
-|`class_status_admin_policy`       |Maintain status catalog.           |`class_status_*`
+|`class_state_admin_policy`        |Maintain state catalog.            |`class_state_*`
 
 ## Conclusion
 

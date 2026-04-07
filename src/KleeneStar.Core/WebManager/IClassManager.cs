@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
+using System;
+using System.Collections.Generic;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebIndex.Queries;
 
@@ -80,14 +80,14 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="classEntity">The class to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        IClassManager AddClass(Class classEntity);
+        IClassManager Add(Class classEntity);
 
         /// <summary>
         /// Update a class to the manager.
         /// </summary>
         /// <param name="classEntity">The class to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        IClassManager UpdateClass(Class classEntity);
+        IClassManager Update(Class classEntity);
 
         /// <summary>
         /// Removes the specified class from the manager.
@@ -96,6 +96,6 @@ namespace KleeneStar.Core.WebManager
         /// not exist in the manager, no action is taken.</remarks>
         /// <param name="classId">The class id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        IClassManager RemoveClass(Guid classId);
+        IClassManager Remove(Guid classId);
     }
 }

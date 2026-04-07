@@ -149,7 +149,7 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="fieldEntity">The field to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IFieldManager AddField(Field fieldEntity)
+        public IFieldManager Add(Field fieldEntity)
         {
             ArgumentNullException.ThrowIfNull(fieldEntity);
 
@@ -168,7 +168,7 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="fieldEntity">The field to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IFieldManager UpdateField(Field fieldEntity)
+        public IFieldManager Update(Field fieldEntity)
         {
             ArgumentNullException.ThrowIfNull(fieldEntity);
 
@@ -189,7 +189,7 @@ namespace KleeneStar.Core.WebManager
         /// not exist in the manager, no action is taken.</remarks>
         /// <param name="fieldId">The field id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IFieldManager RemoveField(Guid fieldId)
+        public IFieldManager Remove(Guid fieldId)
         {
             var fieldEntry = GetField(fieldId);
 

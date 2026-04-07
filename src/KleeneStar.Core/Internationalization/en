@@ -110,7 +110,35 @@ priority.edit.title=Edit Priority
 priority.clone.title=Clone Priority
 priority.delete.title=Delete Priority
 
+workflow.manage.title=Workflows
+workflow.manage.label=Workflow
+workflow.manage.description=This view serves as the central management hub for all workflows defined in the system. It provides a comprehensive overview of the available workflows and offers functions for creation, editing, and organization.
 workflow.link.label=Workflows
+workflow.add.title=Add Workflow
+workflow.add.label=Add Workflow
+workflow.name.label=Workflow Name
+workflow.name.placeholder=Enter the name of the workflow.
+workflow.name.help=The name helps you quickly identify this workflow.
+workflow.description.label=Description
+workflow.description.placeholder=Enter a brief description of the workflow.
+workflow.edit.title=Edit Workflow
+workflow.clone.title=Clone Workflow
+workflow.delete.title=Delete Workflow
+
+state.manage.title=States
+state.manage.label=State
+state.manage.description=This view serves as the central management hub for all states defined in the system. It provides a comprehensive overview of the available states and offers functions for creation, editing, and organization.
+state.link.label=States
+state.add.title=Add State
+state.add.label=Add State
+state.name.label=State Name
+state.name.placeholder=Enter the name of the state.
+state.name.help=The name helps you quickly identify this state.
+state.description.label=Description
+state.description.placeholder=Enter a brief description of the state.
+state.edit.title=Edit State
+state.clone.title=Clone State
+state.delete.title=Delete State
 
 object.add.title=Add Object
 object.add.label=Add Object

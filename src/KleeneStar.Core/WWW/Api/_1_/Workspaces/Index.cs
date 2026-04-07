@@ -219,7 +219,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             fieldMap.BindTo(newItem);
 
-            CoreHub.WorkspaceManager.AddWorkspace(newItem);
+            CoreHub.WorkspaceManager.Add(newItem);
 
             return new RestApiCrudResultCreate();
         }
@@ -257,7 +257,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             fieldMap.BindTo(newItem);
 
-            CoreHub.WorkspaceManager.AddWorkspace(newItem);
+            CoreHub.WorkspaceManager.Add(newItem);
 
             return new RestApiCrudResultCreate();
         }
@@ -278,7 +278,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         {
             var res = base.Update(existingItem, payload, request);
 
-            CoreHub.WorkspaceManager.UpdateWorkspace(existingItem);
+            CoreHub.WorkspaceManager.Update(existingItem);
 
             return res;
         }
@@ -297,7 +297,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         protected override IRestApiCrudResultDelete Delete(Workspace existingItem, IRequest request)
         {
-            CoreHub.WorkspaceManager.RemoveWorkspace(existingItem.Id);
+            CoreHub.WorkspaceManager.Remove(existingItem.Id);
 
             return base.Delete(existingItem, request);
         }

@@ -201,7 +201,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities
 
             fieldMap.BindTo(newItem);
 
-            CoreHub.PriorityManager.AddPriority(newItem);
+            CoreHub.PriorityManager.Add(newItem);
 
             // create notification
             CoreHub.AddNotification("Create", "success", 5000);
@@ -242,7 +242,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities
 
             fieldMap.BindTo(newItem);
 
-            CoreHub.PriorityManager.AddPriority(newItem);
+            CoreHub.PriorityManager.Add(newItem);
 
             // create notification
             CoreHub.AddNotification("Clone", "success", 5000);
@@ -266,7 +266,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities
         {
             var res = base.Update(existingItem, payload, request);
 
-            CoreHub.PriorityManager.UpdatePriority(existingItem);
+            CoreHub.PriorityManager.Update(existingItem);
 
             // update notification
             CoreHub.AddNotification("Update", "success", 5000);
@@ -288,7 +288,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities
         /// </returns>
         protected override IRestApiCrudResultDelete Delete(Model.Entities.Priority existingItem, IRequest request)
         {
-            CoreHub.PriorityManager.RemovePriority(existingItem.Id);
+            CoreHub.PriorityManager.Remove(existingItem.Id);
 
             return base.Delete(existingItem, request);
         }

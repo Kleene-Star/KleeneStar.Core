@@ -90,14 +90,14 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="formEntity">The form to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        IFormManager AddForm(Form formEntity);
+        IFormManager Add(Form formEntity);
 
         /// <summary>
         /// Update a form to the manager.
         /// </summary>
         /// <param name="formEntity">The form to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        IFormManager UpdateForm(Form formEntity);
+        IFormManager Update(Form formEntity);
 
         /// <summary>
         /// Removes the specified form from the manager.
@@ -106,6 +106,6 @@ namespace KleeneStar.Core.WebManager
         /// not exist in the manager, no action is taken.</remarks>
         /// <param name="formId">The form id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        IFormManager RemoveForm(Guid formId);
+        IFormManager Remove(Guid formId);
     }
 }

@@ -201,7 +201,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
 
             fieldMap.BindTo(newItem);
 
-            CoreHub.FormManager.AddForm(newItem);
+            CoreHub.FormManager.Add(newItem);
 
             // create notification
             CoreHub.AddNotification("Create", "success", 5000);
@@ -242,7 +242,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
 
             fieldMap.BindTo(newItem);
 
-            CoreHub.FormManager.AddForm(newItem);
+            CoreHub.FormManager.Add(newItem);
 
             // create notification
             CoreHub.AddNotification("Clone", "success", 5000);
@@ -266,7 +266,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
         {
             var res = base.Update(existingItem, payload, request);
 
-            CoreHub.FormManager.UpdateForm(existingItem);
+            CoreHub.FormManager.Update(existingItem);
 
             // update notification
             CoreHub.AddNotification("Update", "success", 5000);
@@ -288,7 +288,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
         /// </returns>
         protected override IRestApiCrudResultDelete Delete(Model.Entities.Form existingItem, IRequest request)
         {
-            CoreHub.FormManager.RemoveForm(existingItem.Id);
+            CoreHub.FormManager.Remove(existingItem.Id);
 
             return base.Delete(existingItem, request);
         }

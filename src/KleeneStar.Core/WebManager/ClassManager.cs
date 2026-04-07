@@ -131,7 +131,7 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="classEntity">The class to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IClassManager AddClass(Class classEntity)
+        public IClassManager Add(Class classEntity)
         {
             ArgumentNullException.ThrowIfNull(classEntity);
 
@@ -150,7 +150,7 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="classEntity">The class to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IClassManager UpdateClass(Class classEntity)
+        public IClassManager Update(Class classEntity)
         {
             ArgumentNullException.ThrowIfNull(classEntity);
 
@@ -171,7 +171,7 @@ namespace KleeneStar.Core.WebManager
         /// not exist in the manager, no action is taken.</remarks>
         /// <param name="classId">The class id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
-        public IClassManager RemoveClass(Guid classId)
+        public IClassManager Remove(Guid classId)
         {
             var classEntry = GetClass(classId);
 

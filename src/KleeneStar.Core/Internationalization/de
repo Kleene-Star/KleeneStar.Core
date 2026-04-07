@@ -110,7 +110,35 @@ priority.edit.title=Priorität bearbeiten
 priority.clone.title=Priorität klonen
 priority.delete.title=Priorität löschen
 
+workflow.manage.title=Workflows
+workflow.manage.label=Workflow
+workflow.manage.description=Diese Ansicht dient als zentrale Verwaltungsstelle für alle im System definierten Workflows. Sie bietet einen umfassenden Überblick über die verfügbaren Workflowtypen und stellt Funktionen für deren Erstellung, Bearbeitung und Organisation bereit.
 workflow.link.label=Workflows
+workflow.add.title=Workflow hinzufügen
+workflow.add.label=Workflow hinzufügen
+workflow.name.label=Workflowname
+workflow.name.placeholder=Geben Sie den Namen des Workflows ein.
+workflow.name.help=Der Name hilft Ihnen, diesen Workflow schnell zu identifizieren.
+workflow.description.label=Beschreibung
+workflow.description.placeholder=Geben Sie eine kurze Beschreibung des Workflows ein.
+workflow.edit.title=Workflow bearbeiten
+workflow.clone.title=Workflow klonen
+workflow.delete.title=Workflow löschen
+
+state.manage.title=Status
+state.manage.label=Status
+state.manage.description=Diese Ansicht dient als zentrale Verwaltungsstelle für alle im System definierten Status. Sie bietet einen umfassenden Überblick über die verfügbaren Statustypen und stellt Funktionen für deren Erstellung, Bearbeitung und Organisation bereit.
+state.link.label=Status
+state.add.title=Status hinzufügen
+state.add.label=Status hinzufügen
+state.name.label=Statusname
+state.name.placeholder=Geben Sie den Namen des Status ein.
+state.name.help=Der Name hilft Ihnen, diesen Status schnell zu identifizieren.
+state.description.label=Beschreibung
+state.description.placeholder=Geben Sie eine kurze Beschreibung des Status ein.
+state.edit.title=Status bearbeiten
+state.clone.title=Status klonen
+state.delete.title=Status löschen
 
 object.add.title=Neues Objekt
 object.add.label=Objekt hinzufügen

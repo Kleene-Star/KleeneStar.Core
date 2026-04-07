@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebParameter
         public static string Key => "priorityid";
 
         /// <summary>
-        /// Returns or sets the scope of the parameter.
+        /// Gets or sets the scope of the parameter.
         /// </summary>
         public ParameterScope Scope { get; set; }
 
