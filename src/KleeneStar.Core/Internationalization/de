@@ -176,3 +176,5 @@ dashboard.description.label=Beschreibung
 dashboard.description.placeholder=Geben Sie eine kurze Beschreibung des Dashboards ein.
 dashboard.table.header=Meine Dashboards
 dashboard.quickfilter.all.label=Alle Dashboards
+dashboard.list.label=Dashboards
+dashboard.view.label=Dashboard

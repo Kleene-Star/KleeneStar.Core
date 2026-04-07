@@ -7,12 +7,13 @@ using WebExpress.WebCore.WebPage;
 namespace KleeneStar.Core.WWW
 {
     /// <summary>
-    /// Represents the dashboard page of the application.
+    /// Represents the home page of the application. Displays the list of available dashboards
+    /// in the sidebar and, when a dashboard is selected, shows its content on the right.
     /// </summary>
     [WebIcon<KleeneStarIcon>]
     [Title("kleenestar.core:kleenestar.label")]
     [Scope<IScopeGeneral>]
-    public sealed class Index : IPage<VisualTreeWebApp>
+    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>
         /// Initializes a new instance of the class.
