@@ -12,7 +12,7 @@ namespace KleeneStar.Core.WebControl
     public class WorkspaceDropdownControl : ControlRestDropdown
     {
         /// <summary>
-        /// Returns the control link for adding a new workspace.
+        /// Gets the control link for adding a new workspace.
         /// </summary>
         public ControlDropdownItemLink AddWorkspace { get; } = new()
         {
@@ -22,7 +22,7 @@ namespace KleeneStar.Core.WebControl
         };
 
         /// <summary>
-        /// Returns the control link for managing workspaces.
+        /// Gets the control link for managing workspaces.
         /// </summary>
         public ControlDropdownItemLink ManageWorkspace { get; } = new()
         {

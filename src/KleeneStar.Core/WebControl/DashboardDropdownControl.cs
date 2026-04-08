@@ -12,7 +12,7 @@ namespace KleeneStar.Core.WebControl
     public class DashboardDropdownControl : ControlRestDropdown
     {
         /// <summary>
-        /// Returns the control link for adding a new dashboard.
+        /// Gets the control link for adding a new dashboard.
         /// </summary>
         public ControlDropdownItemLink AddDashboard { get; } = new()
         {
@@ -22,7 +22,7 @@ namespace KleeneStar.Core.WebControl
         };
 
         /// <summary>
-        /// Returns the control link for managing dashboards.
+        /// Gets the control link for managing dashboards.
         /// </summary>
         public ControlDropdownItemLink ManageDashboard { get; } = new()
         {

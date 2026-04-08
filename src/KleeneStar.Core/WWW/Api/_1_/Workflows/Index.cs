@@ -96,7 +96,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workflows
                 Name = data.Name + " (Copy)",
                 Description = data.Description,
                 Icon = data.Icon,
-                State = TypeWorkspaceState.Active
+                State = WorkflowState.Active
             };
 
             return RetrieveForClone(request, newItem, "kleenestar.core:workflow.clone.title");
@@ -196,7 +196,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workflows
             newItem = new Model.Entities.Workflow(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = TypeWorkspaceState.Active
+                State = WorkflowState.Active
             };
 
             fieldMap.BindTo(newItem);
@@ -237,7 +237,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workflows
             newItem = new Model.Entities.Workflow(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = TypeWorkspaceState.Active
+                State = WorkflowState.Active
             };
 
             fieldMap.BindTo(newItem);

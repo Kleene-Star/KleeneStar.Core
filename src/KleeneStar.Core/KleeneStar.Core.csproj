@@ -16,6 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Assets\img\dashboard.svg" />
 	  <None Remove="Assets\img\workspace.svg" />
 	</ItemGroup>
 
@@ -46,6 +47,12 @@
 	<ItemGroup>
 	  <EmbeddedResource Update="Assets\img\workspace.svg">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Assets\img\dashboard.svg">
+	    <CopyToOutputDirectory>Never</CopyToOutputDirectory>
 	  </EmbeddedResource>
 	</ItemGroup>
 

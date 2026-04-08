@@ -21,7 +21,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class WorkspaceCloneFormFragment : FragmentControlRestFormClone
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the workspace.
+        /// Gets the input text control for specifying the name of the workspace.
         /// </summary>
         public ControlRestFormItemInputUnique WorkspaceName { get; } = new()
         {
@@ -34,7 +34,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the key of the workspace.
+        /// Gets the input text control for specifying the key of the workspace.
         /// </summary>
         public ControlRestFormItemInputUnique Key { get; } = new()
         {
@@ -48,7 +48,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the input tag definition for the workspace category field.
+        /// Gets the input tag definition for the workspace category field.
         /// </summary>
         public ControlFormItemInputTag Category { get; } = new()
         {
@@ -59,7 +59,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the workspace.
+        /// Gets the input text control for specifying the description of the workspace.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
@@ -69,6 +69,19 @@ namespace KleeneStar.Core.WebFragment
             Format = TypeEditTextFormat.Wysiwyg,
             Required = false
         };
+
+        /// <summary>
+        /// Gets the input selection control for the state.
+        /// </summary>
+        public ControlRestFormItemInputSelection WorkspaceState { get; } = new()
+        {
+            Name = nameof(Model.Entities.Workspace.State),
+            Label = "kleenestar.core:workspace.state.label",
+            Placeholder = "kleenestar.core:workspace.state.placeholder",
+            Help = "kleenestar.core:workspace.state.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.State>()
+        };
+
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -81,6 +94,7 @@ namespace KleeneStar.Core.WebFragment
             Add(WorkspaceName);
             Add(Category);
             Add(Description);
+            Add(WorkspaceState);
 
             Mode = TypeRestFormMode.Clone;
             Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();

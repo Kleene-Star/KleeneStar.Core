@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WebFragment
     [Scope<global::KleeneStar.Core.WWW.Forms._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Workflows._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.States._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Statuses._classid_.Index>]
     [Cache]
     public sealed class ClassSidebarHeaderFragment : FragmentControlSidebarItemHeader
     {

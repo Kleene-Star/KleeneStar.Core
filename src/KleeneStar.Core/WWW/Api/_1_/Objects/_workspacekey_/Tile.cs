@@ -81,7 +81,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
                     Title = x.Summary,
                     Text = x.Description,
                     Image = x.Icon?.Uri?.ToString(),
-                    SecondaryAction = GetPrimaryAction(x, request)?.ToJson()
+                    PrimaryAction = GetPrimaryAction(x, request)?.ToJson()
                     //Options = GetOptions(x, request)
                 });
         }

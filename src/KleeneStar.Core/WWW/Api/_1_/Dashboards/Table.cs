@@ -71,6 +71,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
                 Label = "Description",
                 Visible = true
             };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "state",
+                Label = "State",
+                Visible = false
+            };
         }
 
         /// <summary>
@@ -110,6 +117,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
                         new() {
                             Content = x.Description
                         },
+                        new() {
+                            Content = x.State.ToString()
+                        }
                     ],
                     Options = GetOptions(x, request).Select(o => o.ToJson()),
                     Uri = GetUri(x, request)?.ToString(),
@@ -176,7 +186,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
                 switch (key.ToLowerInvariant())
                 {
                     case "active":
-                        query = query.Where(x => x.State == TypeDashboardState.Active);
+                        query = query.Where(x => x.State == DashboardState.Active);
                         break;
                     default:
                         continue;

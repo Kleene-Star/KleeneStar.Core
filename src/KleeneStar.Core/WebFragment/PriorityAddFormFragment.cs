@@ -20,7 +20,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class PriorityAddFormFragment : FragmentControlRestFormAdd
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the priority.
+        /// Gets the input text control for specifying the name of the priority.
         /// </summary>
         public ControlRestFormItemInputUnique PriorityName { get; } = new()
         {
@@ -33,7 +33,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the priority.
+        /// Gets the input text control for specifying the description of the priority.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
@@ -45,6 +45,18 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
+        /// Gets the input selection control for the state.
+        /// </summary>
+        public ControlRestFormItemInputSelection PriorityState { get; } = new()
+        {
+            Name = nameof(Model.Entities.Priority.State),
+            Label = "kleenestar.core:priority.state.label",
+            Placeholder = "kleenestar.core:priority.state.placeholder",
+            Help = "kleenestar.core:priority.state.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.State>()
+        };
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
@@ -53,6 +65,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Add(PriorityName);
             Add(Description);
+            Add(PriorityState);
 
             Mode = TypeRestFormMode.Add;
             Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>();

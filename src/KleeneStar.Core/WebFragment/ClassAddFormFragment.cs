@@ -20,7 +20,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class ClassAddFormFragment : FragmentControlRestFormAdd
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the class.
+        /// Gets the input text control for specifying the name of the class.
         /// </summary>
         public ControlRestFormItemInputUnique ClassName { get; } = new()
         {
@@ -33,7 +33,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the class.
+        /// Gets the input text control for specifying the description of the class.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
@@ -45,6 +45,18 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
+        /// Gets the input selection control for the state.
+        /// </summary>
+        public ControlRestFormItemInputSelection ClassState { get; } = new()
+        {
+            Name = nameof(Model.Entities.Class.State),
+            Label = "kleenestar.core:class.state.label",
+            Placeholder = "kleenestar.core:class.state.placeholder",
+            Help = "kleenestar.core:class.state.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.State>()
+        };
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
@@ -53,6 +65,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Add(ClassName);
             Add(Description);
+            Add(ClassState);
 
             Mode = TypeRestFormMode.Add;
             Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();

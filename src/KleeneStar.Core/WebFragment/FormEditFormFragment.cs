@@ -20,7 +20,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class FormEditFormFragment : FragmentControlRestFormEdit
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the form.
+        /// Gets the input text control for specifying the name of the form.
         /// </summary>
         public ControlRestFormItemInputUnique FormName { get; } = new()
         {
@@ -33,7 +33,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the form.
+        /// Gets the input text control for specifying the description of the form.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
@@ -45,6 +45,18 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
+        /// Gets the input selection control for the state.
+        /// </summary>
+        public ControlRestFormItemInputSelection FormState { get; } = new()
+        {
+            Name = nameof(Model.Entities.Form.State),
+            Label = "kleenestar.core:form.state.label",
+            Placeholder = "kleenestar.core:form.state.placeholder",
+            Help = "kleenestar.core:form.state.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.State>()
+        };
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
@@ -53,6 +65,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Add(FormName);
             Add(Description);
+            Add(FormState);
 
             Mode = TypeRestFormMode.Edit;
             Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Index>();

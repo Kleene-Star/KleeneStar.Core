@@ -22,7 +22,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class ObjectAddFormFragment : FragmentControlRestFormAdd
     {
         /// <summary>
-        /// Returns the input text control for specifying the summary of the object.
+        /// Gets the input text control for specifying the summary of the object.
         /// </summary>
         public ControlRestFormItemInputUnique Summary { get; } = new()
         {
@@ -34,7 +34,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the object.
+        /// Gets the input text control for specifying the description of the object.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {

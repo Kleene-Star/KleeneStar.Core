@@ -89,6 +89,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 Label = "Description",
                 Visible = true
             };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "state",
+                Label = "State",
+                Visible = false
+            };
         }
 
         /// <summary>
@@ -134,6 +141,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                         new() {
                             Content = x.Description
                         },
+                        new() {
+                            Content = x.State.ToString()
+                        }
                     ],
                     Options = GetOptions(x, request).Select(o => o.ToJson()),
                     Uri = GetUri(x, request)?.ToString(),
@@ -210,7 +220,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 switch (key.ToLowerInvariant())
                 {
                     case "active":
-                        query = query.Where(x => x.State == TypeWorkspaceState.Active);
+                        query = query.Where(x => x.State == WorkspaceState.Active);
                         break;
                     default:
                         continue;

@@ -20,7 +20,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class FieldCloneFormFragment : FragmentControlRestFormClone
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the field.
+        /// Gets the input text control for specifying the name of the field.
         /// </summary>
         public ControlRestFormItemInputUnique FieldName { get; } = new()
         {
@@ -33,7 +33,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the field.
+        /// Gets the input text control for specifying the description of the field.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
@@ -45,6 +45,18 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
+        /// Gets the input selection control for the state.
+        /// </summary>
+        public ControlRestFormItemInputSelection FieldState { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.State),
+            Label = "kleenestar.core:field.state.label",
+            Placeholder = "kleenestar.core:field.state.placeholder",
+            Help = "kleenestar.core:field.state.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.State>()
+        };
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
@@ -53,6 +65,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Add(FieldName);
             Add(Description);
+            Add(FieldState);
 
             Mode = TypeRestFormMode.Clone;
             Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();

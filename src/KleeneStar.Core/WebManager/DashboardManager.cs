@@ -1,10 +1,10 @@
-﻿using System;
+﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Model;
+using KleeneStar.Model.Entities;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using KleeneStar.Core.WebParameter;
-using KleeneStar.Model;
-using KleeneStar.Model.Entities;
 using WebExpress.WebCore;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebIndex.Queries;
@@ -41,7 +41,7 @@ namespace KleeneStar.Core.WebManager
         public event EventHandler<Dashboard> DashboardRemoved;
 
         /// <summary>
-        /// Returns the collection of names that are reserved and cannot be used for custom dashboards.
+        /// Gets the collection of names that are reserved and cannot be used for custom dashboards.
         /// </summary>
         public static IEnumerable<string> ReservedDashboardNames =>
         [

@@ -22,7 +22,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class DashboardDropdownFragment : DashboardDropdownControl, IFragmentControl<DashboardDropdownControl>, IFragmentControlNavigationItem
     {
         /// <summary>
-        /// Returns the context of the fragment.
+        /// Gets the context of the fragment.
         /// </summary>
         public IFragmentContext FragmentContext { get; private set; }
 

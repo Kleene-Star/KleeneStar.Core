@@ -70,6 +70,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
                 Label = "Description",
                 Visible = true
             };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "state",
+                Label = "State",
+                Visible = false
+            };
         }
 
         /// <summary>
@@ -114,6 +121,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
                         new() {
                             Content = x.Description
                         },
+                        new() {
+                            Content = x.State.ToString()
+                        }
                     ],
                     Options = GetOptions(x, request).Select(o => o.ToJson()),
                     Uri = GetUri(x, request)?.ToString()

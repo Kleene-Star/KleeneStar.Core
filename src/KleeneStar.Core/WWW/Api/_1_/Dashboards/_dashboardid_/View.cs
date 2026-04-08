@@ -1,4 +1,5 @@
 using KleeneStar.Core.WebParameter;
+using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
@@ -44,9 +45,44 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards._dashboardid_
                 yield break;
             }
 
-            // TODO: Yield RestApiDashboardColumn entries once widget configuration is
-            // persisted in the model.
-            yield break;
+            foreach (var column in dashboard.Columns)
+            {
+                yield return new RestApiDashboardColumn
+                {
+                    Id = column.Id.ToString(),
+                    Label = column.Name,
+                    Size = column.Size,
+                    Widgets = MapWidgets(column.Widgets)
+                };
+            }
+        }
+
+        /// <summary>
+        /// Maps the widget entities of a dashboard column to their REST API representations.
+        /// </summary>
+        /// <param name="widgets">
+        /// The collection of widgets associated with a dashboard column.
+        /// Must not be null.
+        /// </param>
+        /// <returns>
+        /// A list of REST API dashboard widgets ready for serialization.
+        /// </returns>
+        private static List<RestApiDashboardWidget> MapWidgets(IEnumerable<Widget> widgets)
+        {
+            var result = new List<RestApiDashboardWidget>();
+
+            foreach (var widget in widgets)
+            {
+                result.Add(new RestApiDashboardWidgetInfo
+                {
+                    Color = "blue",
+                    Movable = true,
+                    Title = widget.Name,
+                    Description = widget.Wql
+                });
+            }
+
+            return result;
         }
     }
 }

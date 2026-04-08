@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class WorkspaceAvatarFormFragment : FragmentControlRestFormEdit
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the workspace.
+        /// Gets the input text control for specifying the name of the workspace.
         /// </summary>
         public ControlFormItemInputAvatar Avatar { get; } = new()
         {

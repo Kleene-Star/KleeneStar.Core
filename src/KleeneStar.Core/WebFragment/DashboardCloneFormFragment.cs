@@ -20,7 +20,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class DashboardCloneFormFragment : FragmentControlRestFormClone
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the dashboard.
+        /// Gets the input text control for specifying the name of the dashboard.
         /// </summary>
         public ControlRestFormItemInputUnique DashboardName { get; } = new()
         {
@@ -33,7 +33,18 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the dashboard.
+        /// Gets the input tag definition for the category field.
+        /// </summary>
+        public ControlFormItemInputTag Category { get; } = new()
+        {
+            Name = nameof(Model.Entities.Dashboard.Categories),
+            Label = "kleenestar.core:dashboard.category.label",
+            Placeholder = "kleenestar.core:dashboard.category.placeholder",
+            Help = "kleenestar.core:dashboard.category.help"
+        };
+
+        /// <summary>
+        /// Gets the input text control for specifying the description of the dashboard.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
@@ -45,6 +56,18 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
+        /// Gets the input selection control for the state.
+        /// </summary>
+        public ControlRestFormItemInputSelection DashboardState { get; } = new()
+        {
+            Name = nameof(Model.Entities.Dashboard.State),
+            Label = "kleenestar.core:dashboard.state.label",
+            Placeholder = "kleenestar.core:dashboard.state.placeholder",
+            Help = "kleenestar.core:dashboard.state.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.State>()
+        };
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
@@ -52,7 +75,9 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext)
         {
             Add(DashboardName);
+            Add(Category);
             Add(Description);
+            Add(DashboardState);
 
             Mode = TypeRestFormMode.Clone;
             Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Index>();

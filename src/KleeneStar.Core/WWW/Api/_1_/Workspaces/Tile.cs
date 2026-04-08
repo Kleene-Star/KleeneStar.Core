@@ -153,7 +153,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 switch (key.ToLowerInvariant())
                 {
                     case "active":
-                        query = query.Where(x => x.State == TypeWorkspaceState.Active);
+                        query = query.Where(x => x.State == WorkspaceState.Active);
                         break;
                     default:
                         continue;

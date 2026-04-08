@@ -25,67 +25,67 @@ namespace KleeneStar.Core
         private static FormManager _formManager;
         private static PriorityManager _priorityManager;
         private static WorkflowManager _workflowManager;
-        private static WorkflowStateManager _workflowStateManager;
+        private static StatusManager _statusManager;
         private static ObjectManager _objectManager;
         private static DashboardManager _dashboardManager;
 
         /// <summary>
-        /// Returns the shared instance of the component hub used for managing and coordinating application components.
+        /// Gets the shared instance of the component hub used for managing and coordinating application components.
         /// </summary>
         public static IComponentHub ComponentHub { get; internal set; }
 
         /// <summary>
-        /// Returns the current application context, which provides access to application-wide services and configurations.
+        /// Gets the current application context, which provides access to application-wide services and configurations.
         /// </summary>
         public static IApplicationContext ApplicationContet { get; internal set; }
 
         /// <summary>
-        /// Returns the current HTTP server context for the application.
+        /// Gets the current HTTP server context for the application.
         /// </summary>
         public static IHttpServerContext HttpServerContext { get; internal set; }
 
         /// <summary>
-        /// Returns the workspace manager responsible for managing workspaces within the application.
+        /// Gets the workspace manager responsible for managing workspaces within the application.
         /// </summary>
         public static IWorkspaceManager WorkspaceManager => _workspaceManager ??= ComponentHub.GetComponentManager<WorkspaceManager>();
 
         /// <summary>
-        /// Returns the class manager responsible for managing classes within the workspace.
+        /// Gets the class manager responsible for managing classes within the workspace.
         /// </summary>
         public static IClassManager ClassManager => _classManager ??= ComponentHub.GetComponentManager<ClassManager>();
 
         /// <summary>
-        /// Returns the field manager responsible for managing fields within the class.
+        /// Gets the field manager responsible for managing fields within the class.
         /// </summary>
         public static IFieldManager FieldManager => _fieldManager ??= ComponentHub.GetComponentManager<FieldManager>();
 
         /// <summary>
-        /// Returns the form manager responsible for managing forms within the class.
+        /// Gets the form manager responsible for managing forms within the class.
         /// </summary>
         public static IFormManager FormManager => _formManager ??= ComponentHub.GetComponentManager<FormManager>();
 
         /// <summary>
-        /// Returns the priority manager responsible for managing priorities within the class.
+        /// Gets the priority manager responsible for managing priorities within the class.
         /// </summary>
         public static IPriorityManager PriorityManager => _priorityManager ??= ComponentHub.GetComponentManager<PriorityManager>();
 
         /// <summary>
-        /// Returns the workflow manager responsible for managing workflows within the class.
+        /// Gets the workflow manager responsible for managing workflows within the class.
         /// </summary>
         public static IWorkflowManager WorkflowManager => _workflowManager ??= ComponentHub.GetComponentManager<WorkflowManager>();
 
         /// <summary>
-        /// Returns the workflow state manager responsible for managing workflow states within the class.
+        /// Gets the workflow state manager responsible for managing workflow states within the class.
         /// </summary>
-        public static IWorkflowStateManager WorkflowStateManager => _workflowStateManager ??= ComponentHub.GetComponentManager<WorkflowStateManager>();
+        public static IStatusManager StatusManager => _statusManager ??= ComponentHub.GetComponentManager<StatusManager>();
 
         /// <summary>
-        /// Returns the object manager responsible for managing objects within the workspace.
+        /// Gets the object manager responsible for managing objects within the workspace.
         /// </summary>
         public static IObjectManager ObjectManager => _objectManager ??= ComponentHub.GetComponentManager<ObjectManager>();
 
         /// <summary>
-        /// Returns the dashboard manager responsible for managing dashboards within the application.
+        /// Gets the dashboard manager responsible for managing dashboards within the application.
         /// </summary>
         public static IDashboardManager DashboardManager => _dashboardManager ??= ComponentHub.GetComponentManager<DashboardManager>();
 

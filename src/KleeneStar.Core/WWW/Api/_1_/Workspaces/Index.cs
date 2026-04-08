@@ -114,7 +114,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 Description = data.Description,
                 Categories = data.Categories,
                 Icon = data.Icon,
-                State = TypeWorkspaceState.Active
+                State = WorkspaceState.Active
             };
 
             return RetrieveForClone(request, newItem, "kleenestar.core:workspace.clone.title");
@@ -214,7 +214,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             newItem = new Workspace(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = TypeWorkspaceState.Active
+                State = WorkspaceState.Active
             };
 
             fieldMap.BindTo(newItem);
@@ -252,7 +252,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             newItem = new Workspace(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = TypeWorkspaceState.Active
+                State = WorkspaceState.Active
             };
 
             fieldMap.BindTo(newItem);

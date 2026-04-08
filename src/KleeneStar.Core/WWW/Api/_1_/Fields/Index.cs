@@ -96,7 +96,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
                 Name = data.Name + " (Copy)",
                 Description = data.Description,
                 Icon = data.Icon,
-                State = TypeWorkspaceState.Active
+                State = FieldState.Active
             };
 
             return RetrieveForClone(request, newItem, "kleenestar.core:field.clone.title");
@@ -196,7 +196,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
             newItem = new Model.Entities.Field(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = TypeWorkspaceState.Active
+                State = FieldState.Active
             };
 
             fieldMap.BindTo(newItem);
@@ -237,7 +237,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
             newItem = new Model.Entities.Field(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = TypeWorkspaceState.Active
+                State = FieldState.Active
             };
 
             fieldMap.BindTo(newItem);

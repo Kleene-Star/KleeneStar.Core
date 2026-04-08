@@ -62,7 +62,7 @@ namespace KleeneStar.Core.WebUri
             {
                 return false;
             }
-            else if (WorkflowStateManager.ReservedStateNames.Contains(value?.Trim().ToLower()))
+            else if (StatusManager.ReservedStateNames.Contains(value?.Trim().ToLower()))
             {
                 return false;
             }

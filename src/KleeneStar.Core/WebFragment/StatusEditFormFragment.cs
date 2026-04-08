@@ -1,0 +1,106 @@
+﻿using KleeneStar.Core.WebParameter;
+using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebFragment;
+using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebFragment;
+using WebExpress.WebCore.WebHtml;
+using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebPage;
+
+namespace KleeneStar.Core.WebFragment
+{
+    /// <summary>
+    /// Represents a edit form fragment for a state.
+    /// </summary>
+    [Section<SectionContentPreferences>]
+    [Scope<global::KleeneStar.Core.WWW.Status._statusid_.Edit>]
+    [Cache]
+    public sealed class StatusEditFormFragment : FragmentControlRestFormEdit
+    {
+        /// <summary>
+        /// Gets the input text control for specifying the name of the status.
+        /// </summary>
+        public ControlRestFormItemInputUnique StatusName { get; } = new()
+        {
+            Name = nameof(Model.Entities.Status.Name),
+            Label = "kleenestar.core:status.name.label",
+            Placeholder = "kleenestar.core:status.name.placeholder",
+            Help = "kleenestar.core:status.name.help",
+            Required = true,
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Statuses.UniqueName>()
+        };
+
+        /// <summary>
+        /// Gets the input selection control for the category status resource.
+        /// </summary>
+        public ControlRestFormItemInputSelection Category { get; } = new()
+        {
+            Name = nameof(Model.Entities.Status.Category),
+            Label = "kleenestar.core:status.category.label",
+            Placeholder = "kleenestar.core:status.category.placeholder",
+            Help = "kleenestar.core:status.category.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Statuses.Category>()
+        };
+
+        /// <summary>
+        /// Gets the input text control for specifying the description of the state.
+        /// </summary>
+        public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
+        {
+            Name = nameof(Model.Entities.Status.Description),
+            Label = "kleenestar.core:status.description.label",
+            Placeholder = "kleenestar.core:status.description.placeholder",
+            Format = TypeEditTextFormat.Wysiwyg,
+            Required = false
+        };
+
+        /// <summary>
+        /// Gets the input selection control for the state.
+        /// </summary>
+        public ControlRestFormItemInputSelection StatusState { get; } = new()
+        {
+            Name = nameof(Model.Entities.Status.State),
+            Label = "kleenestar.core:status.state.label",
+            Placeholder = "kleenestar.core:status.state.placeholder",
+            Help = "kleenestar.core:status.state.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Statuses.State>()
+        };
+
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        /// <param name="fragmentContext">The context of the fragment.</param>
+        public StatusEditFormFragment(IFragmentContext fragmentContext)
+            : base(fragmentContext)
+        {
+            Add(StatusName);
+            Add(Category);
+            Add(Description);
+            Add(StatusState);
+
+            Mode = TypeRestFormMode.Edit;
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Statuses.Index>();
+        }
+
+        /// <summary>
+        /// Renders the control as an HTML node.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
+        public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
+        {
+            var param = renderContext.Request.GetParameter<WorkflowStateIdParameter>();
+
+            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+        }
+    }
+}

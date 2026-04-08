@@ -20,7 +20,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class WorkflowAddFormFragment : FragmentControlRestFormAdd
     {
         /// <summary>
-        /// Returns the input text control for specifying the name of the form.
+        /// Gets the input text control for specifying the name of the form.
         /// </summary>
         public ControlRestFormItemInputUnique WorkflowName { get; } = new()
         {
@@ -33,7 +33,19 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the input text control for specifying the description of the form.
+        /// Gets the input selection control for the state.
+        /// </summary>
+        public ControlRestFormItemInputSelection WorkflowState { get; } = new()
+        {
+            Name = nameof(Model.Entities.Workflow.State),
+            Label = "kleenestar.core:workflow.state.label",
+            Placeholder = "kleenestar.core:workflow.state.placeholder",
+            Help = "kleenestar.core:workflow.state.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.State>()
+        };
+
+        /// <summary>
+        /// Gets the input text control for specifying the description of the form.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {

@@ -1,6 +1,5 @@
 ﻿using KleeneStar.Model;
 using KleeneStar.Model.Entities;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -41,7 +40,7 @@ namespace KleeneStar.Core.WebManager
         public event EventHandler<Workspace> WorkspaceRemoved;
 
         /// <summary>
-        /// Returns the collection of workspace keys that are reserved and cannot be used for custom workspaces.
+        /// Gets the collection of workspace keys that are reserved and cannot be used for custom workspaces.
         /// </summary>
         /// <remarks>
         /// The reserved keys typically represent system-defined workspaces and are not available

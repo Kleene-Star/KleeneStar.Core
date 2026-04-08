@@ -1,5 +1,4 @@
-﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Model;
+﻿using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
@@ -16,7 +15,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
     /// Provides CRUD operations for class items via a REST API.
     /// </summary>
     [Cache]
-    [WorkspaceKeySegment]
     public sealed class Index : RestApiCrud<Model.Entities.Class>
     {
         /// <summary>
@@ -98,7 +96,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
                 Name = data.Name + " (Copy)",
                 Description = data.Description,
                 Icon = data.Icon,
-                State = TypeWorkspaceState.Active
+                State = ClassState.Active
             };
 
             return RetrieveForClone(request, newItem, "kleenestar.core:class.clone.title");
@@ -198,7 +196,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             newItem = new Model.Entities.Class(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = TypeWorkspaceState.Active
+                State = ClassState.Active
             };
 
             fieldMap.BindTo(newItem);
@@ -239,7 +237,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             newItem = new Model.Entities.Class(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = TypeWorkspaceState.Active
+                State = ClassState.Active
             };
 
             fieldMap.BindTo(newItem);

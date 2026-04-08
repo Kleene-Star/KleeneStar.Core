@@ -21,7 +21,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class ObjectViewFragment : FragmentControlView
     {
         /// <summary>
-        /// Returns the search control used to query and filter data.
+        /// Gets the search control used to query and filter data.
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
@@ -29,7 +29,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the quick filter control for REST-based object queries.
+        /// Gets the quick filter control for REST-based object queries.
         /// </summary>
         public ControlRestQuickfilter Quickfilter { get; } = new ControlRestQuickfilter()
         {
@@ -37,7 +37,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the table of control view items used to display 
+        /// Gets the table of control view items used to display 
         /// workspace data.
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
@@ -46,7 +46,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the configuration tile that provides REST access to 
+        /// Gets the configuration tile that provides REST access to 
         /// workspace data.
         /// </summary>
         public ControlRestTile Tile { get; } = new ControlRestTile()
@@ -55,7 +55,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the pagination settings for controlling how data is divided into pages.
+        /// Gets the pagination settings for controlling how data is divided into pages.
         /// </summary>
         public ControlPagination Pagination { get; } = new ControlPagination("id_8E5CCE44B96E41338BD1D1EFD6C281E0")
         {

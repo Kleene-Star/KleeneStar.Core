@@ -20,7 +20,7 @@ namespace KleeneStar.Core.WebFragment
     public sealed class DashboardViewFragment : FragmentControlView
     {
         /// <summary>
-        /// Returns the search control used to query and filter data.
+        /// Gets the search control used to query and filter data.
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
@@ -28,7 +28,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the quick filter control for REST-based dashboard queries.
+        /// Gets the quick filter control for REST-based dashboard queries.
         /// </summary>
         public ControlRestQuickfilter Quickfilter { get; } = new ControlRestQuickfilter()
         {
@@ -36,7 +36,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the table of control view items used to display 
+        /// Gets the table of control view items used to display 
         /// dashboard data.
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Returns the pagination settings for controlling how data is divided into pages.
+        /// Gets the pagination settings for controlling how data is divided into pages.
         /// </summary>
         public ControlPagination Pagination { get; } = new ControlPagination("id_D4A8C2B3E1F047A9B6E5D0C7F3A12B94")
         {

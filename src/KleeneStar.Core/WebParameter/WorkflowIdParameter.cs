@@ -9,7 +9,7 @@ namespace KleeneStar.Core.WebParameter
     public sealed class WorkflowIdParameter : IParameterStatic
     {
         /// <summary>
-        /// Returns the key that uniquely identifies the parameter in configuration or
+        /// Gets the key that uniquely identifies the parameter in configuration or
         /// settings contexts.
         /// </summary>
         public static string Key => "workflowid";
@@ -20,7 +20,7 @@ namespace KleeneStar.Core.WebParameter
         public ParameterScope Scope { get; set; }
 
         /// <summary>
-        /// Returns the value of the parameter.
+        /// Gets or sets the value of the parameter.
         /// </summary>
         public string Value { get; set; }
 
