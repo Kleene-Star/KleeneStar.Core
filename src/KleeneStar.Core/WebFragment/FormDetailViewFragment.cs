@@ -1,0 +1,126 @@
+using KleeneStar.Core.WebParameter;
+using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebFragment;
+using WebExpress.WebCore.WebHtml;
+using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
+using WebExpress.WebUI.WebPage;
+
+namespace KleeneStar.Core.WebFragment
+{
+    /// <summary>
+    /// Represents a fragment control that displays the three fixed forms (create, edit, view) per
+    /// class within a ControlView. Each form is hosted in a ViewItem containing a ControlRestTab,
+    /// which in turn presents a list of form elements with the ability to add or remove fields.
+    /// </summary>
+    [Section<SectionContentPrimary>]
+    [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
+    [Cache]
+    public sealed class FormDetailViewFragment : FragmentControlView
+    {
+        private const string FieldTableTemplateId = "tab-form-fields";
+
+        /// <summary>
+        /// Gets the REST tab control for the create form.
+        /// </summary>
+        public ControlRestTab CreateTab { get; } = new ControlRestTab();
+
+        /// <summary>
+        /// Gets the REST tab control for the edit form.
+        /// </summary>
+        public ControlRestTab EditTab { get; } = new ControlRestTab();
+
+        /// <summary>
+        /// Gets the REST tab control for the view form.
+        /// </summary>
+        public ControlRestTab ViewTab { get; } = new ControlRestTab();
+
+        /// <summary>
+        /// Gets the REST table control for form field elements within the create tab.
+        /// </summary>
+        public ControlRestTable CreateFieldTable { get; } = new ControlRestTable();
+
+        /// <summary>
+        /// Gets the REST table control for form field elements within the edit tab.
+        /// </summary>
+        public ControlRestTable EditFieldTable { get; } = new ControlRestTable();
+
+        /// <summary>
+        /// Gets the REST table control for form field elements within the view tab.
+        /// </summary>
+        public ControlRestTable ViewFieldTable { get; } = new ControlRestTable();
+
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        /// <param name="fragmentContext">The context of the fragment.</param>
+        public FormDetailViewFragment(IFragmentContext fragmentContext)
+            : base(fragmentContext)
+        {
+            CreateTab.Add(new ControlRestTabTemplate()
+            {
+                Id = FieldTableTemplateId
+            }.Add(CreateFieldTable));
+
+            EditTab.Add(new ControlRestTabTemplate()
+            {
+                Id = FieldTableTemplateId
+            }.Add(EditFieldTable));
+
+            ViewTab.Add(new ControlRestTabTemplate()
+            {
+                Id = FieldTableTemplateId
+            }.Add(ViewFieldTable));
+
+            Add(new ControlViewItem()
+            {
+                Title = "kleenestar.core:form.create.label",
+                Icon = new IconPlus()
+            }.Add(CreateTab));
+
+            Add(new ControlViewItem()
+            {
+                Title = "kleenestar.core:form.edit.label",
+                Icon = new IconPencil()
+            }.Add(EditTab));
+
+            Add(new ControlViewItem()
+            {
+                Title = "kleenestar.core:form.view.label",
+                Icon = new IconEye()
+            }.Add(ViewTab));
+        }
+
+        /// <summary>
+        /// Convert the fragment to HTML.
+        /// </summary>
+        /// <param name="renderContext">The context in which the fragment is rendered.</param>
+        /// <param name="visualTree">The visual tree used for rendering the fragment.</param>
+        /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
+        public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
+        {
+            var formIdParam = renderContext.Request.GetParameter<FormIdParameter>();
+
+            var tabUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms._formid_.Tab>()?
+                .BindParameters(formIdParam)
+                .BindParameters(renderContext.Request);
+
+            var tableUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms._formid_.Table>()?
+                .BindParameters(formIdParam)
+                .BindParameters(renderContext.Request);
+
+            CreateTab.RestUri = tabUri;
+            EditTab.RestUri = tabUri;
+            ViewTab.RestUri = tabUri;
+
+            CreateFieldTable.RestUri = tableUri;
+            EditFieldTable.RestUri = tableUri;
+            ViewFieldTable.RestUri = tableUri;
+
+            return base.Render(renderContext, visualTree);
+        }
+    }
+}
