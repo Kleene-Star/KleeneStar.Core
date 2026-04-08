@@ -106,6 +106,14 @@ form.state.help=The state determines the availability of the form. Only active f
 form.edit.title=Edit Form
 form.clone.title=Clone Form
 form.delete.title=Delete Form
+form.create.label=Create
+form.edit.label=Edit
+form.view.label=View
+form.tab.header=Form Tabs
+form.field.table.header=Form Fields
+form.field.name.label=Field Name
+form.field.description.label=Description
+form.field.state.label=State
 
 priority.manage.title=Priorities
 priority.manage.label=Priority

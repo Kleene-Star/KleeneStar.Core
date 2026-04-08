@@ -106,6 +106,14 @@ form.state.help=Der Status bestimmt, ob das Formular aktiv oder archiviert ist.
 form.edit.title=Formular bearbeiten
 form.clone.title=Formular klonen
 form.delete.title=Formular löschen
+form.create.label=Erstellen
+form.edit.label=Bearbeiten
+form.view.label=Ansehen
+form.tab.header=Formular-Reiter
+form.field.table.header=Formularfelder
+form.field.name.label=Feldname
+form.field.description.label=Beschreibung
+form.field.state.label=Status
 
 priority.manage.title=Prioritäten
 priority.manage.label=Priorität
