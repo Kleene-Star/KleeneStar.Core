@@ -103,9 +103,37 @@ namespace KleeneStar.Core.WebManager
         /// Removes the specified form from the manager.
         /// </summary>
         /// <remarks>This method removes the specified form from the manager. If the form does
-        /// not exist in the manager, no action is taken.</remarks>
+        /// not exist in the manager, no action is taken. Standard forms cannot be removed.</remarks>
         /// <param name="formId">The form id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
         IFormManager Remove(Guid formId);
+
+        /// <summary>
+        /// Determines whether the specified form is the standard form of its class.
+        /// </summary>
+        /// <remarks>
+        /// A standard form is the automatically created, non-deletable form that provides
+        /// the three predefined views (new, edit, view) for a class. Each class has exactly
+        /// one standard form. Standard forms are identified by the reserved name defined in
+        /// <see cref="FormManager.StandardFormName"/>.
+        /// </remarks>
+        /// <param name="formId">The unique identifier of the form to check.</param>
+        /// <returns>
+        /// <c>true</c> if the form is the standard form for its class; otherwise, <c>false</c>.
+        /// </returns>
+        bool IsStandardForm(Guid formId);
+
+        /// <summary>
+        /// Creates the standard form for the specified class.
+        /// </summary>
+        /// <remarks>
+        /// The standard form is the automatically created, non-deletable form that provides
+        /// the three predefined views (new, edit, view) for a class. This method should be
+        /// called when a new class is created to ensure every class has exactly one standard form.
+        /// If a standard form already exists for the class, no action is taken.
+        /// </remarks>
+        /// <param name="classId">The unique identifier of the class for which to create the standard form.</param>
+        /// <returns>The created standard form, or the existing one if it already exists.</returns>
+        Form CreateStandardForm(Guid classId);
     }
 }

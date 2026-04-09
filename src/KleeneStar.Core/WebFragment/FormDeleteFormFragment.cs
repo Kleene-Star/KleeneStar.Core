@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
+using System;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -13,6 +14,10 @@ namespace KleeneStar.Core.WebFragment
     /// <summary>
     /// Represents a delete form fragment for a form.
     /// </summary>
+    /// <remarks>
+    /// Standard forms cannot be deleted. When this fragment is rendered for a standard form,
+    /// it displays an informational message instead of the delete confirmation dialog.
+    /// </remarks>
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Form._formid_.Delete>]
     [Cache]
@@ -39,11 +44,22 @@ namespace KleeneStar.Core.WebFragment
         /// The visual tree representing the control's structure.
         /// </param>
         /// <returns>
-        /// An HTML node representing the rendered control.
+        /// An HTML node representing the rendered control, or a warning message
+        /// if the form is a standard form that cannot be deleted.
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
             var param = renderContext.Request.GetParameter<FormIdParameter>();
+            var formId = Guid.TryParse(param?.Value, out var id) ? id : Guid.Empty;
+
+            // standard forms cannot be deleted
+            if (CoreHub.FormManager.IsStandardForm(formId))
+            {
+                return new HtmlElementTextSemanticsSpan
+                (
+                    new HtmlText("kleenestar.core:form.delete.standard.warning")
+                );
+            }
 
             return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
         }
