@@ -3,6 +3,7 @@ using KleeneStar.Core.WebParameter;
 using System;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -117,7 +118,7 @@ namespace KleeneStar.Core.WebFragment
             {
                 return new HtmlElementTextSemanticsSpan
                 (
-                    new HtmlText("kleenestar.core:form.additional.info")
+                    new HtmlText(I18N.Translate(renderContext, "kleenestar.core:form.additional.info"))
                 );
             }
 
