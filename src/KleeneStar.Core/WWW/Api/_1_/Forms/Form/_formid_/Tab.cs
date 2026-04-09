@@ -7,7 +7,7 @@ using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
 
-namespace KleeneStar.Core.WWW.Api._1_.Forms._formid_
+namespace KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_
 {
     /// <summary>
     /// Represents a REST API tab endpoint for managing the tab structure of a specific form.
@@ -62,7 +62,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._formid_
                 yield break;
             }
 
-            var tableUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms._formid_.Table>()?
+            var tableUri = CoreHub.GetUri<Table>()?
                 .BindParameters(formIdParam)
                 .BindParameters(request);
 
@@ -93,7 +93,16 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._formid_
         /// </returns>
         protected override IRestApiTabView CreateView(IQueryContext context, IRequest request)
         {
-            return null;
+            var formIdParam = request.GetParameter<FormIdParameter>();
+            var guid = Guid.TryParse(formIdParam?.Value, out Guid id) ? id : Guid.Empty;
+            var form = CoreHub.FormManager.GetForm(guid);
+
+            if (form is null)
+            {
+                return null;
+            }
+
+            return new RestApiTabView() { Title = "New Tab" };
         }
 
         /// <summary>

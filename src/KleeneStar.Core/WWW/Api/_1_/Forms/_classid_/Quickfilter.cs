@@ -40,6 +40,12 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._classid_
                 Id = "qf_active",
                 Name = "Active"
             };
+
+            yield return new RestApiQuickfilterItem()
+            {
+                Id = "qf_type",
+                Name = "Standard"
+            };
         }
     }
 }

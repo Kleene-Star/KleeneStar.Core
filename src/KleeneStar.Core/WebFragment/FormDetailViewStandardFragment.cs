@@ -1,9 +1,7 @@
-using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using System;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
-using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -22,7 +20,7 @@ namespace KleeneStar.Core.WebFragment
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
     [Cache]
-    public sealed class FormDetailViewFragment : FragmentControlView
+    public sealed class FormDetailViewStandardFragment : FragmentControlView
     {
         private const string FieldTableTemplateId = "tab-form-fields";
 
@@ -60,7 +58,7 @@ namespace KleeneStar.Core.WebFragment
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public FormDetailViewFragment(IFragmentContext fragmentContext)
+        public FormDetailViewStandardFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             CreateTab.Add(new ControlRestTabTemplate()
@@ -81,19 +79,19 @@ namespace KleeneStar.Core.WebFragment
             Add(new ControlViewItem()
             {
                 Title = "kleenestar.core:form.create.label",
-                Icon = new IconPlus()
+                Icon = new IconRectangleList()
             }.Add(CreateTab));
 
             Add(new ControlViewItem()
             {
                 Title = "kleenestar.core:form.edit.label",
-                Icon = new IconPencil()
+                Icon = new IconRectangleList()
             }.Add(EditTab));
 
             Add(new ControlViewItem()
             {
                 Title = "kleenestar.core:form.view.label",
-                Icon = new IconEye()
+                Icon = new IconRectangleList()
             }.Add(ViewTab));
         }
 
@@ -116,17 +114,14 @@ namespace KleeneStar.Core.WebFragment
             // only render the three predefined views for standard forms
             if (!CoreHub.FormManager.IsStandardForm(formId))
             {
-                return new HtmlElementTextSemanticsSpan
-                (
-                    new HtmlText(I18N.Translate(renderContext, "kleenestar.core:form.additional.info"))
-                );
+                return null;
             }
 
-            var tabUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms._formid_.Tab>()?
+            var tabUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_.Tab>()?
                 .BindParameters(formIdParam)
                 .BindParameters(renderContext.Request);
 
-            var tableUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms._formid_.Table>()?
+            var tableUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_.Table>()?
                 .BindParameters(formIdParam)
                 .BindParameters(renderContext.Request);
 

@@ -228,7 +228,7 @@ The tabular overview shows key attributes per class such as name, description, a
 ║│                      │░│ ServiceRequest   | Standard service │ Edit              │ │║
 ║│                      │░│ KnowledgeArticle | Documented knowle│ Clone             │ │║
 ║│                      │<│ Approval         | Approval step    │ Manage Fields     │ │║
-║│                      │<│ Request          | Inquiry or sub-pr│ Manage Status     │ │║
+║│                      │<│ Request          | Inquiry or sub-pr│ Manage Statuses   │ │║
 ║│                      │<│ Task             | Executable activi│ Manage Workflows  │ │║
 ║│                      │░│ SLA              | Service Level Agr│ Manage Priorities │ │║
 ║│                      │░│ Comment          | Free-text note   │ Manage Forms      │ │║

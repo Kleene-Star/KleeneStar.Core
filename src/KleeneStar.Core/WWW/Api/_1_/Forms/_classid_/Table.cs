@@ -1,5 +1,6 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
+using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,6 +74,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._classid_
 
             yield return new RestApiTableColumn()
             {
+                Id = "type",
+                Label = "Type",
+                Visible = false
+            };
+
+            yield return new RestApiTableColumn()
+            {
                 Id = "state",
                 Label = "State",
                 Visible = false
@@ -122,6 +130,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._classid_
                             Content = x.Description
                         },
                         new() {
+                            Content = x.FormType.ToString()
+                        },
+                        new() {
                             Content = x.State.ToString()
                         }
                     ],
@@ -161,6 +172,44 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._classid_
             );
         }
 
+        /// <summary>
+        /// Applies the specified filter criteria to the given query object.
+        /// </summary>
+        /// <param name="filters">
+        /// A collection of quickfilter identifiers that should be applied in addition to the WQL criteria.
+        /// </param>
+        /// <param name="query">
+        /// The query object to which the filter will be applied.
+        /// </param>
+        /// <param name="request">
+        /// The request that provides the operational context for resolving
+        /// the appropriate REST API URI.
+        /// </param>
+        /// <returns>
+        /// A query representing the filtered set of items that match the criteria defined by 
+        /// the filter statement.
+        /// </returns>
+        protected override IQuery<Model.Entities.Form> Filter(IEnumerable<string> filters, IQuery<Model.Entities.Form> query, IRequest request)
+        {
+            foreach (var filter in filters.Where(f => f.StartsWith("qf_", StringComparison.OrdinalIgnoreCase)))
+            {
+                var key = filter[3..];
+
+                switch (key.ToLowerInvariant())
+                {
+                    case "active":
+                        query = query.Where(x => x.State == FormState.Active);
+                        break;
+                    case "type":
+                        query = query.Where(x => x.FormType == FormType.Standard);
+                        break;
+                    default:
+                        continue;
+                }
+            }
+
+            return query;
+        }
 
         /// <summary>
         /// Retrieves a collection of options.
@@ -188,21 +237,27 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._classid_
                 Text = "webexpress.webapp:header.setting.label"
             };
 
-            yield return new RestApiOptionEdit(request)
+            if (row.FormType == Model.Entities.FormType.Additional)
             {
-                PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge)
-            };
+                yield return new RestApiOptionEdit(request)
+                {
+                    PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge)
+                };
+            }
 
             yield return new RestApiOptionClone(request)
             {
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
             };
 
-            yield return new RestApiOptionSeparator(request);
-            yield return new RestApiOptionDelete(request)
+            if (row.FormType == Model.Entities.FormType.Additional)
             {
-                PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Small)
-            };
+                yield return new RestApiOptionSeparator(request);
+                yield return new RestApiOptionDelete(request)
+                {
+                    PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Small)
+                };
+            }
         }
 
         /// <summary>

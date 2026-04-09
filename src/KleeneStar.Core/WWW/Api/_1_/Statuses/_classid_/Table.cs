@@ -1,5 +1,6 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
+using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -171,6 +172,41 @@ namespace KleeneStar.Core.WWW.Api._1_.Statuses._classid_
             );
         }
 
+        /// <summary>
+        /// Applies the specified filter criteria to the given query object.
+        /// </summary>
+        /// <param name="filters">
+        /// A collection of quickfilter identifiers that should be applied in addition to the WQL criteria.
+        /// </param>
+        /// <param name="query">
+        /// The query object to which the filter will be applied.
+        /// </param>
+        /// <param name="request">
+        /// The request that provides the operational context for resolving
+        /// the appropriate REST API URI.
+        /// </param>
+        /// <returns>
+        /// A query representing the filtered set of items that match the criteria defined by 
+        /// the filter statement.
+        /// </returns>
+        protected override IQuery<Model.Entities.Status> Filter(IEnumerable<string> filters, IQuery<Model.Entities.Status> query, IRequest request)
+        {
+            foreach (var filter in filters.Where(f => f.StartsWith("qf_", StringComparison.OrdinalIgnoreCase)))
+            {
+                var key = filter[3..];
+
+                switch (key.ToLowerInvariant())
+                {
+                    case "active":
+                        query = query.Where(x => x.State == StatusState.Active);
+                        break;
+                    default:
+                        continue;
+                }
+            }
+
+            return query;
+        }
 
         /// <summary>
         /// Retrieves a collection of options.

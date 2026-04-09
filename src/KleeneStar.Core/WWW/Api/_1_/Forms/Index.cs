@@ -297,7 +297,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
             {
                 return new RestApiCrudResultDelete()
                 {
-                    Error = "The standard form cannot be deleted."
+                    Message = "The standard form cannot be deleted."
                 };
             }
 

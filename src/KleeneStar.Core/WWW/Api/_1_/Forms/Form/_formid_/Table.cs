@@ -10,7 +10,7 @@ using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
 
-namespace KleeneStar.Core.WWW.Api._1_.Forms._formid_
+namespace KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_
 {
     /// <summary>
     /// Represents a REST API table endpoint that lists the field elements associated with a
@@ -29,8 +29,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._formid_
         /// </summary>
         public Table()
         {
-            _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Field._fieldid_.Edit>();
-            _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Field._fieldid_.Delete>();
+            _editFormUri = CoreHub.GetUri<Field._fieldid_.Edit>();
+            _deleteFormUri = CoreHub.GetUri<Field._fieldid_.Delete>();
         }
 
         /// <summary>

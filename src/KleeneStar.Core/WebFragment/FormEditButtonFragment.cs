@@ -1,4 +1,6 @@
-﻿using WebExpress.WebApp.WebSection;
+﻿using KleeneStar.Core.WebParameter;
+using System;
+using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -42,6 +44,15 @@ namespace KleeneStar.Core.WebFragment
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             if (!FragmentContext.Conditions.Check(renderContext?.Request))
+            {
+                return null;
+            }
+
+            var formIdParameter = renderContext.Request.GetParameter<FormIdParameter>();
+            var formId = Guid.TryParse(formIdParameter?.Value, out var result) ? result : Guid.Empty;
+            var form = CoreHub.FormManager.GetForm(formId);
+
+            if (form?.FormType == Model.Entities.FormType.Standard)
             {
                 return null;
             }
