@@ -68,38 +68,6 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Gets the input selection control for the field type.
-        /// </summary>
-        public ControlRestFormItemInputSelection FieldTypeSelection { get; } = new()
-        {
-            Name = nameof(Model.Entities.Field.FieldType),
-            Label = "kleenestar.core:field.fieldtype.label",
-            Placeholder = "kleenestar.core:field.fieldtype.placeholder",
-            Help = "kleenestar.core:field.fieldtype.help",
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.FieldType>()
-        };
-
-        /// <summary>
-        /// Gets the checkbox control for the required flag.
-        /// </summary>
-        public ControlFormItemInputCheck FieldRequired { get; } = new()
-        {
-            Name = nameof(Model.Entities.Field.Required),
-            Label = "kleenestar.core:field.required.label",
-            Help = "kleenestar.core:field.required.help"
-        };
-
-        /// <summary>
-        /// Gets the checkbox control for the unique flag.
-        /// </summary>
-        public ControlFormItemInputCheck FieldUnique { get; } = new()
-        {
-            Name = nameof(Model.Entities.Field.Unique),
-            Label = "kleenestar.core:field.unique.label",
-            Help = "kleenestar.core:field.unique.help"
-        };
-
-        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
@@ -109,9 +77,6 @@ namespace KleeneStar.Core.WebFragment
             Add(CardinalitySelection);
             Add(ValidationRules);
             Add(DefaultSpec);
-            Add(FieldTypeSelection);
-            Add(FieldRequired);
-            Add(FieldUnique);
             Add(FilterWql);
 
             Mode = TypeRestFormMode.Edit;

@@ -255,7 +255,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Workflows._classid_
         /// </returns>
         private static IUri GetUri(Model.Entities.Workflow row, IRequest request)
         {
-            return null;
+            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workflow._workflowid_.Index>()
+                .BindParameters(new WorkflowIdParameter(row.Id));
+
+            return uri;
         }
 
         ///// <summary>

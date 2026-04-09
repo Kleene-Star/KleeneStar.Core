@@ -1,6 +1,4 @@
-﻿using KleeneStar.Core.WebParameter;
-using System;
-using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -12,13 +10,12 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a back button fragment for forms, providing navigation functionality to return 
-    /// to the previous view within a form context.
+    /// Represents a control button fragment that provides an edit action for workflow forms.
     /// </summary>
-    [Section<SectionHeadlinePrologue>]
-    [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
+    [Section<SectionHeadlinePrimary>]
+    [Scope<global::KleeneStar.Core.WWW.Workflow._workflowid_.Index>]
     [Cache]
-    public sealed class FormBackButtonFragment : FragmentControlButtonLink
+    public sealed class WorkflowEditButtonFragment : FragmentControlButtonLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -27,14 +24,13 @@ namespace KleeneStar.Core.WebFragment
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public FormBackButtonFragment(IFragmentContext fragmentContext)
+        public WorkflowEditButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:form.back.label";
-            Icon = new IconArrowLeft();
+            Text = "kleenestar.core:workflow.edit.label";
+            Icon = new IconPen();
             Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
-            BackgroundColor = new PropertyColorButton(TypeColorButton.Secondary);
-            Outline = true;
+            BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
         }
 
         /// <summary>
@@ -49,14 +45,20 @@ namespace KleeneStar.Core.WebFragment
             {
                 return null;
             }
-            var formIdParameter = renderContext.Request.GetParameter<FormIdParameter>();
-            var formId = Guid.TryParse(formIdParameter?.Value, out var result) ? result : Guid.Empty;
-            var form = CoreHub.FormManager.GetForm(formId);
 
-            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Index>()
-                .BindParameters(new ClassIdParameter(form.ClassId));
+            //var workflowIdParameter = renderContext.Request.GetParameter<WorkflowIdParameter>();
+            //var workflowId = Guid.TryParse(workflowIdParameter?.Value, out var result) ? result : Guid.Empty;
+            //var workflow = CoreHub.WorkflowManager.GetWorkflow(workflowId);
 
-            return base.Render(renderContext, visualTree, Text, uri, Tooltip, PrimaryAction, SecondaryAction, Icon);
+            var primaryAction = new ActionModal
+            (
+                "modal-form",
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Workflow._workflowid_.Edit>()
+                    .BindParameters(renderContext.Request),
+                TypeModalSize.ExtraLarge
+                );
+
+            return base.Render(renderContext, visualTree, Text, null, Tooltip, primaryAction, SecondaryAction, Icon);
         }
     }
 }

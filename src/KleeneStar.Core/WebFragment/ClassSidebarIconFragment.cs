@@ -24,6 +24,7 @@ namespace KleeneStar.Core.WebFragment
     [Scope<global::KleeneStar.Core.WWW.Workflows._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Statuses._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Workflow._workflowid_.Index>]
     [Cache]
     public sealed class ClassSidebarIconFragment : FragmentControlSidebarItemIcon
     {
@@ -57,11 +58,12 @@ namespace KleeneStar.Core.WebFragment
         {
             var classParameter = renderContext.Request.GetParameter<ClassIdParameter>();
             var formParameter = renderContext.Request.GetParameter<FormIdParameter>();
+            var workflowParameter = renderContext.Request.GetParameter<WorkflowIdParameter>();
 
             // ensure that at least one of the required parameters is present
-            if (classParameter == null && formParameter == null)
+            if (classParameter == null && formParameter == null && workflowParameter == null)
             {
-                throw new InvalidOperationException("One of the parameters 'class' or 'form' must be set.");
+                throw new InvalidOperationException("One of the parameters 'class', 'form' or 'workflow' must be set.");
             }
 
             // normalize the class parameter:
@@ -75,6 +77,18 @@ namespace KleeneStar.Core.WebFragment
 
                 // create a synthetic class parameter based on the form's ClassId
                 classParameter = new ClassIdParameter(form.ClassId.ToString());
+            }
+            else if (classParameter == null && workflowParameter != null)
+            {
+                var workflowId = Guid.TryParse(workflowParameter.Value, out var formGuid)
+                    ? formGuid
+                    : Guid.Empty;
+
+                var workflow = CoreHub.WorkflowManager.GetWorkflow(workflowId)
+                    ?? throw new InvalidOperationException($"Workflow with ID '{workflowId}' not found.");
+
+                // create a synthetic class parameter based on the form's ClassId
+                classParameter = new ClassIdParameter(workflow.ClassId.ToString());
             }
 
             var guid = Guid.TryParse(classParameter.Value, out var classGuid)

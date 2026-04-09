@@ -133,17 +133,6 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Gets the input tag control for validation rules.
-        /// </summary>
-        public ControlFormItemInputTag ValidationRules { get; } = new()
-        {
-            Name = nameof(Model.Entities.Field.ValidationRules),
-            Label = "kleenestar.core:field.validationrules.label",
-            Placeholder = "kleenestar.core:field.validationrules.placeholder",
-            Help = "kleenestar.core:field.validationrules.help"
-        };
-
-        /// <summary>
         /// Gets the input text control for specifying the default specification.
         /// </summary>
         public ControlFormItemInputText DefaultSpec { get; } = new()
@@ -168,26 +157,6 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Gets the read-only control for the created timestamp.
-        /// </summary>
-        public ControlFormItemInputText Created { get; } = new()
-        {
-            Name = nameof(Model.Entities.Field.Created),
-            Label = "kleenestar.core:field.created.label",
-            Required = false
-        };
-
-        /// <summary>
-        /// Gets the read-only control for the updated timestamp.
-        /// </summary>
-        public ControlFormItemInputText Updated { get; } = new()
-        {
-            Name = nameof(Model.Entities.Field.Updated),
-            Label = "kleenestar.core:field.updated.label",
-            Required = false
-        };
-
-        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
@@ -204,11 +173,8 @@ namespace KleeneStar.Core.WebFragment
             Add(FieldUnique);
             Add(FieldDeprecated);
             Add(AccessModifierSelection);
-            Add(ValidationRules);
             Add(DefaultSpec);
             Add(FieldState);
-            Add(Created);
-            Add(Updated);
 
             Mode = TypeRestFormMode.Edit;
             Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();

@@ -6,19 +6,18 @@ using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
-using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a back button fragment for forms, providing navigation functionality to return 
-    /// to the previous view within a form context.
+    /// Represents a fragment control that displays the description of a workflow in Markdown format 
+    /// within a workflow context.
     /// </summary>
-    [Section<SectionHeadlinePrologue>]
-    [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
+    [Section<SectionContentPreferences>]
+    [Scope<global::KleeneStar.Core.WWW.Workflow._workflowid_.Index>]
     [Cache]
-    public sealed class FormBackButtonFragment : FragmentControlButtonLink
+    public sealed class WorkflowDescriptionFragment : FragmentControlText
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -27,14 +26,10 @@ namespace KleeneStar.Core.WebFragment
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public FormBackButtonFragment(IFragmentContext fragmentContext)
+        public WorkflowDescriptionFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:form.back.label";
-            Icon = new IconArrowLeft();
-            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
-            BackgroundColor = new PropertyColorButton(TypeColorButton.Secondary);
-            Outline = true;
+            Format = TypeFormatText.Markdown;
         }
 
         /// <summary>
@@ -49,14 +44,14 @@ namespace KleeneStar.Core.WebFragment
             {
                 return null;
             }
-            var formIdParameter = renderContext.Request.GetParameter<FormIdParameter>();
-            var formId = Guid.TryParse(formIdParameter?.Value, out var result) ? result : Guid.Empty;
-            var form = CoreHub.FormManager.GetForm(formId);
 
-            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Index>()
-                .BindParameters(new ClassIdParameter(form.ClassId));
+            var workflowIdParameter = renderContext.Request.GetParameter<WorkflowIdParameter>();
+            var workflowId = Guid.TryParse(workflowIdParameter?.Value, out var result) ? result : Guid.Empty;
+            var workflow = CoreHub.WorkflowManager.GetWorkflow(workflowId);
 
-            return base.Render(renderContext, visualTree, Text, uri, Tooltip, PrimaryAction, SecondaryAction, Icon);
+            var text = workflow?.Description;
+
+            return base.Render(renderContext, visualTree, text);
         }
     }
 }

@@ -13,12 +13,12 @@ namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
     /// Represents a back button fragment for forms, providing navigation functionality to return 
-    /// to the previous view within a form context.
+    /// to the previous view within a workflow context.
     /// </summary>
     [Section<SectionHeadlinePrologue>]
-    [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Workflow._workflowid_.Index>]
     [Cache]
-    public sealed class FormBackButtonFragment : FragmentControlButtonLink
+    public sealed class WorkflowBackButtonFragment : FragmentControlButtonLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -27,10 +27,10 @@ namespace KleeneStar.Core.WebFragment
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public FormBackButtonFragment(IFragmentContext fragmentContext)
+        public WorkflowBackButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:form.back.label";
+            Text = "kleenestar.core:workflow.back.label";
             Icon = new IconArrowLeft();
             Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = new PropertyColorButton(TypeColorButton.Secondary);
@@ -49,12 +49,13 @@ namespace KleeneStar.Core.WebFragment
             {
                 return null;
             }
-            var formIdParameter = renderContext.Request.GetParameter<FormIdParameter>();
-            var formId = Guid.TryParse(formIdParameter?.Value, out var result) ? result : Guid.Empty;
-            var form = CoreHub.FormManager.GetForm(formId);
 
-            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Index>()
-                .BindParameters(new ClassIdParameter(form.ClassId));
+            var workflowIdParameter = renderContext.Request.GetParameter<WorkflowIdParameter>();
+            var workflowId = Guid.TryParse(workflowIdParameter?.Value, out var result) ? result : Guid.Empty;
+            var workflow = CoreHub.WorkflowManager.GetWorkflow(workflowId);
+
+            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workflows._classid_.Index>()
+                .BindParameters(new ClassIdParameter(workflow.ClassId));
 
             return base.Render(renderContext, visualTree, Text, uri, Tooltip, PrimaryAction, SecondaryAction, Icon);
         }

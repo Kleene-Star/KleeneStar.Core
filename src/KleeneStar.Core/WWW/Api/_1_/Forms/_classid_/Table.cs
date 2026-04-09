@@ -275,7 +275,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._classid_
         private static IUri GetUri(Model.Entities.Form row, IRequest request)
         {
             var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Form._formid_.Index>()
-                .BindParameters(new FormIdParameter() { Value = row.Id.ToString() });
+                .BindParameters(new FormIdParameter(row.Id));
 
             return uri;
         }

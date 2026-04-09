@@ -191,10 +191,12 @@ workflow.name.placeholder=Enter the name of the workflow.
 workflow.name.help=The name helps you quickly identify this workflow.
 workflow.description.label=Description
 workflow.description.placeholder=Enter a brief description of the workflow.
+workflow.back.label=Back
 workflow.state.label=State
 workflow.state.placeholder=Select the status of the workflow.
 workflow.state.help=The status determines the availability of the workflow. Only active workflows can be assigned and used.
 workflow.edit.title=Edit Workflow
+workflow.edit.label=Edit Workflow
 workflow.clone.title=Clone Workflow
 workflow.delete.title=Delete Workflow
 

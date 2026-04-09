@@ -191,10 +191,12 @@ workflow.name.placeholder=Geben Sie den Namen des Workflows ein.
 workflow.name.help=Der Name hilft Ihnen, diesen Workflow schnell zu identifizieren.
 workflow.description.label=Beschreibung
 workflow.description.placeholder=Geben Sie eine kurze Beschreibung des Workflows ein.
+workflow.back.label=Zurück
 workflow.state.label=Status
 workflow.state.placeholder=Wählen Sie einen Status für den Workflow.
 workflow.state.help=Der Status bestimmt, ob der Workflow aktiv oder archiviert ist.
 workflow.edit.title=Workflow bearbeiten
+workflow.edit.label=Workflow bearbeiten
 workflow.clone.title=Workflow klonen
 workflow.delete.title=Workflow löschen
 

@@ -11,8 +11,8 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a fragment control that displays the dashboard management description using Markdown 
-    /// formatting within the dashboard management interface.
+    /// Represents a fragment control that displays the description of a workflow in Markdown format 
+    /// within a form context.
     /// </summary>
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
@@ -277,7 +278,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
 
             yield return new RestApiOptionCustom(request)
             {
-                Text = "kleenestar.core:field.configure.title",
+                Text = I18N.Translate(request, "kleenestar.core:field.configure.title"),
                 Icon = new IconCog(),
                 PrimaryAction = new ActionModal("modal-form", configureUri, TypeModalSize.ExtraLarge)
             };
