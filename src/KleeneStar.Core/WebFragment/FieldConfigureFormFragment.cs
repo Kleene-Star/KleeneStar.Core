@@ -12,8 +12,9 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a configure form fragment for a field with tabbed layout.
-    /// Provides tabs for Cardinality, Validation, Options, Filter objects, Workflow, and Priority.
+    /// Represents a configure form fragment for a field.
+    /// Provides controls for Cardinality, Validation rules, Default value,
+    /// Field type, Required and Unique flags, and WQL filter expression.
     /// </summary>
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Field._fieldid_.Configure>]
@@ -60,7 +61,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText FilterWql { get; } = new()
         {
-            Name = "FilterWql",
+            Name = "Wql",
             Label = "kleenestar.core:field.configure.wql.label",
             Placeholder = "kleenestar.core:field.configure.wql.placeholder",
             Required = false
