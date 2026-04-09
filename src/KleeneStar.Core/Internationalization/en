@@ -109,6 +109,7 @@ form.delete.title=Delete Form
 form.create.label=Create
 form.edit.label=Edit
 form.view.label=View
+form.back.label=Back
 form.tab.header=Form Tabs
 form.field.table.header=Form Fields
 form.field.name.label=Field Name

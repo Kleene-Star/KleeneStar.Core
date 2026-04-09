@@ -23,6 +23,7 @@ namespace KleeneStar.Core.WebFragment
     [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Workflows._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Statuses._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
     [Cache]
     public sealed class ClassSidebarIconFragment : FragmentControlSidebarItemIcon
     {
@@ -55,7 +56,30 @@ namespace KleeneStar.Core.WebFragment
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             var classParameter = renderContext.Request.GetParameter<ClassIdParameter>();
-            var guid = Guid.TryParse(classParameter.Value, out var id) ? id : Guid.Empty;
+            var formParameter = renderContext.Request.GetParameter<FormIdParameter>();
+
+            // ensure that at least one of the required parameters is present
+            if (classParameter == null && formParameter == null)
+            {
+                throw new InvalidOperationException("One of the parameters 'class' or 'form' must be set.");
+            }
+
+            // normalize the class parameter:
+            if (classParameter == null && formParameter != null)
+            {
+                var formId = Guid.TryParse(formParameter.Value, out var formGuid)
+                    ? formGuid
+                    : Guid.Empty;
+
+                var form = CoreHub.FormManager.GetForm(formId) ?? throw new InvalidOperationException($"Form with ID '{formId}' not found.");
+
+                // create a synthetic class parameter based on the form's ClassId
+                classParameter = new ClassIdParameter(form.ClassId.ToString());
+            }
+
+            var guid = Guid.TryParse(classParameter.Value, out var classGuid)
+                ? classGuid
+                : Guid.Empty;
             var @class = _classManager.GetClass(guid);
             var uri = CoreHub.GetUri<Avatar>()?
                 .BindParameters(renderContext.Request);

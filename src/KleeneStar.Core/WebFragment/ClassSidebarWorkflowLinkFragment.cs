@@ -1,4 +1,7 @@
-﻿using WebExpress.WebApp.WebSection;
+﻿using KleeneStar.Core.WebParameter;
+using System;
+using System.Linq;
+using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -19,6 +22,7 @@ namespace KleeneStar.Core.WebFragment
     [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Workflows._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Statuses._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
     [Cache]
     public sealed class ClassSidebarWorkflowLinkFragment : FragmentControlSidebarItemLink
     {
@@ -45,14 +49,92 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var uri = string.Join("/", renderContext.Request.Uri.PathSegments);
-            var targetUri = string.Join("/", Uri?.BindParameters(renderContext.Request).PathSegments ?? []);
+            var classId = ResolveClassId(renderContext);
 
-            Active = uri?.ToString() == targetUri?.ToString()
+            // bind the classId into the main URI
+            var uri = Uri.BindParameters(new ClassIdParameter(classId));
+
+            Active = IsActive(renderContext, classId)
                 ? TypeActive.Active
                 : TypeActive.None;
 
-            return base.Render(renderContext, visualTree);
+            return base.Render(renderContext, visualTree, Text, Tooltip, uri, Icon, PrimaryAction, SecondaryAction);
+        }
+
+        /// <summary>
+        /// Resolves the class identifier from the specified render context based on 
+        /// request parameters.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The render context containing the request parameters used to determine the 
+        /// class identifier. Cannot be null.
+        /// </param>
+        /// <returns>
+        /// A id representing the resolved class identifier. Returns empty if the
+        /// class parameter is present but cannot be parsed.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown if neither a valid class nor form parameter is present in the request, 
+        /// or if the specified form cannot be found.
+        /// </exception>
+        private Guid ResolveClassId(IRenderControlContext renderContext)
+        {
+            var classParam = renderContext.Request.GetParameter<ClassIdParameter>();
+            var formParam = renderContext.Request.GetParameter<FormIdParameter>();
+            // add more params here in the future
+
+            if (classParam != null)
+            {
+                return Guid.TryParse(classParam.Value, out var parsed)
+                    ? parsed
+                    : Guid.Empty;
+            }
+
+            if (formParam != null)
+            {
+                var formId = Guid.TryParse(formParam.Value, out var parsedForm)
+                    ? parsedForm
+                    : Guid.Empty;
+
+                var form = CoreHub.FormManager.GetForm(formId)
+                    ?? throw new InvalidOperationException($"Form with ID '{formId}' not found.");
+
+                return form.ClassId;
+            }
+
+            throw new InvalidOperationException("One of the parameters 'class' or 'form' must be set.");
+        }
+
+        /// <summary>
+        /// Determines whether the current request URI matches any of the predefined 
+        /// target URIs for the specified class.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The rendering context that provides information about the current 
+        /// HTTP request.
+        /// </param>
+        /// <param name="classId">
+        /// The identifier of the class for which the target URIs should be resolved
+        /// and compared against the current request URI.
+        /// </param>
+        /// <returns>
+        /// true if the current request URI matches one of the target URIs; 
+        /// otherwise, false.
+        /// </returns>
+        private bool IsActive(IRenderControlContext renderContext, Guid classId)
+        {
+            var targetUris = new[]
+            {
+                Uri,
+                // add more uris here in the future
+            }
+                .Select(x => x.BindParameters(new ClassIdParameter(classId)))
+                .Select(x => x.BindParameters(renderContext.Request))
+                .Select(x => string.Join("/", x.PathSegments ?? []));
+
+            var currentUri = string.Join("/", renderContext.Request.Uri.PathSegments ?? []);
+
+            return targetUris.Any(uri => string.Equals(currentUri, uri, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

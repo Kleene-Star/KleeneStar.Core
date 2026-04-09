@@ -109,6 +109,7 @@ form.delete.title=Formular löschen
 form.create.label=Erstellen
 form.edit.label=Bearbeiten
 form.view.label=Ansehen
+form.back.label=Zurück
 form.tab.header=Formular-Reiter
 form.field.table.header=Formularfelder
 form.field.name.label=Feldname

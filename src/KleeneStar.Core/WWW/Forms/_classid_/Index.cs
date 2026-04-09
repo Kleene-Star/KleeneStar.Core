@@ -41,7 +41,7 @@ namespace KleeneStar.Core.WWW.Forms._classid_
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
             var classParameter = renderContext.Request.GetParameter<ClassIdParameter>();
-            var guid = Guid.TryParse(classParameter.Value, out var id) ? id : Guid.Empty;
+            var guid = Guid.TryParse(classParameter?.Value, out var id) ? id : Guid.Empty;
             var @class = CoreHub.ClassManager.GetClass(guid);
             var workspace = @class?.Workspace;
             var uri = renderContext.PageContext.ApplicationContext.Route

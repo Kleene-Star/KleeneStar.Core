@@ -10,17 +10,12 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a sidebar item link fragment that displays the 'workflow state' link in the class sidebar.
+    /// Represents a control fragment that provides a button link for edit a form within the workspace.
     /// </summary>
-    [Section<SectionSidebarPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Forms._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Workflows._classid_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Statuses._classid_.Index>]
+    [Section<SectionHeadlinePrimary>]
+    [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
     [Cache]
-    public sealed class ClassSidebarStateLinkFragment : FragmentControlSidebarItemLink
+    public sealed class FormEditButtonFragment : FragmentControlButtonLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -29,12 +24,13 @@ namespace KleeneStar.Core.WebFragment
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public ClassSidebarStateLinkFragment(IFragmentContext fragmentContext)
+        public FormEditButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = new IconCircleDot();
-            Text = "kleenestar.core:status.link.label";
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Statuses._classid_.Index>();
+            Text = "kleenestar.core:form.edit.label";
+            Icon = new IconPen();
+            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
+            BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
         }
 
         /// <summary>
@@ -45,14 +41,20 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var uri = string.Join("/", renderContext.Request.Uri.PathSegments);
-            var targetUri = string.Join("/", Uri?.BindParameters(renderContext.Request).PathSegments);
+            if (!FragmentContext.Conditions.Check(renderContext?.Request))
+            {
+                return null;
+            }
 
-            Active = uri?.ToString() == targetUri?.ToString()
-                ? TypeActive.Active
-                : TypeActive.None;
+            var primaryAction = new ActionModal
+            (
+                "modal-form",
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Form._formid_.Edit>()
+                    .BindParameters(renderContext.Request),
+                TypeModalSize.ExtraLarge
+                );
 
-            return base.Render(renderContext, visualTree);
+            return base.Render(renderContext, visualTree, Text, null, Tooltip, primaryAction, SecondaryAction, Icon);
         }
     }
 }

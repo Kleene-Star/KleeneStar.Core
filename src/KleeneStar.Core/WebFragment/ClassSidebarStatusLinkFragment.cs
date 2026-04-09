@@ -13,7 +13,7 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a sidebar item link fragment that displays the 'Priority' link in the class sidebar.
+    /// Represents a sidebar item link fragment that displays the 'workflow status' link in the class sidebar.
     /// </summary>
     [Section<SectionSidebarPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
@@ -24,7 +24,7 @@ namespace KleeneStar.Core.WebFragment
     [Scope<global::KleeneStar.Core.WWW.Statuses._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
     [Cache]
-    public sealed class ClassSidebarPriorityLinkFragment : FragmentControlSidebarItemLink
+    public sealed class ClassSidebarStatusLinkFragment : FragmentControlSidebarItemLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -33,12 +33,12 @@ namespace KleeneStar.Core.WebFragment
         /// The context associated with the fragment, providing necessary data and services for its operation. 
         /// Cannot be null.
         /// </param>
-        public ClassSidebarPriorityLinkFragment(IFragmentContext fragmentContext)
+        public ClassSidebarStatusLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = new IconFlag();
-            Text = "kleenestar.core:priority.link.label";
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Priorities._classid_.Index>();
+            Icon = new IconCircleDot();
+            Text = "kleenestar.core:status.link.label";
+            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Statuses._classid_.Index>();
         }
 
         /// <summary>
