@@ -46,7 +46,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Gets the input text control for specifying the default specification.
         /// </summary>
-        public ControlFormItemInputTextBox DefaultSpec { get; } = new()
+        public ControlFormItemInputText DefaultSpec { get; } = new()
         {
             Name = nameof(Model.Entities.Field.DefaultSpec),
             Label = "kleenestar.core:field.defaultspec.label",
@@ -58,7 +58,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Gets the input text control for specifying the WQL filter expression.
         /// </summary>
-        public ControlFormItemInputTextBox FilterWql { get; } = new()
+        public ControlFormItemInputText FilterWql { get; } = new()
         {
             Name = "FilterWql",
             Label = "kleenestar.core:field.configure.wql.label",
@@ -81,7 +81,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Gets the checkbox control for the required flag.
         /// </summary>
-        public ControlFormItemInputCheckbox FieldRequired { get; } = new()
+        public ControlFormItemInputCheck FieldRequired { get; } = new()
         {
             Name = nameof(Model.Entities.Field.Required),
             Label = "kleenestar.core:field.required.label",
@@ -91,7 +91,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Gets the checkbox control for the unique flag.
         /// </summary>
-        public ControlFormItemInputCheckbox FieldUnique { get; } = new()
+        public ControlFormItemInputCheck FieldUnique { get; } = new()
         {
             Name = nameof(Model.Entities.Field.Unique),
             Label = "kleenestar.core:field.unique.label",

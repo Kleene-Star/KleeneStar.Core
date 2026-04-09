@@ -47,7 +47,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Gets the input text control for specifying the help text of the field.
         /// </summary>
-        public ControlFormItemInputTextBox HelpText { get; } = new()
+        public ControlFormItemInputText HelpText { get; } = new()
         {
             Name = nameof(Model.Entities.Field.HelpText),
             Label = "kleenestar.core:field.helptext.label",
@@ -58,7 +58,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Gets the input text control for specifying the placeholder of the field.
         /// </summary>
-        public ControlFormItemInputTextBox FieldPlaceholder { get; } = new()
+        public ControlFormItemInputText FieldPlaceholder { get; } = new()
         {
             Name = nameof(Model.Entities.Field.Placeholder),
             Label = "kleenestar.core:field.placeholder.label",
@@ -93,7 +93,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Gets the checkbox control for the required flag.
         /// </summary>
-        public ControlFormItemInputCheckbox FieldRequired { get; } = new()
+        public ControlFormItemInputCheck FieldRequired { get; } = new()
         {
             Name = nameof(Model.Entities.Field.Required),
             Label = "kleenestar.core:field.required.label",
@@ -103,7 +103,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Gets the checkbox control for the unique flag.
         /// </summary>
-        public ControlFormItemInputCheckbox FieldUnique { get; } = new()
+        public ControlFormItemInputCheck FieldUnique { get; } = new()
         {
             Name = nameof(Model.Entities.Field.Unique),
             Label = "kleenestar.core:field.unique.label",
@@ -113,7 +113,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Gets the checkbox control for the deprecated flag.
         /// </summary>
-        public ControlFormItemInputCheckbox FieldDeprecated { get; } = new()
+        public ControlFormItemInputCheck FieldDeprecated { get; } = new()
         {
             Name = nameof(Model.Entities.Field.Deprecated),
             Label = "kleenestar.core:field.deprecated.label",
@@ -146,7 +146,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Gets the input text control for specifying the default specification.
         /// </summary>
-        public ControlFormItemInputTextBox DefaultSpec { get; } = new()
+        public ControlFormItemInputText DefaultSpec { get; } = new()
         {
             Name = nameof(Model.Entities.Field.DefaultSpec),
             Label = "kleenestar.core:field.defaultspec.label",
