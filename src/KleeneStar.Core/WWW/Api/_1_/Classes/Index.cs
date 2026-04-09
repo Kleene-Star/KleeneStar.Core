@@ -203,6 +203,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
 
             CoreHub.ClassManager.Add(newItem);
 
+            // automatically create the standard form for the new class
+            CoreHub.FormManager.CreateStandardForm(newItem.Id);
+
             // create notification
             CoreHub.AddNotification("Create", "success", 5000);
 
@@ -243,6 +246,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             fieldMap.BindTo(newItem);
 
             CoreHub.ClassManager.Add(newItem);
+
+            // automatically create the standard form for the cloned class
+            CoreHub.FormManager.CreateStandardForm(newItem.Id);
 
             // create notification
             CoreHub.AddNotification("Clone", "success", 5000);

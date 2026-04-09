@@ -277,6 +277,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
         /// <summary>
         /// Deletes the specified resource.
         /// </summary>
+        /// <remarks>
+        /// Standard forms cannot be deleted. If the specified form is a standard form,
+        /// the delete operation is rejected and a corresponding error result is returned.
+        /// </remarks>
         /// <param name="existingItem">
         /// The currently persisted item that is to be deleted.
         /// </param>
@@ -288,6 +292,15 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
         /// </returns>
         protected override IRestApiCrudResultDelete Delete(Model.Entities.Form existingItem, IRequest request)
         {
+            // prevent deletion of the standard form
+            if (CoreHub.FormManager.IsStandardForm(existingItem.Id))
+            {
+                return new RestApiCrudResultDelete()
+                {
+                    Error = "The standard form cannot be deleted."
+                };
+            }
+
             CoreHub.FormManager.Remove(existingItem.Id);
 
             return base.Delete(existingItem, request);
