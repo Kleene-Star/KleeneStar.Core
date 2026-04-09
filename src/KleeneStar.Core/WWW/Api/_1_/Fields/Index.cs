@@ -95,8 +95,18 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
             {
                 Name = data.Name + " (Copy)",
                 Description = data.Description,
+                HelpText = data.HelpText,
+                Placeholder = data.Placeholder,
                 Icon = data.Icon,
-                State = FieldState.Active
+                State = FieldState.Active,
+                FieldType = data.FieldType,
+                Cardinality = data.Cardinality,
+                ValidationRules = data.ValidationRules != null ? new System.Collections.Generic.List<string>(data.ValidationRules) : new System.Collections.Generic.List<string>(),
+                DefaultSpec = data.DefaultSpec,
+                Required = data.Required,
+                Unique = data.Unique,
+                Deprecated = data.Deprecated,
+                AccessModifier = data.AccessModifier
             };
 
             return RetrieveForClone(request, newItem, "kleenestar.core:field.clone.title");

@@ -10,6 +10,7 @@ using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
 {
@@ -24,6 +25,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
         private readonly IUri _deleteFormUri;
+        private readonly IUri _configureFormUri;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -33,6 +35,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
             _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Field._fieldid_.Edit>();
             _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Field._fieldid_.Clone>();
             _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Field._fieldid_.Delete>();
+            _configureFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Field._fieldid_.Configure>();
         }
 
         /// <summary>
@@ -70,6 +73,34 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
                 Id = "description",
                 Label = "Description",
                 Visible = true
+            };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "fieldtype",
+                Label = "Type",
+                Visible = true
+            };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "cardinality",
+                Label = "Cardinality",
+                Visible = false
+            };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "required",
+                Label = "Required",
+                Visible = false
+            };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "accessmodifier",
+                Label = "Access",
+                Visible = false
             };
 
             yield return new RestApiTableColumn()
@@ -121,6 +152,18 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
                         },
                         new() {
                             Content = x.Description
+                        },
+                        new() {
+                            Content = x.FieldType
+                        },
+                        new() {
+                            Content = x.Cardinality.ToString()
+                        },
+                        new() {
+                            Content = x.Required ? "Yes" : "No"
+                        },
+                        new() {
+                            Content = x.AccessModifier.ToString()
                         },
                         new() {
                             Content = x.State.ToString()
@@ -218,6 +261,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
             var deleteUri = _deleteFormUri?
                 .BindParameters(request)
                 .BindParameters(new FieldIdParameter(row.Id));
+            var configureUri = _configureFormUri?
+                .BindParameters(request)
+                .BindParameters(new FieldIdParameter(row.Id));
 
             yield return new RestApiOptionHeader(request)
             {
@@ -227,6 +273,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
             yield return new RestApiOptionEdit(request)
             {
                 PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge)
+            };
+
+            yield return new RestApiOptionCustom(request)
+            {
+                Text = "kleenestar.core:field.configure.title",
+                Icon = new IconCog(),
+                PrimaryAction = new ActionModal("modal-form", configureUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionClone(request)

@@ -45,6 +45,117 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
+        /// Gets the input text control for specifying the help text of the field.
+        /// </summary>
+        public ControlFormItemInputTextBox HelpText { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.HelpText),
+            Label = "kleenestar.core:field.helptext.label",
+            Placeholder = "kleenestar.core:field.helptext.placeholder",
+            Required = false
+        };
+
+        /// <summary>
+        /// Gets the input text control for specifying the placeholder of the field.
+        /// </summary>
+        public ControlFormItemInputTextBox FieldPlaceholder { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.Placeholder),
+            Label = "kleenestar.core:field.placeholder.label",
+            Placeholder = "kleenestar.core:field.placeholder.placeholder",
+            Required = false
+        };
+
+        /// <summary>
+        /// Gets the input selection control for the field type.
+        /// </summary>
+        public ControlRestFormItemInputSelection FieldTypeSelection { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.FieldType),
+            Label = "kleenestar.core:field.fieldtype.label",
+            Placeholder = "kleenestar.core:field.fieldtype.placeholder",
+            Help = "kleenestar.core:field.fieldtype.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.FieldType>()
+        };
+
+        /// <summary>
+        /// Gets the input selection control for the cardinality.
+        /// </summary>
+        public ControlRestFormItemInputSelection CardinalitySelection { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.Cardinality),
+            Label = "kleenestar.core:field.cardinality.label",
+            Placeholder = "kleenestar.core:field.cardinality.placeholder",
+            Help = "kleenestar.core:field.cardinality.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Cardinality>()
+        };
+
+        /// <summary>
+        /// Gets the checkbox control for the required flag.
+        /// </summary>
+        public ControlFormItemInputCheckbox FieldRequired { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.Required),
+            Label = "kleenestar.core:field.required.label",
+            Help = "kleenestar.core:field.required.help"
+        };
+
+        /// <summary>
+        /// Gets the checkbox control for the unique flag.
+        /// </summary>
+        public ControlFormItemInputCheckbox FieldUnique { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.Unique),
+            Label = "kleenestar.core:field.unique.label",
+            Help = "kleenestar.core:field.unique.help"
+        };
+
+        /// <summary>
+        /// Gets the checkbox control for the deprecated flag.
+        /// </summary>
+        public ControlFormItemInputCheckbox FieldDeprecated { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.Deprecated),
+            Label = "kleenestar.core:field.deprecated.label",
+            Help = "kleenestar.core:field.deprecated.help"
+        };
+
+        /// <summary>
+        /// Gets the input selection control for the access modifier.
+        /// </summary>
+        public ControlRestFormItemInputSelection AccessModifierSelection { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.AccessModifier),
+            Label = "kleenestar.core:field.accessmodifier.label",
+            Placeholder = "kleenestar.core:field.accessmodifier.placeholder",
+            Help = "kleenestar.core:field.accessmodifier.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.AccessModifier>()
+        };
+
+        /// <summary>
+        /// Gets the input tag control for validation rules.
+        /// </summary>
+        public ControlFormItemInputTag ValidationRules { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.ValidationRules),
+            Label = "kleenestar.core:field.validationrules.label",
+            Placeholder = "kleenestar.core:field.validationrules.placeholder",
+            Help = "kleenestar.core:field.validationrules.help"
+        };
+
+        /// <summary>
+        /// Gets the input text control for specifying the default specification.
+        /// </summary>
+        public ControlFormItemInputTextBox DefaultSpec { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.DefaultSpec),
+            Label = "kleenestar.core:field.defaultspec.label",
+            Placeholder = "kleenestar.core:field.defaultspec.placeholder",
+            Help = "kleenestar.core:field.defaultspec.help",
+            Required = false
+        };
+
+        /// <summary>
         /// Gets the input selection control for the state.
         /// </summary>
         public ControlRestFormItemInputSelection FieldState { get; } = new()
@@ -65,6 +176,16 @@ namespace KleeneStar.Core.WebFragment
         {
             Add(FieldName);
             Add(Description);
+            Add(HelpText);
+            Add(FieldPlaceholder);
+            Add(FieldTypeSelection);
+            Add(CardinalitySelection);
+            Add(FieldRequired);
+            Add(FieldUnique);
+            Add(FieldDeprecated);
+            Add(AccessModifierSelection);
+            Add(ValidationRules);
+            Add(DefaultSpec);
             Add(FieldState);
 
             Mode = TypeRestFormMode.Clone;
