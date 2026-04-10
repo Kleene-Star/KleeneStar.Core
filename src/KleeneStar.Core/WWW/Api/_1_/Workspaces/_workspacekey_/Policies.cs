@@ -36,12 +36,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_
         /// </returns>
         protected override IQuery<Workspace> Filter(string filter, IQuery<Workspace> query, IRequest request)
         {
-            if (string.IsNullOrWhiteSpace(filter) || filter == "null")
-            {
-                return query;
-            }
-
-            return query.WhereContainsIgnoreCase(x => x.Name, filter);
+            return query;
         }
 
         /// <summary>
