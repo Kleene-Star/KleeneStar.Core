@@ -122,20 +122,20 @@ An integrated audit system records all relevant actions related to forms, includ
 ║    ¦                            └──────Δ────────┘                   │                ║
 ║    ¦                                   ¦                            │                ║
 ║    ¦                                   ¦                            │                ║
-║    ¦                 ┌─────────────────┴─────────────────┐ *        │                ║
-║    ¦                 │ <<Interface>>                     ◄──────────┘                ║
-║    ¦                 │ IForm                             │      ┌───────────────┐    ║
-║    ¦                 ├───────────────────────────────────┤      │ <<Enum>>      │    ║
-║    ¦                 │ Id:Guid                           │      │ TypeFormState │    ║
-║    ¦                 │ Name:String                       │      ├───────────────┤    ║
-║    ¦                 │ Description:String                │      │ Active        │    ║
-║    ¦                 │ HelpText:String                   │      │ Archived      │    ║
-║    ¦                 │ State:TypeFormState               │      └───────────────┘    ║
-║    ¦                 │ Class:IClass                      │                           ║
-║    ¦                 │ Created:DateTime                  │                           ║
-║    ¦               1 │ Updated:DateTime                  │                           ║
-║    ¦          ┌──────┤ Tabs:IEnumerable<IFormTab>        │                           ║
-║    ¦          │      └───────────────────────────Δ───────┘                           ║
+║    ¦                     ┌─────────────┴──────────────┐ *           │                ║
+║    ¦                     │ <<Interface>>              ◄─────────────┘                ║
+║    ¦                     │ IForm                      │             ┌───────────┐    ║
+║    ¦                     ├────────────────────────────┤             │ <<Enum>>  │    ║
+║    ¦                     │ Id:Guid                    │             │ FormState │    ║
+║    ¦                     │ Name:String                │             ├───────────┤    ║
+║    ¦                     │ Description:String         │             │ Active    │    ║
+║    ¦                     │ HelpText:String            │             │ Archived  │    ║
+║    ¦                     │ State:FormState            │             └───────────┘    ║
+║    ¦                     │ Class:IClass               │                              ║
+║    ¦                     │ Created:DateTime           │                              ║
+║    ¦                   1 │ Updated:DateTime           │                              ║
+║    ¦          ┌──────────┤ Tabs:IEnumerable<IFormTab> │                              ║
+║    ¦          │          └───────────────────────Δ────┘                              ║
 ║    ¦          │                                  ¦                                   ║
 ║    ¦          │ *                                ¦                                   ║
 ║    ¦  ┌───────▼──────────┐     ┌───────────────┐ ¦                                   ║
@@ -158,20 +158,19 @@ An integrated audit system records all relevant actions related to forms, includ
 ║    ¦                │   IEnumerable<IField> │    ¦                                   ║
 ║    ¦                └───────────────────────┘    ¦                                   ║
 ║    ¦                                             ¦                                   ║
-║    ¦ create          ┌───────────────────────────┴───────┐                           ║
-║    └-----------------► Form                              │                           ║
-║                      ├───────────────────────────────────┤                           ║
-║                      │ Id:Guid                           │                           ║
-║                      │ Name:String                       │                           ║
-║                      │ Description:String                │                           ║
-║                      │ HelpText:String                   │                           ║
-║                      │ State:TypeFormState               │                           ║
-║                      │ Class:Class                       │                           ║
-║                      │ Created:DateTime                  │                           ║
-║                      │ Updated:DateTime                  │                           ║
-║                      │ Tabs:IEnumerable<IFormTab>        │                           ║
-║                      └───────────────────────────────────┘                           ║
-║                                                                                      ║
+║    ¦ create                  ┌───────────────────┴────────┐                          ║
+║    └-------------------------► Form                       │                          ║
+║                              ├────────────────────────────┤                          ║
+║                              │ Id:Guid                    │                          ║
+║                              │ Name:String                │                          ║
+║                              │ Description:String         │                          ║
+║                              │ HelpText:String            │                          ║
+║                              │ State:FormState            │                          ║
+║                              │ Class:IClass               │                          ║
+║                              │ Created:DateTime           │                          ║
+║                              │ Updated:DateTime           │                          ║
+║                              │ Tabs:IEnumerable<IFormTab> │                          ║
+║                              └────────────────────────────┘                          ║
 ║                                                                                      ║
 ║                Special groups (implementations of IFormGroup):                       ║
 ║           ┌──────────────────────────────────────────────────────────────┐           ║
@@ -192,7 +191,7 @@ The group elements themselves are polymorphic and realized through specialized `
 
 The `IFormManager` acts as the central control unit for form management. It provides methods for creating, cloning, querying, and removing forms and ensures that all changes are communicated system-wide via events such as `FormAdded`, `FormUpdated`, and `FormRemoved`. This enables other components to react to form changes without being directly coupled to the manager, supporting loose coupling and architectural extensibility.
 
-All forms also have a lifecycle state (`TypeFormState`) distinguishing between active, archived, and deleted.
+All forms also have a lifecycle state (`FormState`) distinguishing between active, archived, and deleted.
 
 ## UI Concepts and Pages
 

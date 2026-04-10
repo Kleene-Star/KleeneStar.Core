@@ -130,45 +130,45 @@ An integrated audit system documents all relevant actions around classes: access
 ║         ¦                      └──────Δ────────┘                    │                ║
 ║         ¦                             ¦                             │                ║
 ║         ¦                             ¦                             │                ║
-║         ¦           ┌─────────────────┴──────────────────┐ *        │                ║
-║         ¦           │ <<Interface>>                      ◄──────────┘                ║
-║         ¦           │ IClass                             │        ┌────────────────┐ ║
-║         ¦           ├────────────────────────────────────┤        │ <<Enum>>       │ ║
-║         ¦           │ Name:String                        │        │ TypeClassState │ ║
-║         ¦           │ State:TypeClassState               │        ├────────────────┤ ║
-║         ¦           │ Workspace:IWorkspace               │        │ Active         │ ║
-║         ¦           │ Created:DateTime                   │        │ Archived       │ ║
-║         ¦           │ Updated:DateTime                   │        └────────────────┘ ║
-║         ¦           │ IsAbstract:Bool                    │    ┌────────────────────┐ ║
-║         ¦           │ Inherited:IClass                   │    │ <<Enum>>           │ ║
-║         ¦           │ Sealed:Bool                        │    │ TypeAccessModifier │ ║
-║         ¦           │ Parent:IClass                      │    ├────────────────────┤ ║
-║         ¦           │ AccessModifier:TypeAccessModifier  │    │ Private            │ ║
-║         ¦           │ AllowedChildren:                   │    │ Protected          │ ║
-║         ¦           │   IEnumerable<IClass>              │    │ Public             │ ║
-║         ¦           │ PermissionsProfiles:               │    │ Internal           │ ║
-║         ¦           │   IEnumerable<IPermissionsProfile> │    └────────────────────┘ ║
-║         ¦           └─────────────────Δ──────────────────┘                           ║
+║         ¦          ┌──────────────────┴──────────────────┐ *        │                ║
+║         ¦          │ <<Interface>>                       ◄──────────┘                ║
+║         ¦          │ IClass                              │       ┌────────────┐      ║
+║         ¦          ├─────────────────────────────────────┤       │ <<Enum>>   │      ║
+║         ¦          │ Name:String                         │       │ ClassState │      ║
+║         ¦          │ State:ClassState                    │       ├────────────┤      ║
+║         ¦          │ Workspace:IWorkspace                │       │ Active     │      ║
+║         ¦          │ Created:DateTime                    │       │ Archived   │      ║
+║         ¦          │ Updated:DateTime                    │       └────────────┘      ║
+║         ¦          │ IsAbstract:Bool                     │   ┌─────────────────────┐ ║
+║         ¦          │ Inherited:IClass                    │   │ <<Enum>>            │ ║
+║         ¦          │ Sealed:Bool                         │   │ ClassAccessModifier │ ║
+║         ¦          │ Parent:IClass                       │   ├─────────────────────┤ ║
+║         ¦          │ AccessModifier:ClassAccessModifier  │   │ Private             │ ║
+║         ¦          │ AllowedChildren:                    │   │ Protected           │ ║
+║         ¦          │   IEnumerable<IClass>               │   │ Public              │ ║
+║         ¦          │ PermissionsProfiles:                │   │ Internal            │ ║
+║         ¦          │   IEnumerable<IPermissionsProfile>  │   └─────────────────────┘ ║
+║         ¦          └──────────────────Δ──────────────────┘                           ║
 ║         ¦                             ¦                                              ║
 ║         ¦                             ¦                                              ║
-║         ¦ create    ┌─────────────────┴──────────────────┐                           ║
-║         └-----------► Class                              │                           ║
-║                     ├────────────────────────────────────┤                           ║
-║                     │ Name:String                        │                           ║
-║                     │ State:TypeClassState               │                           ║
-║                     │ Workspace:Workspace                │                           ║
-║                     │ Created:DateTime                   │                           ║
-║                     │ Updated:DateTime                   │                           ║
-║                     │ IsAbstract:Bool                    │                           ║
-║                     │ Inherited:IClass                   │                           ║
-║                     │ Sealed:Bool                        │                           ║
-║                     │ Parent:IClass                      │                           ║
-║                     │ AccessModifier:TypeAccessModifier  │                           ║
-║                     │ AllowedChildren:                   │                           ║
-║                     │   IEnumerable<IClass>              │                           ║
-║                     │ PermissionsProfiles:               │                           ║
-║                     │   IEnumerable<IPermissionsProfile> │                           ║
-║                     └────────────────────────────────────┘                           ║
+║         ¦ create   ┌──────────────────┴──────────────────┐                           ║
+║         └----------► Class                               │                           ║
+║                    ├─────────────────────────────────────┤                           ║
+║                    │ Name:String                         │                           ║
+║                    │ State:ClassState                    │                           ║
+║                    │ Workspace:Workspace                 │                           ║
+║                    │ Created:DateTime                    │                           ║
+║                    │ Updated:DateTime                    │                           ║
+║                    │ IsAbstract:Bool                     │                           ║
+║                    │ Inherited:IClass                    │                           ║
+║                    │ Sealed:Bool                         │                           ║
+║                    │ Parent:IClass                       │                           ║
+║                    │ AccessModifier:ClassAccessModifier  │                           ║
+║                    │ AllowedChildren:                    │                           ║
+║                    │   IEnumerable<IClass>               │                           ║
+║                    │ PermissionsProfiles:                │                           ║
+║                    │   IEnumerable<IPermissionsProfile>  │                           ║
+║                    └─────────────────────────────────────┘                           ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```

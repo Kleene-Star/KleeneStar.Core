@@ -147,7 +147,7 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ║                  │    ├───────────────────────────────┤     │ <<Enum>>       │    ¦  ║
 ║                  │    │ Id:Guid                       │     │ WorkflowStatus │    ¦  ║
 ║                  │    │ Name:String                   │     ├────────────────┤    ¦  ║
-║                  │    │ Status:TypeWorkflowStatus     │     │ Draft          │    ¦  ║
+║                  │    │ Status:WorkflowStatus         │     │ Draft          │    ¦  ║
 ║                  │    │ Class:IClass                  │     │ Active         │    ¦  ║
 ║                  │    │ Created:DateTime              │     │ Archived       │    ¦  ║
 ║                  │  1 │ Updated:DateTime              │     └────────────────┘    ¦  ║
@@ -179,7 +179,7 @@ An integrated audit system logs all relevant actions around workflows: accesses,
 ║                                  ├───────────────────────────────┤                   ║
 ║                                  │ Id:Guid                       │                   ║
 ║                                  │ Name:String                   │                   ║
-║                                  │ State:WorkflowState           │                   ║
+║                                  │ State:WorkflowStatus          │                   ║
 ║                                  │ Class:IClass                  │                   ║
 ║                                  │ Created:DateTime              │                   ║
 ║                                  │ Updated:DateTime              │                   ║

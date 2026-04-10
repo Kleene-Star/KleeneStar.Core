@@ -122,42 +122,42 @@ The audit system records every relevant action in the lifecycle of a priority. T
 ║   ¦                           └───────Δ───────┘                   │                  ║
 ║   ¦                                   ¦                           │                  ║
 ║   ¦                                   ¦                           │                  ║
-║   ¦                      ┌────────────┴────────────┐ *            │                  ║
-║   ¦                      │ <<Interface>>           ◄──────────────┘                  ║
-║   ¦                      │ IPriority               │                                 ║
-║   ¦                      ├─────────────────────────┤         ┌───────────────────┐   ║
-║   ¦                      │ Id:Guid                 │         │ <<Enum>>          │   ║
-║   ¦                      │ Name:String             │         │ TypePriorityState │   ║
-║   ¦                      │ Description:String      │         ├───────────────────┤   ║
-║   ¦                      │ Score:int               │         │ Active            │   ║
-║   ¦                      │ Category:String         │         │ Archived          │   ║
-║   ¦                      │ State:TypePriorityState │         └───────────────────┘   ║
-║   ¦                      │ Class:IClass            │                                 ║
-║   ¦                      │ Created:DateTime        │                                 ║
-║   ¦                      │ Updated:DateTime        │                                 ║
-║   ¦                      └────────────Δ────────────┘                                 ║
+║   ¦                        ┌──────────┴──────────┐ *              │                  ║
+║   ¦                        │ <<Interface>>       ◄────────────────┘                  ║
+║   ¦                        │ IPriority           │                                   ║
+║   ¦                        ├─────────────────────┤               ┌───────────────┐   ║
+║   ¦                        │ Id:Guid             │               │ <<Enum>>      │   ║
+║   ¦                        │ Name:String         │               │ PriorityState │   ║
+║   ¦                        │ Description:String  │               ├───────────────┤   ║
+║   ¦                        │ Score:int           │               │ Active        │   ║
+║   ¦                        │ Category:String     │               │ Archived      │   ║
+║   ¦                        │ State:PriorityState │               └───────────────┘   ║
+║   ¦                        │ Class:IClass        │                                   ║
+║   ¦                        │ Created:DateTime    │                                   ║
+║   ¦                        │ Updated:DateTime    │                                   ║
+║   ¦                        └──────────Δ──────────┘                                   ║
 ║   ¦                                   ¦                                              ║
 ║   ¦                                   ¦                                              ║
-║   ¦ create               ┌────────────┴────────────┐                                 ║
-║   └----------------------► Priority                │                                 ║
-║                          ├─────────────────────────┤                                 ║
-║                          │ Id:Guid                 │                                 ║
-║                          │ Name:String             │                                 ║
-║                          │ Description:String      │                                 ║
-║                          │ Score:int               │                                 ║
-║                          │ Category:String         │                                 ║
-║                          │ State:TypePriorityState │                                 ║
-║                          │ Class:IClass            │                                 ║
-║                          │ Created:DateTime        │                                 ║
-║                          │ Updated:DateTime        │                                 ║
-║                          └─────────────────────────┘                                 ║
+║   ¦ create                 ┌──────────┴──────────┐                                   ║
+║   └------------------------► Priority            │                                   ║
+║                            ├─────────────────────┤                                   ║
+║                            │ Id:Guid             │                                   ║
+║                            │ Name:String         │                                   ║
+║                            │ Description:String  │                                   ║
+║                            │ Score:int           │                                   ║
+║                            │ Category:String     │                                   ║
+║                            │ State:PriorityState │                                   ║
+║                            │ Class:IClass        │                                   ║
+║                            │ Created:DateTime    │                                   ║
+║                            │ Updated:DateTime    │                                   ║
+║                            └─────────────────────┘                                   ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
 The model shown represents the core functions of priority management in **KleeneStar**. The starting point is the generic `IComponentManager` interface, which serves as a base for manager components. Building on this, `IPriorityManager` specifies the administration of priorities and provides methods for their lifecycle. These include adding, updating, cloning, and deleting priorities, as well as the ability to query priorities of a class in a targeted manner. This is complemented by events such as `PriorityAdded`, `PriorityUpdated`, or `PriorityRemoved`, which enable reactive coupling with other system parts and can, for example, trigger SLA recalculations or escalation logic.
 
-The actual priority is described via the `IPriority` interface, which contains central attributes such as Id, name, and description. The state is formalized by the `TypePriorityState` enumeration and distinguishes between active and archived priorities. Other properties such as the reference to the associated class and timestamps for creation and update ensure context binding and traceability. The concrete implementation is carried out by the priority class, which adopts all defined properties and is used in the system as a persistent entity.
+The actual priority is described via the `IPriority` interface, which contains central attributes such as Id, name, and description. The state is formalized by the `PriorityState` enumeration and distinguishes between active and archived priorities. Other properties such as the reference to the associated class and timestamps for creation and update ensure context binding and traceability. The concrete implementation is carried out by the priority class, which adopts all defined properties and is used in the system as a persistent entity.
 
 ## UI Concepts and Pages
 

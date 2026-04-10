@@ -146,22 +146,22 @@ An integrated audit system documents all relevant actions around fields: accesse
 ║    ¦          │                       ¦                             │                ║
 ║    ¦          │     ┌─────────────────┴──────────────────┐ *        │                ║
 ║    ¦          │     │ <<Interface>>                      ◄──────────┘                ║
-║    ¦          │     │ IField                             │     ┌────────────────┐    ║
-║    ¦          │     ├────────────────────────────────────┤     │ <<Enum>>       │    ║
-║    ¦          │     │ Id:Guid                            │     │ TypeFieldState │    ║
-║    ¦          │     │ Name:String                        │     ├────────────────┤    ║
-║    ¦          │     │ Description:String                 │     │ Active         │    ║
-║    ¦          │     │ HelpText:String                    │     │ Archived       │    ║
-║    ¦          │     │ Placeholder:String                 │     └────────────────┘    ║
-║    ¦          │     │ State:TypeFieldState               │    ┌────────────────────┐ ║
-║    ¦          │     │ Class:IClass                       │    │ <<Enum>>           │ ║
-║    ¦          │     │ Created:DateTime                   │    │ TypeAccessModifier │ ║
-║    ¦          │   * │ Updated:DateTime                   │    ├────────────────────┤ ║
-║    ¦          └─────┤ Type:IFieldType                    │    │ Private            │ ║
-║    ¦                │ Cardinality:FieldCardinality       │    │ Protected          │ ║
-║    ¦                │ Required:Bool                      │    │ Public             │ ║
-║    ¦                │ Unique:Bool                        │    │ Internal           │ ║
-║    ¦                │ Deprecated:Bool                    │    └────────────────────┘ ║
+║    ¦          │     │ IField                             │       ┌────────────┐      ║
+║    ¦          │     ├────────────────────────────────────┤       │ <<Enum>>   │      ║
+║    ¦          │     │ Id:Guid                            │       │ FieldState │      ║
+║    ¦          │     │ Name:String                        │       ├────────────┤      ║
+║    ¦          │     │ Description:String                 │       │ Active     │      ║
+║    ¦          │     │ HelpText:String                    │       │ Archived   │      ║
+║    ¦          │     │ Placeholder:String                 │       └────────────┘      ║
+║    ¦          │     │ State:FieldState                   │   ┌─────────────────────┐ ║
+║    ¦          │     │ Class:IClass                       │   │ <<Enum>>            │ ║
+║    ¦          │     │ Created:DateTime                   │   │ FieldAccessModifier │ ║
+║    ¦          │   * │ Updated:DateTime                   │   ├─────────────────────┤ ║
+║    ¦          └─────┤ Type:IFieldType                    │   │ Private             │ ║
+║    ¦                │ Cardinality:FieldCardinality       │   │ Protected           │ ║
+║    ¦                │ Required:Bool                      │   │ Public              │ ║
+║    ¦                │ Unique:Bool                        │   │ Internal            │ ║
+║    ¦                │ Deprecated:Bool                    │   └─────────────────────┘ ║
 ║    ¦                │ AccessModifier:TypeAccessModifier  │                           ║
 ║    ¦                │ ValidationRules:IEnumerable<IRule> │                           ║
 ║    ¦                │ Default:IDefaultSpec               │                           ║
@@ -178,7 +178,7 @@ An integrated audit system documents all relevant actions around fields: accesse
 ║                     │ Description:String                 │                           ║
 ║                     │ HelpText:String                    │                           ║
 ║                     │ Placeholder:String                 │                           ║
-║                     │ State:TypeFieldState               │                           ║
+║                     │ State:FieldState                   │                           ║
 ║                     │ Class:Class                        │                           ║
 ║                     │ Created:DateTime                   │                           ║
 ║                     │ Updated:DateTime                   │                           ║

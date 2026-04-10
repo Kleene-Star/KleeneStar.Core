@@ -135,53 +135,53 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║         ¦                    ¦                   ¦                  │                ║
 ║         ¦                    └--------┬----------┘                  │                ║
 ║         ¦                             ¦                             │                ║
-║         ¦           ┌─────────────────┴──────────────────┐ *        │                ║
-║         ¦           │ <<Interface>>                      ◄──────────┘                ║
-║         ¦           │ IWorkspace                         │    ┌────────────────────┐ ║
-║         ¦           ├────────────────────────────────────┤    │ <<Enum>>           │ ║
-║         ¦           │ Key:String                         │    │ TypeWorkspaceState │ ║
-║         ¦           │ Name:String                        │    ├────────────────────┤ ║
-║         ¦           │ State:TypeWorkspaceState           │    │ Active             │ ║
-║         ¦           │ Icon:IIcon                         │    │ Archived           │ ║
-║         ¦           │ Description:String                 │    └────────────────────┘ ║
-║         ¦           │ Created:DateTime                   │    ┌────────────────────┐ ║
-║         ¦           │ Updated:DateTime                   │    │ <<Enum>>           │ ║
-║         ¦           │ Inherited:IWorkspace               │    │ TypeAccessModifier │ ║
-║         ¦           │ Sealed:Bool                        │    ├────────────────────┤ ║
-║         ¦           │ Tenant:IEnumerable<ITenant>        │    │ Private            │ ║
-║         ¦           │ Classes:                           │    │ Protected          │ ║
-║         ¦           │   IEnumerable<IClass>              │    │ Public             │ ║
-║         ¦           │ Objects:                           │    │ Internal           │ ║
-║         ¦           │   IEnumerable<IObject>             │    └────────────────────┘ ║
-║         ¦           │ Categories:IEnumerable<String>     │                           ║
-║         ¦           │ AccessModifier:TypeAccessModifier  │                           ║
-║         ¦           │ PermissionsProfiles:               │                           ║
-║         ¦           │   IEnumerable<IPermissionsProfile> │                           ║
-║         ¦           └─────────────────Δ──────────────────┘                           ║
-║         ¦                             ¦                                              ║
-║         ¦                             ¦                                              ║
-║         ¦ create    ┌─────────────────┴──────────────────┐                           ║
-║         └-----------► Workspace                          │                           ║
-║                     ├────────────────────────────────────┤                           ║
-║                     │ Key:String                         │                           ║
-║                     │ Name:String                        │                           ║
-║                     │ State:TypeWorkspaceState           │                           ║
-║                     │ Icon:IIcon                         │                           ║
-║                     │ Description:String                 │                           ║
-║                     │ Created:DateTime                   │                           ║
-║                     │ Updated:DateTime                   │                           ║
-║                     │ Inherited:IWorkspace               │                           ║
-║                     │ Sealed:Bool                        │                           ║
-║                     │ Tenant:IEnumerable<ITenant>        │                           ║
-║                     │ Classes:                           │                           ║
-║                     │   IEnumerable<IClass>              │                           ║
-║                     │ Objects:                           │                           ║
-║                     │   IEnumerable<IObject>             │                           ║
-║                     │ Categories:IEnumerable<String>     │                           ║
-║                     │ AccessModifier:TypeAccessModifier  │                           ║
-║                     │ PermissionsProfiles:               │                           ║
-║                     │   IEnumerable<IPermissionsProfile> │                           ║
-║                     └────────────────────────────────────┘                           ║
+║         ¦       ┌─────────────────────┴──────────────┐ *            │                ║
+║         ¦       │ <<Interface>>                      ◄──────────────┘                ║
+║         ¦       │ IWorkspace                         │     ┌────────────────────┐    ║
+║         ¦       ├────────────────────────────────────┤     │ <<Enum>>           │    ║
+║         ¦       │ Key:String                         │     │ WorkspaceState     │    ║
+║         ¦       │ Name:String                        │     ├────────────────────┤    ║
+║         ¦       │ State:WorkspaceState               │     │ Active             │    ║
+║         ¦       │ Icon:IIcon                         │     │ Archived           │    ║
+║         ¦       │ Description:String                 │     └────────────────────┘    ║
+║         ¦       │ Created:DateTime                   │  ┌─────────────────────────┐  ║
+║         ¦       │ Updated:DateTime                   │  │ <<Enum>>                │  ║
+║         ¦       │ Inherited:IWorkspace               │  │ WorkspaceAccessModifier │  ║
+║         ¦       │ Sealed:Bool                        │  ├─────────────────────────┤  ║
+║         ¦       │ Tenant:IEnumerable<ITenant>        │  │ Private                 │  ║
+║         ¦       │ Classes:                           │  │ Protected               │  ║
+║         ¦       │   IEnumerable<IClass>              │  │ Public                  │  ║
+║         ¦       │ Objects:                           │  │ Internal                │  ║
+║         ¦       │   IEnumerable<IObject>             │  └─────────────────────────┘  ║
+║         ¦       │ Categories:IEnumerable<String>     │                               ║
+║         ¦       │ AccessModifier:TypeAccessModifier  │                               ║
+║         ¦       │ PermissionsProfiles:               │                               ║
+║         ¦       │   IEnumerable<IPermissionsProfile> │                               ║
+║         ¦       └─────────────────Δ──────────────────┘                               ║
+║         ¦                         ¦                                                  ║
+║         ¦                         ¦                                                  ║
+║         ¦ create ┌────────────────┴───────────────────┐                              ║
+║         └--------► Workspace                          │                              ║
+║                  ├────────────────────────────────────┤                              ║
+║                  │ Key:String                         │                              ║
+║                  │ Name:String                        │                              ║
+║                  │ State:WorkspaceState               │                              ║
+║                  │ Icon:IIcon                         │                              ║
+║                  │ Description:String                 │                              ║
+║                  │ Created:DateTime                   │                              ║
+║                  │ Updated:DateTime                   │                              ║
+║                  │ Inherited:IWorkspace               │                              ║
+║                  │ Sealed:Bool                        │                              ║
+║                  │ Tenant:IEnumerable<ITenant>        │                              ║
+║                  │ Classes:                           │                              ║
+║                  │   IEnumerable<IClass>              │                              ║
+║                  │ Objects:                           │                              ║
+║                  │   IEnumerable<IObject>             │                              ║
+║                  │ Categories:IEnumerable<String>     │                              ║
+║                  │ AccessModifier:TypeAccessModifier  │                              ║
+║                  │ PermissionsProfiles:               │                              ║
+║                  │   IEnumerable<IPermissionsProfile> │                              ║
+║                  └────────────────────────────────────┘                              ║
 ║                                                                                      ║
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
