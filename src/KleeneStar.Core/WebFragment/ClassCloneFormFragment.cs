@@ -33,7 +33,7 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Gets the input text control for specifying the description of the workspace.
+        /// Gets the input text control for specifying the description of the class.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
@@ -42,6 +42,73 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = "kleenestar.core:class.description.placeholder",
             Format = TypeEditTextFormat.Wysiwyg,
             Required = false
+        };
+
+        /// <summary>
+        /// Gets the input selection control for the inherited class.
+        /// </summary>
+        public ControlRestFormItemInputSelection InheritedSelection { get; } = new()
+        {
+            Name = nameof(Model.Entities.Class.InheritedId),
+            Label = "kleenestar.core:class.inherited.label",
+            Placeholder = "kleenestar.core:class.inherited.placeholder",
+            Help = "kleenestar.core:class.inherited.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Inherited>()
+        };
+
+        /// <summary>
+        /// Gets the checkbox control for the abstract flag.
+        /// </summary>
+        public ControlFormItemInputCheck ClassIsAbstract { get; } = new()
+        {
+            Name = nameof(Model.Entities.Class.IsAbstract),
+            Label = "kleenestar.core:class.isabstract.label",
+            Help = "kleenestar.core:class.isabstract.help"
+        };
+
+        /// <summary>
+        /// Gets the input selection control for the parent class.
+        /// </summary>
+        public ControlRestFormItemInputSelection ParentSelection { get; } = new()
+        {
+            Name = nameof(Model.Entities.Class.ParentId),
+            Label = "kleenestar.core:class.parent.label",
+            Placeholder = "kleenestar.core:class.parent.placeholder",
+            Help = "kleenestar.core:class.parent.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Parent>()
+        };
+
+        /// <summary>
+        /// Gets the tag input control for specifying the allowed children classes.
+        /// </summary>
+        public ControlFormItemInputTag AllowedChildren { get; } = new()
+        {
+            Name = nameof(Model.Entities.Class.AllowedChildren),
+            Label = "kleenestar.core:class.allowedchildren.label",
+            Placeholder = "kleenestar.core:class.allowedchildren.placeholder",
+            Help = "kleenestar.core:class.allowedchildren.help"
+        };
+
+        /// <summary>
+        /// Gets the input selection control for the access modifier.
+        /// </summary>
+        public ControlRestFormItemInputSelection AccessModifierSelection { get; } = new()
+        {
+            Name = nameof(Model.Entities.Class.AccessModifier),
+            Label = "kleenestar.core:class.accessmodifier.label",
+            Placeholder = "kleenestar.core:class.accessmodifier.placeholder",
+            Help = "kleenestar.core:class.accessmodifier.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.AccessModifier>()
+        };
+
+        /// <summary>
+        /// Gets the checkbox control for the sealed flag.
+        /// </summary>
+        public ControlFormItemInputCheck ClassSealed { get; } = new()
+        {
+            Name = nameof(Model.Entities.Class.Sealed),
+            Label = "kleenestar.core:class.sealed.label",
+            Help = "kleenestar.core:class.sealed.help"
         };
 
         /// <summary>
@@ -65,6 +132,12 @@ namespace KleeneStar.Core.WebFragment
         {
             Add(ClassName);
             Add(Description);
+            Add(InheritedSelection);
+            Add(ClassIsAbstract);
+            Add(ParentSelection);
+            Add(AllowedChildren);
+            Add(AccessModifierSelection);
+            Add(ClassSealed);
             Add(ClassState);
 
             Mode = TypeRestFormMode.Clone;
