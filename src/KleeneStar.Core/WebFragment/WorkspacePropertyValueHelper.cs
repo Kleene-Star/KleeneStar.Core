@@ -10,9 +10,14 @@ namespace KleeneStar.Core.WebFragment
     {
         public static string JoinEnumerable(object value)
         {
-            if (value is not IEnumerable enumerable || value is string text)
+            if (value is string text)
             {
-                return text ?? string.Empty;
+                return text;
+            }
+
+            if (value is not IEnumerable enumerable)
+            {
+                return string.Empty;
             }
 
             return string.Join(", ", enumerable.Cast<object>().Select(x => x?.ToString()).Where(x => !string.IsNullOrWhiteSpace(x)));

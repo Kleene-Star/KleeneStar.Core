@@ -119,7 +119,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 Sealed = data.Sealed,
                 AccessModifier = data.AccessModifier,
                 Tenant = data.Tenant,
-                PermissionsProfiles = data.PermissionsProfiles
+                PermissionProfiles = data.PermissionProfiles
             };
 
             return RetrieveForClone(request, newItem, "kleenestar.core:workspace.clone.title");

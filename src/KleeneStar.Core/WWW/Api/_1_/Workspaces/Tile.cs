@@ -81,7 +81,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 {
                     Id = x.Id.ToString(),
                     Title = x.Name,
-                    Text = $"{x.Description}\n{x.AccessModifier} | {(x.Sealed ? "Sealed" : "Open")}",
+                    Text = $"{x.Description}\n{x.AccessModifier} | {I18N.Translate(request, x.Sealed ? "kleenestar.core:workspace.state.sealed" : "kleenestar.core:workspace.state.open")}",
                     Image = x.Icon?.Uri?.ToString()
                     //Options = GetOptions(x, request)
                 });

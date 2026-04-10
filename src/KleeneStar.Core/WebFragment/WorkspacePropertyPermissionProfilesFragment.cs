@@ -27,7 +27,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
             var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(keyParameter?.Value);
-            var profiles = WorkspacePropertyValueHelper.JoinEnumerable(WorkspacePropertyValueHelper.ReadValue(workspace, "PermissionsProfiles"));
+            var profiles = WorkspacePropertyValueHelper.JoinEnumerable(WorkspacePropertyValueHelper.ReadValue(workspace, "PermissionProfiles"));
 
             return base.Render(renderContext, visualTree, Key, profiles, Uri, Icon);
         }
