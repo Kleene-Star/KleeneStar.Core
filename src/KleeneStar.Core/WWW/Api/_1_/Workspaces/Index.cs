@@ -118,7 +118,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 InheritedId = data.InheritedId,
                 Sealed = data.Sealed,
                 AccessModifier = data.AccessModifier,
-                Tenant = data.Tenant,
+                Tenants = data.Tenants,
                 PermissionProfiles = data.PermissionProfiles
             };
 
