@@ -114,7 +114,12 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 Description = data.Description,
                 Categories = data.Categories,
                 Icon = data.Icon,
-                State = WorkspaceState.Active
+                State = WorkspaceState.Active,
+                InheritedId = data.InheritedId,
+                Sealed = data.Sealed,
+                AccessModifier = data.AccessModifier,
+                Tenant = data.Tenant,
+                PermissionsProfiles = data.PermissionsProfiles
             };
 
             return RetrieveForClone(request, newItem, "kleenestar.core:workspace.clone.title");

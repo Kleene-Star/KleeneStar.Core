@@ -13,6 +13,7 @@ using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 {
@@ -26,6 +27,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
     {
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
+        private readonly IUri _permissionsFormUri;
         private readonly IUri _deleteFormUri;
 
         /// <summary>
@@ -35,6 +37,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         {
             _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Edit>();
             _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Clone>();
+            _permissionsFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Permissions>();
             _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Delete>();
         }
 
@@ -96,6 +99,27 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 Label = "State",
                 Visible = false
             };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "inherited",
+                Label = "Inherited",
+                Visible = false
+            };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "sealed",
+                Label = "Sealed",
+                Visible = false
+            };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "accessmodifier",
+                Label = "Access Modifier",
+                Visible = false
+            };
         }
 
         /// <summary>
@@ -143,6 +167,15 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                         },
                         new() {
                             Content = x.State.ToString()
+                        },
+                        new() {
+                            Content = x.Inherited?.Name
+                        },
+                        new() {
+                            Content = x.Sealed.ToString()
+                        },
+                        new() {
+                            Content = x.AccessModifier.ToString()
                         }
                     ],
                     Options = GetOptions(x, request).Select(o => o.ToJson()),
@@ -245,6 +278,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 .BindParameters(new WorkspaceKeyParameter(row.Key));
             var cloneUri = _cloneFormUri?
                 .BindParameters(new WorkspaceKeyParameter(row.Key));
+            var permissionsUri = _permissionsFormUri?
+                .BindParameters(new WorkspaceKeyParameter(row.Key));
             var deleteUri = _deleteFormUri?
                 .BindParameters(new WorkspaceKeyParameter(row.Key));
 
@@ -261,6 +296,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             yield return new RestApiOptionClone(request)
             {
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
+            };
+
+            yield return new RestApiOptionCustom(request)
+            {
+                Text = I18N.Translate(request, "kleenestar.core:workspace.permissions.label"),
+                Icon = new IconUserShield(),
+                PrimaryAction = new ActionModal("modal-form", permissionsUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionCustom(request)
