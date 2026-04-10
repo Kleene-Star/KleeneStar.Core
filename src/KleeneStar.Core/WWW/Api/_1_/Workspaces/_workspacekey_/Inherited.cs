@@ -1,5 +1,5 @@
-﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
@@ -16,10 +16,20 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_
     /// Provides a selection of valid workspaces available for inheritance.
     /// </summary>
     [Title("Workspace inheritance selection")]
-    [WorkspaceKeySegment]
     [Cache]
     public sealed class Inherited : RestApiSelection<Workspace>
     {
+        /// <summary>
+        /// Creates a new instance of an object that implements the IQueryContext interface.
+        /// </summary>
+        /// <returns>
+        /// An IQueryContext instance that can be used to execute queries.
+        /// </returns>
+        protected override IQueryContext CreateContext()
+        {
+            return ModelHub.CreateDbContext();
+        }
+
         /// <summary>
         /// Applies the specified filter criteria to the given query object.
         /// </summary>

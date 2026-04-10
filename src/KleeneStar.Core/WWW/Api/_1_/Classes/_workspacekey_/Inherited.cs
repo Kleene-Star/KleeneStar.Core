@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.WebAttribute;
+﻿using KleeneStar.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +14,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
     /// Provides a selection of classes available for inheritance within a workspace.
     /// </summary>
     [Title("Class inheritance selection")]
-    [WorkspaceKeySegment]
     [Cache]
     public sealed class Inherited : RestApiSelection<Model.Entities.Class>
     {
@@ -23,6 +22,17 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         /// </summary>
         public Inherited()
         {
+        }
+
+        /// <summary>
+        /// Creates a new instance of an object that implements the IQueryContext interface.
+        /// </summary>
+        /// <returns>
+        /// An IQueryContext instance that can be used to execute queries.
+        /// </returns>
+        protected override IQueryContext CreateContext()
+        {
+            return ModelHub.CreateDbContext();
         }
 
         /// <summary>
