@@ -53,6 +53,8 @@ namespace KleeneStar.Core.WebFragment
                 .BindParameters(keyParameter);
             var cloneUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Clone>()?
                 .BindParameters(keyParameter);
+            var permissionsUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Permissions>()?
+                .BindParameters(keyParameter);
             var deleteUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Delete>()?
                 .BindParameters(keyParameter);
 
@@ -73,6 +75,12 @@ namespace KleeneStar.Core.WebFragment
                     Text = "webexpress.webapp:clone.label",
                     Icon = new IconCopy(),
                     PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge),
+                },
+                new ControlDropdownItemLink()
+                {
+                    Text = "kleenestar.core:workspace.permissions.label",
+                    Icon = new IconUserShield(),
+                    PrimaryAction = new ActionModal("modal-form", permissionsUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {

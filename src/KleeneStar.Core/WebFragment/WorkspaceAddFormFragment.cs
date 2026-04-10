@@ -82,6 +82,51 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
+        /// Gets the input selection control for the inherited workspace.
+        /// </summary>
+        public ControlRestFormItemInputSelection InheritedSelection { get; } = new()
+        {
+            Name = "InheritedId",
+            Label = "kleenestar.core:workspace.inherited.label",
+            Placeholder = "kleenestar.core:workspace.inherited.placeholder",
+            Help = "kleenestar.core:workspace.inherited.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Inherited>()
+        };
+
+        /// <summary>
+        /// Gets the input selection control for the access modifier.
+        /// </summary>
+        public ControlRestFormItemInputSelection AccessModifierSelection { get; } = new()
+        {
+            Name = "AccessModifier",
+            Label = "kleenestar.core:workspace.accessmodifier.label",
+            Placeholder = "kleenestar.core:workspace.accessmodifier.placeholder",
+            Help = "kleenestar.core:workspace.accessmodifier.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.AccessModifier>()
+        };
+
+        /// <summary>
+        /// Gets the checkbox control for the sealed flag.
+        /// </summary>
+        public ControlFormItemInputCheck WorkspaceSealed { get; } = new()
+        {
+            Name = "Sealed",
+            Label = "kleenestar.core:workspace.sealed.label",
+            Help = "kleenestar.core:workspace.sealed.help"
+        };
+
+        /// <summary>
+        /// Gets the tenant management input.
+        /// </summary>
+        public ControlFormItemInputTag Tenant { get; } = new()
+        {
+            Name = "Tenant",
+            Label = "kleenestar.core:workspace.tenant.label",
+            Placeholder = "kleenestar.core:workspace.tenant.placeholder",
+            Help = "kleenestar.core:workspace.tenant.help"
+        };
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
@@ -92,6 +137,10 @@ namespace KleeneStar.Core.WebFragment
             Add(WorkspaceName);
             Add(Category);
             Add(Description);
+            Add(InheritedSelection);
+            Add(AccessModifierSelection);
+            Add(WorkspaceSealed);
+            Add(Tenant);
             Add(WorkspaceState);
 
             Mode = TypeRestFormMode.Add;

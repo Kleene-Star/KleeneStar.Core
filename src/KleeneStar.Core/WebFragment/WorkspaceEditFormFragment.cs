@@ -1,4 +1,6 @@
 ﻿using KleeneStar.Core.WebParameter;
+using System;
+using System.Reflection;
 using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
@@ -83,6 +85,51 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
+        /// Gets the input selection control for the inherited workspace.
+        /// </summary>
+        public ControlRestFormItemInputSelection InheritedSelection { get; } = new()
+        {
+            Name = "InheritedId",
+            Label = "kleenestar.core:workspace.inherited.label",
+            Placeholder = "kleenestar.core:workspace.inherited.placeholder",
+            Help = "kleenestar.core:workspace.inherited.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Inherited>()
+        };
+
+        /// <summary>
+        /// Gets the input selection control for the access modifier.
+        /// </summary>
+        public ControlRestFormItemInputSelection AccessModifierSelection { get; } = new()
+        {
+            Name = "AccessModifier",
+            Label = "kleenestar.core:workspace.accessmodifier.label",
+            Placeholder = "kleenestar.core:workspace.accessmodifier.placeholder",
+            Help = "kleenestar.core:workspace.accessmodifier.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.AccessModifier>()
+        };
+
+        /// <summary>
+        /// Gets the checkbox control for the sealed flag.
+        /// </summary>
+        public ControlFormItemInputCheck WorkspaceSealed { get; } = new()
+        {
+            Name = "Sealed",
+            Label = "kleenestar.core:workspace.sealed.label",
+            Help = "kleenestar.core:workspace.sealed.help"
+        };
+
+        /// <summary>
+        /// Gets the tenant management input.
+        /// </summary>
+        public ControlFormItemInputTag Tenant { get; } = new()
+        {
+            Name = "Tenant",
+            Label = "kleenestar.core:workspace.tenant.label",
+            Placeholder = "kleenestar.core:workspace.tenant.placeholder",
+            Help = "kleenestar.core:workspace.tenant.help"
+        };
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
@@ -93,6 +140,10 @@ namespace KleeneStar.Core.WebFragment
             Add(WorkspaceName);
             Add(Category);
             Add(Description);
+            Add(InheritedSelection);
+            Add(AccessModifierSelection);
+            Add(WorkspaceSealed);
+            Add(Tenant);
             Add(WorkspaceState);
 
             Mode = TypeRestFormMode.Edit;
@@ -114,10 +165,19 @@ namespace KleeneStar.Core.WebFragment
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
             var key = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
-            var id = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
-                .Id.ToString();
+            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value);
+            var id = workspace?.Id.ToString();
+
+            SetControlDisabled(InheritedSelection, workspace?.Sealed == true);
+            SetControlDisabled(AccessModifierSelection, workspace?.Sealed == true);
 
             return base.Render(renderContext, visualTree, Items, id, Uri);
+        }
+
+        private static void SetControlDisabled(object control, bool disabled)
+        {
+            var property = control?.GetType().GetProperty("Disabled", BindingFlags.Instance | BindingFlags.Public);
+            property?.SetValue(control, disabled);
         }
     }
 }

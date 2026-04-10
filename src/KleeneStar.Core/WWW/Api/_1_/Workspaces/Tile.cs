@@ -14,6 +14,7 @@ using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 {
@@ -27,6 +28,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
     {
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
+        private readonly IUri _permissionsFormUri;
         private readonly IUri _deleteFormUri;
 
         /// <summary>
@@ -36,6 +38,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         {
             _editFormUri = CoreHub.GetUri<Edit>();
             _cloneFormUri = CoreHub.GetUri<Clone>();
+            _permissionsFormUri = CoreHub.GetUri<Permissions>();
             _deleteFormUri = CoreHub.GetUri<Delete>();
         }
 
@@ -78,7 +81,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 {
                     Id = x.Id.ToString(),
                     Title = x.Name,
-                    Text = x.Description,
+                    Text = $"{x.Description}\n{x.AccessModifier} | {I18N.Translate(request, x.Sealed ? "kleenestar.core:workspace.state.sealed" : "kleenestar.core:workspace.state.open")}",
                     Image = x.Icon?.Uri?.ToString()
                     //Options = GetOptions(x, request)
                 });
@@ -178,6 +181,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 .BindParameters(new WorkspaceKeyParameter(row.Key));
             var cloneUri = _cloneFormUri?
                 .BindParameters(new WorkspaceKeyParameter(row.Key));
+            var permissionsUri = _permissionsFormUri?
+                .BindParameters(new WorkspaceKeyParameter(row.Key));
             var deleteUri = _deleteFormUri?
                 .BindParameters(new WorkspaceKeyParameter(row.Key));
 
@@ -194,6 +199,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             yield return new RestApiOptionClone(request)
             {
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
+            };
+
+            yield return new RestApiOptionCustom(request)
+            {
+                Text = I18N.Translate(request, "kleenestar.core:workspace.permissions.label"),
+                Icon = new IconUserShield(),
+                PrimaryAction = new ActionModal("modal-form", permissionsUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionCustom(request)
