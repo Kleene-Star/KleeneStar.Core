@@ -39,34 +39,17 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._classid_
         protected override IEnumerable<RestApiDashboardColumn> RetrieveColumns(IRequest request)
         {
             var classIdParam = request.GetParameter<ClassIdParameter>();
-            if (!Guid.TryParse(classIdParam?.Value, out var guid) || guid == Guid.Empty)
+            var classId = Guid.TryParse(classIdParam?.Value, out var guid) ? guid : Guid.Empty;
+            if (classId == Guid.Empty)
             {
                 yield break;
             }
 
-            var safeParam = new ClassIdParameter(guid);
-
-            var formCount = CoreHub.FormManager.GetForms(safeParam).Count();
-            var fieldCount = CoreHub.FieldManager.GetFields(safeParam).Count();
-            var priorityCount = CoreHub.PriorityManager.GetPriorities(safeParam).Count();
-            var statusCount = CoreHub.StatusManager.GetStatuses(safeParam).Count();
-            var workflowCount = CoreHub.WorkflowManager.GetWorkflows(safeParam).Count();
-
-            var formsHref = CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Index>()
-                ?.BindParameters(new ClassIdParameter(guid))
-                ?.ToString();
-            var fieldsHref = CoreHub.GetUri<global::KleeneStar.Core.WWW.Fields._classid_.Index>()
-                ?.BindParameters(new ClassIdParameter(guid))
-                ?.ToString();
-            var prioritiesHref = CoreHub.GetUri<global::KleeneStar.Core.WWW.Priorities._classid_.Index>()
-                ?.BindParameters(new ClassIdParameter(guid))
-                ?.ToString();
-            var statusesHref = CoreHub.GetUri<global::KleeneStar.Core.WWW.Statuses._classid_.Index>()
-                ?.BindParameters(new ClassIdParameter(guid))
-                ?.ToString();
-            var workflowsHref = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workflows._classid_.Index>()
-                ?.BindParameters(new ClassIdParameter(guid))
-                ?.ToString();
+            var formCount = CoreHub.FormManager.GetForms(classIdParam).Count();
+            var fieldCount = CoreHub.FieldManager.GetFields(classIdParam).Count();
+            var priorityCount = CoreHub.PriorityManager.GetPriorities(classIdParam).Count();
+            var statusCount = CoreHub.StatusManager.GetStatuses(classIdParam).Count();
+            var workflowCount = CoreHub.WorkflowManager.GetWorkflows(classIdParam).Count();
 
             yield return new RestApiDashboardColumn
             {
@@ -74,45 +57,36 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._classid_
                 Size = "12",
                 Widgets =
                 [
-                    new RestApiDashboardWidgetBigNumber
+                    new RestApiDashboardWidgetBigNumber()
                     {
-                        Id = "forms",
                         Value = formCount.ToString(),
                         Label = I18N.Translate(request, "kleenestar.core:class.dashboard.forms.label"),
                         Color = "primary",
-                        Params = new Dictionary<string, string> { ["href"] = formsHref }
+                        Movable = false
                     },
-                    new RestApiDashboardWidgetBigNumber
+                    new RestApiDashboardWidgetBigNumber()
                     {
-                        Id = "fields",
                         Value = fieldCount.ToString(),
                         Label = I18N.Translate(request, "kleenestar.core:class.dashboard.fields.label"),
-                        Color = "primary",
-                        Params = new Dictionary<string, string> { ["href"] = fieldsHref }
+                        Color = "primary"
                     },
-                    new RestApiDashboardWidgetBigNumber
+                    new RestApiDashboardWidgetBigNumber()
                     {
-                        Id = "priorities",
                         Value = priorityCount.ToString(),
                         Label = I18N.Translate(request, "kleenestar.core:class.dashboard.priorities.label"),
-                        Color = "primary",
-                        Params = new Dictionary<string, string> { ["href"] = prioritiesHref }
+                        Color = "primary"
                     },
-                    new RestApiDashboardWidgetBigNumber
+                    new RestApiDashboardWidgetBigNumber()
                     {
-                        Id = "statuses",
                         Value = statusCount.ToString(),
                         Label = I18N.Translate(request, "kleenestar.core:class.dashboard.statuses.label"),
-                        Color = "primary",
-                        Params = new Dictionary<string, string> { ["href"] = statusesHref }
+                        Color = "primary"
                     },
-                    new RestApiDashboardWidgetBigNumber
+                    new RestApiDashboardWidgetBigNumber()
                     {
-                        Id = "workflows",
                         Value = workflowCount.ToString(),
                         Label = I18N.Translate(request, "kleenestar.core:class.dashboard.workflows.label"),
-                        Color = "primary",
-                        Params = new Dictionary<string, string> { ["href"] = workflowsHref }
+                        Color = "primary"
                     }
                 ]
             };
