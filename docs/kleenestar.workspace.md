@@ -154,7 +154,8 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║         ¦       │ Objects:                           │  │ Internal                │  ║
 ║         ¦       │   IEnumerable<IObject>             │  └─────────────────────────┘  ║
 ║         ¦       │ Categories:IEnumerable<String>     │                               ║
-║         ¦       │ AccessModifier:TypeAccessModifier  │                               ║
+║         ¦       │ AccessModifier:                    │                               ║
+║         ¦       │   WorkspaceAccessModifier          │                               ║
 ║         ¦       │ PermissionsProfiles:               │                               ║
 ║         ¦       │   IEnumerable<IPermissionsProfile> │                               ║
 ║         ¦       └─────────────────Δ──────────────────┘                               ║
@@ -178,7 +179,8 @@ To ensure transparency and traceability, every relevant action related to worksp
 ║                  │ Objects:                           │                              ║
 ║                  │   IEnumerable<IObject>             │                              ║
 ║                  │ Categories:IEnumerable<String>     │                              ║
-║                  │ AccessModifier:TypeAccessModifier  │                              ║
+║                  │ AccessModifier:                    │                              ║
+║                  │   WorkspaceAccessModifier          │                              ║
 ║                  │ PermissionsProfiles:               │                              ║
 ║                  │   IEnumerable<IPermissionsProfile> │                              ║
 ║                  └────────────────────────────────────┘                              ║
