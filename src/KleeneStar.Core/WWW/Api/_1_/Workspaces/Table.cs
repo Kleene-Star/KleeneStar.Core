@@ -120,6 +120,21 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 Label = "Access Modifier",
                 Visible = false
             };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "tenant",
+                Label = "Tenant",
+                Visible = false,
+                Template = new RestApiTableColumnTemplateTag()
+            };
+
+            yield return new RestApiTableColumn()
+            {
+                Id = "permissionprofiles",
+                Label = "Permission Profiles",
+                Visible = false
+            };
         }
 
         /// <summary>
@@ -176,6 +191,12 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                         },
                         new() {
                             Content = x.AccessModifier.ToString()
+                        },
+                        new() {
+                            Content = x.Tenants != null ? string.Join(";", x.Tenants.Select(t => t.Name)) : string.Empty
+                        },
+                        new() {
+                            Content = x.PermissionProfiles?.Count().ToString() ?? "0"
                         }
                     ],
                     Options = GetOptions(x, request).Select(o => o.ToJson()),
