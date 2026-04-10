@@ -39,13 +39,18 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._classid_
         protected override IEnumerable<RestApiDashboardColumn> RetrieveColumns(IRequest request)
         {
             var classIdParam = request.GetParameter<ClassIdParameter>();
-            var guid = Guid.TryParse(classIdParam?.Value, out var id) ? id : Guid.Empty;
+            if (!Guid.TryParse(classIdParam?.Value, out var guid) || guid == Guid.Empty)
+            {
+                yield break;
+            }
 
-            var formCount = CoreHub.FormManager.GetForms(classIdParam).Count();
-            var fieldCount = CoreHub.FieldManager.GetFields(classIdParam).Count();
-            var priorityCount = CoreHub.PriorityManager.GetPriorities(classIdParam).Count();
-            var statusCount = CoreHub.StatusManager.GetStatuses(classIdParam).Count();
-            var workflowCount = CoreHub.WorkflowManager.GetWorkflows(classIdParam).Count();
+            var safeParam = new ClassIdParameter(guid);
+
+            var formCount = CoreHub.FormManager.GetForms(safeParam).Count();
+            var fieldCount = CoreHub.FieldManager.GetFields(safeParam).Count();
+            var priorityCount = CoreHub.PriorityManager.GetPriorities(safeParam).Count();
+            var statusCount = CoreHub.StatusManager.GetStatuses(safeParam).Count();
+            var workflowCount = CoreHub.WorkflowManager.GetWorkflows(safeParam).Count();
 
             var formsHref = CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Index>()
                 ?.BindParameters(new ClassIdParameter(guid))

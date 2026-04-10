@@ -47,6 +47,12 @@ namespace KleeneStar.Core.WebFragment
             }
 
             var classId = renderContext.Request.GetParameter<ClassIdParameter>()?.Value;
+
+            if (classId == null)
+            {
+                return null;
+            }
+
             var restUri = RestUri?.BindParameters(new ClassIdParameter(classId));
 
             return base.Render(renderContext, visualTree, restUri);
