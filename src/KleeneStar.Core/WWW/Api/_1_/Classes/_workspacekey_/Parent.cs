@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
@@ -73,7 +74,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
 
             var list = new List<RestApiSelectionItem>()
             {
-                new() { Id = Guid.Empty, Text = "None" }
+                new() { Id = Guid.Empty, Text = I18N.Translate(request, "kleenestar.core:class.property.none") }
             };
 
             list.AddRange(classes

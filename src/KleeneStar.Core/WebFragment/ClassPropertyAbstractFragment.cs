@@ -1,5 +1,6 @@
 ﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -40,7 +41,9 @@ namespace KleeneStar.Core.WebFragment
             var classId = renderContext.Request.GetParameter<ClassIdParameter>();
             var @class = CoreHub.ClassManager.GetClass(classId);
 
-            var value = @class?.IsAbstract == true ? "yes" : "no";
+            var value = @class?.IsAbstract == true
+                ? I18N.Translate(renderContext, "kleenestar.core:class.property.yes")
+                : I18N.Translate(renderContext, "kleenestar.core:class.property.no");
 
             return base.Render(renderContext, visualTree, Key, value, Uri, Icon);
         }

@@ -1,6 +1,7 @@
 ﻿using KleeneStar.Core.WebParameter;
 using System;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -41,11 +42,11 @@ namespace KleeneStar.Core.WebFragment
             var classId = renderContext.Request.GetParameter<ClassIdParameter>();
             var @class = CoreHub.ClassManager.GetClass(classId);
 
-            var inheritedName = "None";
+            var inheritedName = I18N.Translate(renderContext, "kleenestar.core:class.property.none");
             if (@class?.InheritedId.HasValue == true && @class.InheritedId.Value != Guid.Empty)
             {
                 var inherited = CoreHub.ClassManager.GetClass(@class.InheritedId.Value);
-                inheritedName = inherited?.Name ?? "None";
+                inheritedName = inherited?.Name ?? I18N.Translate(renderContext, "kleenestar.core:class.property.none");
             }
 
             return base.Render(renderContext, visualTree, Key, inheritedName, Uri, Icon);
