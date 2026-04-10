@@ -121,6 +121,12 @@ class.property.none=None
 class.table.header=Class Overview
 class.link.label=Class Overview
 class.dropdown.label=Settings
+class.dashboard.stats.header=Class Dashboard
+class.dashboard.forms.label=Forms
+class.dashboard.fields.label=Fields
+class.dashboard.priorities.label=Priorities
+class.dashboard.statuses.label=Statuses
+class.dashboard.workflows.label=Workflows
 
 field.manage.title=Fields
 field.manage.label=Field
