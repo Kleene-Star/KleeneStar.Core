@@ -83,7 +83,6 @@ class.allowedchildren.help=Definiert, welche Klassen als Kinder dieser Klasse zu
 class.accessmodifier.label=Zugriffsmodifikator
 class.accessmodifier.placeholder=Wählen Sie den Zugriffsmodifikator für die Klasse.
 class.accessmodifier.help=Steuert die Sichtbarkeit und den Nutzungsbereich dieser Klasse.
-class.key.label=Schlüssel
 class.created.label=Erstellt
 class.updated.label=Aktualisiert
 class.property.yes=ja

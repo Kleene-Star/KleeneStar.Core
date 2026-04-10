@@ -134,28 +134,26 @@ An integrated audit system documents all relevant actions around classes: access
 ║         ¦           │ <<Interface>>                      ◄──────────┘                ║
 ║         ¦           │ IClass                             │        ┌────────────────┐ ║
 ║         ¦           ├────────────────────────────────────┤        │ <<Enum>>       │ ║
-║         ¦           │ Key:String                         │        │ TypeClassState │ ║
-║         ¦           │ Name:String                        │        ├────────────────┤ ║
-║         ¦           │ State:TypeClassState               │        │ Active         │ ║
-║         ¦           │ Workspace:IWorkspace               │        │ Archived       │ ║
-║         ¦           │ Created:DateTime                   │        └────────────────┘ ║
-║         ¦           │ Updated:DateTime                   │    ┌────────────────────┐ ║
-║         ¦           │ IsAbstract:Bool                    │    │ <<Enum>>           │ ║
-║         ¦           │ Inherited:IClass                   │    │ TypeAccessModifier │ ║
-║         ¦           │ Sealed:Bool                        │    ├────────────────────┤ ║
-║         ¦           │ Parent:IClass                      │    │ Private            │ ║
-║         ¦           │ AccessModifier:TypeAccessModifier  │    │ Protected          │ ║
-║         ¦           │ AllowedChildren:                   │    │ Public             │ ║
-║         ¦           │   IEnumerable<IClass>              │    │ Internal           │ ║
-║         ¦           │ PermissionsProfiles:               │    └────────────────────┘ ║
-║         ¦           │   IEnumerable<IPermissionsProfile> │                           ║
+║         ¦           │ Name:String                        │        │ TypeClassState │ ║
+║         ¦           │ State:TypeClassState               │        ├────────────────┤ ║
+║         ¦           │ Workspace:IWorkspace               │        │ Active         │ ║
+║         ¦           │ Created:DateTime                   │        │ Archived       │ ║
+║         ¦           │ Updated:DateTime                   │        └────────────────┘ ║
+║         ¦           │ IsAbstract:Bool                    │    ┌────────────────────┐ ║
+║         ¦           │ Inherited:IClass                   │    │ <<Enum>>           │ ║
+║         ¦           │ Sealed:Bool                        │    │ TypeAccessModifier │ ║
+║         ¦           │ Parent:IClass                      │    ├────────────────────┤ ║
+║         ¦           │ AccessModifier:TypeAccessModifier  │    │ Private            │ ║
+║         ¦           │ AllowedChildren:                   │    │ Protected          │ ║
+║         ¦           │   IEnumerable<IClass>              │    │ Public             │ ║
+║         ¦           │ PermissionsProfiles:               │    │ Internal           │ ║
+║         ¦           │   IEnumerable<IPermissionsProfile> │    └────────────────────┘ ║
 ║         ¦           └─────────────────Δ──────────────────┘                           ║
 ║         ¦                             ¦                                              ║
 ║         ¦                             ¦                                              ║
 ║         ¦ create    ┌─────────────────┴──────────────────┐                           ║
 ║         └-----------► Class                              │                           ║
 ║                     ├────────────────────────────────────┤                           ║
-║                     │ Key:String                         │                           ║
 ║                     │ Name:String                        │                           ║
 ║                     │ State:TypeClassState               │                           ║
 ║                     │ Workspace:Workspace                │                           ║
@@ -297,15 +295,15 @@ The page is accessed via the "Manage Classes" entry.
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Classes───────────────┐ ┌Class Detail Content─────────────────┬─────────────────────┐║
 ║│Incident              │░│                                     │                     │║
-║│                      │░│ Incident                     [Edit] │ Key: incident       │║
-║│       [Icon]         │░│                                     │ State: Active       │║
-║│                      │░│ ┌Overview─────────────────────────┐ │ Access: Public      │║
-║│                      │░│ │ Report of technical or          │ │ Inherited: None     │║
-║│                      │░│ │ operational incidents.          │ │ Abstract: no        │║
-║│                      │░│ ├Fields───────────────────────────┤ │ Sealed: no          │║
-║│                      │░│ │ Field A                  [Edit] │ │ Singleton: no       │║
-║│                      │░│ │ Field B                         │ │ Created: 2025-01-12 │║
-║│┌───────────────────┐ │░│ │ Field C                         │ │ Updated: 2025-01-12 │║
+║│                      │░│ Incident                     [Edit] │ State: Active       │║
+║│       [Icon]         │░│                                     │ Access: Public      │║
+║│                      │░│ ┌Overview─────────────────────────┐ │ Inherited: None     │║
+║│                      │░│ │ Report of technical or          │ │ Abstract: no        │║
+║│                      │░│ │ operational incidents.          │ │ Sealed: no          │║
+║│                      │░│ ├Fields───────────────────────────┤ │ Singleton: no       │║
+║│                      │░│ │ Field A                  [Edit] │ │ Created: 2025-01-12 │║
+║│                      │░│ │ Field B                         │ │ Updated: 2025-01-12 │║
+║│┌───────────────────┐ │░│ │ Field C                         │ │                     │║
 ║││ Edit              │ │<│ ├Forms────────────────────────────┤ │                     │║
 ║││ Clone             │ │<│ │ Form A                   [Edit] │ │                     │║
 ║││ Manage Fields     │ │<│ │ Form B                          │ │                     │║
@@ -526,7 +524,7 @@ The management of classes is handled via the following endpoints:
 |`/api/1/classes/{workspaceKey}/export`                             |GET         |Exports the current class schema for backup or reuse.
 
 Standard error responses include:
-- **400 Bad Request** - e.g., invalid schema or duplicate key
+- **400 Bad Request** - e.g., invalid schema or duplicate name
 - **401 Unauthorized** - missing or invalid authentication
 - **403 Forbidden** - insufficient permissions
 - **404 Not Found** - class or workspace not found
@@ -553,7 +551,7 @@ The following events are emitted by the `ClassManager`:
 |`ClassPermissionChanged` |Indicates that access profiles for a class have been modified.
 
 Each event includes a structured payload containing:
-- Class key and associated workspace key
+- Class id and associated workspace key
 - Timestamp of the event
 - Initiating user or module
 - Action type and origin
