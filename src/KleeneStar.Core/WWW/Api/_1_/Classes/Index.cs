@@ -96,7 +96,12 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
                 Name = data.Name + " (Copy)",
                 Description = data.Description,
                 Icon = data.Icon,
-                State = ClassState.Active
+                State = ClassState.Active,
+                IsAbstract = data.IsAbstract,
+                Sealed = data.Sealed,
+                InheritedId = data.InheritedId,
+                ParentId = data.ParentId,
+                AccessModifier = data.AccessModifier
             };
 
             return RetrieveForClone(request, newItem, "kleenestar.core:class.clone.title");
