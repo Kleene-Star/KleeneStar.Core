@@ -28,6 +28,7 @@ namespace KleeneStar.Core
         private static StatusManager _statusManager;
         private static ObjectManager _objectManager;
         private static DashboardManager _dashboardManager;
+        private static TenantManager _tenantManager;
 
         /// <summary>
         /// Gets the shared instance of the component hub used for managing and coordinating application components.
@@ -88,6 +89,11 @@ namespace KleeneStar.Core
         /// Gets the dashboard manager responsible for managing dashboards within the application.
         /// </summary>
         public static IDashboardManager DashboardManager => _dashboardManager ??= ComponentHub.GetComponentManager<DashboardManager>();
+
+        /// <summary>
+        /// Gets the tenant manager used to manage tenant-related operations within the application.
+        /// </summary>
+        public static ITenantManager TenantManager => _tenantManager ??= ComponentHub.GetComponentManager<TenantManager>();
 
         /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.

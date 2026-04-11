@@ -54,39 +54,79 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._classid_
             yield return new RestApiDashboardColumn
             {
                 Id = "kpi",
-                Size = "12",
+                Size = "25%",
+                Label = "Fields",
+                Widgets =
+                [
+                    new RestApiDashboardWidgetBigNumber()
+                    {
+                        Value = fieldCount.ToString(),
+                        Label = I18N.Translate(request, "kleenestar.core:class.dashboard.fields.label"),
+                        Color = "#76522A",
+                        Movable = false
+                    },
+                    new RestApiDashboardWidgetChart()
+                    {
+                        Color = "#ff5423",
+                        Movable = false
+                    }
+                ]
+            };
+
+            yield return new RestApiDashboardColumn
+            {
+                Id = "kpi",
+                Size = "25%",
+                Label = "Forms",
                 Widgets =
                 [
                     new RestApiDashboardWidgetBigNumber()
                     {
                         Value = formCount.ToString(),
                         Label = I18N.Translate(request, "kleenestar.core:class.dashboard.forms.label"),
-                        Color = "primary",
+                        Color = "#A2B284",
                         Movable = false
-                    },
-                    new RestApiDashboardWidgetBigNumber()
-                    {
-                        Value = fieldCount.ToString(),
-                        Label = I18N.Translate(request, "kleenestar.core:class.dashboard.fields.label"),
-                        Color = "primary"
-                    },
+                    }
+                ]
+            };
+
+            yield return new RestApiDashboardColumn
+            {
+                Id = "kpi",
+                Size = "25%",
+                Label = "Priorities",
+                Widgets =
+                [
                     new RestApiDashboardWidgetBigNumber()
                     {
                         Value = priorityCount.ToString(),
                         Label = I18N.Translate(request, "kleenestar.core:class.dashboard.priorities.label"),
-                        Color = "primary"
-                    },
+                        Color = "#3273A3",
+                        Movable = false
+                    }
+                ]
+            };
+
+            yield return new RestApiDashboardColumn
+            {
+                Id = "kpi",
+                Size = "25%",
+                Label = "Workflows",
+                Widgets =
+                [
                     new RestApiDashboardWidgetBigNumber()
                     {
                         Value = statusCount.ToString(),
                         Label = I18N.Translate(request, "kleenestar.core:class.dashboard.statuses.label"),
-                        Color = "primary"
+                        Color = "#628811",
+                        Movable = false
                     },
                     new RestApiDashboardWidgetBigNumber()
                     {
                         Value = workflowCount.ToString(),
                         Label = I18N.Translate(request, "kleenestar.core:class.dashboard.workflows.label"),
-                        Color = "primary"
+                        Color = "#26AA8",
+                        Movable = false
                     }
                 ]
             };

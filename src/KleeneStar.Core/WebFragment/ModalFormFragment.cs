@@ -11,6 +11,7 @@ namespace KleeneStar.Core.WebFragment
     /// </summary>
     [Section<SectionContentSecondary>]
     [Scope<IScopeGeneral>]
+    [Scope<IScopeAdmin>]
     [Cache]
     public sealed class ModalFormFragment : FragmentControlModalRemoteForm
     {

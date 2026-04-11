@@ -104,8 +104,7 @@ namespace KleeneStar.Core.WebManager
         {
             var guid = Guid.TryParse(classId.Value, out Guid id) ? id : Guid.Empty;
             var query = new Query<Priority>()
-                .WhereEquals(x => x.ClassId, guid)
-                .WithPaging(0, 1);
+                .WhereEquals(x => x.ClassId, guid);
 
             return ModelHub.GetPriorities(query);
         }

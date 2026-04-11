@@ -1,27 +1,24 @@
 ﻿using KleeneStar.Core.WebManager;
-using System.Linq;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebApp.WebSettingPage;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebSettingPage;
-using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
-using KleeneStar.Model.Entities;
 
-namespace KleeneStar.Core.WWW.Settings
+namespace KleeneStar.Core.WWW.Settings.Tenants
 {
     /// <summary>
     /// Represents the tenant management settings page, providing an overview of workspace-tenant assignments.
     /// </summary>
-    [Title("kleenestar.core:setting.tenants.title")]
-    [WebIcon<IconList>]
+    [Title("kleenestar.core:setting.tenant.title")]
+    [WebIcon<IconBuilding>]
     [SettingGroup<SettingGroupSystemGeneral>()]
     [SettingSection(SettingSection.Secondary)]
     [Scope<IScopeAdmin>]
-    public sealed class Tenants : ISettingPage<VisualTreeWebAppSetting>, IScopeAdmin
+    public sealed class Index : ISettingPage<VisualTreeWebAppSetting>, IScopeAdmin
     {
         private readonly IWorkspaceManager _workspaceManager;
 
@@ -31,7 +28,7 @@ namespace KleeneStar.Core.WWW.Settings
         /// <param name="workspaceManager">
         /// The workspace manager used to retrieve workspace and tenant information. Cannot be null.
         /// </param>
-        public Tenants(IWorkspaceManager workspaceManager)
+        public Index(IWorkspaceManager workspaceManager)
         {
             _workspaceManager = workspaceManager;
         }
@@ -49,7 +46,7 @@ namespace KleeneStar.Core.WWW.Settings
                 Text = I18N.Translate
                 (
                     renderContext,
-                    "kleenestar.core:setting.tenants.header"
+                    "kleenestar.core:setting.tenant.header"
                 ),
                 TextColor = new PropertyColorText(TypeColorText.Info),
                 Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
@@ -60,42 +57,10 @@ namespace KleeneStar.Core.WWW.Settings
                 Text = I18N.Translate
                 (
                     renderContext,
-                    "kleenestar.core:setting.tenants.description"
+                    "kleenestar.core:setting.tenant.description"
                 ),
                 Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
-
-            // build the tenant-to-workspace assignment table
-            var table = new ControlTable()
-            {
-                Striped = TypeStripedTable.Row
-            }
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:setting.tenants.column.workspace"))
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:setting.tenants.column.tenant"))
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:setting.tenants.column.count"));
-
-            // enumerate workspaces and their tenant assignments
-            var query = new Query<Workspace>();
-            var workspaces = _workspaceManager.GetWorkspaces(query);
-
-            foreach (var workspace in workspaces)
-            {
-                var tenants = workspace.Tenants;
-                var tenantNames = tenants?.Select(t => t.Name).Where(n => !string.IsNullOrEmpty(n));
-                var tenantDisplay = tenantNames != null && tenantNames.Any()
-                    ? string.Join(", ", tenantNames)
-                    : I18N.Translate(renderContext, "kleenestar.core:workspace.property.none");
-                var tenantCount = tenants?.Count() ?? 0;
-
-                table.AddRow
-                (
-                    new ControlTableCell() { Text = workspace.Name },
-                    new ControlTableCell() { Text = tenantDisplay },
-                    new ControlTableCell() { Text = tenantCount.ToString() }
-                );
-            }
-
-            visualTree.Content.MainPanel.AddPrimary(table);
         }
     }
 }

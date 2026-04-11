@@ -56,4 +56,9 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="WebPolicies\" />
+	  <Folder Include="WebPermissions\" />
+	</ItemGroup>
+
 </Project>

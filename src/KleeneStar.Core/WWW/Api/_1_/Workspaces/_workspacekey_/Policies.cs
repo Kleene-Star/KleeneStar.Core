@@ -1,7 +1,6 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
@@ -71,23 +70,23 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_
 
             var list = new List<RestApiSelectionItem>();
 
-            // retrieve policies from permission profiles assigned to the workspace
-            if (workspace?.PermissionProfiles != null)
-            {
-                var existingPolicyIds = new HashSet<Guid>();
+            //// retrieve policies from permission profiles assigned to the workspace
+            //if (workspace?.PermissionProfiles != null)
+            //{
+            //    var existingPolicyIds = new HashSet<Guid>();
 
-                foreach (var profile in workspace.PermissionProfiles)
-                {
-                    if (profile.Policy != null && existingPolicyIds.Add(profile.Policy.Id))
-                    {
-                        list.Add(new RestApiSelectionItem()
-                        {
-                            Id = profile.Policy.Id,
-                            Text = profile.Policy.Name
-                        });
-                    }
-                }
-            }
+            //    foreach (var profile in workspace.PermissionProfiles)
+            //    {
+            //        if (profile.Policy != null && existingPolicyIds.Add(profile.Policy.Id))
+            //        {
+            //            list.Add(new RestApiSelectionItem()
+            //            {
+            //                Id = profile.Policy.Id,
+            //                Text = profile.Policy.Name
+            //            });
+            //        }
+            //    }
+            //}
 
             return list.AsQueryable();
         }
