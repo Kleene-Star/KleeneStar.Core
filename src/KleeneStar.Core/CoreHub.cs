@@ -29,6 +29,8 @@ namespace KleeneStar.Core
         private static ObjectManager _objectManager;
         private static DashboardManager _dashboardManager;
         private static TenantManager _tenantManager;
+        private static IdentityManager _identityManager;
+        private static GroupManager _groupManager;
 
         /// <summary>
         /// Gets the shared instance of the component hub used for managing and coordinating application components.
@@ -94,6 +96,16 @@ namespace KleeneStar.Core
         /// Gets the tenant manager used to manage tenant-related operations within the application.
         /// </summary>
         public static ITenantManager TenantManager => _tenantManager ??= ComponentHub.GetComponentManager<TenantManager>();
+
+        /// <summary>
+        /// Gets the identity manager used to manage identity-related operations within the application.
+        /// </summary>
+        public static IIdentityManager IdentityManager => _identityManager ??= ComponentHub.GetComponentManager<IdentityManager>();
+
+        /// <summary>
+        /// Gets the group manager used to manage group-related operations within the application.
+        /// </summary>
+        public static IGroupManager GroupManager => _groupManager ??= ComponentHub.GetComponentManager<GroupManager>();
 
         /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.
