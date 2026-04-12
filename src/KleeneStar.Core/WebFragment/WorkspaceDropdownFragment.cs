@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Core.WebControl;
+using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -18,6 +19,7 @@ namespace KleeneStar.Core.WebFragment
     [Scope<IScopeGeneral>]
     [Scope<IScopeAdmin>]
     [Scope<IScopeStatusPage>]
+    [Policy<WorkspaceViewPolicy>]
     [Cache]
     public sealed class WorkspaceDropdownFragment : WorkspaceDropdownControl, IFragmentControl<WorkspaceDropdownControl>, IFragmentControlNavigationItem
     {

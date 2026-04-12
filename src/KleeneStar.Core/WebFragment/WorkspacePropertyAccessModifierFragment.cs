@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -13,6 +14,7 @@ namespace KleeneStar.Core.WebFragment
     /// </summary>
     [Section<SectionPropertyPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>]
+    [Policy<WorkspaceViewPolicy>]
     [Cache]
     public sealed class WorkspacePropertyAccessModifierFragment : FragmentControlAttribute
     {

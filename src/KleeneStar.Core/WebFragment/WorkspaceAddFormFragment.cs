@@ -1,4 +1,5 @@
-﻿using KleeneStar.Model.Entities;
+﻿using KleeneStar.Core.WebPolicies;
+using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
@@ -15,6 +16,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a add form fragment for a workspace.
     /// </summary>
     [Section<SectionContentPreferences>]
+    [Policy<WorkspaceAdminPolicy>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces.Add>]
     [Cache]
     public sealed class WorkspaceAddFormFragment : FragmentControlRestFormAdd

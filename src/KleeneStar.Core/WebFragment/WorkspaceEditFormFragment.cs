@@ -1,7 +1,7 @@
 ﻿using KleeneStar.Core.WebParameter;
-using System;
-using System.Reflection;
+using KleeneStar.Core.WebPolicies;
 using KleeneStar.Model.Entities;
+using System.Reflection;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
@@ -19,6 +19,7 @@ namespace KleeneStar.Core.WebFragment
     /// </summary>
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Edit>]
+    [Policy<WorkspaceAdminPolicy>]
     [Cache]
     public sealed class WorkspaceEditFormFragment : FragmentControlRestFormEdit
     {

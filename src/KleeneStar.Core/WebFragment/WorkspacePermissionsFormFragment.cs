@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
@@ -17,6 +18,7 @@ namespace KleeneStar.Core.WebFragment
     /// </summary>
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Permissions>]
+    [Policy<WorkspaceAdminPolicy>]
     [Cache]
     public sealed class WorkspaceEditPermissionsFragment : FragmentControlRestFormEdit
     {

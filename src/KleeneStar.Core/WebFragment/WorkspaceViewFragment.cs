@@ -1,4 +1,5 @@
-﻿using WebExpress.WebApp.WebControl;
+﻿using KleeneStar.Core.WebPolicies;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -15,6 +16,7 @@ namespace KleeneStar.Core.WebFragment
     /// render the fragment as HTML.
     /// </summary>
     [Section<SectionContentPrimary>]
+    [Policy<WorkspaceViewPolicy>]
     [Scope<WWW.Workspaces.Index>]
     [Cache]
     public sealed class WorkspaceViewFragment : FragmentControlView

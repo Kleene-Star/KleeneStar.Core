@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebPolicies;
 using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -14,6 +15,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a avatar form fragment for a workspace.
     /// </summary>
     [Section<SectionContentPreferences>]
+    [Policy<WorkspaceAdminPolicy>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Avatar>]
     [Cache]
     public sealed class WorkspaceAvatarFormFragment : FragmentControlRestFormEdit

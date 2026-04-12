@@ -1,5 +1,6 @@
 ﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -18,6 +19,7 @@ namespace KleeneStar.Core.WebFragment
     [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>]
+    [Policy<WorkspaceViewPolicy>]
     [Cache]
     public sealed class WorkspaceSidebarIconFragment : FragmentControlSidebarItemIcon
     {

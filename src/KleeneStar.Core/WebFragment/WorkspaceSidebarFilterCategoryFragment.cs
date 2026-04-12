@@ -1,4 +1,5 @@
-﻿using KleeneStar.Model.Entities;
+﻿using KleeneStar.Core.WebPolicies;
+using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -17,6 +18,7 @@ namespace KleeneStar.Core.WebFragment
     /// </summary>
     [Section<SectionSidebarPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces.Index>]
+    [Policy<WorkspaceViewPolicy>]
     [Cache]
     public sealed class WorkspaceSidebarFilterCategoryFragment : FragmentControlSidebarItemLink
     {

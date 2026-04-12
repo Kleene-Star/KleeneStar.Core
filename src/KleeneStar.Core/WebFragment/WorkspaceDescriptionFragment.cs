@@ -1,4 +1,5 @@
-﻿using WebExpress.WebApp.WebSection;
+﻿using KleeneStar.Core.WebPolicies;
+using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -13,6 +14,7 @@ namespace KleeneStar.Core.WebFragment
     /// workspace management interface.
     /// </summary>
     [Section<SectionContentPreferences>]
+    [Policy<WorkspaceViewPolicy>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces.Index>]
     [Cache]
     public sealed class WorkspaceDescriptionFragment : FragmentControlText

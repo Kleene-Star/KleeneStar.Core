@@ -1,4 +1,5 @@
-﻿using WebExpress.WebApp.WebPage;
+﻿using KleeneStar.Core.WebPolicies;
+using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
@@ -13,6 +14,7 @@ namespace KleeneStar.Core.WWW.Workspaces._workspacekey_
     /// </summary>
     [WebIcon<IconPencil>]
     [Title("kleenestar.core:workspace.edit.title")]
+    [Policy<WorkspaceAdminPolicy>]
     [Scope<IScopeGeneral>]
     public sealed class Edit : IPage<VisualTreeWebApp>, IScope
     {

@@ -1,7 +1,6 @@
 ﻿using KleeneStar.Core.WebParameter;
-using System.Linq;
+using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebSection;
-using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -15,6 +14,7 @@ namespace KleeneStar.Core.WebFragment
     /// </summary>
     [Section<SectionPropertyPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>]
+    [Policy<WorkspaceViewPolicy>]
     [Cache]
     public sealed class WorkspacePropertyPermissionProfilesFragment : FragmentControlAttribute
     {
@@ -42,12 +42,7 @@ namespace KleeneStar.Core.WebFragment
             var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
             var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(keyParameter?.Value);
 
-            var profileCount = workspace?.PermissionProfiles?.Count() ?? 0;
-            var value = profileCount > 0
-                ? profileCount.ToString()
-                : I18N.Translate(renderContext, "kleenestar.core:workspace.property.none");
-
-            return base.Render(renderContext, visualTree, Key, value, Uri, Icon);
+            return base.Render(renderContext, visualTree, Key, "", Uri, Icon);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using KleeneStar.Core.WebAttribute;
 using KleeneStar.Core.WebIcon;
 using KleeneStar.Core.WebManager;
+using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
@@ -14,6 +15,7 @@ namespace KleeneStar.Core.WWW.Workspaces._workspacekey_
     /// </summary>
     [WebIcon<WorkspaceIcon>]
     [WorkspaceKeySegment]
+    [Policy<WorkspaceAdminPolicy>]
     [Scope<IScopeGeneral>]
     [Cache]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral

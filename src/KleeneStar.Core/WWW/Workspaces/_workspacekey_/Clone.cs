@@ -1,4 +1,5 @@
-﻿using WebExpress.WebApp.WebPage;
+﻿using KleeneStar.Core.WebPolicies;
+using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
@@ -12,6 +13,7 @@ namespace KleeneStar.Core.WWW.Workspaces._workspacekey_
     /// </summary>
     [WebIcon<IconCopy>]
     [Title("kleenestar.core:workspace.clone.title")]
+    [Policy<WorkspaceAdminPolicy>]
     [Scope<IScopeGeneral>]
     public sealed class Clone : IPage<VisualTreeWebApp>, IScope
     {

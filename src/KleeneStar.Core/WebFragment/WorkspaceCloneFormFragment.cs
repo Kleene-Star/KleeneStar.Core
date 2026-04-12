@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebPolicies;
 using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
@@ -16,6 +17,7 @@ namespace KleeneStar.Core.WebFragment
     /// Represents a clone form fragment for a workspace.
     /// </summary>
     [Section<SectionContentPreferences>]
+    [Policy<WorkspaceAdminPolicy>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Clone>]
     [Cache]
     public sealed class WorkspaceCloneFormFragment : FragmentControlRestFormClone

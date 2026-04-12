@@ -118,8 +118,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 InheritedId = data.InheritedId,
                 Sealed = data.Sealed,
                 AccessModifier = data.AccessModifier,
-                Tenants = data.Tenants,
-                PermissionProfiles = data.PermissionProfiles
+                Tenants = data.Tenants
             };
 
             return RetrieveForClone(request, newItem, "kleenestar.core:workspace.clone.title");
