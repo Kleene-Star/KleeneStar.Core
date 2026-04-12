@@ -1,4 +1,5 @@
-﻿using WebExpress.WebApp.WebScope;
+﻿using KleeneStar.Core.WebSettingPage;
+using WebExpress.WebApp.WebScope;
 using WebExpress.WebApp.WebSettingPage;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
@@ -13,9 +14,9 @@ namespace KleeneStar.Core.WWW.Settings.Groups
     /// Represents the group management settings page.
     /// </summary>
     [Title("kleenestar.core:setting.group.title")]
-    [WebIcon<IconLayerGroup>]
-    [SettingGroup<SettingGroupSystemGeneral>()]
-    [SettingSection(SettingSection.Secondary)]
+    [WebIcon<IconUsers>]
+    [SettingGroup<SettingGroupIdentityGeneral>()]
+    [SettingSection(SettingSection.Primary)]
     [Scope<IScopeAdmin>]
     public sealed class Index : ISettingPage<VisualTreeWebAppSetting>, IScopeAdmin
     {
