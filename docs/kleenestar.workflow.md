@@ -872,7 +872,7 @@ Workflow management is performed via the following endpoints:
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/import?dryRun=true|false`                                                |POST        |Imports one or more workflows; dry run returns a report without persistence.
 |`/api/workspaces/{workspaceKey}/classes/{classKey}/workflows/export?keys=a,b&versions=v2`                                             |GET         |Exports selected workflows/versions as a bundle (JSON/YAML).
 
-The API communicates the outcome of each request using standardized HTTP status codes. In case of errors, common responses include **400 Bad Request**, which indicates issues such as invalid definitions, incorrect mappings, or missing required attributes. A **401 Unauthorized** response signals missing or invalid authentication credentials, while **403 Forbidden** denotes insufficient permissions, for example when required roles like `class_workflow_update` or `class_workflow_publish` are not granted. If a requested workflow, class, or workspace cannot be found, the API returns **404 Not Found**. A **409 Conflict** may occur due to version mismatches (e.g., ETag conflicts), attempts to delete active workflows, or publication actions that interfere with the current state. Additionally, **422 Unprocessable Entity** is used when rule violations, guard conditions, validator failures, or unresolvable status mappings prevent successful processing.
+The API communicates the outcome of each request using standardized HTTP status codes. In case of errors, common responses include **400 Bad Request**, which indicates issues such as invalid definitions, incorrect mappings, or missing required attributes. A **401 Unauthorized** response signals missing or invalid authentication credentials, while **403 Forbidden** denotes insufficient permissions, for example when required roles like `workflow_update` or `workflow_publish` are not granted. If a requested workflow, class, or workspace cannot be found, the API returns **404 Not Found**. A **409 Conflict** may occur due to version mismatches (e.g., ETag conflicts), attempts to delete active workflows, or publication actions that interfere with the current state. Additionally, **422 Unprocessable Entity** is used when rule violations, guard conditions, validator failures, or unresolvable status mappings prevent successful processing.
 
 For successful operations, the API returns **201 Created** when new resources are generated via POST requests, such as drafts, clones, or triggers. A **200 OK** response confirms successful execution of GET, PUT, or POST requests, including validation or simulation reports. When an operation is initiated for asynchronous processing, such as publishing workflows in large environments, the API responds with **202 Accepted**. Finally, **204 No Content** is returned when DELETE operations complete successfully or when no response body is required.
 
@@ -917,43 +917,43 @@ Events are available both within the application and to connected subsystems and
 
 - **Assignment logic:** A user inherits the rights of a policy if they belong to a group for which an active profile exists in the context (Workspace → Class → Workflow or Transition). Transition rights can additionally be conditional and are evaluated in the guard check.
 - **Granularity:** Policies distinguish reading/editing workflow definitions, validation/simulation, publication/archive/restore, cloning/import/export, trigger management, as well as execution of individual transitions.
-- **Delegation:** Workflow administrators (e.g., via `class_workflow_admin_policy`) manage profiles and assignments for workflow-wide and transition-specific rights.
+- **Delegation:** Workflow administrators (e.g., via `workflow_admin_policy`) manage profiles and assignments for workflow-wide and transition-specific rights.
 
 The following table lists fine-grained permissions for workflow management:
 
-|Permission                          |Description
-|------------------------------------|----------------------------------------------------------------------------------
-|`class_workflow_read`               |Read workflow metadata, states/transitions, and version history.
-|`class_workflow_update`             |Edit drafts (states, transitions, guards, validators, post functions).
-|`class_workflow_validate`           |Run consistency check for a draft; access validation reports.
-|`class_workflow_publish`            |Publish a reviewed draft as the active version (incl. mappings).
-|`class_workflow_archive`            |Archive an active workflow version.
-|`class_workflow_restore`            |Restore an archived workflow version.
-|`class_workflow_clone`              |Clone an existing workflow definition as a draft.
-|`class_workflow_delete`             |Permanently delete draft or archived definitions.
-|`class_workflow_versions_read`      |Read version list, diffs, and history.
-|`class_workflow_import`             |Import external workflow definitions (incl. dry run).
-|`class_workflow_export`             |Export definitions/versions.
-|`class_workflow_manage_permissions` |Assign/update/remove permissions (workflow/transition-specific).
-|`class_transition_execute`          |Execute a transition on objects (workflow-wide or transition-specific).
-|`class_status_read`                 |Read the status catalog of a class.
-|`class_status_create`               |Create a status.
-|`class_status_update`               |Edit a status (name, category, description).
-|`class_status_clone`                |Clone a status.
-|`class_status_delete`               |Delete a non-referenced status.
-|`class_status_usage_read`           |Read the usage proof of a status.
+|Permission                    |Description
+|------------------------------|----------------------------------------------------------------------------------
+|`workflow_read`               |Read workflow metadata, states/transitions, and version history.
+|`workflow_update`             |Edit drafts (states, transitions, guards, validators, post functions).
+|`workflow_validate`           |Run consistency check for a draft; access validation reports.
+|`workflow_publish`            |Publish a reviewed draft as the active version (incl. mappings).
+|`workflow_archive`            |Archive an active workflow version.
+|`workflow_restore`            |Restore an archived workflow version.
+|`workflow_clone`              |Clone an existing workflow definition as a draft.
+|`workflow_delete`             |Permanently delete draft or archived definitions.
+|`workflow_versions_read`      |Read version list, diffs, and history.
+|`workflow_import`             |Import external workflow definitions (incl. dry run).
+|`workflow_export`             |Export definitions/versions.
+|`workflow_manage_permissions` |Assign/update/remove permissions (workflow/transition-specific).
+|`transition_execute`          |Execute a transition on objects (workflow-wide or transition-specific).
+|`status_read`                 |Read the status catalog of a class.
+|`status_create`               |Create a status.
+|`status_update`               |Edit a status (name, category, description).
+|`status_clone`                |Clone a status.
+|`status_delete`               |Delete a non-referenced status.
+|`status_usage_read`           |Read the usage proof of a status.
 
 These permissions are bundled into typical roles in policies:
 
-|Policy                            |Description                        |Included Permissions
-|----------------------------------|-----------------------------------|------------------------------
-|`class_workflow_admin_policy`     |Full administration.               |all `class_workflow_*`, `class_transition_execute`, `class_status_*`
-|`class_workflow_publisher_policy` |Release/lifecycle control.         |`class_workflow_read`, `class_workflow_validate`, `class_workflow_publish`, `class_workflow_archive`, `class_workflow_restore`, `class_workflow_versions_read`
-|`class_workflow_edit_policy`      |Model maintenance without release. |`class_workflow_read`, `class_workflow_update`, `class_workflow_validate`, `class_workflow_clone`, `class_workflow_versions_read`
-|`class_workflow_view_policy`      |Read-only permissions.             |`class_workflow_read`, `class_workflow_versions_read`
-|`class_workflow_importer_policy`  |Import external definitions.       |`class_workflow_import`
-|`class_workflow_exporter_policy`  |Export definitions/versions.       |`class_workflow_export`
-|`class_status_admin_policy`       |Maintain status catalog.           |`class_status_*`
+|Policy                      |Description                        |Included Permissions
+|----------------------------|-----------------------------------|------------------------------
+|`workflow_admin_policy`     |Full administration.               |all `workflow_*`, `transition_execute`, `status_*`
+|`workflow_publisher_policy` |Release/lifecycle control.         |`workflow_read`, `workflow_validate`, `workflow_publish`, `workflow_archive`, `workflow_restore`, `workflow_versions_read`
+|`workflow_edit_policy`      |Model maintenance without release. |`workflow_read`, `workflow_update`, `workflow_validate`, `workflow_clone`, `workflow_versions_read`
+|`workflow_view_policy`      |Read-only permissions.             |`workflow_read`, `workflow_versions_read`
+|`workflow_importer_policy`  |Import external definitions.       |`workflow_import`
+|`workflow_exporter_policy`  |Export definitions/versions.       |`workflow_export`
+|`status_admin_policy`       |Maintain status catalog.           |`status_*`
 
 ## Conclusion
 

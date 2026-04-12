@@ -590,10 +590,10 @@ These individual permissions are bundled into logical policies that represent ty
 
 |Policy                     |Description                                               |Included Permissions
 |---------------------------|----------------------------------------------------------|-------------------------
-|`workspace_admin_policy`   |Full administrative control over a dashboard.             |all `dashboard_*`
-|`workspace_edit_policy`    |Management of a dashboard’s content.                      |`dashboard_read`, `dashboard_read_content`, `dashboard_write_content`
-|`workspace_view_policy`    |Read-only access to a dashboard and its content.          |`dashboard_read`, `dashboard_read_content`
-|`workspace_creator_policy` |Global policy for creating new dashboards.                |`dashboard_create`
+|`dashboard_admin_policy`   |Full administrative control over a dashboard.             |all `dashboard_*`
+|`dashboard_edit_policy`    |Management of a dashboard’s content.                      |`dashboard_read`, `dashboard_read_content`, `dashboard_write_content`
+|`dashboard_view_policy`    |Read-only access to a dashboard and its content.          |`dashboard_read`, `dashboard_read_content`
+|`dashboard_creator_policy` |Global policy for creating new dashboards.                |`dashboard_create`
 
 ## Conclusion
 
