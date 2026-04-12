@@ -61,7 +61,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Groups
             {
                 Name = data.Name + " (Copy)",
                 Description = data.Description,
-                Icon = data.Icon,
                 State = GroupState.Active
             };
 
@@ -108,7 +107,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Groups
             var id = Guid.NewGuid();
             newItem = new Model.Entities.Group(id)
             {
-                Icon = CoreHub.GenerateIcon(id),
                 State = GroupState.Active
             };
 
@@ -129,7 +127,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Groups
             var id = Guid.NewGuid();
             newItem = new Model.Entities.Group(id)
             {
-                Icon = CoreHub.GenerateIcon(id),
                 State = GroupState.Active
             };
 

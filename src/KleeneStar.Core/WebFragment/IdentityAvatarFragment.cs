@@ -1,4 +1,5 @@
-﻿using WebExpress.WebApp.WebScope;
+﻿using System.Security.Principal;
+using WebExpress.WebApp.WebScope;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
@@ -24,22 +25,15 @@ namespace KleeneStar.Core.WebFragment
     public sealed class IdentityAvatarFragment : FragmentControlDropdown, IFragmentControl<FragmentControlDropdown>, IFragmentControlNavigationItem
     {
         /// <summary>
-        /// Gets the context of the fragment.
-        /// </summary>
-        public IFragmentContext FragmentContext { get; private set; }
-
-        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">
         /// The context associated with the fragment.
         /// </param>
         public IdentityAvatarFragment(IFragmentContext fragmentContext)
-            : base(fragmentContext?.FragmentId?.ToString())
+            : base(fragmentContext)
         {
-            FragmentContext = fragmentContext;
-            Icon = new IconUserCircle();
-            AlignmentHorizontal = TypeAlignmentHorizontal.Right;
+            Icon = new IconUser();
         }
 
         /// <summary>
@@ -55,7 +49,7 @@ namespace KleeneStar.Core.WebFragment
                 return null;
             }
 
-            var identity = renderContext?.Request?.Identity;
+            var identity = (IIdentity)null; // renderContext?.Request?.Identity;
             var isSignedIn = identity is not null;
 
             if (isSignedIn)
@@ -72,7 +66,7 @@ namespace KleeneStar.Core.WebFragment
                 Add(new ControlDropdownItemLink()
                 {
                     Text = I18N.Translate(renderContext, "kleenestar.core:identity.signout.label"),
-                    Icon = new IconSignOutAlt(),
+                    Icon = new IconPowerOff(),
                     Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Settings.Identities.Index>()
                         ?.BindParameters(renderContext.Request)
                 });
@@ -84,7 +78,7 @@ namespace KleeneStar.Core.WebFragment
                 Add(new ControlDropdownItemLink()
                 {
                     Text = I18N.Translate(renderContext, "kleenestar.core:identity.signin.label"),
-                    Icon = new IconSignInAlt(),
+                    Icon = new IconPowerOff(),
                     Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Settings.Identities.Index>()
                         ?.BindParameters(renderContext.Request)
                 });

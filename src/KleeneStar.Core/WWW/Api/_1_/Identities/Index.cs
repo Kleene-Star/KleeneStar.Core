@@ -62,7 +62,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
             {
                 Name = data.Name + " (Copy)",
                 Email = data.Email,
-                Icon = data.Icon,
+                Avatar = data.Avatar,
                 State = IdentityState.Active
             };
 
@@ -109,7 +109,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
             var id = Guid.NewGuid();
             newItem = new Model.Entities.Identity(id)
             {
-                Icon = CoreHub.GenerateIcon(id),
+                Avatar = CoreHub.GenerateIcon(id),
                 State = IdentityState.Active
             };
 
@@ -130,7 +130,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
             var id = Guid.NewGuid();
             newItem = new Model.Entities.Identity(id)
             {
-                Icon = CoreHub.GenerateIcon(id),
+                Avatar = CoreHub.GenerateIcon(id),
                 State = IdentityState.Active
             };
 

@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebImport
         /// A task representing the asynchronous validation operation, returning an
         /// <see cref="IdentityImportResult"/> indicating whether the configuration is valid.
         /// </returns>
-        Task<IdentityImportResult> ValidateAsync(IdentityImportOptions options, CancellationToken cancellationToken = default);
+        Task<IdentityImportResult> ValidateAsync(IIdentityImportOptions options, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Imports identities and groups from the external source into the internal model.
@@ -43,6 +43,6 @@ namespace KleeneStar.Core.WebImport
         /// A task representing the asynchronous import operation, returning an
         /// <see cref="IdentityImportResult"/> containing the outcome of the import.
         /// </returns>
-        Task<IdentityImportResult> ImportAsync(IdentityImportOptions options, CancellationToken cancellationToken = default);
+        Task<IdentityImportResult> ImportAsync(IIdentityImportOptions options, CancellationToken cancellationToken = default);
     }
 }
