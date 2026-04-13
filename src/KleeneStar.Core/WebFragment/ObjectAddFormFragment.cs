@@ -13,14 +13,45 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a add form fragment for a object.
+    /// Represents a multi-step wizard fragment for creating a new object.
     /// </summary>
+    /// <remarks>
+    /// The wizard guides the user through three steps:
+    /// <list type="number">
+    ///   <item>Workspace and Class Selection — a cascading control for choosing a workspace and class.</item>
+    ///   <item>Template Selection — a tile control for choosing an object template.</item>
+    ///   <item>Object Properties — standard form inputs for specifying title and summary.</item>
+    /// </list>
+    /// </remarks>
     [Title("kleenestar.core:object.add.title")]
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Add>]
     [Cache]
-    public sealed class ObjectAddFormFragment : FragmentControlRestFormAdd
+    public sealed class ObjectAddFormFragment : FragmentControlRestWizard
     {
+        /// <summary>
+        /// Gets the cascading input control for selecting a workspace and class.
+        /// </summary>
+        public ControlFormItemInputCascading WorkspaceClassSelection { get; } = new()
+        {
+            Name = "WorkspaceClass",
+            Label = "kleenestar.core:object.workspaceclass.label",
+            Help = "kleenestar.core:object.workspaceclass.help",
+            Placeholder = "kleenestar.core:object.workspaceclass.placeholder",
+            Required = true
+        };
+
+        /// <summary>
+        /// Gets the tile input control for selecting an object template.
+        /// </summary>
+        public ControlFormItemInputTile TemplateSelection { get; } = new()
+        {
+            Name = "Template",
+            Label = "kleenestar.core:object.template.label",
+            Help = "kleenestar.core:object.template.help",
+            Required = true
+        };
+
         /// <summary>
         /// Gets the input text control for specifying the summary of the object.
         /// </summary>
@@ -52,11 +83,20 @@ namespace KleeneStar.Core.WebFragment
         public ObjectAddFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Add(Summary);
-            Add(Description);
+            var step1 = new ControlRestWizardPage("step-workspace-class");
+            step1.Add(WorkspaceClassSelection);
+
+            var step2 = new ControlRestWizardPage("step-template");
+            step2.Add(TemplateSelection);
+
+            var step3 = new ControlRestWizardPage("step-properties");
+            step3.Add(Summary);
+            step3.Add(Description);
+
+            Add(step1, step2, step3);
 
             Mode = TypeRestFormMode.Add;
-            Uri = CoreHub.GetUri<Index>();
+            RestUri = CoreHub.GetUri<Index>();
         }
 
         /// <summary>
@@ -73,7 +113,7 @@ namespace KleeneStar.Core.WebFragment
         /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            return base.Render(renderContext, visualTree, Items);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

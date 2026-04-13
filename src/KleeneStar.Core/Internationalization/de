@@ -286,6 +286,11 @@ object.summary.placeholder=Geben Sie eine kurze Zusammenfassung des Objekts ein.
 object.summary.help=Die Zusammenfassung hilft Ihnen, dieses Objekt schnell zu identifizieren.
 object.description.label=Beschreibung
 object.description.placeholder=Geben Sie eine ausführliche Beschreibung des Objekts ein.
+object.workspaceclass.label=Arbeitsbereich und Klasse
+object.workspaceclass.placeholder=Wählen Sie einen Arbeitsbereich und eine Klasse.
+object.workspaceclass.help=Wählen Sie den Arbeitsbereich und die Klasse, in der das neue Objekt erstellt werden soll.
+object.template.label=Vorlage
+object.template.help=Wählen Sie eine Vorlage als Ausgangspunkt für das neue Objekt.
 
 dashboard.label=Dashboard
 dashboard.dropdown.label=Dashboard
