@@ -1,0 +1,166 @@
+﻿using KleeneStar.Model;
+using KleeneStar.Model.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebMessage;
+using WebExpress.WebCore.WebRestApi;
+using WebExpress.WebIndex.Queries;
+
+namespace KleeneStar.Core.WWW.Api._1_.Groups
+{
+    /// <summary>
+    /// Provides CRUD operations for group items via a REST API.
+    /// </summary>
+    [Cache]
+    public sealed class Index : RestApiCrud<Model.Entities.Group>
+    {
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public Index()
+        {
+        }
+
+        /// <summary>
+        /// Creates a new query context.
+        /// </summary>
+        protected override IQueryContext CreateContext()
+        {
+            return ModelHub.CreateDbContext();
+        }
+
+        /// <summary>
+        /// Retrieves groups matching the query.
+        /// </summary>
+        protected override IEnumerable<Model.Entities.Group> Retrieve(IQuery<Model.Entities.Group> query, IQueryContext context, IRequest request)
+        {
+            return CoreHub.GroupManager.GetGroups(query, context);
+        }
+
+        /// <summary>
+        /// Retrieves data for creating a new group.
+        /// </summary>
+        protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
+        {
+            return RetrieveForCreate(request, "kleenestar.core:setting.group.add.title");
+        }
+
+        /// <summary>
+        /// Retrieves data for cloning a group.
+        /// </summary>
+        protected override IRestApiCrudResultRetrieve RetrieveForClone(IQuery<Model.Entities.Group> query, IRequest request)
+        {
+            using var context = ModelHub.CreateDbContext();
+            var data = CoreHub.GroupManager.GetGroups(query, context)
+                .FirstOrDefault();
+
+            var newItem = new Model.Entities.Group()
+            {
+                Name = data.Name + " (Copy)",
+                Description = data.Description,
+                State = GroupState.Active
+            };
+
+            return RetrieveForClone(request, newItem, "kleenestar.core:setting.group.clone.title");
+        }
+
+        /// <summary>
+        /// Retrieves data for updating a group.
+        /// </summary>
+        protected override IRestApiCrudResultRetrieve RetrieveForUpdate(IQuery<Model.Entities.Group> query, IRequest request)
+        {
+            using var context = ModelHub.CreateDbContext();
+            var data = CoreHub.GroupManager.GetGroups(query, context)
+                .FirstOrDefault();
+
+            return RetrieveForUpdate(request, data, "kleenestar.core:setting.group.edit.title");
+        }
+
+        /// <summary>
+        /// Retrieves data for deleting a group.
+        /// </summary>
+        protected override IRestApiCrudResultRetrieveDelete RetrieveForDelete(IQuery<Model.Entities.Group> query, IRequest request)
+        {
+            using var context = ModelHub.CreateDbContext();
+            var data = CoreHub.GroupManager.GetGroups(query, context)
+                .FirstOrDefault();
+
+            return RetrieveForDelete(request, data, "kleenestar.core:setting.group.delete.title", data?.Id.ToString());
+        }
+
+        /// <summary>
+        /// Validates group data.
+        /// </summary>
+        protected override IRestApiValidationResult Validate(Model.Entities.Group existingItem, RestApiCrudFormData payload, IRequest request)
+        {
+            return base.Validate(existingItem, payload, request);
+        }
+
+        /// <summary>
+        /// Creates a new group.
+        /// </summary>
+        protected override IRestApiCrudResultCreate Create(RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Group newItem)
+        {
+            var id = Guid.NewGuid();
+            newItem = new Model.Entities.Group(id)
+            {
+                State = GroupState.Active
+            };
+
+            fieldMap.BindTo(newItem);
+
+            CoreHub.GroupManager.Add(newItem);
+
+            CoreHub.AddNotification("Create", "success", 5000);
+
+            return new RestApiCrudResultCreate();
+        }
+
+        /// <summary>
+        /// Clones an existing group.
+        /// </summary>
+        protected override IRestApiCrudResultCreate Clone(Model.Entities.Group existingItem, RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Group newItem)
+        {
+            var id = Guid.NewGuid();
+            newItem = new Model.Entities.Group(id)
+            {
+                State = GroupState.Active
+            };
+
+            fieldMap.BindTo(newItem);
+
+            CoreHub.GroupManager.Add(newItem);
+
+            CoreHub.AddNotification("Clone", "success", 5000);
+
+            return new RestApiCrudResultCreate();
+        }
+
+        /// <summary>
+        /// Updates an existing group.
+        /// </summary>
+        protected override IRestApiCrudResultUpdate Update(Model.Entities.Group existingItem, RestApiCrudFormData payload, IRequest request)
+        {
+            var res = base.Update(existingItem, payload, request);
+
+            CoreHub.GroupManager.Update(existingItem);
+
+            CoreHub.AddNotification("Update", "success", 5000);
+
+            return res;
+        }
+
+        /// <summary>
+        /// Deletes a group.
+        /// </summary>
+        protected override IRestApiCrudResultDelete Delete(Model.Entities.Group existingItem, IRequest request)
+        {
+            CoreHub.GroupManager.Remove(existingItem.Id);
+
+            return base.Delete(existingItem, request);
+        }
+    }
+}

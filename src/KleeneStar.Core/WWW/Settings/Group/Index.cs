@@ -1,0 +1,39 @@
+﻿using WebExpress.WebApp.WebScope;
+using WebExpress.WebApp.WebSettingPage;
+using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebMessage;
+using WebExpress.WebCore.WebPage;
+using WebExpress.WebCore.WebSettingPage;
+using WebExpress.WebUI.WebIcon;
+
+namespace KleeneStar.Core.WWW.Settings.Group
+{
+    /// <summary>
+    /// Redirects to the groups index page.
+    /// </summary>
+    [Title("kleenestar.core:setting.group.title")]
+    [WebIcon<IconLayerGroup>]
+    [SettingGroup<SettingGroupSystemGeneral>()]
+    [SettingSection(SettingSection.Secondary)]
+    [Scope<IScopeAdmin>]
+    public sealed class Index : IPage<VisualTreeWebAppSetting>, IScopeAdmin
+    {
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public Index()
+        {
+        }
+
+        /// <summary>
+        /// Processing of the resource.
+        /// </summary>
+        public void Process(IRenderContext renderContext, VisualTreeWebAppSetting visualTree)
+        {
+            throw new RedirectException
+            (
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Settings.Groups.Index>()
+            );
+        }
+    }
+}

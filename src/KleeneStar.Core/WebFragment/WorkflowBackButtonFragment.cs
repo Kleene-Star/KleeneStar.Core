@@ -1,0 +1,63 @@
+﻿using KleeneStar.Core.WebParameter;
+using System;
+using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebFragment;
+using WebExpress.WebCore.WebHtml;
+using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
+using WebExpress.WebUI.WebPage;
+
+namespace KleeneStar.Core.WebFragment
+{
+    /// <summary>
+    /// Represents a back button fragment for forms, providing navigation functionality to return 
+    /// to the previous view within a workflow context.
+    /// </summary>
+    [Section<SectionHeadlinePrologue>]
+    [Scope<global::KleeneStar.Core.WWW.Workflow._workflowid_.Index>]
+    [Cache]
+    public sealed class WorkflowBackButtonFragment : FragmentControlButtonLink
+    {
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        /// <param name="fragmentContext">
+        /// The context associated with the fragment, providing necessary data and services for its operation. 
+        /// Cannot be null.
+        /// </param>
+        public WorkflowBackButtonFragment(IFragmentContext fragmentContext)
+            : base(fragmentContext)
+        {
+            Text = "kleenestar.core:workflow.back.label";
+            Icon = new IconArrowLeft();
+            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
+            BackgroundColor = new PropertyColorButton(TypeColorButton.Secondary);
+            Outline = true;
+        }
+
+        /// <summary>
+        /// Convert the fragment to HTML.
+        /// </summary>
+        /// <param name="renderContext">The context in which the fragment is rendered.</param>
+        /// <param name="visualTree">The visual tree used for rendering the fragment.</param>
+        /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
+        public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
+        {
+            if (!FragmentContext.Conditions.Check(renderContext?.Request))
+            {
+                return null;
+            }
+
+            var workflowIdParameter = renderContext.Request.GetParameter<WorkflowIdParameter>();
+            var workflowId = Guid.TryParse(workflowIdParameter?.Value, out var result) ? result : Guid.Empty;
+            var workflow = CoreHub.WorkflowManager.GetWorkflow(workflowId);
+
+            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workflows._classid_.Index>()
+                .BindParameters(new ClassIdParameter(workflow.ClassId));
+
+            return base.Render(renderContext, visualTree, Text, uri, Tooltip, PrimaryAction, SecondaryAction, Icon);
+        }
+    }
+}

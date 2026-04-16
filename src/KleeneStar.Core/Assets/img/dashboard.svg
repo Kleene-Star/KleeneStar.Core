@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="150"
+   height="150"
+   viewBox="0 0 150 150"
+   version="1.1"
+   id="svg4"
+   sodipodi:docname="dashboard.svg"
+   inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="namedview4"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="2.69"
+     inkscape:cx="-10.408922"
+     inkscape:cy="88.66171"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg4" />
+  <!-- Background -->
+  <rect
+     width="150"
+     height="150"
+     fill="#d9d900"
+     id="rect1"
+     style="fill:#4f8f6e;fill-opacity:1" />
+  <!-- Dashboard icon (bars + line graph) -->
+  <path
+     id="line1"
+     style="fill:none;stroke:#ffffff;stroke-width:13.7874;stroke-linecap:round;stroke-linejoin:round"
+     d="M 91.419922 35.830078 L 91.419922 114.16992 L 91.419922 35.830078 z M 58.580078 55.414062 L 58.580078 114.16992 L 58.580078 55.414062 z M 124.26172 61.943359 L 124.26172 114.16992 L 124.26172 61.943359 z M 25.738281 75 L 25.738281 114.16992 L 25.738281 75 z " />
+  <!-- Outer frame (matching your geometric style) -->
+</svg>
