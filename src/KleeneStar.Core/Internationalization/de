@@ -391,3 +391,12 @@ setting.group.description.placeholder=Geben Sie eine kurze Beschreibung der Grup
 setting.group.state.label=Status
 setting.group.state.placeholder=Wählen Sie den Status der Gruppe.
 setting.group.state.help=Der Status bestimmt die Verfügbarkeit der Gruppe. Nur aktive Gruppen können zugewiesen werden.
+
+
+state.active.label=Aktiv
+state.archived.label=Archiviert
+
+accessmodifier.public.label=Öffentlich
+accessmodifier.protected.label=Geschützt
+accessmodifier.private.label=Privat
+accessmodifier.internal.label=Intern

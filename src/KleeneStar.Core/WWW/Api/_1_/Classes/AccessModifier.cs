@@ -1,7 +1,8 @@
-﻿using System;
+﻿using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
@@ -19,26 +20,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
         /// </summary>
         public AccessModifier()
         {
-        }
-
-        /// <summary>
-        /// Applies the specified filter criteria to the given query object.
-        /// </summary>
-        /// <param name="filter">
-        /// A string representing the filter expression to apply.
-        /// </param>
-        /// <param name="query">
-        /// The query object to which the filter will be applied.
-        /// </param>
-        /// <param name="request">
-        /// The request that provides the operational context.
-        /// </param>
-        /// <returns>
-        /// A query representing the filtered set of items.
-        /// </returns>
-        protected override IQuery<Model.Entities.Class> Filter(string filter, IQuery<Model.Entities.Class> query, IRequest request)
-        {
-            return query;
         }
 
         /// <summary>
@@ -60,13 +41,53 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
         {
             var list = new List<RestApiSelectionItem>()
             {
-                new() { Id = Guid.Empty, Text = "Private" },
-                new() { Id = Guid.Empty, Text = "Protected" },
-                new() { Id = Guid.Empty, Text = "Public" },
-                new() { Id = Guid.Empty, Text = "Internal" }
+                new()
+                {
+                    Id = Model.Entities.AccessModifier.Public.Id(),
+                    Text = I18N.Translate(request, Model.Entities.AccessModifier.Public.Text()),
+                    Color = Model.Entities.AccessModifier.Public.Color()
+                },
+                new()
+                {
+                    Id = Model.Entities.AccessModifier.Protected.Id(),
+                    Text = I18N.Translate(request, Model.Entities.AccessModifier.Protected.Text()),
+                    Color = Model.Entities.AccessModifier.Protected.Color()
+                },
+                new()
+                {
+                    Id = Model.Entities.AccessModifier.Private.Id(),
+                    Text = I18N.Translate(request, Model.Entities.AccessModifier.Private.Text()),
+                    Color = Model.Entities.AccessModifier.Private.Color()
+                },
+                new()
+                {
+                    Id = Model.Entities.AccessModifier.Internal.Id(),
+                    Text = I18N.Translate(request, Model.Entities.AccessModifier.Internal.Text()),
+                    Color = Model.Entities.AccessModifier.Internal.Color()
+                }
             };
 
             return list.AsQueryable();
+        }
+
+        /// <summary>
+        /// Applies the specified filter criteria to the given query object.
+        /// </summary>
+        /// <param name="filter">
+        /// A string representing the filter expression to apply.
+        /// </param>
+        /// <param name="query">
+        /// The query object to which the filter will be applied.
+        /// </param>
+        /// <param name="request">
+        /// The request that provides the operational context.
+        /// </param>
+        /// <returns>
+        /// A query representing the filtered set of items.
+        /// </returns>
+        protected override IQuery<Model.Entities.Class> Filter(string filter, IQuery<Model.Entities.Class> query, IRequest request)
+        {
+            return query;
         }
     }
 }

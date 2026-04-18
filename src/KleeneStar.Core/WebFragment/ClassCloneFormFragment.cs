@@ -98,6 +98,7 @@ namespace KleeneStar.Core.WebFragment
             Label = "kleenestar.core:class.accessmodifier.label",
             Placeholder = "kleenestar.core:class.accessmodifier.placeholder",
             Help = "kleenestar.core:class.accessmodifier.help",
+            StickySelection = true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.AccessModifier>()
         };
 
@@ -120,6 +121,7 @@ namespace KleeneStar.Core.WebFragment
             Label = "kleenestar.core:class.state.label",
             Placeholder = "kleenestar.core:class.state.placeholder",
             Help = "kleenestar.core:class.state.help",
+            StickySelection = true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.State>()
         };
 

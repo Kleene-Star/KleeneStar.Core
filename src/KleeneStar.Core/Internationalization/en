@@ -391,3 +391,11 @@ setting.group.description.placeholder=Enter a brief description of the group.
 setting.group.state.label=Status
 setting.group.state.placeholder=Select the status of the group.
 setting.group.state.help=The status determines the availability of the group. Only active groups can be assigned.
+
+state.active.label=Active
+state.archived.label=Archived
+
+accessmodifier.public.label=Public
+accessmodifier.protected.label=Protected
+accessmodifier.private.label=Private
+accessmodifier.internal.label=Internal
