@@ -99,7 +99,8 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = nameof(Model.Entities.Field.Required),
             Label = "kleenestar.core:field.required.label",
-            Help = "kleenestar.core:field.required.help"
+            Help = "kleenestar.core:field.required.help",
+            Layout = TypeLayoutCheck.Switch
         };
 
         /// <summary>
@@ -109,7 +110,8 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = nameof(Model.Entities.Field.Unique),
             Label = "kleenestar.core:field.unique.label",
-            Help = "kleenestar.core:field.unique.help"
+            Help = "kleenestar.core:field.unique.help",
+            Layout = TypeLayoutCheck.Switch
         };
 
         /// <summary>
@@ -119,7 +121,8 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = nameof(Model.Entities.Field.Deprecated),
             Label = "kleenestar.core:field.deprecated.label",
-            Help = "kleenestar.core:field.deprecated.help"
+            Help = "kleenestar.core:field.deprecated.help",
+            Layout = TypeLayoutCheck.Switch
         };
 
         /// <summary>

@@ -63,6 +63,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = nameof(Model.Entities.Class.IsAbstract),
             Label = "kleenestar.core:class.isabstract.label",
+            Layout = TypeLayoutCheck.Switch,
             Help = "kleenestar.core:class.isabstract.help"
         };
 
@@ -109,7 +110,8 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = nameof(Model.Entities.Class.Sealed),
             Label = "kleenestar.core:class.sealed.label",
-            Help = "kleenestar.core:class.sealed.help"
+            Help = "kleenestar.core:class.sealed.help",
+            Layout = TypeLayoutCheck.Switch
         };
 
         /// <summary>

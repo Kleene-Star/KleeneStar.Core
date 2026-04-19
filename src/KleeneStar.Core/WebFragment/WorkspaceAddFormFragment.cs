@@ -116,7 +116,8 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = "Sealed",
             Label = "kleenestar.core:workspace.sealed.label",
-            Help = "kleenestar.core:workspace.sealed.help"
+            Help = "kleenestar.core:workspace.sealed.help",
+            Layout = TypeLayoutCheck.Switch
         };
 
         /// <summary>
