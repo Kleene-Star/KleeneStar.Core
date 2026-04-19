@@ -394,8 +394,25 @@ setting.group.state.help=The status determines the availability of the group. On
 
 state.active.label=Active
 state.archived.label=Archived
+state.locked.label=Locked
+state.disabled.label=Disabled
+state.deleted.label=Deleted
 
 accessmodifier.public.label=Public
 accessmodifier.protected.label=Protected
 accessmodifier.private.label=Private
 accessmodifier.internal.label=Internal
+
+fieldtype.text.label=Text
+fieldtype.number.label=Number
+fieldtype.date.label=Date
+fieldtype.boolean.label=Boolean
+fieldtype.selection.label=Selection
+fieldtype.reference.label=Reference
+fieldtype.workflow.label=Workflow
+fieldtype.attachment.label=Attachment
+fieldtype.user.label=User
+fieldtype.tag.label=Tag
+
+fieldcardinality.single.label=Single
+fieldcardinality.multiple.label=Multiple

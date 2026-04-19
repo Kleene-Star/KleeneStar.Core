@@ -30,6 +30,7 @@ namespace KleeneStar.Core.WebFragment
             Label = "kleenestar.core:field.cardinality.label",
             Placeholder = "kleenestar.core:field.cardinality.placeholder",
             Help = "kleenestar.core:field.cardinality.help",
+            StickySelection = true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Cardinality>()
         };
 

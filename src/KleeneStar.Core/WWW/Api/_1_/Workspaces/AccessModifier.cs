@@ -1,7 +1,8 @@
-﻿using System;
+﻿using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
@@ -29,10 +30,30 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         {
             return new List<RestApiSelectionItem>()
             {
-                new() { Id = Guid.Parse("D4E8EFC6-9A56-4AAC-9FCF-E924F46CB7E5"), Text = "Private" },
-                new() { Id = Guid.Parse("04505D9D-F7EF-4CF9-9775-FA141C59BA95"), Text = "Protected" },
-                new() { Id = Guid.Parse("7530F626-A0BE-444F-99C4-F1548387E6D3"), Text = "Public" },
-                new() { Id = Guid.Parse("12419EF5-6426-43B2-A66B-CCEFD64BD23B"), Text = "Internal" }
+                new()
+                {
+                    Id = WorkspaceAccessModifier.Public.Id(),
+                    Text = I18N.Translate(request, WorkspaceAccessModifier.Public.Text()),
+                    Color = WorkspaceAccessModifier.Public.Color()
+                },
+                new()
+                {
+                    Id = WorkspaceAccessModifier.Protected.Id(),
+                    Text = I18N.Translate(request, WorkspaceAccessModifier.Protected.Text()),
+                    Color = WorkspaceAccessModifier.Protected.Color()
+                },
+                new()
+                {
+                    Id = WorkspaceAccessModifier.Private.Id(),
+                    Text = I18N.Translate(request, WorkspaceAccessModifier.Private.Text()),
+                    Color = WorkspaceAccessModifier.Private.Color()
+                },
+                new()
+                {
+                    Id = WorkspaceAccessModifier.Internal.Id(),
+                    Text = I18N.Translate(request, WorkspaceAccessModifier.Internal.Text()),
+                    Color = WorkspaceAccessModifier.Internal.Color()
+                }
             }.AsQueryable();
         }
     }

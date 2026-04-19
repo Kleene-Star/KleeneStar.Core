@@ -75,6 +75,7 @@ namespace KleeneStar.Core.WebFragment
             Label = "kleenestar.core:field.fieldtype.label",
             Placeholder = "kleenestar.core:field.fieldtype.placeholder",
             Help = "kleenestar.core:field.fieldtype.help",
+            StickySelection = true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.FieldType>()
         };
 
@@ -87,6 +88,7 @@ namespace KleeneStar.Core.WebFragment
             Label = "kleenestar.core:field.cardinality.label",
             Placeholder = "kleenestar.core:field.cardinality.placeholder",
             Help = "kleenestar.core:field.cardinality.help",
+            StickySelection = true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Cardinality>()
         };
 
@@ -129,6 +131,7 @@ namespace KleeneStar.Core.WebFragment
             Label = "kleenestar.core:field.accessmodifier.label",
             Placeholder = "kleenestar.core:field.accessmodifier.placeholder",
             Help = "kleenestar.core:field.accessmodifier.help",
+            StickySelection = true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.AccessModifier>()
         };
 
@@ -153,6 +156,7 @@ namespace KleeneStar.Core.WebFragment
             Label = "kleenestar.core:field.state.label",
             Placeholder = "kleenestar.core:field.state.placeholder",
             Help = "kleenestar.core:field.state.help",
+            StickySelection = true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.State>()
         };
 

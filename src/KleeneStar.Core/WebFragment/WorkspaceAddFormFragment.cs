@@ -80,6 +80,7 @@ namespace KleeneStar.Core.WebFragment
             Label = "kleenestar.core:workspace.state.label",
             Placeholder = "kleenestar.core:workspace.state.placeholder",
             Help = "kleenestar.core:workspace.state.help",
+            StickySelection = true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.State>()
         };
 
@@ -104,6 +105,7 @@ namespace KleeneStar.Core.WebFragment
             Label = "kleenestar.core:workspace.accessmodifier.label",
             Placeholder = "kleenestar.core:workspace.accessmodifier.placeholder",
             Help = "kleenestar.core:workspace.accessmodifier.help",
+            StickySelection = true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.AccessModifier>()
         };
 

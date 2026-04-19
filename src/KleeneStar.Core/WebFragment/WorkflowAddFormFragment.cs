@@ -41,6 +41,7 @@ namespace KleeneStar.Core.WebFragment
             Label = "kleenestar.core:workflow.state.label",
             Placeholder = "kleenestar.core:workflow.state.placeholder",
             Help = "kleenestar.core:workflow.state.help",
+            StickySelection = true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.State>()
         };
 

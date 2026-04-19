@@ -395,8 +395,25 @@ setting.group.state.help=Der Status bestimmt die Verfügbarkeit der Gruppe. Nur 
 
 state.active.label=Aktiv
 state.archived.label=Archiviert
+state.locked.label=Gesperrt
+state.disabled.label=Deaktiviert
+state.deleted.label=Gelöscht
 
 accessmodifier.public.label=Öffentlich
 accessmodifier.protected.label=Geschützt
 accessmodifier.private.label=Privat
 accessmodifier.internal.label=Intern
+
+fieldtype.text.label=Text
+fieldtype.number.label=Zahl
+fieldtype.date.label=Datum
+fieldtype.boolean.label=Wahrheitswert
+fieldtype.selection.label=Auswahl
+fieldtype.reference.label=Referenz
+fieldtype.workflow.label=Workflow
+fieldtype.attachment.label=Anhang
+fieldtype.user.label=Benutzer
+fieldtype.tag.label=Schlagwort
+
+fieldcardinality.single.label=Einfach
+fieldcardinality.multiple.label=Mehrfach

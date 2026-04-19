@@ -53,6 +53,7 @@ namespace KleeneStar.Core.WebFragment
             Label = "kleenestar.core:setting.tenant.state.label",
             Placeholder = "kleenestar.core:setting.tenant.state.placeholder",
             Help = "kleenestar.core:setting.tenant.state.help",
+            StickySelection = true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.State>()
         };
 

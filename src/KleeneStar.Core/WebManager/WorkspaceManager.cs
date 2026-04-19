@@ -183,7 +183,7 @@ namespace KleeneStar.Core.WebManager
 
             ModelHub.Update(workspace);
 
-            WorkspaceAdded?.Invoke(this, workspace);
+            WorkspaceUpdated?.Invoke(this, workspace);
 
             // create notification
             CoreHub.AddNotification("Update", "success", 5000);

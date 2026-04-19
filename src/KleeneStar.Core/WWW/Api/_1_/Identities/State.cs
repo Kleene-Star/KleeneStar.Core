@@ -1,7 +1,8 @@
-﻿using System;
+﻿using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
@@ -30,13 +31,21 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
             {
                 new()
                 {
-                    Id = Guid.Empty,
-                    Text = "Active"
+                    Id = IdentityState.Active.Id(),
+                    Text = I18N.Translate(request, IdentityState.Active.Text()),
+                    Color = IdentityState.Active.Color()
                 },
                 new()
                 {
-                    Id = Guid.Empty,
-                    Text = "Inactive"
+                    Id = IdentityState.Locked.Id(),
+                    Text = I18N.Translate(request, IdentityState.Locked.Text()),
+                    Color = IdentityState.Locked.Color()
+                },
+                new()
+                {
+                    Id = IdentityState.Disabled.Id(),
+                    Text = I18N.Translate(request, IdentityState.Disabled.Text()),
+                    Color = IdentityState.Disabled.Color()
                 }
             };
 
