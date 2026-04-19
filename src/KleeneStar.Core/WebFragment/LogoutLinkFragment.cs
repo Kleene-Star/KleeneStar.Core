@@ -18,7 +18,7 @@ namespace KleeneStar.Core.WebFragment
     /// presented to authenticated users. It integrates with the component hub to determine the appropriate logout URI
     /// and renders a standardized logout control. The fragment is typically used within avatar or user profile
     /// dropdowns.</remarks>
-    [Section<SectionAppAvatarPrimary>]
+    [Section<SectionAppAvatarSecondary>]
     [Scope<IScopeGeneral>]
     [Scope<IScopeAdmin>]
     [Scope<IScopeStatusPage>]

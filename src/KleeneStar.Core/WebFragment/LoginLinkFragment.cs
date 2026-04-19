@@ -8,6 +8,7 @@ using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment
@@ -20,7 +21,7 @@ namespace KleeneStar.Core.WebFragment
     /// available to the user. It integrates with the component hub to generate the appropriate login URI and is
     /// typically used in authenticated user contexts. The fragment is cached for performance and is only visible when
     /// the user is logged out.</remarks>
-    [Section<SectionAppAvatarPrimary>]
+    [Section<SectionAppAvatarSecondary>]
     [Scope<IScopeGeneral>]
     [Scope<IScopeAdmin>]
     [Scope<IScopeStatusPage>]
@@ -39,7 +40,8 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext)
         {
             _componentHub = componentHub;
-            Text = "klenestar.core:login.label";
+            Text = "webexpress.webapp:login.label";
+            Icon = new IconRightToBracket();
         }
 
         /// <summary>

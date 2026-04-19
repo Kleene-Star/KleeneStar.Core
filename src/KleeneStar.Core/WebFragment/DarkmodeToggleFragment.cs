@@ -32,7 +32,8 @@ namespace KleeneStar.Core.WebFragment
         {
             Icon = new IconMoon();
             PrimaryAction = new ActionDarkmode();
-            Text = "webexpress.webui:darkmode.label";
+            Text = "webexpress.webui:darkmode.text.light";
+            Bind = new Binding().Add(new BindDarkmode());
         }
 
         /// <summary>
