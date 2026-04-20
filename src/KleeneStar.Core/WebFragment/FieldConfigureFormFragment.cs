@@ -12,60 +12,137 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a configure form fragment for a field.
-    /// Provides controls for Cardinality, Validation rules, Default value,
-    /// Field type, Required and Unique flags, and WQL filter expression.
+    /// Represents the configure form fragment for a field.
+    /// Provides tabbed controls for Cardinality, Validation, Options, Filter objects,
+    /// Workflow, and Priority configuration categories.
     /// </summary>
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Field._fieldid_.Configure>]
     [Cache]
     public sealed class FieldConfigureFormFragment : FragmentControlRestFormEdit
     {
+        // ── Cardinality tab ──────────────────────────────────────────────────
+
         /// <summary>
-        /// Gets the input selection control for the cardinality.
+        /// Gets the numeric input control for the minimum number of values the field must contain.
         /// </summary>
-        public ControlRestFormItemInputSelection CardinalitySelection { get; } = new()
+        public ControlFormItemInputText CardinalityMin { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.Cardinality),
-            Label = "kleenestar.core:field.cardinality.label",
-            Placeholder = "kleenestar.core:field.cardinality.placeholder",
-            Help = "kleenestar.core:field.cardinality.help",
-            StickySelection = true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Cardinality>()
+            Name = nameof(Model.Entities.Field.CardinalityMin),
+            Label = "kleenestar.core:field.configure.cardinality.min.label",
+            Placeholder = "kleenestar.core:field.configure.cardinality.min.placeholder",
+            Help = "kleenestar.core:field.configure.cardinality.min.help"
         };
 
         /// <summary>
-        /// Gets the input tag control for validation rules.
+        /// Gets the checkbox control that, when enabled, removes the upper bound on the field's value count.
         /// </summary>
-        public ControlFormItemInputTag ValidationRules { get; } = new()
+        public ControlFormItemInputCheck CardinalityUnlimited { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.ValidationRules),
-            Label = "kleenestar.core:field.validationrules.label",
-            Placeholder = "kleenestar.core:field.validationrules.placeholder",
-            Help = "kleenestar.core:field.validationrules.help"
+            Name = nameof(Model.Entities.Field.CardinalityUnlimited),
+            Label = "kleenestar.core:field.configure.cardinality.unlimited.label",
+            Help = "kleenestar.core:field.configure.cardinality.unlimited.help",
+            Layout = TypeLayoutCheck.Switch
         };
 
         /// <summary>
-        /// Gets the input text control for specifying the default specification.
+        /// Gets the numeric input control for the maximum number of values the field may contain.
+        /// Ignored when <see cref="CardinalityUnlimited"/> is enabled.
         /// </summary>
-        public ControlFormItemInputText DefaultSpec { get; } = new()
+        public ControlFormItemInputText CardinalityMax { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.DefaultSpec),
-            Label = "kleenestar.core:field.defaultspec.label",
-            Placeholder = "kleenestar.core:field.defaultspec.placeholder",
-            Help = "kleenestar.core:field.defaultspec.help",
+            Name = nameof(Model.Entities.Field.CardinalityMax),
+            Label = "kleenestar.core:field.configure.cardinality.max.label",
+            Placeholder = "kleenestar.core:field.configure.cardinality.max.placeholder",
+            Help = "kleenestar.core:field.configure.cardinality.max.help"
+        };
+
+        // ── Validation tab ───────────────────────────────────────────────────
+
+        /// <summary>
+        /// Gets the text input control for specifying a regular expression pattern to validate field values.
+        /// Applies to text and string field types.
+        /// </summary>
+        public ControlFormItemInputText RegexPattern { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.RegexPattern),
+            Label = "kleenestar.core:field.configure.validation.regex.label",
+            Placeholder = "kleenestar.core:field.configure.validation.regex.placeholder",
+            Help = "kleenestar.core:field.configure.validation.regex.help",
             Required = false
         };
 
+        // ── Options tab ──────────────────────────────────────────────────────
+
         /// <summary>
-        /// Gets the input text control for specifying the WQL filter expression.
+        /// Gets the tag input control for maintaining the list of selectable option values
+        /// for enumerable field types such as Selection.
+        /// </summary>
+        public ControlFormItemInputTag Options { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.Options),
+            Label = "kleenestar.core:field.configure.options.label",
+            Placeholder = "kleenestar.core:field.configure.options.placeholder",
+            Help = "kleenestar.core:field.configure.options.help"
+        };
+
+        // ── Filter objects tab ───────────────────────────────────────────────
+
+        /// <summary>
+        /// Gets the text input control for specifying a WQL filter expression that restricts
+        /// permissible target objects for referential field types.
         /// </summary>
         public ControlFormItemInputText FilterWql { get; } = new()
         {
             Name = "Wql",
             Label = "kleenestar.core:field.configure.wql.label",
             Placeholder = "kleenestar.core:field.configure.wql.placeholder",
+            Help = "kleenestar.core:field.configure.wql.help",
             Required = false
+        };
+
+        // ── Workflow tab ─────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Gets the selection control for assigning an active workflow to this field.
+        /// Only active workflows compatible with the field's class are available.
+        /// Applies to fields of type Workflow.
+        /// </summary>
+        public ControlRestFormItemInputSelection WorkflowSelection { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.WorkflowId),
+            Label = "kleenestar.core:field.configure.workflow.label",
+            Placeholder = "kleenestar.core:field.configure.workflow.placeholder",
+            Help = "kleenestar.core:field.configure.workflow.help",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>()
+        };
+
+        // ── Priority tab ─────────────────────────────────────────────────────
+
+        /// <summary>
+        /// Gets the selection control for choosing the default priority for this field.
+        /// Applies to fields of type Priority (Reference with priority semantics).
+        /// </summary>
+        public ControlRestFormItemInputSelection DefaultPrioritySelection { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.DefaultPriorityId),
+            Label = "kleenestar.core:field.configure.priority.default.label",
+            Placeholder = "kleenestar.core:field.configure.priority.default.placeholder",
+            Help = "kleenestar.core:field.configure.priority.default.help",
+            StickySelection = true,
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>()
+        };
+
+        /// <summary>
+        /// Gets the dual-list transfer control for selecting the priorities available for this field.
+        /// </summary>
+        public ControlRestFormItemInputSelection SelectedPriorities { get; } = new()
+        {
+            Name = nameof(Model.Entities.Field.SelectedPriorityIds),
+            Label = "kleenestar.core:field.configure.priority.selected.label",
+            Placeholder = "kleenestar.core:field.configure.priority.available.label",
+            Help = "kleenestar.core:field.configure.priority.selected.label",
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>()
         };
 
         /// <summary>
@@ -75,11 +152,6 @@ namespace KleeneStar.Core.WebFragment
         public FieldConfigureFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Add(CardinalitySelection);
-            Add(ValidationRules);
-            Add(DefaultSpec);
-            Add(FilterWql);
-
             Mode = TypeRestFormMode.Edit;
             Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
         }
@@ -100,7 +172,62 @@ namespace KleeneStar.Core.WebFragment
         {
             var param = renderContext.Request.GetParameter<FieldIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            var tab = new ControlFormItemGroupTab()
+            {
+            }
+                .AddView
+                (
+                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                    {
+                        Title = "kleenestar.core:field.configure.tab.cardinality"
+                    }
+                        .Add(CardinalityMin)
+                        .Add(CardinalityUnlimited)
+                        .Add(CardinalityMax))
+                .AddView
+                (
+                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                    {
+                        Title = "kleenestar.core:field.configure.tab.validation"
+                    }
+                        .Add(RegexPattern)
+                )
+                .AddView
+                (
+                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                    {
+                        Title = "kleenestar.core:field.configure.tab.options"
+                    }
+                        .Add(Options)
+                )
+                .AddView
+                (
+                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                    {
+                        Title = "kleenestar.core:field.configure.tab.filter"
+                    }
+                        .Add(FilterWql)
+                )
+                .AddView
+                (
+                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                    {
+                        Title = "kleenestar.core:field.configure.tab.workflow"
+                    }
+                        .Add(WorkflowSelection)
+                )
+                .AddView
+                (
+                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                    {
+                        Title = "kleenestar.core:field.configure.tab.priority"
+                    }
+                        .Add(DefaultPrioritySelection)
+                        .Add(SelectedPriorities)
+                );
+
+            return base.Render(renderContext, visualTree, [tab], param?.Value, Uri);
         }
     }
 }
+
