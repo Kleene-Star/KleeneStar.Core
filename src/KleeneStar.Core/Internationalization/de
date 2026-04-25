@@ -11,6 +11,10 @@ app.version.label={0} Version {1} erstellt mit {2} Version {3}.
 
 kleenestar.label=KleeneStar
 
+view.table.title=Tabelle
+view.tile.title=Kacheln
+view.split.title=Geteilt
+
 workspace.dropdown.label=Arbeitsbereich
 workspace.add.title=Neuer Arbeitsbereich
 workspace.add.header=Neuer Arbeitsbereich

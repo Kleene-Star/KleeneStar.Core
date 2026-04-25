@@ -1,5 +1,6 @@
 ﻿using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -66,6 +67,8 @@ namespace KleeneStar.Core.WebFragment
         public FieldViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            Layout = TypeLayoutView.ToggleGroup;
+
             Table.Bind = new Binding()
                 .Add(new BindSearch()
                 {
@@ -91,7 +94,8 @@ namespace KleeneStar.Core.WebFragment
             Add(new ControlViewHeader().Add(Search, Quickfilter));
             Add(new ControlViewItem()
             {
-                Icon = new IconTable()
+                Icon = new IconTable(),
+                Title = I18N.Translate("Table")
             }
                 .Add(Table));
             //Add(new ControlViewItem()

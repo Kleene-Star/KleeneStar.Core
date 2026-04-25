@@ -21,8 +21,6 @@ namespace KleeneStar.Core.WebFragment
     [Cache]
     public sealed class FieldConfigureFormFragment : FragmentControlRestFormEdit
     {
-        // ── Cardinality tab ──────────────────────────────────────────────────
-
         /// <summary>
         /// Gets the numeric input control for the minimum number of values the field must contain.
         /// </summary>
@@ -57,8 +55,6 @@ namespace KleeneStar.Core.WebFragment
             Help = "kleenestar.core:field.configure.cardinality.max.help"
         };
 
-        // ── Validation tab ───────────────────────────────────────────────────
-
         /// <summary>
         /// Gets the text input control for specifying a regular expression pattern to validate field values.
         /// Applies to text and string field types.
@@ -72,8 +68,6 @@ namespace KleeneStar.Core.WebFragment
             Required = false
         };
 
-        // ── Options tab ──────────────────────────────────────────────────────
-
         /// <summary>
         /// Gets the tag input control for maintaining the list of selectable option values
         /// for enumerable field types such as Selection.
@@ -85,8 +79,6 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = "kleenestar.core:field.configure.options.placeholder",
             Help = "kleenestar.core:field.configure.options.help"
         };
-
-        // ── Filter objects tab ───────────────────────────────────────────────
 
         /// <summary>
         /// Gets the text input control for specifying a WQL filter expression that restricts
@@ -101,8 +93,6 @@ namespace KleeneStar.Core.WebFragment
             Required = false
         };
 
-        // ── Workflow tab ─────────────────────────────────────────────────────
-
         /// <summary>
         /// Gets the selection control for assigning an active workflow to this field.
         /// Only active workflows compatible with the field's class are available.
@@ -116,8 +106,6 @@ namespace KleeneStar.Core.WebFragment
             Help = "kleenestar.core:field.configure.workflow.help",
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>()
         };
-
-        // ── Priority tab ─────────────────────────────────────────────────────
 
         /// <summary>
         /// Gets the selection control for choosing the default priority for this field.
@@ -154,6 +142,12 @@ namespace KleeneStar.Core.WebFragment
         {
             Mode = TypeRestFormMode.Edit;
             Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
+
+            CardinalityMax.Bind = new Binding().Add(new BindDisable()
+            {
+                Source = CardinalityUnlimited.Id,
+                Condition = "true"
+            });
         }
 
         /// <summary>

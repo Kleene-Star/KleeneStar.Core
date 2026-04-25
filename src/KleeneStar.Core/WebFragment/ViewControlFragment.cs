@@ -1,6 +1,5 @@
-﻿using WebExpress.WebApp.WebControl;
-using WebExpress.WebApp.WebSection;
-using WebExpress.WebCore.WebAttribute;
+﻿using KleeneStar.Core.WebControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
@@ -11,29 +10,23 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
-    /// Represents a fragment control for managing object tables, providing functionality to 
-    /// render the fragment as HTML.
+    /// Provides a base class for fragments that display and manage workspace data using advanced search, quick
+    /// filtering, tabular, tile, and list views, as well as pagination controls.
     /// </summary>
-    [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Objects.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>]
-    [Cache]
-    public sealed class ObjectViewFragment : FragmentControlView
+    public abstract class ViewControlFragment : FragmentControlView
     {
         /// <summary>
         /// Gets the search control used to query and filter data.
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Wql>()
         };
 
         /// <summary>
-        /// Gets the quick filter control for REST-based object queries.
+        /// Gets the quick filter control for REST-based class queries.
         /// </summary>
         public ControlRestQuickfilter Quickfilter { get; } = new ControlRestQuickfilter()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Quickfilter>()
         };
 
         /// <summary>
@@ -42,7 +35,6 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Table>()
         };
 
         /// <summary>
@@ -51,13 +43,20 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTile Tile { get; } = new ControlRestTile()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Tile>()
+        };
+
+        /// <summary>
+        /// Gets the configuration tile that provides REST access to 
+        /// workspace data.
+        /// </summary>
+        public ListDetailControl List { get; } = new ListDetailControl()
+        {
         };
 
         /// <summary>
         /// Gets the pagination settings for controlling how data is divided into pages.
         /// </summary>
-        public ControlPagination Pagination { get; } = new ControlPagination("id_8E5CCE44B96E41338BD1D1EFD6C281E0")
+        public ControlPagination Pagination { get; } = new ControlPagination("id_55964D2DB5334B8D96EE07A9C9BE450B")
         {
         };
 
@@ -65,9 +64,11 @@ namespace KleeneStar.Core.WebFragment
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ObjectViewFragment(IFragmentContext fragmentContext)
+        public ViewControlFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            Layout = TypeLayoutView.ToggleGroup;
+
             Table.Bind = new Binding()
                 .Add(new BindSearch()
                 {
@@ -90,20 +91,25 @@ namespace KleeneStar.Core.WebFragment
                     Source = Pagination.Id
                 });
 
-            Add(new ControlViewHeader()
-                .Add(Search, Quickfilter));
-
+            Add(new ControlViewHeader().Add(Search, Quickfilter));
             Add(new ControlViewItem()
             {
-                Icon = new IconTable()
+                Icon = new IconBars(),
+                Title = "kleenestar.core:view.table.title"
             }
                 .Add(Table));
-
             Add(new ControlViewItem()
             {
-                Icon = new IconTableCellsLarge(),
+                Icon = new IconGrip(),
+                Title = "kleenestar.core:view.tile.title"
             }
                 .Add(Tile));
+            Add(new ControlViewItem()
+            {
+                Icon = new IconMattressPillow(),
+                Title = "kleenestar.core:view.split.title"
+            }
+                .Add(List));
             Add(new ControlViewFooter().Add(Pagination));
         }
 

@@ -1,11 +1,7 @@
-﻿using WebExpress.WebApp.WebControl;
-using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebUI.WebControl;
-using WebExpress.WebUI.WebFragment;
-using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment
@@ -17,49 +13,8 @@ namespace KleeneStar.Core.WebFragment
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>]
     [Cache]
-    public sealed class ClassViewFragment : FragmentControlView
+    public sealed class ClassViewFragment : ViewControlFragment
     {
-        /// <summary>
-        /// Gets the search control used to query and filter data.
-        /// </summary>
-        public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
-        {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Wql>()
-        };
-
-        /// <summary>
-        /// Gets the quick filter control for REST-based class queries.
-        /// </summary>
-        public ControlRestQuickfilter Quickfilter { get; } = new ControlRestQuickfilter()
-        {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Quickfilter>()
-        };
-
-        /// <summary>
-        /// Gets the table of control view items used to display 
-        /// workspace data.
-        /// </summary>
-        public ControlRestTable Table { get; } = new ControlRestTable()
-        {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Table>()
-        };
-
-        /// <summary>
-        /// Gets the configuration tile that provides REST access to 
-        /// workspace data.
-        /// </summary>
-        public ControlRestTile Tile { get; } = new ControlRestTile()
-        {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Tile>()
-        };
-
-        /// <summary>
-        /// Gets the pagination settings for controlling how data is divided into pages.
-        /// </summary>
-        public ControlPagination Pagination { get; } = new ControlPagination("id_A6FC15A3D1644C328E8E95AC62085A1D")
-        {
-        };
-
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -67,40 +22,11 @@ namespace KleeneStar.Core.WebFragment
         public ClassViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Table.Bind = new Binding()
-                .Add(new BindSearch()
-                {
-                    Source = Search.Id
-                })
-                .Add(new BindFilter())
-                .Add(new BindPaging()
-                {
-                    Source = Pagination.Id
-                });
-
-            Tile.Bind = new Binding()
-                .Add(new BindSearch()
-                {
-                    Source = Search.Id
-                })
-                .Add(new BindFilter())
-                .Add(new BindPaging()
-                {
-                    Source = Pagination.Id
-                });
-
-            Add(new ControlViewHeader().Add(Search, Quickfilter));
-            Add(new ControlViewItem()
-            {
-                Icon = new IconTable()
-            }
-                .Add(Table));
-            Add(new ControlViewItem()
-            {
-                Icon = new IconTableCellsLarge()
-            }
-                .Add(Tile));
-            Add(new ControlViewFooter().Add(Pagination));
+            Search.RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Wql>();
+            Quickfilter.RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Quickfilter>();
+            Table.RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Table>();
+            Tile.RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Tile>();
+            List.List.RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Tile>();
         }
 
         /// <summary>
