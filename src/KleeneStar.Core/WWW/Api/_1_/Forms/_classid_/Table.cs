@@ -201,7 +201,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._classid_
                         query = query.Where(x => x.State == FormState.Active);
                         break;
                     case "type":
-                        query = query.Where(x => x.FormType == FormType.Standard);
+                        query = query.Where(x => x.FormType != FormType.Default);
                         break;
                     default:
                         continue;
@@ -237,7 +237,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._classid_
                 Text = "webexpress.webapp:header.setting.label"
             };
 
-            if (row.FormType == Model.Entities.FormType.Additional)
+            if (row.FormType == Model.Entities.FormType.Default)
             {
                 yield return new RestApiOptionEdit(request)
                 {
@@ -250,7 +250,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms._classid_
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
             };
 
-            if (row.FormType == Model.Entities.FormType.Additional)
+            if (row.FormType == Model.Entities.FormType.Default)
             {
                 yield return new RestApiOptionSeparator(request);
                 yield return new RestApiOptionDelete(request)

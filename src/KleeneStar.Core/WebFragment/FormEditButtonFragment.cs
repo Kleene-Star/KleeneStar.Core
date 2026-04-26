@@ -52,7 +52,7 @@ namespace KleeneStar.Core.WebFragment
             var formId = Guid.TryParse(formIdParameter?.Value, out var result) ? result : Guid.Empty;
             var form = CoreHub.FormManager.GetForm(formId);
 
-            if (form?.FormType == Model.Entities.FormType.Standard)
+            if (form?.FormType == Model.Entities.FormType.Create)
             {
                 return null;
             }

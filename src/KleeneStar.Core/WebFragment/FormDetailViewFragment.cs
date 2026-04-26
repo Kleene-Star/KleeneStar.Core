@@ -1,13 +1,9 @@
 using KleeneStar.Core.WebParameter;
-using System;
-using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebUI.WebControl;
-using WebExpress.WebUI.WebFragment;
-using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment
@@ -20,37 +16,15 @@ namespace KleeneStar.Core.WebFragment
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
     [Cache]
-    public sealed class FormDetailViewAdditionalFragment : FragmentControlView
+    public sealed class FormDetailViewFragment : FragmentControlRestFormEditor
     {
-        private const string FieldTableTemplateId = "tab-form-fields";
-
-        /// <summary>
-        /// Gets the REST tab control for the default form.
-        /// </summary>
-        public ControlRestTab DefaultTab { get; } = new ControlRestTab();
-
-        /// <summary>
-        /// Gets the REST table control for form field elements within the default tab.
-        /// </summary>
-        public ControlRestTable DefaultFieldTable { get; } = new ControlRestTable();
-
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public FormDetailViewAdditionalFragment(IFragmentContext fragmentContext)
+        public FormDetailViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            DefaultTab.Add(new ControlRestTabTemplate()
-            {
-                Id = FieldTableTemplateId
-            }.Add(DefaultFieldTable));
-
-            Add(new ControlViewItem()
-            {
-                Title = "kleenestar.core:form.default.label",
-                Icon = new IconRectangleList()
-            }.Add(DefaultTab));
         }
 
         /// <summary>
@@ -67,26 +41,16 @@ namespace KleeneStar.Core.WebFragment
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             var formIdParam = renderContext.Request.GetParameter<FormIdParameter>();
-            var formId = Guid.TryParse(formIdParam?.Value, out var id) ? id : Guid.Empty;
 
-            // only render the three predefined views for additional forms
-            if (CoreHub.FormManager.IsStandardForm(formId))
-            {
-                return null;
-            }
-
-            var tabUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_.Tab>()?
+            var restUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_.FormEditor>()?
                 .BindParameters(formIdParam)
                 .BindParameters(renderContext.Request);
 
-            var tableUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_.Table>()?
+            var fieldCatalogUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_.FieldCatalog>()?
                 .BindParameters(formIdParam)
                 .BindParameters(renderContext.Request);
 
-            DefaultTab.RestUri = tabUri;
-            DefaultFieldTable.RestUri = tableUri;
-
-            return base.Render(renderContext, visualTree);
+            return base.Render(renderContext, visualTree, restUri, fieldCatalogUri, false);
         }
     }
 }
