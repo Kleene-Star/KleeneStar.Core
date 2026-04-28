@@ -4,6 +4,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment
@@ -42,15 +43,12 @@ namespace KleeneStar.Core.WebFragment
         {
             var formIdParam = renderContext.Request.GetParameter<FormIdParameter>();
 
-            var restUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_.FormEditor>()?
+            var restUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.FormEditor>()?
+                .Add(new UriQuery("id", formIdParam?.Value.ToString()))
                 .BindParameters(formIdParam)
                 .BindParameters(renderContext.Request);
 
-            var fieldCatalogUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_.FieldCatalog>()?
-                .BindParameters(formIdParam)
-                .BindParameters(renderContext.Request);
-
-            return base.Render(renderContext, visualTree, restUri, fieldCatalogUri, false);
+            return base.Render(renderContext, visualTree, restUri, false);
         }
     }
 }

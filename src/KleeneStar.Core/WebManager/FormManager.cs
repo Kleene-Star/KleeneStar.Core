@@ -1,6 +1,7 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
+using KleeneStar.Model.Forms;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -15,26 +16,6 @@ namespace KleeneStar.Core.WebManager
     /// Defines the contract for managing forms, including adding, retrieving, and removing, as well as
     /// handling form-related events.
     /// </summary>
-    /// <remarks>
-    /// The manager supports two distinct form types:
-    /// <list type="bullet">
-    ///   <item>
-    ///     <term>Standard form</term>
-    ///     <description>
-    ///       Exactly one per class, created automatically when the class is added,
-    ///       permanently associated with the class, and cannot be deleted. It provides
-    ///       the three predefined views (new, edit, view).
-    ///     </description>
-    ///   </item>
-    ///   <item>
-    ///     <term>Additional forms</term>
-    ///     <description>
-    ///       Flexible UI masks (e.g., workflow screens, wizard steps) that can be freely
-    ///       created and deleted by the user. They do not provide the three standard views.
-    ///     </description>
-    ///   </item>
-    /// </list>
-    /// </remarks>
     public sealed class FormManager : IFormManager
     {
         private readonly IComponentHub _componentHub;
@@ -99,6 +80,43 @@ namespace KleeneStar.Core.WebManager
 
             return ModelHub.GetForms(query)
                 .FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Returns a form together with its complete structural tree (tabs, groups, and
+        /// field references). Used by the form editor to load the full aggregate.
+        /// </summary>
+        /// <param name="formId">The id of the form.</param>
+        /// <returns>The fully populated form, or <c>null</c> if no such form exists.</returns>
+        public Form GetFormWithStructure(Guid formId)
+        {
+            return ModelHub.GetFormWithStructure(formId);
+        }
+
+        /// <summary>
+        /// Replaces the structural tree of a form with the contents of the supplied
+        /// snapshot, applying optimistic concurrency control via the form's version
+        /// counter.
+        /// </summary>
+        /// <param name="formId">The id of the form to update.</param>
+        /// <param name="snapshot">The new structure to persist.</param>
+        /// <param name="expectedVersion">
+        /// The version the caller saw when loading the form. The save fails with a
+        /// <see cref="Microsoft.EntityFrameworkCore.DbUpdateConcurrencyException"/> when the
+        /// server has moved on.
+        /// </param>
+        /// <returns>The new version number after the save.</returns>
+        public int SaveFormStructure(Guid formId, FormStructureSnapshot snapshot, int expectedVersion)
+        {
+            var newVersion = ModelHub.SaveFormStructure(formId, snapshot, expectedVersion);
+
+            var form = GetForm(formId);
+            if (form is not null)
+            {
+                FormUpdated?.Invoke(this, form);
+            }
+
+            return newVersion;
         }
 
         /// <summary>
