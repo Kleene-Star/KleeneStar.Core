@@ -66,6 +66,8 @@ namespace KleeneStar.Core.WebFragment
         public WorkflowViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            Layout = TypeLayoutView.ToggleGroup;
+
             Table.Bind = new Binding()
                 .Add(new BindSearch()
                 {
