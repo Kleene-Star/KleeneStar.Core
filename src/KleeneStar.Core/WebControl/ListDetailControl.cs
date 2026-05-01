@@ -11,14 +11,19 @@ namespace KleeneStar.Core.WebControl
         /// </summary>
         public ControlRestList List { get; } = new ControlRestList()
         {
+            Selectable = true,
+            Sortable = true,
+            Title = "List",
         };
 
         /// <summary>
         /// Gets the configuration tile that provides REST access to 
         /// workspace data.
         /// </summary>
-        public ControlFrame Frame { get; } = new ControlFrame()
+        public ControlFrame Frame { get; } = new ControlFrame("frame_DD186C20B00041378929FF6B74D5A60B")
         {
+            Selector = "#wx-content-main",
+            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
         };
 
         /// <summary>
