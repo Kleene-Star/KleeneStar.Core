@@ -12,7 +12,7 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_
     /// <summary>
     /// Represents the main class management page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconCubes>]
+    [WebIcon<IconClass>]
     [Title("kleenestar.core:class.manage.label")]
     [WorkspaceKeySegment]
     [Scope<IScopeGeneral>]

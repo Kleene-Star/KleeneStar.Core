@@ -78,7 +78,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
                 .Select(x => new RestApiListItem()
                 {
                     Id = x.Id.ToString(),
-                    Text = x.Description,
+                    Text = x.Name,
                     Image = x.Icon?.Uri?.ToString(),
                     PrimaryAction = new ActionFrame("frame_DD186C20B00041378929FF6B74D5A60B")
                     {

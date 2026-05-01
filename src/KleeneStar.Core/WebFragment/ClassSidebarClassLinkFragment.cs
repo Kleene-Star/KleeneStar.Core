@@ -37,7 +37,7 @@ namespace KleeneStar.Core.WebFragment
         public ClassSidebarClassLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = new IconCubes();
+            Icon = new IconClass();
             Text = "kleenestar.core:class.link.label";
             Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Index>();
         }

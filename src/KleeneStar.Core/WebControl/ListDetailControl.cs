@@ -3,6 +3,10 @@ using WebExpress.WebUI.WebControl;
 
 namespace KleeneStar.Core.WebControl
 {
+    /// <summary>
+    /// Represents a control that displays a split panel with a REST-backed list and a detail 
+    /// frame for workspace data.
+    /// </summary>
     public class ListDetailControl : ControlPanelSplit
     {
         /// <summary>
@@ -14,6 +18,7 @@ namespace KleeneStar.Core.WebControl
             Selectable = true,
             Sortable = true,
             Title = "List",
+            Margin = new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.Two, PropertySpacing.Space.None, PropertySpacing.Space.None)
         };
 
         /// <summary>

@@ -87,7 +87,7 @@ namespace KleeneStar.Core.WebFragment
                 new ControlDropdownItemLink()
                 {
                     Text = "kleenestar.core:class.manage.label",
-                    Icon = new IconCubes(),
+                    Icon = new IconClass(TypeIconTheme.Light),
                     Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                         .BindParameters(keyParameter)
                 },
