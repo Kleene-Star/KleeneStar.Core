@@ -4,6 +4,7 @@ using KleeneStar.Core.WebUri;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebIcon;
 
@@ -12,7 +13,7 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_
     /// <summary>
     /// Represents the main class management page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconClass>]
+    [WebIcon<IconClass>(TypeIconTheme.Light)]
     [Title("kleenestar.core:class.manage.label")]
     [WorkspaceKeySegment]
     [Scope<IScopeGeneral>]

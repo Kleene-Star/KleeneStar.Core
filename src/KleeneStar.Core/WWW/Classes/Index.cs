@@ -1,6 +1,7 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebIcon;
@@ -10,7 +11,7 @@ namespace KleeneStar.Core.WWW.Classes
     /// <summary>
     /// Represents the class page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconClass>]
+    [WebIcon<IconClass>(TypeIconTheme.Light)]
     [SegmentHidden]
     [Title("kleenestar.core:class.manage.label")]
     [Scope<IScopeGeneral>]
