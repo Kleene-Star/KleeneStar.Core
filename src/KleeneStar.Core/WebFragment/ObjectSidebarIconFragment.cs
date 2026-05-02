@@ -16,6 +16,7 @@ namespace KleeneStar.Core.WebFragment
     /// </summary>
     [Section<SectionSidebarPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
     [Cache]
     public sealed class ObjectSidebarIconFragment : FragmentControlSidebarItemIcon
     {

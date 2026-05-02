@@ -91,6 +91,13 @@ namespace KleeneStar.Core.WebFragment
                     Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                         .BindParameters(keyParameter)
                 },
+                 new ControlDropdownItemLink()
+                {
+                    Text = "kleenestar.core:template.manage.label",
+                    Icon = new IconClass(TypeIconTheme.Light),
+                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Templates._workspacekey_.Index>()?
+                        .BindParameters(keyParameter)
+                },
                 new ControlDropdownItemDivider(),
                 new ControlDropdownItemLink("Delete")
                 {

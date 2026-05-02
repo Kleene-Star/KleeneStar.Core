@@ -1,5 +1,5 @@
-﻿using KleeneStar.Core.WWW.Api._1_.Objects;
 using KleeneStar.Model.Entities;
+using System.Linq;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
@@ -7,6 +7,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebPage;
 
@@ -18,37 +19,44 @@ namespace KleeneStar.Core.WebFragment
     /// <remarks>
     /// The wizard guides the user through three steps:
     /// <list type="number">
-    ///   <item>Workspace and Class Selection — a cascading control for choosing a workspace and class.</item>
-    ///   <item>Template Selection — a tile control for choosing an object template.</item>
-    ///   <item>Object Properties — standard form inputs for specifying title and summary.</item>
+    ///   <item>Select Workspace — a cascading control whose top level lists workspace categories and whose
+    ///   children list the workspaces of each category.</item>
+    ///   <item>Select Template — a tile control that displays all class templates available for the workspace
+    ///   selected in step 1. Each tile carries the workspace id so the client can filter the visible templates
+    ///   based on the prior selection.</item>
+    ///   <item>New — the dynamic property form for the new object. Hidden inputs preserve the workspace and
+    ///   class chosen in the previous steps so they are submitted together with the property values.</item>
     /// </list>
     /// </remarks>
     [Title("kleenestar.core:object.add.title")]
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Add>]
+    [Scope<global::KleeneStar.Core.WWW.Objects.Add>]
     [Cache]
     public sealed class ObjectAddFormFragment : FragmentControlRestWizard
     {
         /// <summary>
-        /// Gets the cascading input control for selecting a workspace and class.
+        /// Gets the cascading input control for selecting a workspace.
+        /// The top-level entries represent workspace categories, the second-level entries represent
+        /// the workspaces inside the selected category.
         /// </summary>
-        public ControlFormItemInputCascading WorkspaceClassSelection { get; } = new()
+        public ControlFormItemInputCascading WorkspaceSelection { get; } = new()
         {
-            Name = "WorkspaceClass",
-            Label = "kleenestar.core:object.workspaceclass.label",
-            Help = "kleenestar.core:object.workspaceclass.help",
-            Placeholder = "kleenestar.core:object.workspaceclass.placeholder",
+            Name = nameof(Object.WorkspaceId),
+            Label = "kleenestar.core:object.workspace.label",
+            Help = "kleenestar.core:object.workspace.help",
+            Placeholder = "kleenestar.core:object.workspace.placeholder",
             Required = true
         };
 
         /// <summary>
-        /// Gets the tile input control for selecting an object template.
+        /// Gets the tile input control for selecting an object template (class).
         /// </summary>
         public ControlFormItemInputTile TemplateSelection { get; } = new()
         {
-            Name = "Template",
+            Name = nameof(Object.ClassId),
             Label = "kleenestar.core:object.template.label",
             Help = "kleenestar.core:object.template.help",
+            LargeIcon = true,
             Required = true
         };
 
@@ -67,7 +75,7 @@ namespace KleeneStar.Core.WebFragment
         /// <summary>
         /// Gets the input text control for specifying the description of the object.
         /// </summary>
-        public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
+        public ControlFormItemInputText Description { get; } = new()
         {
             Name = nameof(Object.Description),
             Label = "kleenestar.core:object.description.label",
@@ -83,8 +91,8 @@ namespace KleeneStar.Core.WebFragment
         public ObjectAddFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            var step1 = new ControlRestWizardPage("step-workspace-class");
-            step1.Add(WorkspaceClassSelection);
+            var step1 = new ControlRestWizardPage("step-workspace");
+            step1.Add(WorkspaceSelection);
 
             var step2 = new ControlRestWizardPage("step-template");
             step2.Add(TemplateSelection);
@@ -96,7 +104,7 @@ namespace KleeneStar.Core.WebFragment
             Add(step1, step2, step3);
 
             Mode = TypeRestFormMode.Add;
-            RestUri = CoreHub.GetUri<Index>();
+            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Index>();
         }
 
         /// <summary>
@@ -113,7 +121,103 @@ namespace KleeneStar.Core.WebFragment
         /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
+            PopulateWorkspaceSelection();
+            PopulateTemplateSelection();
+
             return base.Render(renderContext, visualTree);
+        }
+
+        /// <summary>
+        /// Populates the workspace cascading control with the categories and workspaces currently registered.
+        /// Workspaces are nested below their respective category. Workspaces without any category are added
+        /// at the top level so they remain selectable.
+        /// </summary>
+        private void PopulateWorkspaceSelection()
+        {
+            // remove previously rendered options to avoid duplicates on subsequent renders
+            foreach (var existing in WorkspaceSelection.Options.ToList())
+            {
+                WorkspaceSelection.Remove(existing);
+            }
+
+            var categories = CoreHub.WorkspaceManager
+                .GetCategories(new Query<Category>())
+                .OrderBy(x => x.Name)
+                .ToList();
+
+            var workspaces = CoreHub.WorkspaceManager
+                .GetWorkspaces(new Query<Workspace>())
+                .OrderBy(x => x.Name)
+                .ToList();
+
+            foreach (var category in categories)
+            {
+                var categoryNode = new ControlFormItemInputCascadingItem(category.Id.ToString())
+                {
+                    Text = category.Name
+                };
+
+                foreach (var workspace in workspaces.Where(x => x.Categories?.Any(c => c.Id == category.Id) == true))
+                {
+                    categoryNode.Add(CreateWorkspaceItem(workspace));
+                }
+
+                WorkspaceSelection.Add(categoryNode);
+            }
+
+            foreach (var workspace in workspaces.Where(x => x.Categories == null || x.Categories.Count == 0))
+            {
+                WorkspaceSelection.Add(CreateWorkspaceItem(workspace));
+            }
+        }
+
+        /// <summary>
+        /// Populates the template tile control with all non-abstract classes. Each tile carries the workspace
+        /// id of its class via its identifier (<c>{workspaceId}:{classId}</c>) so a client-side filter driven
+        /// by the cascading control can hide the templates that do not belong to the workspace selected in
+        /// the previous wizard step.
+        /// </summary>
+        private void PopulateTemplateSelection()
+        {
+            foreach (var existing in TemplateSelection.Items.ToList())
+            {
+                TemplateSelection.Remove(existing);
+            }
+
+            var classes = CoreHub.ClassManager
+                .GetClasses(new Query<Class>())
+                .Where(x => !x.IsAbstract)
+                .OrderBy(x => x.Name);
+
+            foreach (var @class in classes)
+            {
+                var card = new ControlTileCard($"{@class.WorkspaceId}:{@class.Id}")
+                {
+                    Header = @class.Name,
+                    Icon = @class.Icon
+                };
+
+                if (!string.IsNullOrWhiteSpace(@class.Description))
+                {
+                    card.Add(new ControlText { Text = @class.Description });
+                }
+
+                TemplateSelection.Add(card);
+            }
+        }
+
+        /// <summary>
+        /// Creates a cascading item describing the specified workspace.
+        /// </summary>
+        /// <param name="workspace">The workspace to expose as a selectable option.</param>
+        /// <returns>The cascading item carrying the workspace id, name and icon.</returns>
+        private static ControlFormItemInputCascadingItem CreateWorkspaceItem(Workspace workspace)
+        {
+            return new ControlFormItemInputCascadingItem(workspace.Id.ToString())
+            {
+                Text = workspace.Name,
+                Icon = workspace.Icon
+            };
         }
     }
 }

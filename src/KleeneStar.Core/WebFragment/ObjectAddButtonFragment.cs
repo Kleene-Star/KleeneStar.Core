@@ -1,4 +1,5 @@
-﻿using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebScope;
+using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -12,10 +13,10 @@ namespace KleeneStar.Core.WebFragment
     /// <summary>
     /// Represents a control fragment that provides a button link for adding a new object within the workspace.
     /// </summary>
-    [Section<SectionHeadlinePrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>]
+    [Section<SectionAppQuickcreatePreferences>]
+    [Scope<IScopeGeneral>]
     [Cache]
-    public sealed class ObjectAddButtonFragment : FragmentControlButtonLink
+    public sealed class ObjectAddButtonFragment : FragmentControlSplitButtonItemLink
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -30,7 +31,13 @@ namespace KleeneStar.Core.WebFragment
             Text = "kleenestar.core:object.add.label";
             Icon = new IconPlus();
             Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
-            BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
+            BackgroundColor = new PropertyColorBackground(TypeColorBackground.Highlight);
+            PrimaryAction = new ActionModal
+            (
+                "modal-form",
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects.Add>(),
+                TypeModalSize.ExtraLarge
+            );
         }
 
         /// <summary>
@@ -41,20 +48,7 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            if (!FragmentContext.Conditions.Check(renderContext?.Request))
-            {
-                return null;
-            }
-
-            var primaryAction = new ActionModal
-            (
-                "modal-form",
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Add>()
-                    .BindParameters(renderContext.Request),
-                TypeModalSize.ExtraLarge
-                );
-
-            return base.Render(renderContext, visualTree, Text, null, Tooltip, primaryAction, SecondaryAction, Icon);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

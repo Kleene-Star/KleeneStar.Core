@@ -106,7 +106,7 @@ namespace KleeneStar.Core.WebFragment
                 .Add(Tile));
             Add(new ControlViewItem()
             {
-                Icon = new IconMattressPillow(),
+                Icon = new IconSplitFunction(),
                 Title = "kleenestar.core:view.split.title"
             }
                 .Add(List));

@@ -5,7 +5,7 @@ using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Objects._workspacekey_
+namespace KleeneStar.Core.WWW.Objects
 {
     /// <summary>
     /// Represents a page that provides a form for adding a new object within the application.
