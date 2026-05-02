@@ -131,7 +131,10 @@ namespace KleeneStar.Core.WebFragment
                 yield break;
             }
 
-            var tabGroup = new ControlFormItemGroupTab();
+            var tabGroup = new ControlFormItemGroupTab()
+            {
+                Layout = TypeLayoutTab.Underline
+            };
 
             foreach (var t in orderedTabs)
             {

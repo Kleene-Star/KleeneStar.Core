@@ -3,13 +3,17 @@ using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebControl
+namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
     /// Represents a control panel that displays detailed information about a specific
@@ -19,19 +23,25 @@ namespace KleeneStar.Core.WebControl
     /// The control resolves the object addressed by the current request, looks up the
     /// <see cref="FormType.View"/> form configured on its class, and renders that
     /// structure as a read-only view that mirrors the form's tabs, layout groups, and
-    /// field references. Unlike <see cref="WebFragment.ObjectEditFormFragment"/> the
+    /// field references. Unlike <see cref="ObjectEditFormFragment"/> the
     /// view is not a <c>&lt;form&gt;</c> with validation and a submit panel; instead
     /// each value is wrapped in a <see cref="ControlSmartEdit"/> that persists changes
     /// inline via the object REST API as soon as the user finishes editing.
     /// </remarks>
-    public class ObjectDetailControl : ControlPanel
+    [Section<SectionContentPrimary>]
+    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Cache]
+    public sealed class ObjectItemDetailFragment : FragmentControlPanel
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        /// <param name="id">The unique identifier for the control.</param>
-        public ObjectDetailControl(string id = null)
-            : base(id)
+        /// <param name="fragmentContext">
+        /// The context associated with the fragment, providing necessary data and services for its operation. 
+        /// Cannot be null.
+        /// </param>
+        public ObjectItemDetailFragment(IFragmentContext fragmentContext)
+            : base(fragmentContext)
         {
         }
 
@@ -69,12 +79,9 @@ namespace KleeneStar.Core.WebControl
             html.AddUserAttribute("data-object-key", @object.Key);
             html.AddUserAttribute("data-rest-url", objectUri?.ToString());
 
-            // Always render the summary and description as inline-editable system
+            // Always render the description as inline-editable system
             // attributes. They are rendered before any class-specific structure so the
             // header information stays where the user expects it.
-            html.Add(BuildSmartEdit(@object, objectUri, nameof(Model.Entities.Object.Summary), @object.Summary, "kleenestar.core:object.summary.label", required: true)
-                .Render(renderContext, visualTree));
-
             html.Add(BuildSmartEdit(@object, objectUri, nameof(Model.Entities.Object.Description), @object.Description, "kleenestar.core:object.description.label", multiline: true)
                 .Render(renderContext, visualTree));
 
@@ -106,7 +113,10 @@ namespace KleeneStar.Core.WebControl
                 return html;
             }
 
-            var tabControl = new ControlTab("tabs-" + @object.Id.ToString("N"));
+            var tabControl = new ControlTab("tabs-" + @object.Id.ToString("N"))
+            {
+                Layout = TypeLayoutTab.Underline
+            };
 
             foreach (var t in orderedTabs)
             {
