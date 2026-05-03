@@ -1,6 +1,7 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
@@ -11,7 +12,7 @@ namespace KleeneStar.Core.WWW.Class._classid_
     /// Represents the page for editing a workspace within the web application. 
     /// Provides access to the workspace edit form and handles form processing and rendering.
     /// </summary>
-    [WebIcon<IconPencil>]
+    [WebIcon<IconPen>(TypeIconTheme.Light)]
     [Title("kleenestar.core:class.avatar.title")]
     [Scope<IScopeGeneral>]
     public sealed class Avatar : IPage<VisualTreeWebApp>, IScope

@@ -2,6 +2,7 @@
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -94,19 +95,19 @@ namespace KleeneStar.Core.WebFragment
             Add(new ControlViewHeader().Add(Search, Quickfilter));
             Add(new ControlViewItem()
             {
-                Icon = new IconBars(),
+                Icon = new IconBarsVertical(),
                 Title = "kleenestar.core:view.table.title"
             }
                 .Add(Table));
             Add(new ControlViewItem()
             {
-                Icon = new IconGrip(),
+                Icon = new IconTile(),
                 Title = "kleenestar.core:view.tile.title"
             }
                 .Add(Tile));
             Add(new ControlViewItem()
             {
-                Icon = new IconSplitFunction(),
+                Icon = new IconSplitFunction(TypeIconTheme.Light),
                 Title = "kleenestar.core:view.split.title"
             }
                 .Add(List));

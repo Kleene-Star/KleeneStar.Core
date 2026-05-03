@@ -5,6 +5,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -37,7 +38,7 @@ namespace KleeneStar.Core.WebFragment
         public ClassSidebarFieldLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = new IconList();
+            Icon = new IconField(TypeIconTheme.Light);
             Text = "kleenestar.core:field.link.label";
             Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Fields._classid_.Index>();
         }

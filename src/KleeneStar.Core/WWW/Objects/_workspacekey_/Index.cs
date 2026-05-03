@@ -1,18 +1,19 @@
 ﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Core.WebIcon;
 using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Objects._workspacekey_
 {
     /// <summary>
     /// Provides functionality for managing the current workspace page.
     /// </summary>
-    [WebIcon<WorkspaceIcon>]
+    [WebIcon<IconObject>(TypeIconTheme.Light)]
     [WorkspaceKeySegment]
     [Scope<IScopeGeneral>]
     [Domain<Model.Entities.Object>]

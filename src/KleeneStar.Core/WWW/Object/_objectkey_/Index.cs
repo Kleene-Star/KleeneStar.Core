@@ -1,19 +1,20 @@
 ﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Core.WebIcon;
 using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebUri;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Object._objectkey_
 {
     /// <summary>
     /// Provides functionality for a object view.
     /// </summary>
-    [WebIcon<WorkspaceIcon>]
+    [WebIcon<IconObject>(TypeIconTheme.Light)]
     [ObjectKeySegment]
     [Scope<IScopeGeneral>]
     [Cache]

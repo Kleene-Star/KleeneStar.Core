@@ -6,6 +6,7 @@ using System;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
@@ -15,7 +16,7 @@ namespace KleeneStar.Core.WWW.Workflows._classid_
     /// <summary>
     /// Provides functionality for overview workflows.
     /// </summary>
-    [WebIcon<IconDiagramProject>]
+    [WebIcon<IconWorkflow>(TypeIconTheme.Light)]
     [Title("kleenestar.core:workflow.manage.title")]
     [Description("kleenestar.core:workflow.manage.description")]
     [ClassIdSegment]

@@ -4,6 +4,7 @@ using KleeneStar.Core.WebUri;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebIcon;
 
@@ -12,7 +13,7 @@ namespace KleeneStar.Core.WWW.Priority._priorityid_
     /// <summary>
     /// Represents the main page for a priority within the class.
     /// </summary>
-    [WebIcon<IconFlag>]
+    [WebIcon<IconFlag>(TypeIconTheme.Light)]
     [Title("kleenestar.core:priority.manage.label")]
     [PriorityIdSegment]
     [Scope<IScopeGeneral>]

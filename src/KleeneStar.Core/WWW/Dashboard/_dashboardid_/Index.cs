@@ -4,6 +4,7 @@ using KleeneStar.Core.WebUri;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
@@ -13,7 +14,7 @@ namespace KleeneStar.Core.WWW.Dashboard._dashboardid_
     /// <summary>
     /// Provides functionality for displaying a single dashboard.
     /// </summary>
-    [WebIcon<IconGauge>]
+    [WebIcon<IconDashboard>(TypeIconTheme.Light)]
     [DashboardIdSegment]
     [Scope<IScopeGeneral>]
     [Domain<Model.Entities.Dashboard>]

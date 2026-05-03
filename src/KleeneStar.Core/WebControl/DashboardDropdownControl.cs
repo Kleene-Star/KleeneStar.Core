@@ -1,5 +1,6 @@
 ﻿using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
@@ -17,7 +18,7 @@ namespace KleeneStar.Core.WebControl
         public ControlDropdownItemLink AddDashboard { get; } = new()
         {
             Text = "kleenestar.core:dashboard.add.label",
-            Icon = new IconPlus(),
+            Icon = new IconPlus(TypeIconTheme.Light),
             PrimaryAction = new ActionModal("modal-form", CoreHub.GetUri<WWW.Dashboards.Add>(), TypeModalSize.ExtraLarge),
         };
 

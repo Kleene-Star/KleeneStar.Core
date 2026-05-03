@@ -2,25 +2,26 @@
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebIcon;
+using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
-using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Dashboard._dashboardid_
+namespace KleeneStar.Core.WWW.Templates
 {
     /// <summary>
-    /// Represents the page for editing a dashboard within the web application. 
-    /// Provides access to the dashboard edit form and handles form processing and rendering.
+    /// Represents the template page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconPen>(TypeIconTheme.Light)]
-    [Title("kleenestar.core:dashboard.edit.title")]
+    [WebIcon<IconTemplate>(TypeIconTheme.Light)]
+    [SegmentHidden]
+    [Title("kleenestar.core:template.manage.label")]
     [Scope<IScopeGeneral>]
-    public sealed class Edit : IPage<VisualTreeWebApp>, IScope
+    [Cache]
+    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Edit()
+        public Index()
         {
         }
 
@@ -31,6 +32,10 @@ namespace KleeneStar.Core.WWW.Dashboard._dashboardid_
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
+            throw new RedirectException
+            (
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Index>()
+            );
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
@@ -10,7 +11,7 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_
     /// <summary>
     /// Represents a page that provides a form for adding a new class within the workspace.
     /// </summary>
-    [WebIcon<IconPlus>]
+    [WebIcon<IconPlus>(TypeIconTheme.Light)]
     [Title("kleenestar.core:class.add.label")]
     [Scope<IScopeGeneral>]
     public sealed class Add : IPage<VisualTreeWebApp>, IScope

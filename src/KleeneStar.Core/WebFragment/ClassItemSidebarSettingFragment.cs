@@ -4,6 +4,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -38,7 +39,7 @@ namespace KleeneStar.Core.WebFragment
             _workspaceManager = workspaceManager;
 
             Alignment = TypeToolbarItemAlignment.Right;
-            Icon = new IconCog();
+            Icon = new IconCog(TypeIconTheme.Light);
         }
 
         /// <summary>
@@ -69,19 +70,19 @@ namespace KleeneStar.Core.WebFragment
                 new ControlDropdownItemLink()
                 {
                     Text = "webexpress.webapp:edit.label",
-                    Icon = new IconPencil(),
+                    Icon = new IconPen(TypeIconTheme.Light),
                     PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
                     Text = "webexpress.webapp:clone.label",
-                    Icon = new IconCopy(),
+                    Icon = new IconClone(TypeIconTheme.Light),
                     PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
                     Text = "kleenestar.core:field.link.label",
-                    Icon = new IconList(),
+                    Icon = new IconField(TypeIconTheme.Light),
                     Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Fields._classid_.Index>()?
                         .BindParameters(keyParameter)
                         .BindParameters(renderContext.Request)
@@ -89,7 +90,7 @@ namespace KleeneStar.Core.WebFragment
                 new ControlDropdownItemLink()
                 {
                     Text = "kleenestar.core:form.link.label",
-                    Icon = new IconRectangleList(),
+                    Icon = new IconListFunction(TypeIconTheme.Light),
                     //Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
                     //    .BindParameters(keyParameter)
                     // .BindParameters(renderContext.Request)
@@ -97,7 +98,15 @@ namespace KleeneStar.Core.WebFragment
                 new ControlDropdownItemLink()
                 {
                     Text = "kleenestar.core:priority.link.label",
-                    Icon = new IconFlag(),
+                    Icon = new IconFlag(TypeIconTheme.Light),
+                    //Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
+                    //    .BindParameters(keyParameter)
+                    // .BindParameters(renderContext.Request)
+                },
+                new ControlDropdownItemLink()
+                {
+                    Text = "kleenestar.core:status.link.label",
+                    Icon = new IconStatus(TypeIconTheme.Light),
                     //Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
                     //    .BindParameters(keyParameter)
                     // .BindParameters(renderContext.Request)
@@ -105,7 +114,7 @@ namespace KleeneStar.Core.WebFragment
                 new ControlDropdownItemLink()
                 {
                     Text = "kleenestar.core:workflow.link.label",
-                    Icon = new IconDiagramProject(),
+                    Icon = new IconWorkflow(TypeIconTheme.Light),
                     //Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
                     //    .BindParameters(keyParameter)
                     // .BindParameters(renderContext.Request)
@@ -114,7 +123,7 @@ namespace KleeneStar.Core.WebFragment
                 new ControlDropdownItemLink("Delete")
                 {
                     Text = "webexpress.webapp:delete.label",
-                    Icon = new IconTrashAlt(),
+                    Icon = new IconTrash(TypeIconTheme.Light),
                     PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Default),
                     Color = TypeColorText.Danger
                 }
