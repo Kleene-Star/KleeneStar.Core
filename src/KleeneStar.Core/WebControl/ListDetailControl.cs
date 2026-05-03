@@ -18,7 +18,7 @@ namespace KleeneStar.Core.WebControl
             Selectable = true,
             Sortable = true,
             Title = "List",
-            Margin = new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.Two, PropertySpacing.Space.None, PropertySpacing.Space.None)
+            Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.Two, PropertySpacing.Space.None, PropertySpacing.Space.None)
         };
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace KleeneStar.Core.WebControl
         public ControlFrame Frame { get; } = new ControlFrame("frame_DD186C20B00041378929FF6B74D5A60B")
         {
             Selector = "#wx-content-main",
-            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
+            Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
         };
 
         /// <summary>

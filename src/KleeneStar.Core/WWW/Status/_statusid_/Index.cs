@@ -4,7 +4,6 @@ using KleeneStar.Core.WebUri;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebIcon;
 
@@ -13,7 +12,7 @@ namespace KleeneStar.Core.WWW.Status._statusid_
     /// <summary>
     /// Represents the main page for a state within the class.
     /// </summary>
-    [WebIcon<IconStatus>(TypeIconTheme.Light)]
+    [WebIcon<IconStatus>]
     [Title("kleenestar.core:status.manage.label")]
     [WorkflowStateIdSegment]
     [Scope<IScopeGeneral>]

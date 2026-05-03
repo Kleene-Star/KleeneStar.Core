@@ -1,7 +1,6 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
@@ -11,7 +10,7 @@ namespace KleeneStar.Core.WWW.Status._statusid_
     /// <summary>
     /// Represents the page for cloning a state within the class. 
     /// </summary>
-    [WebIcon<IconClone>(TypeIconTheme.Light)]
+    [WebIcon<IconClone>]
     [Title("kleenestar.core:status.clone.title")]
     [Scope<IScopeGeneral>]
     public sealed class Clone : IPage<VisualTreeWebApp>, IScope

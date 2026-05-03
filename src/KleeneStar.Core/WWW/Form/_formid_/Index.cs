@@ -5,7 +5,6 @@ using System;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
@@ -15,7 +14,7 @@ namespace KleeneStar.Core.WWW.Form._formid_
     /// <summary>
     /// Represents the main page for a form within the class.
     /// </summary>
-    [WebIcon<IconListFunction>(TypeIconTheme.Light)]
+    [WebIcon<IconListFunction>]
     [Title("kleenestar.core:form.manage.label")]
     [FormIdSegment]
     [Scope<IScopeGeneral>]

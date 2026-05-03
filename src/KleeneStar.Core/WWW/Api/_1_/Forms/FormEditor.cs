@@ -168,7 +168,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
                 return new RestApiFormEditorFieldItem()
                 {
                     Id = field.Id.ToString(),
-                    Label = field.Field.Name,
+                    Label = field.Field?.Name ?? "unkown",
                     Type = "string"
                 };
             }

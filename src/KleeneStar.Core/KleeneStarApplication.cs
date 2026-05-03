@@ -7,6 +7,7 @@ using WebExpress.WebCore;
 using WebExpress.WebCore.WebApplication;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebComponent;
+using WebExpress.WebCore.WebIcon;
 
 namespace KleeneStar.Core
 {
@@ -17,6 +18,7 @@ namespace KleeneStar.Core
     [Name("kleenestar.core:app.name")]
     [Description("kleenestar.core:app.description")]
     [Icon("/assets/img/kleenestar.svg")]
+    [IconTheme(TypeIconTheme.Light)]
     [ContextPath("/kleenestar")]
     public sealed class KleeneStarApplication : IApplication
     {

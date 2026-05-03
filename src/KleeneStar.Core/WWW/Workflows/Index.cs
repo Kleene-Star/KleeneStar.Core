@@ -1,7 +1,6 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebIcon;
@@ -11,7 +10,7 @@ namespace KleeneStar.Core.WWW.Workflows
     /// <summary>
     /// Represents the workflow page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconWorkflow>(TypeIconTheme.Light)]
+    [WebIcon<IconWorkflow>]
     [SegmentHidden]
     [Title("kleenestar.core:workflow.manage.label")]
     [Scope<IScopeGeneral>]

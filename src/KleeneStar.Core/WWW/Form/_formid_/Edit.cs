@@ -1,7 +1,6 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
@@ -11,7 +10,7 @@ namespace KleeneStar.Core.WWW.Form._formid_
     /// <summary>
     /// Represents a page that provides a form for edit a form within the class.
     /// </summary>
-    [WebIcon<IconPen>(TypeIconTheme.Light)]
+    [WebIcon<IconPen>]
     [Title("kleenestar.core:form.edit.title")]
     [Scope<IScopeGeneral>]
     public sealed class Edit : IPage<VisualTreeWebApp>, IScope

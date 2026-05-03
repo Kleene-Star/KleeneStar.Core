@@ -2,7 +2,6 @@
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
@@ -12,7 +11,7 @@ namespace KleeneStar.Core.WWW.Workspaces
     /// <summary>
     /// Represents a page that provides a form for adding a new workspace within the application.
     /// </summary>
-    [WebIcon<IconPlus>(TypeIconTheme.Light)]
+    [WebIcon<IconPlus>]
     [Title("kleenestar.core:workspace.add.label")]
     [Policy<WorkspaceCreatorPolicy>]
     [Scope<IScopeGeneral>]

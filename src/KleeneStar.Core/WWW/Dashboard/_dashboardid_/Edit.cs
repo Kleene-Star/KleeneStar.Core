@@ -1,7 +1,6 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
@@ -12,7 +11,7 @@ namespace KleeneStar.Core.WWW.Dashboard._dashboardid_
     /// Represents the page for editing a dashboard within the web application. 
     /// Provides access to the dashboard edit form and handles form processing and rendering.
     /// </summary>
-    [WebIcon<IconPen>(TypeIconTheme.Light)]
+    [WebIcon<IconPen>]
     [Title("kleenestar.core:dashboard.edit.title")]
     [Scope<IScopeGeneral>]
     public sealed class Edit : IPage<VisualTreeWebApp>, IScope

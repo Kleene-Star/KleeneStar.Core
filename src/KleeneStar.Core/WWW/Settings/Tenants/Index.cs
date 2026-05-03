@@ -50,7 +50,7 @@ namespace KleeneStar.Core.WWW.Settings.Tenants
                     "kleenestar.core:setting.tenant.header"
                 ),
                 TextColor = new PropertyColorText(TypeColorText.Info),
-                Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
 
             visualTree.Content.MainPanel.AddPrimary(new ControlText()
@@ -60,7 +60,7 @@ namespace KleeneStar.Core.WWW.Settings.Tenants
                     renderContext,
                     "kleenestar.core:setting.tenant.description"
                 ),
-                Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
         }
     }

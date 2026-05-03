@@ -30,11 +30,11 @@ namespace KleeneStar.Core.WebFragment
         public FormBackButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:form.back.label";
-            Icon = new IconArrowLeft();
-            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
+            Text = _ => "kleenestar.core:form.back.label";
+            Icon = _ => new IconArrowLeft();
+            Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = new PropertyColorButton(TypeColorButton.Secondary);
-            Outline = true;
+            Outline = _ => true;
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace KleeneStar.Core.WebFragment
             var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Index>()
                 .BindParameters(new ClassIdParameter(form.ClassId));
 
-            return base.Render(renderContext, visualTree, Text, uri, Tooltip, PrimaryAction, SecondaryAction, Icon);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

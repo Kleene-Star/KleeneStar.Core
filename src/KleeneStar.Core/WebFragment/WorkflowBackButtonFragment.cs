@@ -30,11 +30,11 @@ namespace KleeneStar.Core.WebFragment
         public WorkflowBackButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:workflow.back.label";
-            Icon = new IconArrowLeft();
-            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
+            Text = _ => "kleenestar.core:workflow.back.label";
+            Icon = _ => new IconArrowLeft();
+            Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = new PropertyColorButton(TypeColorButton.Secondary);
-            Outline = true;
+            Outline = _ => true;
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace KleeneStar.Core.WebFragment
             var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workflows._classid_.Index>()
                 .BindParameters(new ClassIdParameter(workflow.ClassId));
 
-            return base.Render(renderContext, visualTree, Text, uri, Tooltip, PrimaryAction, SecondaryAction, Icon);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

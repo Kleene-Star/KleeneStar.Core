@@ -31,8 +31,8 @@ namespace KleeneStar.Core.WebFragment
         {
             Text = "kleenestar.core:object.add.label";
             Icon = new IconPlus(TypeIconTheme.Light);
-            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
-            BackgroundColor = new PropertyColorBackground(TypeColorBackground.Highlight);
+            Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
+            BackgroundColor = _ => new PropertyColorBackground(TypeColorBackground.Highlight);
             PrimaryAction = new ActionModal
             (
                 "modal-form",

@@ -6,7 +6,6 @@ using System;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
@@ -16,7 +15,7 @@ namespace KleeneStar.Core.WWW.Forms._classid_
     /// <summary>
     /// Provides functionality for overview forms.
     /// </summary>
-    [WebIcon<IconListFunction>(TypeIconTheme.Light)]
+    [WebIcon<IconListFunction>]
     [Title("kleenestar.core:form.manage.title")]
     [Description("kleenestar.core:form.manage.description")]
     [ClassIdSegment]

@@ -28,10 +28,10 @@ namespace KleeneStar.Core.WebFragment
         public WorkspaceAddButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:workspace.add.label";
-            PrimaryAction = new ActionModal("modal-form", CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces.Add>(), TypeModalSize.ExtraLarge);
-            Icon = new IconPlus(TypeIconTheme.Light);
-            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
+            Text = _ => "kleenestar.core:workspace.add.label";
+            PrimaryAction = _ => new ActionModal("modal-form", CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces.Add>(), TypeModalSize.ExtraLarge);
+            Icon = _ => new IconPlus(TypeIconTheme.Light);
+            Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
         }
 

@@ -1,7 +1,6 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
@@ -11,7 +10,7 @@ namespace KleeneStar.Core.WWW.Workflow._workflowid_
     /// <summary>
     /// Represents a page that handles the workflow deletion functionality within the web application.
     /// </summary>
-    [WebIcon<IconTrash>(TypeIconTheme.Light)]
+    [WebIcon<IconTrash>]
     [Title("kleenestar.core:workflow.delete.title")]
     [Scope<IScopeGeneral>]
     public sealed class Delete : IPage<VisualTreeWebApp>, IScope

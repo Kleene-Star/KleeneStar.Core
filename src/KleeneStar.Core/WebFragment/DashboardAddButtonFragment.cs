@@ -28,10 +28,10 @@ namespace KleeneStar.Core.WebFragment
         public DashboardAddButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:dashboard.add.label";
-            PrimaryAction = new ActionModal("modal-form", CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboards.Add>(), TypeModalSize.ExtraLarge);
-            Icon = new IconPlus(TypeIconTheme.Light);
-            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
+            Text = _ => "kleenestar.core:dashboard.add.label";
+            PrimaryAction = _ => new ActionModal("modal-form", CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboards.Add>(), TypeModalSize.ExtraLarge);
+            Icon = _ => new IconPlus(TypeIconTheme.Light);
+            Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
         }
 

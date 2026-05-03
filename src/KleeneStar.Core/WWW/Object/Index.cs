@@ -1,7 +1,6 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebIcon;
@@ -11,7 +10,7 @@ namespace KleeneStar.Core.WWW.Object
     /// <summary>
     /// Provides functionality for managing the current workspace page.
     /// </summary>
-    [WebIcon<IconObject>(TypeIconTheme.Light)]
+    [WebIcon<IconObject>]
     [SegmentHidden]
     [Scope<IScopeGeneral>]
     [Cache]

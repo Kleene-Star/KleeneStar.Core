@@ -27,9 +27,9 @@ namespace KleeneStar.Core.WebFragment
         public ObjectItemEditButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:object.edit.label";
-            Icon = new IconPen();
-            Margin = new PropertySpacingMargin(PropertySpacing.Space.Two);
+            Text = _ => "kleenestar.core:object.edit.label";
+            Icon = _ => new IconPen();
+            Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
         }
 
@@ -54,7 +54,7 @@ namespace KleeneStar.Core.WebFragment
                 TypeModalSize.ExtraLarge
                 );
 
-            return base.Render(renderContext, visualTree, Text, null, Tooltip, primaryAction, SecondaryAction, Icon);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

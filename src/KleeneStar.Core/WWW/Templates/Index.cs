@@ -1,7 +1,6 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebIcon;
@@ -11,7 +10,7 @@ namespace KleeneStar.Core.WWW.Templates
     /// <summary>
     /// Represents the template page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconTemplate>(TypeIconTheme.Light)]
+    [WebIcon<IconTemplate>]
     [SegmentHidden]
     [Title("kleenestar.core:template.manage.label")]
     [Scope<IScopeGeneral>]

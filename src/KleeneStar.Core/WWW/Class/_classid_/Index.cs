@@ -6,7 +6,6 @@ using System;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
@@ -16,7 +15,7 @@ namespace KleeneStar.Core.WWW.Class._classid_
     /// <summary>
     /// Provides functionality for managing the current class page.
     /// </summary>
-    [WebIcon<IconClass>(TypeIconTheme.Light)]
+    [WebIcon<IconClass>]
     [ClassIdSegment]
     [Scope<IScopeGeneral>]
     [Cache]

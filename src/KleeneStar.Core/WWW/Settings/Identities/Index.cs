@@ -42,7 +42,7 @@ namespace KleeneStar.Core.WWW.Settings.Identities
                     "kleenestar.core:setting.identity.header"
                 ),
                 TextColor = new PropertyColorText(TypeColorText.Info),
-                Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
 
             visualTree.Content.MainPanel.AddPrimary(new ControlText()
@@ -52,7 +52,7 @@ namespace KleeneStar.Core.WWW.Settings.Identities
                     renderContext,
                     "kleenestar.core:setting.identity.description"
                 ),
-                Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
         }
     }

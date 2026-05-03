@@ -51,7 +51,7 @@ namespace KleeneStar.Core.WWW.Settings
                     "kleenestar.core:setting.group.database.label"
                 ),
                 TextColor = new PropertyColorText(TypeColorText.Info),
-                Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
 
             // mask password for display
