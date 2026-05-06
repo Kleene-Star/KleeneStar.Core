@@ -25,11 +25,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText TemplateName { get; } = new()
         {
-            Name = nameof(Model.Entities.Template.Name),
-            Label = "kleenestar.core:template.name.label",
-            Placeholder = "kleenestar.core:template.name.placeholder",
-            Help = "kleenestar.core:template.name.help",
-            Required = true
+            Name = _ => nameof(Model.Entities.Template.Name),
+            Label = _ => "kleenestar.core:template.name.label",
+            Placeholder = _ => "kleenestar.core:template.name.placeholder",
+            Help = _ => "kleenestar.core:template.name.help",
+            Required = _ => true
         };
 
         /// <summary>
@@ -37,11 +37,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new()
         {
-            Name = nameof(Model.Entities.Template.Description),
-            Label = "kleenestar.core:template.description.label",
-            Placeholder = "kleenestar.core:template.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Model.Entities.Template.Description),
+            Label = _ => "kleenestar.core:template.description.label",
+            Placeholder = _ => "kleenestar.core:template.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -49,10 +49,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Category { get; } = new()
         {
-            Name = nameof(Model.Entities.Template.Category),
-            Label = "kleenestar.core:template.category.label",
-            Placeholder = "kleenestar.core:template.category.placeholder",
-            Help = "kleenestar.core:template.category.help"
+            Name = _ => nameof(Model.Entities.Template.Category),
+            Label = _ => "kleenestar.core:template.category.label",
+            Placeholder = _ => "kleenestar.core:template.category.placeholder",
+            Help = _ => "kleenestar.core:template.category.help"
         };
 
         /// <summary>
@@ -60,11 +60,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection ClassSelection { get; } = new()
         {
-            Name = nameof(Model.Entities.Template.ClassId),
-            Label = "kleenestar.core:template.class.label",
-            Placeholder = "kleenestar.core:template.class.placeholder",
-            Help = "kleenestar.core:template.class.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Template.ClassId),
+            Label = _ => "kleenestar.core:template.class.label",
+            Placeholder = _ => "kleenestar.core:template.class.placeholder",
+            Help = _ => "kleenestar.core:template.class.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Index>()
         };
 
@@ -73,11 +73,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection TemplateState { get; } = new()
         {
-            Name = nameof(Model.Entities.Template.State),
-            Label = "kleenestar.core:template.state.label",
-            Placeholder = "kleenestar.core:template.state.placeholder",
-            Help = "kleenestar.core:template.state.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Template.State),
+            Label = _ => "kleenestar.core:template.state.label",
+            Placeholder = _ => "kleenestar.core:template.state.placeholder",
+            Help = _ => "kleenestar.core:template.state.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates.State>()
         };
 
@@ -100,8 +100,8 @@ namespace KleeneStar.Core.WebFragment
             Add(ClassSelection);
             Add(TemplateState);
 
-            Mode = TypeRestFormMode.Add;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Index>();
+            Mode = _ => TypeRestFormMode.Add;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Index>();
         }
 
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
@@ -109,7 +109,7 @@ namespace KleeneStar.Core.WebFragment
             var param1 = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
             var p = param1?.Value;
 
-            return base.Render(renderContext, visualTree, Items, p, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

@@ -31,8 +31,8 @@ namespace KleeneStar.Core.WebFragment
         public FormDeleteFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Mode = TypeRestFormMode.Delete;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Index>();
+            Mode = _ => TypeRestFormMode.Delete;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Index>();
         }
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace KleeneStar.Core.WebFragment
                 );
             }
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

@@ -27,11 +27,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection GroupSelection { get; } = new()
         {
-            Name = "Group",
-            Label = "kleenestar.core:workspace.permissions.group.label",
-            Placeholder = "kleenestar.core:workspace.permissions.group.placeholder",
-            Help = "kleenestar.core:workspace.permissions.group.help",
-            Required = true,
+            Name = _ => "Group",
+            Label = _ => "kleenestar.core:workspace.permissions.group.label",
+            Placeholder = _ => "kleenestar.core:workspace.permissions.group.placeholder",
+            Help = _ => "kleenestar.core:workspace.permissions.group.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Groups>()
         };
 
@@ -40,11 +40,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection PolicySelection { get; } = new()
         {
-            Name = "Policy",
-            Label = "kleenestar.core:workspace.permissions.policy.label",
-            Placeholder = "kleenestar.core:workspace.permissions.policy.placeholder",
-            Help = "kleenestar.core:workspace.permissions.policy.help",
-            Required = true,
+            Name = _ => "Policy",
+            Label = _ => "kleenestar.core:workspace.permissions.policy.label",
+            Placeholder = _ => "kleenestar.core:workspace.permissions.policy.placeholder",
+            Help = _ => "kleenestar.core:workspace.permissions.policy.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Policies>()
         };
 
@@ -58,8 +58,8 @@ namespace KleeneStar.Core.WebFragment
             Add(GroupSelection);
             Add(PolicySelection);
 
-            Mode = TypeRestFormMode.Edit;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
+            Mode = _ => TypeRestFormMode.Edit;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace KleeneStar.Core.WebFragment
             var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value);
             var id = workspace?.Id.ToString();
 
-            return base.Render(renderContext, visualTree, Items, id, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

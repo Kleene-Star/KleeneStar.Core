@@ -26,7 +26,7 @@ namespace KleeneStar.Core.WebFragment
         public ObjectPropertyFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Key = "Created";
+            Key = _ => "Created";
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace KleeneStar.Core.WebFragment
             var objectKey = renderContext.Request.GetParameter<ObjectKeyParameter>();
             var @object = CoreHub.ObjectManager.GetObjectByKey(objectKey);
 
-            return base.Render(renderContext, visualTree, Key, @object?.Created.ToString(), Uri, Icon);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

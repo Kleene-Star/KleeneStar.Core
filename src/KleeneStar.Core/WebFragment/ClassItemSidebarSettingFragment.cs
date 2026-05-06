@@ -38,8 +38,8 @@ namespace KleeneStar.Core.WebFragment
         {
             _workspaceManager = workspaceManager;
 
-            Alignment = TypeToolbarItemAlignment.Right;
-            Icon = new IconCog(TypeIconTheme.Light);
+            Alignment = _ => TypeToolbarItemAlignment.Right;
+            Icon = _ => new IconCog(TypeIconTheme.Light);
         }
 
         /// <summary>

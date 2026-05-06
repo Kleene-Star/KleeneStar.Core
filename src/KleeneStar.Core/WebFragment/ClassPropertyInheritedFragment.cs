@@ -28,7 +28,7 @@ namespace KleeneStar.Core.WebFragment
         public ClassPropertyInheritedFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Key = "kleenestar.core:class.inherited.label";
+            Key = _ => "kleenestar.core:class.inherited.label";
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace KleeneStar.Core.WebFragment
                 inheritedName = inherited?.Name ?? I18N.Translate(renderContext, "kleenestar.core:class.property.none");
             }
 
-            return base.Render(renderContext, visualTree, Key, inheritedName, Uri, Icon);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

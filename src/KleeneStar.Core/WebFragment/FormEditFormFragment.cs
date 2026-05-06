@@ -24,11 +24,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique FormName { get; } = new()
         {
-            Name = nameof(Model.Entities.Form.Name),
-            Label = "kleenestar.core:form.name.label",
+            Name = _ => nameof(Model.Entities.Form.Name),
+            Label = _ => "kleenestar.core:form.name.label",
             Placeholder = "kleenestar.core:form.name.placeholder",
-            Help = "kleenestar.core:form.name.help",
-            Required = true,
+            Help = _ => "kleenestar.core:form.name.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.UniqueName>()
         };
 
@@ -37,11 +37,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Form.Description),
-            Label = "kleenestar.core:form.description.label",
-            Placeholder = "kleenestar.core:form.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Model.Entities.Form.Description),
+            Label = _ => "kleenestar.core:form.description.label",
+            Placeholder = _ => "kleenestar.core:form.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -49,11 +49,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection FormState { get; } = new()
         {
-            Name = nameof(Model.Entities.Form.State),
-            Label = "kleenestar.core:form.state.label",
-            Placeholder = "kleenestar.core:form.state.placeholder",
-            Help = "kleenestar.core:form.state.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Form.State),
+            Label = _ => "kleenestar.core:form.state.label",
+            Placeholder = _ => "kleenestar.core:form.state.placeholder",
+            Help = _ => "kleenestar.core:form.state.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.State>()
         };
 
@@ -68,8 +68,8 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
             Add(FormState);
 
-            Mode = TypeRestFormMode.Edit;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Index>();
+            Mode = _ => TypeRestFormMode.Edit;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Index>();
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var param = renderContext.Request.GetParameter<FormIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

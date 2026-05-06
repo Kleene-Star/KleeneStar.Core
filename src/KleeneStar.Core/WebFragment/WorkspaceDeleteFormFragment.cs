@@ -27,8 +27,8 @@ namespace KleeneStar.Core.WebFragment
         public WorkspaceDeleteFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Mode = TypeRestFormMode.Delete;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
+            Mode = _ => TypeRestFormMode.Delete;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace KleeneStar.Core.WebFragment
             var id = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
                 .Id.ToString();
 
-            return base.Render(renderContext, visualTree, Items, id, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

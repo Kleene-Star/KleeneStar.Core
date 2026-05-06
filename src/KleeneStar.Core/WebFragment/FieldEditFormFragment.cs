@@ -24,11 +24,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique FieldName { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.Name),
-            Label = "kleenestar.core:field.name.label",
+            Name = _ => nameof(Model.Entities.Field.Name),
+            Label = _ => "kleenestar.core:field.name.label",
             Placeholder = "kleenestar.core:field.name.placeholder",
-            Help = "kleenestar.core:field.name.help",
-            Required = true,
+            Help = _ => "kleenestar.core:field.name.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.UniqueName>()
         };
 
@@ -37,11 +37,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Field.Description),
-            Label = "kleenestar.core:field.description.label",
-            Placeholder = "kleenestar.core:field.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Model.Entities.Field.Description),
+            Label = _ => "kleenestar.core:field.description.label",
+            Placeholder = _ => "kleenestar.core:field.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -49,10 +49,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText HelpText { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.HelpText),
-            Label = "kleenestar.core:field.helptext.label",
-            Placeholder = "kleenestar.core:field.helptext.placeholder",
-            Required = false
+            Name = _ => nameof(Model.Entities.Field.HelpText),
+            Label = _ => "kleenestar.core:field.helptext.label",
+            Placeholder = _ => "kleenestar.core:field.helptext.placeholder",
+            Required = _ => false
         };
 
         /// <summary>
@@ -60,10 +60,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText FieldPlaceholder { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.Placeholder),
-            Label = "kleenestar.core:field.placeholder.label",
-            Placeholder = "kleenestar.core:field.placeholder.placeholder",
-            Required = false
+            Name = _ => nameof(Model.Entities.Field.Placeholder),
+            Label = _ => "kleenestar.core:field.placeholder.label",
+            Placeholder = _ => "kleenestar.core:field.placeholder.placeholder",
+            Required = _ => false
         };
 
         /// <summary>
@@ -71,11 +71,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection FieldTypeSelection { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.FieldType),
-            Label = "kleenestar.core:field.fieldtype.label",
-            Placeholder = "kleenestar.core:field.fieldtype.placeholder",
-            Help = "kleenestar.core:field.fieldtype.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Field.FieldType),
+            Label = _ => "kleenestar.core:field.fieldtype.label",
+            Placeholder = _ => "kleenestar.core:field.fieldtype.placeholder",
+            Help = _ => "kleenestar.core:field.fieldtype.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.FieldType>()
         };
 
@@ -84,11 +84,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection CardinalitySelection { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.Cardinality),
-            Label = "kleenestar.core:field.cardinality.label",
-            Placeholder = "kleenestar.core:field.cardinality.placeholder",
-            Help = "kleenestar.core:field.cardinality.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Field.Cardinality),
+            Label = _ => "kleenestar.core:field.cardinality.label",
+            Placeholder = _ => "kleenestar.core:field.cardinality.placeholder",
+            Help = _ => "kleenestar.core:field.cardinality.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Cardinality>()
         };
 
@@ -97,9 +97,9 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputCheck FieldRequired { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.Required),
-            Label = "kleenestar.core:field.required.label",
-            Help = "kleenestar.core:field.required.help",
+            Name = _ => nameof(Model.Entities.Field.Required),
+            Label = _ => "kleenestar.core:field.required.label",
+            Help = _ => "kleenestar.core:field.required.help",
             Layout = TypeLayoutCheck.Switch
         };
 
@@ -108,9 +108,9 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputCheck FieldUnique { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.Unique),
-            Label = "kleenestar.core:field.unique.label",
-            Help = "kleenestar.core:field.unique.help",
+            Name = _ => nameof(Model.Entities.Field.Unique),
+            Label = _ => "kleenestar.core:field.unique.label",
+            Help = _ => "kleenestar.core:field.unique.help",
             Layout = TypeLayoutCheck.Switch
         };
 
@@ -119,9 +119,9 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputCheck FieldDeprecated { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.Deprecated),
-            Label = "kleenestar.core:field.deprecated.label",
-            Help = "kleenestar.core:field.deprecated.help",
+            Name = _ => nameof(Model.Entities.Field.Deprecated),
+            Label = _ => "kleenestar.core:field.deprecated.label",
+            Help = _ => "kleenestar.core:field.deprecated.help",
             Layout = TypeLayoutCheck.Switch
         };
 
@@ -130,11 +130,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection AccessModifierSelection { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.AccessModifier),
-            Label = "kleenestar.core:field.accessmodifier.label",
-            Placeholder = "kleenestar.core:field.accessmodifier.placeholder",
-            Help = "kleenestar.core:field.accessmodifier.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Field.AccessModifier),
+            Label = _ => "kleenestar.core:field.accessmodifier.label",
+            Placeholder = _ => "kleenestar.core:field.accessmodifier.placeholder",
+            Help = _ => "kleenestar.core:field.accessmodifier.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.AccessModifier>()
         };
 
@@ -143,11 +143,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText DefaultSpec { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.DefaultSpec),
-            Label = "kleenestar.core:field.defaultspec.label",
-            Placeholder = "kleenestar.core:field.defaultspec.placeholder",
-            Help = "kleenestar.core:field.defaultspec.help",
-            Required = false
+            Name = _ => nameof(Model.Entities.Field.DefaultSpec),
+            Label = _ => "kleenestar.core:field.defaultspec.label",
+            Placeholder = _ => "kleenestar.core:field.defaultspec.placeholder",
+            Help = _ => "kleenestar.core:field.defaultspec.help",
+            Required = _ => false
         };
 
         /// <summary>
@@ -155,11 +155,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection FieldState { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.State),
-            Label = "kleenestar.core:field.state.label",
-            Placeholder = "kleenestar.core:field.state.placeholder",
-            Help = "kleenestar.core:field.state.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Field.State),
+            Label = _ => "kleenestar.core:field.state.label",
+            Placeholder = _ => "kleenestar.core:field.state.placeholder",
+            Help = _ => "kleenestar.core:field.state.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.State>()
         };
 
@@ -183,8 +183,8 @@ namespace KleeneStar.Core.WebFragment
             Add(DefaultSpec);
             Add(FieldState);
 
-            Mode = TypeRestFormMode.Edit;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
+            Mode = _ => TypeRestFormMode.Edit;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var param = renderContext.Request.GetParameter<FieldIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

@@ -25,7 +25,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputAvatar Avatar { get; } = new()
         {
-            Name = nameof(Workspace.Icon),
+            Name = _ => nameof(Workspace.Icon),
         };
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Add(Avatar);
 
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace KleeneStar.Core.WebFragment
             var id = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
                 .Id.ToString();
 
-            return base.Render(renderContext, visualTree, Items, id, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

@@ -24,11 +24,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique PriorityName { get; } = new()
         {
-            Name = nameof(Model.Entities.Priority.Name),
-            Label = "kleenestar.core:priority.name.label",
+            Name = _ => nameof(Model.Entities.Priority.Name),
+            Label = _ => "kleenestar.core:priority.name.label",
             Placeholder = "kleenestar.core:priority.name.placeholder",
-            Help = "kleenestar.core:priority.name.help",
-            Required = true,
+            Help = _ => "kleenestar.core:priority.name.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.UniqueName>()
         };
 
@@ -37,11 +37,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Priority.Description),
-            Label = "kleenestar.core:priority.description.label",
-            Placeholder = "kleenestar.core:priority.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Model.Entities.Priority.Description),
+            Label = _ => "kleenestar.core:priority.description.label",
+            Placeholder = _ => "kleenestar.core:priority.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -49,11 +49,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection PriorityState { get; } = new()
         {
-            Name = nameof(Model.Entities.Priority.State),
-            Label = "kleenestar.core:priority.state.label",
-            Placeholder = "kleenestar.core:priority.state.placeholder",
-            Help = "kleenestar.core:priority.state.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Priority.State),
+            Label = _ => "kleenestar.core:priority.state.label",
+            Placeholder = _ => "kleenestar.core:priority.state.placeholder",
+            Help = _ => "kleenestar.core:priority.state.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.State>()
         };
 
@@ -68,8 +68,8 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
             Add(PriorityState);
 
-            Mode = TypeRestFormMode.Clone;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>();
+            Mode = _ => TypeRestFormMode.Clone;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>();
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var param = renderContext.Request.GetParameter<PriorityIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

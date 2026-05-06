@@ -27,7 +27,7 @@ namespace KleeneStar.Core.WebFragment
             Text = _ => "kleenestar.core:setting.group.add.label";
             Icon = _ => new IconPlus(TypeIconTheme.Light);
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
-            BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
+            BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
         }
 
         /// <summary>

@@ -28,7 +28,7 @@ namespace KleeneStar.Core.WebFragment
         public WorkspacePropertyPermissionProfilesFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Key = "kleenestar.core:workspace.permissionprofiles.label";
+            Key = _ => "kleenestar.core:workspace.permissionprofiles.label";
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace KleeneStar.Core.WebFragment
             var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
             var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(keyParameter?.Value);
 
-            return base.Render(renderContext, visualTree, Key, "", Uri, Icon);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

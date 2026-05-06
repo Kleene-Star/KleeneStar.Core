@@ -29,11 +29,11 @@ namespace KleeneStar.Core.WebFragment
         public ObjectAddButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:object.add.label";
-            Icon = new IconPlus(TypeIconTheme.Light);
+            Text = _ => "kleenestar.core:object.add.label";
+            Icon = _ => new IconPlus(TypeIconTheme.Light);
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorBackground(TypeColorBackground.Highlight);
-            PrimaryAction = new ActionModal
+            PrimaryAction = _ => new ActionModal
             (
                 "modal-form",
                 CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects.Add>(),

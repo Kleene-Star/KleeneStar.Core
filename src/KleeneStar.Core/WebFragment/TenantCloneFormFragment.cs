@@ -24,11 +24,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique TenantName { get; } = new()
         {
-            Name = nameof(Model.Entities.Tenant.Name),
-            Label = "kleenestar.core:setting.tenant.name.label",
+            Name = _ => nameof(Model.Entities.Tenant.Name),
+            Label = _ => "kleenestar.core:setting.tenant.name.label",
             Placeholder = "kleenestar.core:setting.tenant.name.placeholder",
-            Help = "kleenestar.core:setting.tenant.name.help",
-            Required = true,
+            Help = _ => "kleenestar.core:setting.tenant.name.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.UniqueName>()
         };
 
@@ -37,11 +37,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Tenant.Description),
-            Label = "kleenestar.core:setting.tenant.description.label",
-            Placeholder = "kleenestar.core:setting.tenant.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Model.Entities.Tenant.Description),
+            Label = _ => "kleenestar.core:setting.tenant.description.label",
+            Placeholder = _ => "kleenestar.core:setting.tenant.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -49,11 +49,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection TenantState { get; } = new()
         {
-            Name = nameof(Model.Entities.Tenant.State),
-            Label = "kleenestar.core:setting.tenant.state.label",
-            Placeholder = "kleenestar.core:setting.tenant.state.placeholder",
-            Help = "kleenestar.core:setting.tenant.state.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Tenant.State),
+            Label = _ => "kleenestar.core:setting.tenant.state.label",
+            Placeholder = _ => "kleenestar.core:setting.tenant.state.placeholder",
+            Help = _ => "kleenestar.core:setting.tenant.state.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.State>()
         };
 
@@ -68,8 +68,8 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
             Add(TenantState);
 
-            Mode = TypeRestFormMode.Clone;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.Index>();
+            Mode = _ => TypeRestFormMode.Clone;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.Index>();
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var param = renderContext.Request.GetParameter<TenantIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

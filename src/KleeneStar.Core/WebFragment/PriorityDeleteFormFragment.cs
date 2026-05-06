@@ -25,8 +25,8 @@ namespace KleeneStar.Core.WebFragment
         public PriorityDeleteFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Mode = TypeRestFormMode.Delete;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>();
+            Mode = _ => TypeRestFormMode.Delete;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>();
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var param = renderContext.Request.GetParameter<PriorityIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

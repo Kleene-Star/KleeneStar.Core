@@ -35,11 +35,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique Summary { get; } = new()
         {
-            Name = nameof(Model.Entities.Object.Summary),
-            Label = "kleenestar.core:object.summary.label",
+            Name = _ => nameof(Model.Entities.Object.Summary),
+            Label = _ => "kleenestar.core:object.summary.label",
             Placeholder = "kleenestar.core:object.summary.placeholder",
-            Help = "kleenestar.core:object.summary.help",
-            Required = true,
+            Help = _ => "kleenestar.core:object.summary.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.UniqueName>()
         };
 
@@ -50,11 +50,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Object.Description),
-            Label = "kleenestar.core:object.description.label",
-            Placeholder = "kleenestar.core:object.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Model.Entities.Object.Description),
+            Label = _ => "kleenestar.core:object.description.label",
+            Placeholder = _ => "kleenestar.core:object.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -64,8 +64,8 @@ namespace KleeneStar.Core.WebFragment
         public ObjectEditFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Mode = TypeRestFormMode.Edit;
-            Uri = CoreHub.GetUri<WWW.Api._1_.Objects.Index>();
+            Mode = _ => TypeRestFormMode.Edit;
+            Uri = _ => CoreHub.GetUri<WWW.Api._1_.Objects.Index>();
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace KleeneStar.Core.WebFragment
 
             var items = BuildItems(@object).ToList();
 
-            return base.Render(renderContext, visualTree, items, id, Uri);
+            return base.Render(renderContext, visualTree);
         }
 
         /// <summary>
@@ -133,14 +133,14 @@ namespace KleeneStar.Core.WebFragment
 
             var tabGroup = new ControlFormItemGroupTab()
             {
-                Layout = TypeLayoutTab.Underline
+                Layout = _ => TypeLayoutTab.Underline
             };
 
             foreach (var t in orderedTabs)
             {
                 var view = new ControlFormItemGroupTabView("tab-" + t.Id.ToString("N"))
                 {
-                    Title = t.Name
+                    Title = _ => t.Name
                 };
 
                 foreach (var element in t.Elements.OrderBy(e => e.Position))
@@ -246,37 +246,37 @@ namespace KleeneStar.Core.WebFragment
                 case FieldType.Boolean:
                     return new ControlFormItemInputCheck()
                     {
-                        Name = field.Name,
-                        Label = field.Name,
-                        Help = field.HelpText,
-                        Required = field.Required
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
                     };
 
                 case FieldType.Date:
                     return new ControlFormItemInputDate()
                     {
-                        Name = field.Name,
-                        Label = field.Name,
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
                         Placeholder = field.Placeholder,
-                        Help = field.HelpText,
-                        Required = field.Required
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
                     };
 
                 case FieldType.Selection:
                     var combo = new ControlFormItemInputCombo()
                     {
-                        Name = field.Name,
-                        Label = field.Name,
-                        Placeholder = field.Placeholder,
-                        Help = field.HelpText,
-                        Required = field.Required
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Placeholder = _ => field.Placeholder,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
                     };
                     foreach (var option in field.Options ?? [])
                     {
                         combo.Add(new ControlFormItemInputComboItem()
                         {
-                            Text = option,
-                            Value = option
+                            Text = _ => option,
+                            Value = _ => option
                         });
                     }
                     return combo;
@@ -284,21 +284,21 @@ namespace KleeneStar.Core.WebFragment
                 case FieldType.Tag:
                     return new ControlFormItemInputTag()
                     {
-                        Name = field.Name,
-                        Label = field.Name,
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
                         Placeholder = field.Placeholder,
-                        Help = field.HelpText,
-                        Required = field.Required
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
                     };
 
                 case FieldType.Attachment:
                     return new ControlFormItemInputFile()
                     {
-                        Name = field.Name,
-                        Label = field.Name,
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
                         Placeholder = field.Placeholder,
-                        Help = field.HelpText,
-                        Required = field.Required
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
                     };
 
                 case FieldType.Number:
@@ -309,11 +309,11 @@ namespace KleeneStar.Core.WebFragment
                 default:
                     return new ControlFormItemInputText()
                     {
-                        Name = field.Name,
-                        Label = field.Name,
-                        Placeholder = field.Placeholder,
-                        Help = field.HelpText,
-                        Required = field.Required
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Placeholder = _ => field.Placeholder,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
                     };
             }
         }

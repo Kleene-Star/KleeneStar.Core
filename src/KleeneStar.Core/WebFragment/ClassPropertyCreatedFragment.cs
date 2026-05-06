@@ -26,7 +26,7 @@ namespace KleeneStar.Core.WebFragment
         public ClassPropertyCreatedFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Key = "kleenestar.core:class.created.label";
+            Key = _ => "kleenestar.core:class.created.label";
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace KleeneStar.Core.WebFragment
             var classId = renderContext.Request.GetParameter<ClassIdParameter>();
             var @class = CoreHub.ClassManager.GetClass(classId);
 
-            return base.Render(renderContext, visualTree, Key, @class?.Created.ToString("yyyy-MM-dd"), Uri, Icon);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

@@ -30,7 +30,7 @@ namespace KleeneStar.Core.WebFragment
         public WorkspacePropertyTenantFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Key = "kleenestar.core:workspace.tenant.label";
+            Key = _ => "kleenestar.core:workspace.tenant.label";
         }
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace KleeneStar.Core.WebFragment
                 ? string.Join(", ", tenantNames)
                 : I18N.Translate(renderContext, "kleenestar.core:workspace.property.none");
 
-            return base.Render(renderContext, visualTree, Key, value, Uri, Icon);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

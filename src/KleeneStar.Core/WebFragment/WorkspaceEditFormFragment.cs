@@ -28,11 +28,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique WorkspaceName { get; } = new()
         {
-            Name = nameof(Workspace.Name),
-            Label = "kleenestar.core:workspace.name.label",
+            Name = _ => nameof(Workspace.Name),
+            Label = _ => "kleenestar.core:workspace.name.label",
             Placeholder = "kleenestar.core:workspace.name.placeholder",
-            Help = "kleenestar.core:workspace.name.help",
-            Required = true,
+            Help = _ => "kleenestar.core:workspace.name.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>()
         };
 
@@ -41,11 +41,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique Key { get; } = new()
         {
-            Name = nameof(Workspace.Key),
-            Label = "kleenestar.core:workspace.key.label",
+            Name = _ => nameof(Workspace.Key),
+            Label = _ => "kleenestar.core:workspace.key.label",
             Placeholder = "kleenestar.core:workspace.key.placeholder",
-            Help = "kleenestar.core:workspace.key.help",
-            Required = true,
+            Help = _ => "kleenestar.core:workspace.key.help",
+            Required = _ => true,
             MaxLength = 10,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueKey>()
         };
@@ -55,10 +55,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputTag Category { get; } = new()
         {
-            Name = nameof(Workspace.Categories),
-            Label = "kleenestar.core:workspace.category.label",
+            Name = _ => nameof(Workspace.Categories),
+            Label = _ => "kleenestar.core:workspace.category.label",
             Placeholder = "kleenestar.core:workspace.category.placeholder",
-            Help = "kleenestar.core:workspace.category.help"
+            Help = _ => "kleenestar.core:workspace.category.help"
         };
 
         /// <summary>
@@ -66,11 +66,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Workspace.Description),
-            Label = "kleenestar.core:workspace.description.label",
-            Placeholder = "kleenestar.core:workspace.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Workspace.Description),
+            Label = _ => "kleenestar.core:workspace.description.label",
+            Placeholder = _ => "kleenestar.core:workspace.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -78,11 +78,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection WorkspaceState { get; } = new()
         {
-            Name = nameof(Model.Entities.Workspace.State),
-            Label = "kleenestar.core:workspace.state.label",
-            Placeholder = "kleenestar.core:workspace.state.placeholder",
-            Help = "kleenestar.core:workspace.state.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Workspace.State),
+            Label = _ => "kleenestar.core:workspace.state.label",
+            Placeholder = _ => "kleenestar.core:workspace.state.placeholder",
+            Help = _ => "kleenestar.core:workspace.state.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.State>()
         };
 
@@ -91,10 +91,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection InheritedSelection { get; } = new()
         {
-            Name = "InheritedId",
-            Label = "kleenestar.core:workspace.inherited.label",
-            Placeholder = "kleenestar.core:workspace.inherited.placeholder",
-            Help = "kleenestar.core:workspace.inherited.help",
+            Name = _ => "InheritedId",
+            Label = _ => "kleenestar.core:workspace.inherited.label",
+            Placeholder = _ => "kleenestar.core:workspace.inherited.placeholder",
+            Help = _ => "kleenestar.core:workspace.inherited.help",
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Inherited>()
         };
 
@@ -103,11 +103,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection AccessModifierSelection { get; } = new()
         {
-            Name = "AccessModifier",
-            Label = "kleenestar.core:workspace.accessmodifier.label",
-            Placeholder = "kleenestar.core:workspace.accessmodifier.placeholder",
-            Help = "kleenestar.core:workspace.accessmodifier.help",
-            StickySelection = true,
+            Name = _ => "AccessModifier",
+            Label = _ => "kleenestar.core:workspace.accessmodifier.label",
+            Placeholder = _ => "kleenestar.core:workspace.accessmodifier.placeholder",
+            Help = _ => "kleenestar.core:workspace.accessmodifier.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.AccessModifier>()
         };
 
@@ -116,9 +116,9 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputCheck WorkspaceSealed { get; } = new()
         {
-            Name = "Sealed",
-            Label = "kleenestar.core:workspace.sealed.label",
-            Help = "kleenestar.core:workspace.sealed.help",
+            Name = _ => "Sealed",
+            Label = _ => "kleenestar.core:workspace.sealed.label",
+            Help = _ => "kleenestar.core:workspace.sealed.help",
             Layout = TypeLayoutCheck.Switch
         };
 
@@ -127,10 +127,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputTag Tenant { get; } = new()
         {
-            Name = "Tenant",
-            Label = "kleenestar.core:workspace.tenant.label",
+            Name = _ => "Tenant",
+            Label = _ => "kleenestar.core:workspace.tenant.label",
             Placeholder = "kleenestar.core:workspace.tenant.placeholder",
-            Help = "kleenestar.core:workspace.tenant.help"
+            Help = _ => "kleenestar.core:workspace.tenant.help"
         };
 
         /// <summary>
@@ -150,8 +150,8 @@ namespace KleeneStar.Core.WebFragment
             Add(Tenant);
             Add(WorkspaceState);
 
-            Mode = TypeRestFormMode.Edit;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
+            Mode = _ => TypeRestFormMode.Edit;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
         }
 
         /// <summary>
@@ -175,7 +175,7 @@ namespace KleeneStar.Core.WebFragment
             SetControlDisabled(InheritedSelection, workspace?.Sealed == true);
             SetControlDisabled(AccessModifierSelection, workspace?.Sealed == true);
 
-            return base.Render(renderContext, visualTree, Items, id, Uri);
+            return base.Render(renderContext, visualTree);
         }
 
         private static void SetControlDisabled(object control, bool disabled)

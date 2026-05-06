@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebControl
         /// </summary>
         public ControlRestList List { get; } = new ControlRestList()
         {
-            Selectable = true,
+            Selectable = _ => true,
             Sortable = true,
             Title = "List",
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.Two, PropertySpacing.Space.None, PropertySpacing.Space.None)
@@ -41,7 +41,7 @@ namespace KleeneStar.Core.WebControl
             AddSidePanel(List);
             AddMainPanel(Frame);
 
-            SidePanelInitialSize = 250;
+            SidePanelInitialSize = _ => 250;
         }
     }
 }

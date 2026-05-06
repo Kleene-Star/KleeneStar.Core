@@ -26,7 +26,7 @@ namespace KleeneStar.Core.WebFragment
         public ClassPropertyAccessModifierFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Key = "kleenestar.core:class.accessmodifier.label";
+            Key = _ => "kleenestar.core:class.accessmodifier.label";
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace KleeneStar.Core.WebFragment
             var classId = renderContext.Request.GetParameter<ClassIdParameter>();
             var @class = CoreHub.ClassManager.GetClass(classId);
 
-            return base.Render(renderContext, visualTree, Key, @class?.AccessModifier.ToString(), Uri, Icon);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

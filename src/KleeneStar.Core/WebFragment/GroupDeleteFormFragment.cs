@@ -24,8 +24,8 @@ namespace KleeneStar.Core.WebFragment
         public GroupDeleteFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Mode = TypeRestFormMode.Delete;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Groups.Index>();
+            Mode = _ => TypeRestFormMode.Delete;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Groups.Index>();
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var param = renderContext.Request.GetParameter<GroupIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

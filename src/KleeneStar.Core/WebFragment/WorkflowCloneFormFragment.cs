@@ -24,11 +24,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique WorkflowName { get; } = new()
         {
-            Name = nameof(Model.Entities.Workflow.Name),
-            Label = "kleenestar.core:workflow.name.label",
+            Name = _ => nameof(Model.Entities.Workflow.Name),
+            Label = _ => "kleenestar.core:workflow.name.label",
             Placeholder = "kleenestar.core:workflow.name.placeholder",
-            Help = "kleenestar.core:workflow.name.help",
-            Required = true,
+            Help = _ => "kleenestar.core:workflow.name.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.UniqueName>()
         };
 
@@ -37,11 +37,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Workflow.Description),
-            Label = "kleenestar.core:workflow.description.label",
-            Placeholder = "kleenestar.core:workflow.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Model.Entities.Workflow.Description),
+            Label = _ => "kleenestar.core:workflow.description.label",
+            Placeholder = _ => "kleenestar.core:workflow.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -49,11 +49,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection WorkflowState { get; } = new()
         {
-            Name = nameof(Model.Entities.Workflow.State),
-            Label = "kleenestar.core:workflow.state.label",
-            Placeholder = "kleenestar.core:workflow.state.placeholder",
-            Help = "kleenestar.core:workflow.state.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Workflow.State),
+            Label = _ => "kleenestar.core:workflow.state.label",
+            Placeholder = _ => "kleenestar.core:workflow.state.placeholder",
+            Help = _ => "kleenestar.core:workflow.state.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.State>()
         };
 
@@ -68,8 +68,8 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
             Add(WorkflowState);
 
-            Mode = TypeRestFormMode.Clone;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>();
+            Mode = _ => TypeRestFormMode.Clone;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>();
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var param = renderContext.Request.GetParameter<WorkflowIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

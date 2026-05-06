@@ -26,10 +26,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText CardinalityMin { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.CardinalityMin),
-            Label = "kleenestar.core:field.configure.cardinality.min.label",
-            Placeholder = "kleenestar.core:field.configure.cardinality.min.placeholder",
-            Help = "kleenestar.core:field.configure.cardinality.min.help"
+            Name = _ => nameof(Model.Entities.Field.CardinalityMin),
+            Label = _ => "kleenestar.core:field.configure.cardinality.min.label",
+            Placeholder = _ => "kleenestar.core:field.configure.cardinality.min.placeholder",
+            Help = _ => "kleenestar.core:field.configure.cardinality.min.help"
         };
 
         /// <summary>
@@ -37,9 +37,9 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputCheck CardinalityUnlimited { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.CardinalityUnlimited),
-            Label = "kleenestar.core:field.configure.cardinality.unlimited.label",
-            Help = "kleenestar.core:field.configure.cardinality.unlimited.help",
+            Name = _ => nameof(Model.Entities.Field.CardinalityUnlimited),
+            Label = _ => "kleenestar.core:field.configure.cardinality.unlimited.label",
+            Help = _ => "kleenestar.core:field.configure.cardinality.unlimited.help",
             Layout = TypeLayoutCheck.Switch
         };
 
@@ -49,10 +49,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText CardinalityMax { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.CardinalityMax),
-            Label = "kleenestar.core:field.configure.cardinality.max.label",
-            Placeholder = "kleenestar.core:field.configure.cardinality.max.placeholder",
-            Help = "kleenestar.core:field.configure.cardinality.max.help"
+            Name = _ => nameof(Model.Entities.Field.CardinalityMax),
+            Label = _ => "kleenestar.core:field.configure.cardinality.max.label",
+            Placeholder = _ => "kleenestar.core:field.configure.cardinality.max.placeholder",
+            Help = _ => "kleenestar.core:field.configure.cardinality.max.help"
         };
 
         /// <summary>
@@ -61,11 +61,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText RegexPattern { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.RegexPattern),
-            Label = "kleenestar.core:field.configure.validation.regex.label",
-            Placeholder = "kleenestar.core:field.configure.validation.regex.placeholder",
-            Help = "kleenestar.core:field.configure.validation.regex.help",
-            Required = false
+            Name = _ => nameof(Model.Entities.Field.RegexPattern),
+            Label = _ => "kleenestar.core:field.configure.validation.regex.label",
+            Placeholder = _ => "kleenestar.core:field.configure.validation.regex.placeholder",
+            Help = _ => "kleenestar.core:field.configure.validation.regex.help",
+            Required = _ => false
         };
 
         /// <summary>
@@ -74,10 +74,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputTag Options { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.Options),
-            Label = "kleenestar.core:field.configure.options.label",
+            Name = _ => nameof(Model.Entities.Field.Options),
+            Label = _ => "kleenestar.core:field.configure.options.label",
             Placeholder = "kleenestar.core:field.configure.options.placeholder",
-            Help = "kleenestar.core:field.configure.options.help"
+            Help = _ => "kleenestar.core:field.configure.options.help"
         };
 
         /// <summary>
@@ -86,11 +86,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText FilterWql { get; } = new()
         {
-            Name = "Wql",
-            Label = "kleenestar.core:field.configure.wql.label",
-            Placeholder = "kleenestar.core:field.configure.wql.placeholder",
-            Help = "kleenestar.core:field.configure.wql.help",
-            Required = false
+            Name = _ => "Wql",
+            Label = _ => "kleenestar.core:field.configure.wql.label",
+            Placeholder = _ => "kleenestar.core:field.configure.wql.placeholder",
+            Help = _ => "kleenestar.core:field.configure.wql.help",
+            Required = _ => false
         };
 
         /// <summary>
@@ -100,10 +100,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection WorkflowSelection { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.WorkflowId),
-            Label = "kleenestar.core:field.configure.workflow.label",
-            Placeholder = "kleenestar.core:field.configure.workflow.placeholder",
-            Help = "kleenestar.core:field.configure.workflow.help",
+            Name = _ => nameof(Model.Entities.Field.WorkflowId),
+            Label = _ => "kleenestar.core:field.configure.workflow.label",
+            Placeholder = _ => "kleenestar.core:field.configure.workflow.placeholder",
+            Help = _ => "kleenestar.core:field.configure.workflow.help",
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>()
         };
 
@@ -113,11 +113,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection DefaultPrioritySelection { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.DefaultPriorityId),
-            Label = "kleenestar.core:field.configure.priority.default.label",
-            Placeholder = "kleenestar.core:field.configure.priority.default.placeholder",
-            Help = "kleenestar.core:field.configure.priority.default.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Field.DefaultPriorityId),
+            Label = _ => "kleenestar.core:field.configure.priority.default.label",
+            Placeholder = _ => "kleenestar.core:field.configure.priority.default.placeholder",
+            Help = _ => "kleenestar.core:field.configure.priority.default.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>()
         };
 
@@ -126,10 +126,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection SelectedPriorities { get; } = new()
         {
-            Name = nameof(Model.Entities.Field.SelectedPriorityIds),
-            Label = "kleenestar.core:field.configure.priority.selected.label",
-            Placeholder = "kleenestar.core:field.configure.priority.available.label",
-            Help = "kleenestar.core:field.configure.priority.selected.label",
+            Name = _ => nameof(Model.Entities.Field.SelectedPriorityIds),
+            Label = _ => "kleenestar.core:field.configure.priority.selected.label",
+            Placeholder = _ => "kleenestar.core:field.configure.priority.available.label",
+            Help = _ => "kleenestar.core:field.configure.priority.selected.label",
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>()
         };
 
@@ -140,10 +140,10 @@ namespace KleeneStar.Core.WebFragment
         public FieldConfigureFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Mode = TypeRestFormMode.Edit;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
+            Mode = _ => TypeRestFormMode.Edit;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
 
-            CardinalityMax.Bind = new Binding().Add(new BindDisable()
+            CardinalityMax.Bind = _ => new Binding().Add(new BindDisable()
             {
                 Source = CardinalityUnlimited.Id,
                 Condition = "true"
@@ -173,7 +173,7 @@ namespace KleeneStar.Core.WebFragment
                 (
                     (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
                     {
-                        Title = "kleenestar.core:field.configure.tab.cardinality"
+                        Title = _ => "kleenestar.core:field.configure.tab.cardinality"
                     }
                         .Add(CardinalityMin)
                         .Add(CardinalityUnlimited)
@@ -182,7 +182,7 @@ namespace KleeneStar.Core.WebFragment
                 (
                     (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
                     {
-                        Title = "kleenestar.core:field.configure.tab.validation"
+                        Title = _ => "kleenestar.core:field.configure.tab.validation"
                     }
                         .Add(RegexPattern)
                 )
@@ -190,7 +190,7 @@ namespace KleeneStar.Core.WebFragment
                 (
                     (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
                     {
-                        Title = "kleenestar.core:field.configure.tab.options"
+                        Title = _ => "kleenestar.core:field.configure.tab.options"
                     }
                         .Add(Options)
                 )
@@ -198,7 +198,7 @@ namespace KleeneStar.Core.WebFragment
                 (
                     (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
                     {
-                        Title = "kleenestar.core:field.configure.tab.filter"
+                        Title = _ => "kleenestar.core:field.configure.tab.filter"
                     }
                         .Add(FilterWql)
                 )
@@ -206,7 +206,7 @@ namespace KleeneStar.Core.WebFragment
                 (
                     (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
                     {
-                        Title = "kleenestar.core:field.configure.tab.workflow"
+                        Title = _ => "kleenestar.core:field.configure.tab.workflow"
                     }
                         .Add(WorkflowSelection)
                 )
@@ -214,13 +214,13 @@ namespace KleeneStar.Core.WebFragment
                 (
                     (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
                     {
-                        Title = "kleenestar.core:field.configure.tab.priority"
+                        Title = _ => "kleenestar.core:field.configure.tab.priority"
                     }
                         .Add(DefaultPrioritySelection)
                         .Add(SelectedPriorities)
                 );
 
-            return base.Render(renderContext, visualTree, [tab], param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebFragment
             PrimaryAction = _ => new ActionModal("modal-form", CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboards.Add>(), TypeModalSize.ExtraLarge);
             Icon = _ => new IconPlus(TypeIconTheme.Light);
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
-            BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
+            BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
         }
 
         /// <summary>

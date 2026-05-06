@@ -47,7 +47,7 @@ namespace KleeneStar.Core.WebFragment
             var classId = renderContext.Request.GetParameter<ClassIdParameter>();
             var @class = CoreHub.ClassManager.GetClass(classId);
 
-            return base.Render(renderContext, visualTree, @class?.Description);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

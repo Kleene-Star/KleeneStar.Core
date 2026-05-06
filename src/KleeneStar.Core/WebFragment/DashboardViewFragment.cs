@@ -72,7 +72,7 @@ namespace KleeneStar.Core.WebFragment
             Add(new ControlViewHeader().Add(Search, Quickfilter));
             Add(new ControlViewItem()
             {
-                Icon = new IconTable()
+                Icon = _ => new IconTable()
             }
                 .Add(Table));
             Add(new ControlViewFooter().Add(Pagination));

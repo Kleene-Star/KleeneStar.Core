@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebFragment
             Text = _ => "kleenestar.core:form.edit.label";
             Icon = _ => new IconPen();
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
-            BackgroundColor = new PropertyColorButton(TypeColorButton.Primary);
+            BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
         }
 
         /// <summary>

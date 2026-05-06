@@ -24,11 +24,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique ClassName { get; } = new()
         {
-            Name = nameof(Model.Entities.Class.Name),
-            Label = "kleenestar.core:class.name.label",
+            Name = _ => nameof(Model.Entities.Class.Name),
+            Label = _ => "kleenestar.core:class.name.label",
             Placeholder = "kleenestar.core:class.name.placeholder",
-            Help = "kleenestar.core:class.name.help",
-            Required = true,
+            Help = _ => "kleenestar.core:class.name.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.UniqueName>()
         };
 
@@ -37,11 +37,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Class.Description),
-            Label = "kleenestar.core:class.description.label",
-            Placeholder = "kleenestar.core:class.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Model.Entities.Class.Description),
+            Label = _ => "kleenestar.core:class.description.label",
+            Placeholder = _ => "kleenestar.core:class.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -49,10 +49,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection InheritedSelection { get; } = new()
         {
-            Name = nameof(Model.Entities.Class.InheritedId),
-            Label = "kleenestar.core:class.inherited.label",
-            Placeholder = "kleenestar.core:class.inherited.placeholder",
-            Help = "kleenestar.core:class.inherited.help",
+            Name = _ => nameof(Model.Entities.Class.InheritedId),
+            Label = _ => "kleenestar.core:class.inherited.label",
+            Placeholder = _ => "kleenestar.core:class.inherited.placeholder",
+            Help = _ => "kleenestar.core:class.inherited.help",
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Inherited>()
         };
 
@@ -61,9 +61,9 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputCheck ClassIsAbstract { get; } = new()
         {
-            Name = nameof(Model.Entities.Class.IsAbstract),
-            Label = "kleenestar.core:class.isabstract.label",
-            Help = "kleenestar.core:class.isabstract.help",
+            Name = _ => nameof(Model.Entities.Class.IsAbstract),
+            Label = _ => "kleenestar.core:class.isabstract.label",
+            Help = _ => "kleenestar.core:class.isabstract.help",
             Layout = TypeLayoutCheck.Switch
         };
 
@@ -72,10 +72,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection ParentSelection { get; } = new()
         {
-            Name = nameof(Model.Entities.Class.ParentId),
-            Label = "kleenestar.core:class.parent.label",
-            Placeholder = "kleenestar.core:class.parent.placeholder",
-            Help = "kleenestar.core:class.parent.help",
+            Name = _ => nameof(Model.Entities.Class.ParentId),
+            Label = _ => "kleenestar.core:class.parent.label",
+            Placeholder = _ => "kleenestar.core:class.parent.placeholder",
+            Help = _ => "kleenestar.core:class.parent.help",
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Parent>()
         };
 
@@ -84,10 +84,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputTag AllowedChildren { get; } = new()
         {
-            Name = nameof(Model.Entities.Class.AllowedChildren),
-            Label = "kleenestar.core:class.allowedchildren.label",
+            Name = _ => nameof(Model.Entities.Class.AllowedChildren),
+            Label = _ => "kleenestar.core:class.allowedchildren.label",
             Placeholder = "kleenestar.core:class.allowedchildren.placeholder",
-            Help = "kleenestar.core:class.allowedchildren.help"
+            Help = _ => "kleenestar.core:class.allowedchildren.help"
         };
 
         /// <summary>
@@ -95,11 +95,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection AccessModifierSelection { get; } = new()
         {
-            Name = nameof(Model.Entities.Class.AccessModifier),
-            Label = "kleenestar.core:class.accessmodifier.label",
-            Placeholder = "kleenestar.core:class.accessmodifier.placeholder",
-            Help = "kleenestar.core:class.accessmodifier.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Class.AccessModifier),
+            Label = _ => "kleenestar.core:class.accessmodifier.label",
+            Placeholder = _ => "kleenestar.core:class.accessmodifier.placeholder",
+            Help = _ => "kleenestar.core:class.accessmodifier.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.AccessModifier>()
         };
 
@@ -108,9 +108,9 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputCheck ClassSealed { get; } = new()
         {
-            Name = nameof(Model.Entities.Class.Sealed),
-            Label = "kleenestar.core:class.sealed.label",
-            Help = "kleenestar.core:class.sealed.help",
+            Name = _ => nameof(Model.Entities.Class.Sealed),
+            Label = _ => "kleenestar.core:class.sealed.label",
+            Help = _ => "kleenestar.core:class.sealed.help",
             Layout = TypeLayoutCheck.Switch
         };
 
@@ -119,11 +119,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection ClassState { get; } = new()
         {
-            Name = nameof(Model.Entities.Class.State),
-            Label = "kleenestar.core:class.state.label",
-            Placeholder = "kleenestar.core:class.state.placeholder",
-            Help = "kleenestar.core:class.state.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Class.State),
+            Label = _ => "kleenestar.core:class.state.label",
+            Placeholder = _ => "kleenestar.core:class.state.placeholder",
+            Help = _ => "kleenestar.core:class.state.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.State>()
         };
 
@@ -144,8 +144,8 @@ namespace KleeneStar.Core.WebFragment
             Add(ClassSealed);
             Add(ClassState);
 
-            Mode = TypeRestFormMode.Clone;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
+            Mode = _ => TypeRestFormMode.Clone;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var param = renderContext.Request.GetParameter<ClassIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

@@ -51,7 +51,7 @@ namespace KleeneStar.Core.WebFragment
 
             var text = form?.Description;
 
-            return base.Render(renderContext, visualTree, text);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

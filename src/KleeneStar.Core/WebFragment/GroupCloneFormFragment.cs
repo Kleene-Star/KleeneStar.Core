@@ -24,11 +24,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique GroupName { get; } = new()
         {
-            Name = nameof(Model.Entities.Group.Name),
-            Label = "kleenestar.core:setting.group.name.label",
+            Name = _ => nameof(Model.Entities.Group.Name),
+            Label = _ => "kleenestar.core:setting.group.name.label",
             Placeholder = "kleenestar.core:setting.group.name.placeholder",
-            Help = "kleenestar.core:setting.group.name.help",
-            Required = true,
+            Help = _ => "kleenestar.core:setting.group.name.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Groups.UniqueName>()
         };
 
@@ -37,11 +37,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Group.Description),
-            Label = "kleenestar.core:setting.group.description.label",
-            Placeholder = "kleenestar.core:setting.group.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Model.Entities.Group.Description),
+            Label = _ => "kleenestar.core:setting.group.description.label",
+            Placeholder = _ => "kleenestar.core:setting.group.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -53,8 +53,8 @@ namespace KleeneStar.Core.WebFragment
             Add(GroupName);
             Add(Description);
 
-            Mode = TypeRestFormMode.Clone;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Groups.Index>();
+            Mode = _ => TypeRestFormMode.Clone;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Groups.Index>();
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var param = renderContext.Request.GetParameter<GroupIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace KleeneStar.Core.WebFragment
         public WorkspacePropertySealedFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Key = "kleenestar.core:workspace.sealed.label";
+            Key = _ => "kleenestar.core:workspace.sealed.label";
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace KleeneStar.Core.WebFragment
                 ? I18N.Translate(renderContext, "kleenestar.core:workspace.property.yes")
                 : I18N.Translate(renderContext, "kleenestar.core:workspace.property.no");
 
-            return base.Render(renderContext, visualTree, Key, value, Uri, Icon);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

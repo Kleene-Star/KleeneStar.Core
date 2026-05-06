@@ -68,7 +68,7 @@ namespace KleeneStar.Core.WebFragment
         public ViewControlFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Layout = TypeLayoutView.ToggleGroup;
+            Layout = _ => TypeLayoutView.ToggleGroup;
 
             Table.Bind = new Binding()
                 .Add(new BindSearch()
@@ -95,20 +95,20 @@ namespace KleeneStar.Core.WebFragment
             Add(new ControlViewHeader().Add(Search, Quickfilter));
             Add(new ControlViewItem()
             {
-                Icon = new IconBarsVertical(),
-                Title = "kleenestar.core:view.table.title"
+                Icon = _ => new IconBarsVertical(),
+                Title = _ => "kleenestar.core:view.table.title"
             }
                 .Add(Table));
             Add(new ControlViewItem()
             {
-                Icon = new IconTile(),
-                Title = "kleenestar.core:view.tile.title"
+                Icon = _ => new IconTile(),
+                Title = _ => "kleenestar.core:view.tile.title"
             }
                 .Add(Tile));
             Add(new ControlViewItem()
             {
-                Icon = new IconSplitFunction(TypeIconTheme.Light),
-                Title = "kleenestar.core:view.split.title"
+                Icon = _ => new IconSplitFunction(TypeIconTheme.Light),
+                Title = _ => "kleenestar.core:view.split.title"
             }
                 .Add(List));
             Add(new ControlViewFooter().Add(Pagination));

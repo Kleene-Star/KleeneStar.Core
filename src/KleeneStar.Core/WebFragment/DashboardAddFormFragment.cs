@@ -24,11 +24,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique DashboardName { get; } = new()
         {
-            Name = nameof(Model.Entities.Dashboard.Name),
-            Label = "kleenestar.core:dashboard.name.label",
+            Name = _ => nameof(Model.Entities.Dashboard.Name),
+            Label = _ => "kleenestar.core:dashboard.name.label",
             Placeholder = "kleenestar.core:dashboard.name.placeholder",
-            Help = "kleenestar.core:dashboard.name.help",
-            Required = true,
+            Help = _ => "kleenestar.core:dashboard.name.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.UniqueName>()
         };
 
@@ -37,10 +37,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputTag Category { get; } = new()
         {
-            Name = nameof(Model.Entities.Dashboard.Categories),
-            Label = "kleenestar.core:dashboard.category.label",
+            Name = _ => nameof(Model.Entities.Dashboard.Categories),
+            Label = _ => "kleenestar.core:dashboard.category.label",
             Placeholder = "kleenestar.core:dashboard.category.placeholder",
-            Help = "kleenestar.core:dashboard.category.help"
+            Help = _ => "kleenestar.core:dashboard.category.help"
         };
 
         /// <summary>
@@ -48,11 +48,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Dashboard.Description),
-            Label = "kleenestar.core:dashboard.description.label",
-            Placeholder = "kleenestar.core:dashboard.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Model.Entities.Dashboard.Description),
+            Label = _ => "kleenestar.core:dashboard.description.label",
+            Placeholder = _ => "kleenestar.core:dashboard.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -60,10 +60,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection DashboardState { get; } = new()
         {
-            Name = nameof(Model.Entities.Dashboard.State),
-            Label = "kleenestar.core:dashboard.state.label",
-            Placeholder = "kleenestar.core:dashboard.state.placeholder",
-            Help = "kleenestar.core:dashboard.state.help",
+            Name = _ => nameof(Model.Entities.Dashboard.State),
+            Label = _ => "kleenestar.core:dashboard.state.label",
+            Placeholder = _ => "kleenestar.core:dashboard.state.placeholder",
+            Help = _ => "kleenestar.core:dashboard.state.help",
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.State>()
         };
 
@@ -79,8 +79,8 @@ namespace KleeneStar.Core.WebFragment
             Add(Description);
             Add(DashboardState);
 
-            Mode = TypeRestFormMode.Add;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Index>();
+            Mode = _ => TypeRestFormMode.Add;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Index>();
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace KleeneStar.Core.WebFragment
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            return base.Render(renderContext, visualTree, Items, null, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

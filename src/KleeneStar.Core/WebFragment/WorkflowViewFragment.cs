@@ -66,7 +66,7 @@ namespace KleeneStar.Core.WebFragment
         public WorkflowViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Layout = TypeLayoutView.ToggleGroup;
+            Layout = _ => TypeLayoutView.ToggleGroup;
 
             Table.Bind = new Binding()
                 .Add(new BindSearch()
@@ -93,7 +93,7 @@ namespace KleeneStar.Core.WebFragment
             Add(new ControlViewHeader().Add(Search, Quickfilter));
             Add(new ControlViewItem()
             {
-                Icon = new IconTable()
+                Icon = _ => new IconTable()
             }
                 .Add(Table));
             //Add(new ControlViewItem()

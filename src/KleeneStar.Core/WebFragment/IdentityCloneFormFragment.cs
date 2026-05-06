@@ -24,11 +24,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique IdentityName { get; } = new()
         {
-            Name = nameof(Model.Entities.Identity.Name),
-            Label = "kleenestar.core:setting.identity.name.label",
+            Name = _ => nameof(Model.Entities.Identity.Name),
+            Label = _ => "kleenestar.core:setting.identity.name.label",
             Placeholder = "kleenestar.core:setting.identity.name.placeholder",
-            Help = "kleenestar.core:setting.identity.name.help",
-            Required = true,
+            Help = _ => "kleenestar.core:setting.identity.name.help",
+            Required = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.UniqueName>()
         };
 
@@ -37,10 +37,10 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Email { get; } = new ControlFormItemInputText()
         {
-            Name = nameof(Model.Entities.Identity.Email),
-            Label = "kleenestar.core:setting.identity.email.label",
-            Placeholder = "kleenestar.core:setting.identity.email.placeholder",
-            Required = false
+            Name = _ => nameof(Model.Entities.Identity.Email),
+            Label = _ => "kleenestar.core:setting.identity.email.label",
+            Placeholder = _ => "kleenestar.core:setting.identity.email.placeholder",
+            Required = _ => false
         };
 
         /// <summary>
@@ -48,11 +48,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputSelection IdentityState { get; } = new()
         {
-            Name = nameof(Model.Entities.Identity.State),
-            Label = "kleenestar.core:setting.identity.state.label",
-            Placeholder = "kleenestar.core:setting.identity.state.placeholder",
-            Help = "kleenestar.core:setting.identity.state.help",
-            StickySelection = true,
+            Name = _ => nameof(Model.Entities.Identity.State),
+            Label = _ => "kleenestar.core:setting.identity.state.label",
+            Placeholder = _ => "kleenestar.core:setting.identity.state.placeholder",
+            Help = _ => "kleenestar.core:setting.identity.state.help",
+            StickySelection = _ => true,
             RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.State>()
         };
 
@@ -66,8 +66,8 @@ namespace KleeneStar.Core.WebFragment
             Add(Email);
             Add(IdentityState);
 
-            Mode = TypeRestFormMode.Clone;
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.Index>();
+            Mode = _ => TypeRestFormMode.Clone;
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.Index>();
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var param = renderContext.Request.GetParameter<IdentityIdParameter>();
 
-            return base.Render(renderContext, visualTree, Items, param?.Value, Uri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

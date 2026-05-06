@@ -41,11 +41,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputCascading WorkspaceSelection { get; } = new()
         {
-            Name = nameof(Object.WorkspaceId),
-            Label = "kleenestar.core:object.workspace.label",
-            Help = "kleenestar.core:object.workspace.help",
-            Placeholder = "kleenestar.core:object.workspace.placeholder",
-            Required = true
+            Name = _ => nameof(Object.WorkspaceId),
+            Label = _ => "kleenestar.core:object.workspace.label",
+            Help = _ => "kleenestar.core:object.workspace.help",
+            Placeholder = _ => "kleenestar.core:object.workspace.placeholder",
+            Required = _ => true
         };
 
         /// <summary>
@@ -53,11 +53,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputTile TemplateSelection { get; } = new()
         {
-            Name = nameof(Object.ClassId),
-            Label = "kleenestar.core:object.template.label",
-            Help = "kleenestar.core:object.template.help",
-            LargeIcon = true,
-            Required = true
+            Name = _ => nameof(Object.ClassId),
+            Label = _ => "kleenestar.core:object.template.label",
+            Help = _ => "kleenestar.core:object.template.help",
+            LargeIcon = _ => true,
+            Required = _ => true
         };
 
         /// <summary>
@@ -65,11 +65,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestFormItemInputUnique Summary { get; } = new()
         {
-            Name = nameof(Object.Summary),
-            Label = "kleenestar.core:object.summary.label",
+            Name = _ => nameof(Object.Summary),
+            Label = _ => "kleenestar.core:object.summary.label",
             Placeholder = "kleenestar.core:object.summary.placeholder",
-            Help = "kleenestar.core:object.summary.help",
-            Required = true,
+            Help = _ => "kleenestar.core:object.summary.help",
+            Required = _ => true,
         };
 
         /// <summary>
@@ -77,11 +77,11 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlFormItemInputText Description { get; } = new()
         {
-            Name = nameof(Object.Description),
-            Label = "kleenestar.core:object.description.label",
-            Placeholder = "kleenestar.core:object.description.placeholder",
-            Format = TypeEditTextFormat.Wysiwyg,
-            Required = false
+            Name = _ => nameof(Object.Description),
+            Label = _ => "kleenestar.core:object.description.label",
+            Placeholder = _ => "kleenestar.core:object.description.placeholder",
+            Format = _ => TypeEditTextFormat.Wysiwyg,
+            Required = _ => false
         };
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace KleeneStar.Core.WebFragment
             {
                 var categoryNode = new ControlFormItemInputCascadingItem(category.Id.ToString())
                 {
-                    Text = category.Name
+                    Text = _ => category.Name
                 };
 
                 foreach (var workspace in workspaces.Where(x => x.Categories?.Any(c => c.Id == category.Id) == true))
@@ -193,8 +193,8 @@ namespace KleeneStar.Core.WebFragment
             {
                 var card = new ControlTileCard($"{@class.WorkspaceId}:{@class.Id}")
                 {
-                    Header = @class.Name,
-                    Icon = @class.Icon
+                    Header = _ => @class.Name,
+                    Icon = _ => @class.Icon
                 };
 
                 if (!string.IsNullOrWhiteSpace(@class.Description))
@@ -215,8 +215,8 @@ namespace KleeneStar.Core.WebFragment
         {
             return new ControlFormItemInputCascadingItem(workspace.Id.ToString())
             {
-                Text = workspace.Name,
-                Icon = workspace.Icon
+                Text = _ => workspace.Name,
+                Icon = _ => workspace.Icon
             };
         }
     }
