@@ -40,8 +40,8 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext)
         {
             _componentHub = componentHub;
-            Text = "webexpress.webapp:login.label";
-            Icon = new IconRightToBracket();
+            Text = _ => "webexpress.webapp:login.label";
+            Icon = _ => new IconRightToBracket();
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace KleeneStar.Core.WebFragment
             var loginUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Session.Index>();
             var primaryAction = new ActionModal("modal-form", loginUri, TypeModalSize.Default);
 
-            return base.Render(renderContext, visualTree, Text, Tooltip, Icon, Color, Uri, Target, primaryAction, SecondaryAction);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

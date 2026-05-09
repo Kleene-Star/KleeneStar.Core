@@ -26,10 +26,10 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Form.Name),
             Label = _ => "kleenestar.core:form.name.label",
-            Placeholder = "kleenestar.core:form.name.placeholder",
+            Placeholder = _ => "kleenestar.core:form.name.placeholder",
             Help = _ => "kleenestar.core:form.name.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.UniqueName>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.UniqueName>()
         };
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:form.state.placeholder",
             Help = _ => "kleenestar.core:form.state.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.State>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.State>()
         };
 
         /// <summary>

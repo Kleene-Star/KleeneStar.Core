@@ -37,10 +37,10 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Object.Summary),
             Label = _ => "kleenestar.core:object.summary.label",
-            Placeholder = "kleenestar.core:object.summary.placeholder",
+            Placeholder = _ => "kleenestar.core:object.summary.placeholder",
             Help = _ => "kleenestar.core:object.summary.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Workspaces.UniqueName>()
+            RestUri = _ => CoreHub.GetUri<WWW.Api._1_.Workspaces.UniqueName>()
         };
 
         /// <summary>
@@ -257,7 +257,7 @@ namespace KleeneStar.Core.WebFragment
                     {
                         Name = _ => field.Name,
                         Label = _ => field.Name,
-                        Placeholder = field.Placeholder,
+                        Placeholder = _ => field.Placeholder,
                         Help = _ => field.HelpText,
                         Required = _ => field.Required
                     };
@@ -286,7 +286,7 @@ namespace KleeneStar.Core.WebFragment
                     {
                         Name = _ => field.Name,
                         Label = _ => field.Name,
-                        Placeholder = field.Placeholder,
+                        Placeholder = _ => field.Placeholder,
                         Help = _ => field.HelpText,
                         Required = _ => field.Required
                     };
@@ -296,7 +296,7 @@ namespace KleeneStar.Core.WebFragment
                     {
                         Name = _ => field.Name,
                         Label = _ => field.Name,
-                        Placeholder = field.Placeholder,
+                        Placeholder = _ => field.Placeholder,
                         Help = _ => field.HelpText,
                         Required = _ => field.Required
                     };

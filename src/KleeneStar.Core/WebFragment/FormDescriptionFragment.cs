@@ -29,7 +29,7 @@ namespace KleeneStar.Core.WebFragment
         public FormDescriptionFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Format = TypeFormatText.Markdown;
+            Format = _ => TypeFormatText.Markdown;
         }
 
         /// <summary>

@@ -47,7 +47,7 @@ namespace KleeneStar.Core.WebFragment
                 .BindParameters(workflowIdParam)
                 .BindParameters(renderContext.Request);
 
-            return base.Render(renderContext, visualTree, restUri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

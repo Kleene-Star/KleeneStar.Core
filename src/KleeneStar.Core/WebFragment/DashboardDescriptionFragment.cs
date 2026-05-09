@@ -27,8 +27,8 @@ namespace KleeneStar.Core.WebFragment
         public DashboardDescriptionFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:dashboard.manage.description";
-            Format = TypeFormatText.Markdown;
+            Text = _ => "kleenestar.core:dashboard.manage.description";
+            Format = _ => TypeFormatText.Markdown;
         }
 
         /// <summary>

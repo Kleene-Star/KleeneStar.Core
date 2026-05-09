@@ -48,7 +48,7 @@ namespace KleeneStar.Core.WebFragment
                 .BindParameters(formIdParam)
                 .BindParameters(renderContext.Request);
 
-            return base.Render(renderContext, visualTree, restUri, false);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

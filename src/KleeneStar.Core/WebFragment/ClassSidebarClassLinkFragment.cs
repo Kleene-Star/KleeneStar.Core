@@ -1,6 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
 using System;
-using System.Linq;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -38,9 +37,12 @@ namespace KleeneStar.Core.WebFragment
         public ClassSidebarClassLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = new IconClass(TypeIconTheme.Light);
-            Text = "kleenestar.core:class.link.label";
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Index>();
+            Icon = _ => new IconClass(TypeIconTheme.Light);
+            Text = _ => "kleenestar.core:class.link.label";
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Index>();
+            Active = renderContext => IsActive(renderContext, ResolveClassId(renderContext))
+                ? TypeActive.Active
+                : TypeActive.None;
         }
 
         /// <summary>
@@ -51,16 +53,10 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var classId = ResolveClassId(renderContext);
-
             // bind the classId into the main URI
-            var uri = Uri.BindParameters(new ClassIdParameter(classId));
+            //var uri = Uri.BindParameters(new ClassIdParameter(classId));
 
-            Active = IsActive(renderContext, classId)
-                ? TypeActive.Active
-                : TypeActive.None;
-
-            return base.Render(renderContext, visualTree, Text, Tooltip, uri, Icon, PrimaryAction, SecondaryAction);
+            return base.Render(renderContext, visualTree);
         }
 
         /// <summary>
@@ -137,18 +133,19 @@ namespace KleeneStar.Core.WebFragment
         /// </returns>
         private bool IsActive(IRenderControlContext renderContext, Guid classId)
         {
-            var targetUris = new[]
-            {
-                Uri,
-                // add more uris here in the future
-            }
-                .Select(x => x.BindParameters(new ClassIdParameter(classId)))
-                .Select(x => x.BindParameters(renderContext.Request))
-                .Select(x => string.Join("/", x.PathSegments ?? []));
+            //var targetUris = new[]
+            //{
+            //    Uri,
+            //    // add more uris here in the future
+            //}
+            //    .Select(x => x.BindParameters(new ClassIdParameter(classId)))
+            //    .Select(x => x.BindParameters(renderContext.Request))
+            //    .Select(x => string.Join("/", x.PathSegments ?? []));
 
-            var currentUri = string.Join("/", renderContext.Request.Uri.PathSegments ?? []);
+            //var currentUri = string.Join("/", renderContext.Request.Uri.PathSegments ?? []);
 
-            return targetUris.Any(uri => string.Equals(currentUri, uri, StringComparison.OrdinalIgnoreCase));
+            //return targetUris.Any(uri => string.Equals(currentUri, uri, StringComparison.OrdinalIgnoreCase));
+            return false;
         }
     }
 }

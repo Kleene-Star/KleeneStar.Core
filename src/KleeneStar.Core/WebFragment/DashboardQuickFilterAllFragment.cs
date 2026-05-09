@@ -26,8 +26,8 @@ namespace KleeneStar.Core.WebFragment
         public DashboardQuickFilterAllFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:dashboard.quickfilter.all.label";
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboards.Index>();
+            Text = _ => "kleenestar.core:dashboard.quickfilter.all.label";
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboards.Index>();
         }
 
         /// <summary>
@@ -38,9 +38,9 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            Active = TypeActive.Active;
+            Active = _ => TypeActive.Active;
 
-            PrimaryAction = new ActionFilterReset()
+            PrimaryAction = _ => new ActionFilterReset()
             {
                 Exclusive = true,
                 Group = "category"

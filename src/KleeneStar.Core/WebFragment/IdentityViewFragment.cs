@@ -23,7 +23,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.Wql>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.Wql>()
         };
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestQuickfilter Quickfilter { get; } = new ControlRestQuickfilter()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.Quickfilter>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.Quickfilter>()
         };
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.Table>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.Table>()
         };
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace KleeneStar.Core.WebFragment
         public IdentityViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Table.Bind = new Binding()
+            Table.Bind = _ => new Binding()
                 .Add(new BindSearch()
                 {
                     Source = Search.Id
@@ -74,7 +74,7 @@ namespace KleeneStar.Core.WebFragment
                     Source = Pagination.Id
                 });
 
-            Tile.Bind = new Binding()
+            Tile.Bind = _ => new Binding()
                 .Add(new BindSearch()
                 {
                     Source = Search.Id

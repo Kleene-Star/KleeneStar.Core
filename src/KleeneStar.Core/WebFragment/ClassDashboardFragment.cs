@@ -4,6 +4,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment
@@ -29,7 +30,7 @@ namespace KleeneStar.Core.WebFragment
         public ClassDashboardFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._classid_.Stats>();
+            RestUri = renderContext => GetRestUri(renderContext);
         }
 
         /// <summary>
@@ -46,6 +47,24 @@ namespace KleeneStar.Core.WebFragment
                 return null;
             }
 
+
+
+            return base.Render(renderContext, visualTree);
+        }
+
+        /// <summary>
+        /// Retrieves a REST API URI for class statistics based on the current render context.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The render context containing the request parameters used to determine the class identifier.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IUri"/> representing the REST API endpoint for the specified class statistics, 
+        /// or <see langword="null"/> if the class identifier is not available.
+        /// </returns>
+        private static IUri GetRestUri(IRenderControlContext renderContext)
+        {
+            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._classid_.Stats>();
             var classId = renderContext.Request.GetParameter<ClassIdParameter>()?.Value;
 
             if (classId == null)
@@ -53,9 +72,7 @@ namespace KleeneStar.Core.WebFragment
                 return null;
             }
 
-            var restUri = RestUri?.BindParameters(new ClassIdParameter(classId));
-
-            return base.Render(renderContext, visualTree, restUri);
+            return uri?.BindParameters(new ClassIdParameter(classId));
         }
     }
 }

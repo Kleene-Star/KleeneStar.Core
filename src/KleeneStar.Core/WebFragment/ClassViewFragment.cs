@@ -22,11 +22,11 @@ namespace KleeneStar.Core.WebFragment
         public ClassViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Search.RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Wql>();
-            Quickfilter.RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Quickfilter>();
-            Table.RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Table>();
-            Tile.RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Tile>();
-            List.List.RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.List>();
+            Search.RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Wql>();
+            Quickfilter.RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Quickfilter>();
+            Table.RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Table>();
+            Tile.RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Tile>();
+            List.List.RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.List>();
         }
 
         /// <summary>

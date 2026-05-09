@@ -26,10 +26,10 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Class.Name),
             Label = _ => "kleenestar.core:class.name.label",
-            Placeholder = "kleenestar.core:class.name.placeholder",
+            Placeholder = _ => "kleenestar.core:class.name.placeholder",
             Help = _ => "kleenestar.core:class.name.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.UniqueName>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.UniqueName>()
         };
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace KleeneStar.Core.WebFragment
             Label = _ => "kleenestar.core:class.inherited.label",
             Placeholder = _ => "kleenestar.core:class.inherited.placeholder",
             Help = _ => "kleenestar.core:class.inherited.help",
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Inherited>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Inherited>()
         };
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace KleeneStar.Core.WebFragment
             Name = _ => nameof(Model.Entities.Class.IsAbstract),
             Label = _ => "kleenestar.core:class.isabstract.label",
             Help = _ => "kleenestar.core:class.isabstract.help",
-            Layout = TypeLayoutCheck.Switch
+            Layout = _ => TypeLayoutCheck.Switch
         };
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace KleeneStar.Core.WebFragment
             Label = _ => "kleenestar.core:class.parent.label",
             Placeholder = _ => "kleenestar.core:class.parent.placeholder",
             Help = _ => "kleenestar.core:class.parent.help",
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Parent>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Parent>()
         };
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Class.AllowedChildren),
             Label = _ => "kleenestar.core:class.allowedchildren.label",
-            Placeholder = "kleenestar.core:class.allowedchildren.placeholder",
+            Placeholder = _ => "kleenestar.core:class.allowedchildren.placeholder",
             Help = _ => "kleenestar.core:class.allowedchildren.help"
         };
 
@@ -100,7 +100,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:class.accessmodifier.placeholder",
             Help = _ => "kleenestar.core:class.accessmodifier.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.AccessModifier>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.AccessModifier>()
         };
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace KleeneStar.Core.WebFragment
             Name = _ => nameof(Model.Entities.Class.Sealed),
             Label = _ => "kleenestar.core:class.sealed.label",
             Help = _ => "kleenestar.core:class.sealed.help",
-            Layout = TypeLayoutCheck.Switch
+            Layout = _ => TypeLayoutCheck.Switch
         };
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:class.state.placeholder",
             Help = _ => "kleenestar.core:class.state.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.State>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.State>()
         };
 
         /// <summary>

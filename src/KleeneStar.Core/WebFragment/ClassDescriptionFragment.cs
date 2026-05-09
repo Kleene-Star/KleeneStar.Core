@@ -27,8 +27,8 @@ namespace KleeneStar.Core.WebFragment
         public ClassDescriptionFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:class.manage.description";
-            Format = TypeFormatText.Markdown;
+            Text = _ => "kleenestar.core:class.manage.description";
+            Format = _ => TypeFormatText.Markdown;
         }
 
         /// <summary>

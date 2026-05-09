@@ -30,7 +30,7 @@ namespace KleeneStar.Core.WebFragment
         public DashboardDetailViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards._dashboardid_.View>();
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards._dashboardid_.View>();
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace KleeneStar.Core.WebFragment
                 ?? CoreHub.DashboardManager.GetDashboards(new Query<Model.Entities.Dashboard>())
                     .FirstOrDefault()?.Id.ToString();
 
-            var restUri = RestUri?.BindParameters(new DashboardIdParameter() { Value = dashboardId });
+            //var restUri = RestUri?.BindParameters(new DashboardIdParameter() { Value = dashboardId });
 
-            return base.Render(renderContext, visualTree, restUri);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

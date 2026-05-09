@@ -65,47 +65,47 @@ namespace KleeneStar.Core.WebFragment
             {
                 new ControlDropdownItemHeader()
                 {
-                    Text = "kleenestar.core:workspace.dropdown.label"
+                    Text = _ => "kleenestar.core:workspace.dropdown.label"
                 },
                 new ControlDropdownItemLink()
                 {
-                    Text = "webexpress.webapp:edit.label",
-                    Icon = new IconPen(TypeIconTheme.Light),
-                    PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge),
+                    Text = _ => "webexpress.webapp:edit.label",
+                    Icon = _ => new IconPen(TypeIconTheme.Light),
+                    PrimaryAction =_ =>  new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
-                    Text = "webexpress.webapp:clone.label",
-                    Icon = new IconClone(TypeIconTheme.Light),
-                    PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge),
+                    Text =_ =>  "webexpress.webapp:clone.label",
+                    Icon = _ => new IconClone(TypeIconTheme.Light),
+                    PrimaryAction = _ => new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
-                    Text = "kleenestar.core:workspace.permissions.label",
-                    Icon = new IconUserShield(TypeIconTheme.Light),
-                    PrimaryAction = new ActionModal("modal-form", permissionsUri, TypeModalSize.ExtraLarge),
+                    Text = _ => "kleenestar.core:workspace.permissions.label",
+                    Icon = _ => new IconUserShield(TypeIconTheme.Light),
+                    PrimaryAction =_ =>  new ActionModal("modal-form", permissionsUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
-                    Text = "kleenestar.core:class.manage.label",
-                    Icon = new IconClass(TypeIconTheme.Light),
-                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
+                    Text = _ => "kleenestar.core:class.manage.label",
+                    Icon = _ => new IconClass(TypeIconTheme.Light),
+                    Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                         .BindParameters(keyParameter)
                 },
                  new ControlDropdownItemLink()
                 {
-                    Text = "kleenestar.core:template.manage.label",
-                    Icon = new IconTemplate(),
-                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Templates._workspacekey_.Index>()?
+                    Text =_ =>  "kleenestar.core:template.manage.label",
+                    Icon =_ =>  new IconTemplate(),
+                    Uri =_ =>  CoreHub.GetUri<global::KleeneStar.Core.WWW.Templates._workspacekey_.Index>()?
                         .BindParameters(keyParameter)
                 },
                 new ControlDropdownItemDivider(),
                 new ControlDropdownItemLink("Delete")
                 {
-                    Text = "webexpress.webapp:delete.label",
-                    Icon = new IconTrash(TypeIconTheme.Light),
-                    PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Default),
-                    Color = TypeColorText.Danger
+                    Text = _ => "webexpress.webapp:delete.label",
+                    Icon =_ =>  new IconTrash(TypeIconTheme.Light),
+                    PrimaryAction = _ => new ActionModal("modal-form", deleteUri, TypeModalSize.Default),
+                    Color = _ => TypeColorText.Danger
                 }
             };
 

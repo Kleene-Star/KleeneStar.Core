@@ -40,7 +40,7 @@ namespace KleeneStar.Core.WebFragment
             Name = _ => nameof(Model.Entities.Field.CardinalityUnlimited),
             Label = _ => "kleenestar.core:field.configure.cardinality.unlimited.label",
             Help = _ => "kleenestar.core:field.configure.cardinality.unlimited.help",
-            Layout = TypeLayoutCheck.Switch
+            Layout = _ => TypeLayoutCheck.Switch
         };
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Field.Options),
             Label = _ => "kleenestar.core:field.configure.options.label",
-            Placeholder = "kleenestar.core:field.configure.options.placeholder",
+            Placeholder = _ => "kleenestar.core:field.configure.options.placeholder",
             Help = _ => "kleenestar.core:field.configure.options.help"
         };
 
@@ -104,7 +104,7 @@ namespace KleeneStar.Core.WebFragment
             Label = _ => "kleenestar.core:field.configure.workflow.label",
             Placeholder = _ => "kleenestar.core:field.configure.workflow.placeholder",
             Help = _ => "kleenestar.core:field.configure.workflow.help",
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>()
         };
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:field.configure.priority.default.placeholder",
             Help = _ => "kleenestar.core:field.configure.priority.default.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>()
         };
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace KleeneStar.Core.WebFragment
             Label = _ => "kleenestar.core:field.configure.priority.selected.label",
             Placeholder = _ => "kleenestar.core:field.configure.priority.available.label",
             Help = _ => "kleenestar.core:field.configure.priority.selected.label",
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>()
         };
 
         /// <summary>

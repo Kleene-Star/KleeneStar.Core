@@ -28,10 +28,10 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Workspace.Name),
             Label = _ => "kleenestar.core:workspace.name.label",
-            Placeholder = "kleenestar.core:workspace.name.placeholder",
+            Placeholder = _ => "kleenestar.core:workspace.name.placeholder",
             Help = _ => "kleenestar.core:workspace.name.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>()
         };
 
         /// <summary>
@@ -41,11 +41,11 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Workspace.Key),
             Label = _ => "kleenestar.core:workspace.key.label",
-            Placeholder = "kleenestar.core:workspace.key.placeholder",
+            Placeholder = _ => "kleenestar.core:workspace.key.placeholder",
             Help = _ => "kleenestar.core:workspace.key.help",
             Required = _ => true,
-            MaxLength = 10,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueKey>()
+            MaxLength = _ => 10,
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueKey>()
         };
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Workspace.Categories),
             Label = _ => "kleenestar.core:workspace.category.label",
-            Placeholder = "kleenestar.core:workspace.category.placeholder",
+            Placeholder = _ => "kleenestar.core:workspace.category.placeholder",
             Help = _ => "kleenestar.core:workspace.category.help"
         };
 
@@ -81,7 +81,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:workspace.state.placeholder",
             Help = _ => "kleenestar.core:workspace.state.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.State>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.State>()
         };
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace KleeneStar.Core.WebFragment
             Label = _ => "kleenestar.core:workspace.inherited.label",
             Placeholder = _ => "kleenestar.core:workspace.inherited.placeholder",
             Help = _ => "kleenestar.core:workspace.inherited.help",
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Inherited>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Inherited>()
         };
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:workspace.accessmodifier.placeholder",
             Help = _ => "kleenestar.core:workspace.accessmodifier.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.AccessModifier>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.AccessModifier>()
         };
 
         /// <summary>
@@ -117,7 +117,7 @@ namespace KleeneStar.Core.WebFragment
             Name = _ => "Sealed",
             Label = _ => "kleenestar.core:workspace.sealed.label",
             Help = _ => "kleenestar.core:workspace.sealed.help",
-            Layout = TypeLayoutCheck.Switch
+            Layout = _ => TypeLayoutCheck.Switch
         };
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => "Tenant",
             Label = _ => "kleenestar.core:workspace.tenant.label",
-            Placeholder = "kleenestar.core:workspace.tenant.placeholder",
+            Placeholder = _ => "kleenestar.core:workspace.tenant.placeholder",
             Help = _ => "kleenestar.core:workspace.tenant.help"
         };
 

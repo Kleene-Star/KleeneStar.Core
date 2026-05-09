@@ -37,7 +37,7 @@ namespace KleeneStar.Core.WebFragment
             : base(fragmentContext?.FragmentId?.ToString())
         {
             FragmentContext = fragmentContext;
-            Text = "kleenestar.core:dashboard.dropdown.label";
+            Text = _ => "kleenestar.core:dashboard.dropdown.label";
         }
 
         /// <summary>

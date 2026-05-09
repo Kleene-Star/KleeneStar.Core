@@ -65,56 +65,56 @@ namespace KleeneStar.Core.WebFragment
             {
                 new ControlDropdownItemHeader()
                 {
-                    Text = "kleenestar.core:class.dropdown.label"
+                    Text = _ => "kleenestar.core:class.dropdown.label"
                 },
                 new ControlDropdownItemLink()
                 {
-                    Text = "webexpress.webapp:edit.label",
-                    Icon = new IconPen(TypeIconTheme.Light),
-                    PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge),
+                    Text = _ => "webexpress.webapp:edit.label",
+                    Icon = _ => new IconPen(TypeIconTheme.Light),
+                    PrimaryAction = _ => new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
-                    Text = "webexpress.webapp:clone.label",
-                    Icon = new IconClone(TypeIconTheme.Light),
-                    PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge),
+                    Text = _ => "webexpress.webapp:clone.label",
+                    Icon = _ => new IconClone(TypeIconTheme.Light),
+                    PrimaryAction = _ => new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
-                    Text = "kleenestar.core:field.link.label",
-                    Icon = new IconField(TypeIconTheme.Light),
-                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Fields._classid_.Index>()?
+                    Text = _ => "kleenestar.core:field.link.label",
+                    Icon = _ => new IconField(TypeIconTheme.Light),
+                    Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Fields._classid_.Index>()?
                         .BindParameters(keyParameter)
                         .BindParameters(renderContext.Request)
                 },
                 new ControlDropdownItemLink()
                 {
-                    Text = "kleenestar.core:form.link.label",
-                    Icon = new IconListFunction(TypeIconTheme.Light),
+                    Text = _ => "kleenestar.core:form.link.label",
+                    Icon = _ => new IconListFunction(TypeIconTheme.Light),
                     //Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
                     //    .BindParameters(keyParameter)
                     // .BindParameters(renderContext.Request)
                 },
                 new ControlDropdownItemLink()
                 {
-                    Text = "kleenestar.core:priority.link.label",
-                    Icon = new IconFlag(TypeIconTheme.Light),
+                    Text = _ => "kleenestar.core:priority.link.label",
+                    Icon = _ => new IconFlag(TypeIconTheme.Light),
                     //Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
                     //    .BindParameters(keyParameter)
                     // .BindParameters(renderContext.Request)
                 },
                 new ControlDropdownItemLink()
                 {
-                    Text = "kleenestar.core:status.link.label",
-                    Icon = new IconStatus(TypeIconTheme.Light),
+                    Text = _ => "kleenestar.core:status.link.label",
+                    Icon = _ => new IconStatus(TypeIconTheme.Light),
                     //Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
                     //    .BindParameters(keyParameter)
                     // .BindParameters(renderContext.Request)
                 },
                 new ControlDropdownItemLink()
                 {
-                    Text = "kleenestar.core:workflow.link.label",
-                    Icon = new IconWorkflow(TypeIconTheme.Light),
+                    Text = _ => "kleenestar.core:workflow.link.label",
+                    Icon = _ => new IconWorkflow(TypeIconTheme.Light),
                     //Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
                     //    .BindParameters(keyParameter)
                     // .BindParameters(renderContext.Request)
@@ -122,10 +122,10 @@ namespace KleeneStar.Core.WebFragment
                 new ControlDropdownItemDivider(),
                 new ControlDropdownItemLink("Delete")
                 {
-                    Text = "webexpress.webapp:delete.label",
-                    Icon = new IconTrash(TypeIconTheme.Light),
-                    PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Default),
-                    Color = TypeColorText.Danger
+                    Text = _ => "webexpress.webapp:delete.label",
+                    Icon = _ => new IconTrash(TypeIconTheme.Light),
+                    PrimaryAction = _ => new ActionModal("modal-form", deleteUri, TypeModalSize.Default),
+                    Color = _ => TypeColorText.Danger
                 }
             };
 

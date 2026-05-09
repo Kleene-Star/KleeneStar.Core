@@ -67,7 +67,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Object.Summary),
             Label = _ => "kleenestar.core:object.summary.label",
-            Placeholder = "kleenestar.core:object.summary.placeholder",
+            Placeholder = _ => "kleenestar.core:object.summary.placeholder",
             Help = _ => "kleenestar.core:object.summary.help",
             Required = _ => true,
         };
@@ -103,8 +103,8 @@ namespace KleeneStar.Core.WebFragment
 
             Add(step1, step2, step3);
 
-            Mode = TypeRestFormMode.Add;
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Index>();
+            Mode = _ => TypeRestFormMode.Add;
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Index>();
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace KleeneStar.Core.WebFragment
 
                 if (!string.IsNullOrWhiteSpace(@class.Description))
                 {
-                    card.Add(new ControlText { Text = @class.Description });
+                    card.Add(new ControlText { Text = _ => @class.Description });
                 }
 
                 TemplateSelection.Add(card);

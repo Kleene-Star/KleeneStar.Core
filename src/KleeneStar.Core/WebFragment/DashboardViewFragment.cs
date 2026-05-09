@@ -24,7 +24,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Wql>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Wql>()
         };
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestQuickfilter Quickfilter { get; } = new ControlRestQuickfilter()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Quickfilter>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Quickfilter>()
         };
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Table>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Table>()
         };
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace KleeneStar.Core.WebFragment
         public DashboardViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Table.Bind = new Binding()
+            Table.Bind = _ => new Binding()
                 .Add(new BindSearch()
                 {
                     Source = Search.Id

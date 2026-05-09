@@ -26,10 +26,10 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Status.Name),
             Label = _ => "kleenestar.core:status.name.label",
-            Placeholder = "kleenestar.core:status.name.placeholder",
+            Placeholder = _ => "kleenestar.core:status.name.placeholder",
             Help = _ => "kleenestar.core:status.name.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Statuses.UniqueName>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Statuses.UniqueName>()
         };
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace KleeneStar.Core.WebFragment
             Label = _ => "kleenestar.core:status.category.label",
             Placeholder = _ => "kleenestar.core:status.category.placeholder",
             Help = _ => "kleenestar.core:status.category.help",
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Statuses.Category>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Statuses.Category>()
         };
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:status.state.placeholder",
             Help = _ => "kleenestar.core:status.state.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Statuses.State>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Statuses.State>()
         };
 
         /// <summary>

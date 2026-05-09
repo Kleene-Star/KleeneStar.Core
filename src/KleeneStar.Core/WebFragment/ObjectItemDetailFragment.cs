@@ -66,7 +66,7 @@ namespace KleeneStar.Core.WebFragment
                 Class = Css.Concatenate("wx-kleenestar-object-detail", GetClasses()),
                 Style = GetStyles(),
                 Role = role,
-                DataTheme = Theme.ToValue()
+                //DataTheme = Theme.ToValue()
             };
 
             if (@object is null)
@@ -187,12 +187,12 @@ namespace KleeneStar.Core.WebFragment
             {
                 var panel = new ControlPanel("group-" + group.Id.ToString("N"))
                 {
-                    Direction = MapGroupDirection(group.Layout)
+                    Direction = _ => MapGroupDirection(group.Layout)
                 };
 
                 if (!string.IsNullOrWhiteSpace(group.Label))
                 {
-                    panel.Add(new ControlText() { Text = group.Label });
+                    panel.Add(new ControlText() { Text = _ => group.Label });
                 }
 
                 foreach (var child in group.Children.OrderBy(c => c.Position))
@@ -221,7 +221,7 @@ namespace KleeneStar.Core.WebFragment
 
             var smartEdit = new ControlSmartEdit("field-" + field.Id.ToString("N"))
             {
-                ObjectId = @object.Id.ToString(),
+                ObjectId = _ => @object.Id.ToString(),
                 ObjectName = _ => field.Name,
                 Uri = _ => objectUri,
                 Method = _ => RequestMethod.PUT
@@ -258,7 +258,7 @@ namespace KleeneStar.Core.WebFragment
 
             var smartEdit = new ControlSmartEdit("attr-" + name.ToLowerInvariant())
             {
-                ObjectId = @object.Id.ToString(),
+                ObjectId = _ => @object.Id.ToString(),
                 ObjectName = _ => name,
                 Uri = _ => objectUri,
                 Method = _ => RequestMethod.PUT
@@ -341,7 +341,7 @@ namespace KleeneStar.Core.WebFragment
                     {
                         Name = _ => field.Name,
                         Label = _ => field.Name,
-                        Placeholder = field.Placeholder,
+                        Placeholder = _ => field.Placeholder,
                         Help = _ => field.HelpText,
                         Required = _ => field.Required
                     };
@@ -370,7 +370,7 @@ namespace KleeneStar.Core.WebFragment
                     {
                         Name = _ => field.Name,
                         Label = _ => field.Name,
-                        Placeholder = field.Placeholder,
+                        Placeholder = _ => field.Placeholder,
                         Help = _ => field.HelpText,
                         Required = _ => field.Required
                     };
@@ -380,7 +380,7 @@ namespace KleeneStar.Core.WebFragment
                     {
                         Name = _ => field.Name,
                         Label = _ => field.Name,
-                        Placeholder = field.Placeholder,
+                        Placeholder = _ => field.Placeholder,
                         Help = _ => field.HelpText,
                         Required = _ => field.Required
                     };

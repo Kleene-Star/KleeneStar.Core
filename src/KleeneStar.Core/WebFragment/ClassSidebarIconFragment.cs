@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WebFragment
         {
             _classManager = classManager;
 
-            IconEdit = true;
+            IconEdit = _ => true;
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace KleeneStar.Core.WebFragment
                 .BindParameters(renderContext.Request);
             var primaryAction = new ActionModal("modal-form", uri);
 
-            return base.Render(renderContext, visualTree, @class?.Icon, Uri, primaryAction, SecondaryAction);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

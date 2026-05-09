@@ -26,10 +26,10 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Field.Name),
             Label = _ => "kleenestar.core:field.name.label",
-            Placeholder = "kleenestar.core:field.name.placeholder",
+            Placeholder = _ => "kleenestar.core:field.name.placeholder",
             Help = _ => "kleenestar.core:field.name.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.UniqueName>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.UniqueName>()
         };
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:field.fieldtype.placeholder",
             Help = _ => "kleenestar.core:field.fieldtype.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.FieldType>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.FieldType>()
         };
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:field.cardinality.placeholder",
             Help = _ => "kleenestar.core:field.cardinality.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Cardinality>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Cardinality>()
         };
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace KleeneStar.Core.WebFragment
             Name = _ => nameof(Model.Entities.Field.Required),
             Label = _ => "kleenestar.core:field.required.label",
             Help = _ => "kleenestar.core:field.required.help",
-            Layout = TypeLayoutCheck.Switch
+            Layout = _ => TypeLayoutCheck.Switch
         };
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace KleeneStar.Core.WebFragment
             Name = _ => nameof(Model.Entities.Field.Unique),
             Label = _ => "kleenestar.core:field.unique.label",
             Help = _ => "kleenestar.core:field.unique.help",
-            Layout = TypeLayoutCheck.Switch
+            Layout = _ => TypeLayoutCheck.Switch
         };
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace KleeneStar.Core.WebFragment
             Name = _ => nameof(Model.Entities.Field.Deprecated),
             Label = _ => "kleenestar.core:field.deprecated.label",
             Help = _ => "kleenestar.core:field.deprecated.help",
-            Layout = TypeLayoutCheck.Switch
+            Layout = _ => TypeLayoutCheck.Switch
         };
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:field.accessmodifier.placeholder",
             Help = _ => "kleenestar.core:field.accessmodifier.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.AccessModifier>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.AccessModifier>()
         };
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:field.state.placeholder",
             Help = _ => "kleenestar.core:field.state.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.State>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.State>()
         };
 
         /// <summary>

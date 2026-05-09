@@ -26,10 +26,10 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Workflow.Name),
             Label = _ => "kleenestar.core:workflow.name.label",
-            Placeholder = "kleenestar.core:workflow.name.placeholder",
+            Placeholder = _ => "kleenestar.core:workflow.name.placeholder",
             Help = _ => "kleenestar.core:workflow.name.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.UniqueName>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.UniqueName>()
         };
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:workflow.state.placeholder",
             Help = _ => "kleenestar.core:workflow.state.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.State>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.State>()
         };
 
         /// <summary>

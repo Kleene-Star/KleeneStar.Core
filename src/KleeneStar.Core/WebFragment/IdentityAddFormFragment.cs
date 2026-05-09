@@ -26,10 +26,10 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Identity.Name),
             Label = _ => "kleenestar.core:setting.identity.name.label",
-            Placeholder = "kleenestar.core:setting.identity.name.placeholder",
+            Placeholder = _ => "kleenestar.core:setting.identity.name.placeholder",
             Help = _ => "kleenestar.core:setting.identity.name.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.UniqueName>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.UniqueName>()
         };
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:setting.identity.state.placeholder",
             Help = _ => "kleenestar.core:setting.identity.state.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.State>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.State>()
         };
 
         /// <summary>

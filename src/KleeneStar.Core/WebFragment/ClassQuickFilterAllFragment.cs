@@ -27,8 +27,8 @@ namespace KleeneStar.Core.WebFragment
         public ClassQuickFilertAllFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:class.quickfilter.all.label";
-            Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>();
+            Text = _ => "kleenestar.core:class.quickfilter.all.label";
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>();
         }
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace KleeneStar.Core.WebFragment
         {
             var categoryParameter = renderContext.Request.GetParameter<CategoryIdParameter>();
 
-            Active = categoryParameter is null
+            Active = _ => categoryParameter is null
                 ? TypeActive.Active
                 : TypeActive.None;
 

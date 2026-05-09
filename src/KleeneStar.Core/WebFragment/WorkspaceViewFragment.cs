@@ -26,7 +26,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Wql>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Wql>()
         };
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestQuickfilter Quickfilter { get; } = new ControlRestQuickfilter()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Quickfilter>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Quickfilter>()
         };
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Table>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Table>()
         };
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace KleeneStar.Core.WebFragment
         /// </summary>
         public ControlRestTile Tile { get; } = new ControlRestTile()
         {
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Tile>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Tile>()
         };
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace KleeneStar.Core.WebFragment
         public WorkspaceViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Table.Bind = new Binding()
+            Table.Bind = _ => new Binding()
                 .Add(new BindSearch()
                 {
                     Source = Search.Id
@@ -80,7 +80,7 @@ namespace KleeneStar.Core.WebFragment
                     Source = Pagination.Id
                 });
 
-            Tile.Bind = new Binding()
+            Tile.Bind = _ => new Binding()
                 .Add(new BindSearch()
                 {
                     Source = Search.Id

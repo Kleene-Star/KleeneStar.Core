@@ -40,8 +40,8 @@ namespace KleeneStar.Core.WebFragment
         {
             _workspaceManager = workspaceManager;
 
-            IconEdit = true;
-            PrimaryAction = new ActionModal("modal-form");
+            IconEdit = _ => true;
+            PrimaryAction = _ => new ActionModal("modal-form");
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace KleeneStar.Core.WebFragment
                 .BindParameters(renderContext.Request);
             var primaryAction = new ActionModal("modal-form", uri);
 
-            return base.Render(renderContext, visualTree, workspace?.Icon, Uri, primaryAction, SecondaryAction);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

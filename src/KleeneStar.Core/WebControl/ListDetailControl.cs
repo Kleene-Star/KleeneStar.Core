@@ -16,8 +16,8 @@ namespace KleeneStar.Core.WebControl
         public ControlRestList List { get; } = new ControlRestList()
         {
             Selectable = _ => true,
-            Sortable = true,
-            Title = "List",
+            Sortable = _ => true,
+            Title = _ => "List",
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.Two, PropertySpacing.Space.None, PropertySpacing.Space.None)
         };
 
@@ -27,7 +27,7 @@ namespace KleeneStar.Core.WebControl
         /// </summary>
         public ControlFrame Frame { get; } = new ControlFrame("frame_DD186C20B00041378929FF6B74D5A60B")
         {
-            Selector = "#wx-content-main",
+            Selector = _ => "#wx-content-main",
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
         };
 

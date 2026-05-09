@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebFragment
         public WorkspaceSidebarFilterCategoryFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Text = "kleenestar.core:workspace.quickfilter.all.label";
+            Text = _ => "kleenestar.core:workspace.quickfilter.all.label";
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace KleeneStar.Core.WebFragment
                 new ControlSidebarItemLink($"cat-all")
                 {
                     Text = Text,
-                    PrimaryAction = new ActionFilterReset()
+                    PrimaryAction = _ => new ActionFilterReset()
                     {
                         Exclusive = true,
                         Group = "category"
@@ -61,8 +61,8 @@ namespace KleeneStar.Core.WebFragment
             {
                 list.Add(new ControlSidebarItemLink($"cat-{category.Id}")
                 {
-                    Text = category.Name,
-                    PrimaryAction = new ActionFilter()
+                    Text = _ => category.Name,
+                    PrimaryAction = _ => new ActionFilter()
                     {
                         Exclusive = true,
                         Group = "category"

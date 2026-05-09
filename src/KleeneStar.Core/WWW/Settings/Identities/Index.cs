@@ -36,18 +36,18 @@ namespace KleeneStar.Core.WWW.Settings.Identities
         {
             visualTree.Content.MainPanel.AddPrimary(new ControlText()
             {
-                Text = I18N.Translate
+                Text = _ => I18N.Translate
                 (
                     renderContext,
                     "kleenestar.core:setting.identity.header"
                 ),
-                TextColor = new PropertyColorText(TypeColorText.Info),
+                TextColor = _ => new PropertyColorText(TypeColorText.Info),
                 Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
 
             visualTree.Content.MainPanel.AddPrimary(new ControlText()
             {
-                Text = I18N.Translate
+                Text = _ => I18N.Translate
                 (
                     renderContext,
                     "kleenestar.core:setting.identity.description"

@@ -65,7 +65,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:template.class.placeholder",
             Help = _ => "kleenestar.core:template.class.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Index>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Index>()
         };
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:template.state.placeholder",
             Help = _ => "kleenestar.core:template.state.help",
             StickySelection = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates.State>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates.State>()
         };
 
         /// <summary>

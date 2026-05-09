@@ -30,10 +30,10 @@ namespace KleeneStar.Core.WebFragment
         public DarkmodeToggleFragment(IComponentHub componentHub, IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = new IconMoon();
-            PrimaryAction = new ActionDarkmode();
-            Text = "webexpress.webui:darkmode.text.light";
-            Bind = new Binding().Add(new BindDarkmode());
+            Icon = _ => new IconMoon();
+            PrimaryAction = _ => new ActionDarkmode();
+            Text = _ => "webexpress.webui:darkmode.text.light";
+            Bind = _ => new Binding().Add(new BindDarkmode());
         }
 
         /// <summary>

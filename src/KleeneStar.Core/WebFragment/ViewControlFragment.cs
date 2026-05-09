@@ -70,7 +70,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Layout = _ => TypeLayoutView.ToggleGroup;
 
-            Table.Bind = new Binding()
+            Table.Bind = _ => new Binding()
                 .Add(new BindSearch()
                 {
                     Source = Search.Id
@@ -81,7 +81,7 @@ namespace KleeneStar.Core.WebFragment
                     Source = Pagination.Id
                 });
 
-            Tile.Bind = new Binding()
+            Tile.Bind = _ => new Binding()
                 .Add(new BindSearch()
                 {
                     Source = Search.Id

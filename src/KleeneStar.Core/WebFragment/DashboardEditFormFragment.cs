@@ -26,10 +26,10 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Dashboard.Name),
             Label = _ => "kleenestar.core:dashboard.name.label",
-            Placeholder = "kleenestar.core:dashboard.name.placeholder",
+            Placeholder = _ => "kleenestar.core:dashboard.name.placeholder",
             Help = _ => "kleenestar.core:dashboard.name.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.UniqueName>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.UniqueName>()
         };
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Dashboard.Categories),
             Label = _ => "kleenestar.core:dashboard.category.label",
-            Placeholder = "kleenestar.core:dashboard.category.placeholder",
+            Placeholder = _ => "kleenestar.core:dashboard.category.placeholder",
             Help = _ => "kleenestar.core:dashboard.category.help"
         };
 
@@ -64,7 +64,7 @@ namespace KleeneStar.Core.WebFragment
             Label = _ => "kleenestar.core:dashboard.state.label",
             Placeholder = _ => "kleenestar.core:dashboard.state.placeholder",
             Help = _ => "kleenestar.core:dashboard.state.help",
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.State>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.State>()
         };
 
         /// <summary>

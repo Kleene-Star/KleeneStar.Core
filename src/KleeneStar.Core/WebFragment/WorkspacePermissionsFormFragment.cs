@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:workspace.permissions.group.placeholder",
             Help = _ => "kleenestar.core:workspace.permissions.group.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Groups>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Groups>()
         };
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WebFragment
             Placeholder = _ => "kleenestar.core:workspace.permissions.policy.placeholder",
             Help = _ => "kleenestar.core:workspace.permissions.policy.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Policies>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Policies>()
         };
 
         /// <summary>

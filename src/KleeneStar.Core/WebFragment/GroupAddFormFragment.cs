@@ -26,10 +26,10 @@ namespace KleeneStar.Core.WebFragment
         {
             Name = _ => nameof(Model.Entities.Group.Name),
             Label = _ => "kleenestar.core:setting.group.name.label",
-            Placeholder = "kleenestar.core:setting.group.name.placeholder",
+            Placeholder = _ => "kleenestar.core:setting.group.name.placeholder",
             Help = _ => "kleenestar.core:setting.group.name.help",
             Required = _ => true,
-            RestUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Groups.UniqueName>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Groups.UniqueName>()
         };
 
         /// <summary>

@@ -47,8 +47,8 @@ namespace KleeneStar.Core.WebFragment
             {
                 list.Add(new ControlSidebarItemLink($"dashboard-{dashboard.Id}")
                 {
-                    Text = dashboard.Name,
-                    PrimaryAction = new ActionFilter()
+                    Text = _ => dashboard.Name,
+                    PrimaryAction = _ => new ActionFilter()
                     {
                         Exclusive = true,
                         Group = "dashboard"

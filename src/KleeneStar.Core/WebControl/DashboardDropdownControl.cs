@@ -17,9 +17,9 @@ namespace KleeneStar.Core.WebControl
         /// </summary>
         public ControlDropdownItemLink AddDashboard { get; } = new()
         {
-            Text = "kleenestar.core:dashboard.add.label",
-            Icon = new IconPlus(TypeIconTheme.Light),
-            PrimaryAction = new ActionModal("modal-form", CoreHub.GetUri<WWW.Dashboards.Add>(), TypeModalSize.ExtraLarge),
+            Text = _ => "kleenestar.core:dashboard.add.label",
+            Icon = _ => new IconPlus(TypeIconTheme.Light),
+            PrimaryAction = _ => new ActionModal("modal-form", CoreHub.GetUri<WWW.Dashboards.Add>(), TypeModalSize.ExtraLarge),
         };
 
         /// <summary>
@@ -27,8 +27,8 @@ namespace KleeneStar.Core.WebControl
         /// </summary>
         public ControlDropdownItemLink ManageDashboard { get; } = new()
         {
-            Text = "kleenestar.core:dashboard.manage.label",
-            Uri = CoreHub.GetUri<WWW.Dashboards.Index>(),
+            Text = _ => "kleenestar.core:dashboard.manage.label",
+            Uri = _ => CoreHub.GetUri<WWW.Dashboards.Index>(),
         };
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace KleeneStar.Core.WebControl
         public DashboardDropdownControl(string id)
             : base(id)
         {
-            RestUri = CoreHub.GetUri<WWW.Api._1_.Dashboards.Dropdown>();
+            RestUri = _ => CoreHub.GetUri<WWW.Api._1_.Dashboards.Dropdown>();
 
             Add(AddDashboard);
             Add(ManageDashboard);
