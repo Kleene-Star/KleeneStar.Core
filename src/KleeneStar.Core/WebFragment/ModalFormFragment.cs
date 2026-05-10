@@ -9,7 +9,7 @@ namespace KleeneStar.Core.WebFragment
     /// <summary>
     /// Represents a modal form for all purpose within the application.
     /// </summary>
-    [Section<SectionContentSecondary>]
+    [Section<SectionEpiloguePrimary>]
     [Scope<IScopeGeneral>]
     [Scope<IScopeAdmin>]
     [Cache]

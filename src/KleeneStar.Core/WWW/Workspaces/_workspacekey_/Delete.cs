@@ -1,5 +1,4 @@
-﻿using KleeneStar.Core.WebPolicies;
-using WebExpress.WebApp.WebPage;
+﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
@@ -14,7 +13,7 @@ namespace KleeneStar.Core.WWW.Workspaces._workspacekey_
     /// </summary>
     [WebIcon<IconTrashAlt>]
     [Title("kleenestar.core:workspace.delete.title")]
-    [Policy<WorkspaceAdminPolicy>]
+    //[Policy<WorkspaceAdminPolicy>]
     [Scope<IScopeGeneral>]
     public sealed class Delete : IPage<VisualTreeWebApp>, IScope
     {

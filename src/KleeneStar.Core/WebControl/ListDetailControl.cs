@@ -1,5 +1,8 @@
-﻿using WebExpress.WebApp.WebControl;
+﻿using System;
+using WebExpress.WebApp.WebControl;
+using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebControl
 {
@@ -9,6 +12,21 @@ namespace KleeneStar.Core.WebControl
     /// </summary>
     public class ListDetailControl : ControlPanelSplit
     {
+        /// <summary>
+        /// Represents the unique identifier for the frame used in this context.
+        /// </summary>
+        public static readonly string FrameId = "id_D85AD7256B374857914E70938DFA1F81";
+
+        /// <summary>
+        /// Gets or sets the delegate used to generate a RESTful URI based on the provided rendering context.
+        /// </summary>
+        public Func<IRenderControlContext, IUri> RestUri { get; set; }
+
+        /// <summary>
+        /// Gets or sets the delegate used to create a binding for a given render control context.
+        /// </summary>
+        public Func<IRenderControlContext, IBinding> Bind { get; set; }
+
         /// <summary>
         /// Gets the configuration tile that provides REST access to 
         /// workspace data.
@@ -25,7 +43,7 @@ namespace KleeneStar.Core.WebControl
         /// Gets the configuration tile that provides REST access to 
         /// workspace data.
         /// </summary>
-        public ControlFrame Frame { get; } = new ControlFrame("frame_DD186C20B00041378929FF6B74D5A60B")
+        public ControlFrame Frame { get; } = new ControlFrame(FrameId)
         {
             Selector = _ => "#wx-content-main",
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
@@ -38,6 +56,9 @@ namespace KleeneStar.Core.WebControl
         public ListDetailControl(string id = null)
             : base(id)
         {
+            List.RestUri = renderContext => RestUri?.Invoke(renderContext);
+            List.Bind = renderContext => Bind?.Invoke(renderContext);
+
             AddSidePanel(List);
             AddMainPanel(Frame);
 

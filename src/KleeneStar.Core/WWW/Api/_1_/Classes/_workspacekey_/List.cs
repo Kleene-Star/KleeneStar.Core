@@ -1,4 +1,5 @@
-﻿using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebControl;
+using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using System;
 using System.Collections.Generic;
@@ -80,7 +81,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
                     Id = x.Id.ToString(),
                     Text = x.Name,
                     Image = x.Icon?.Uri?.ToString(),
-                    PrimaryAction = new ActionFrame("frame_DD186C20B00041378929FF6B74D5A60B")
+                    PrimaryAction = new ActionFrame(ListDetailControl.FrameId)
                     {
                         Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Index>()
                             .BindParameters(new ClassIdParameter(x.Id))
@@ -167,7 +168,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
 
             //yield return new RestApiOptionCustom(request)
             //{
-            //    Uri = CoreHub.GetUri<WWW.Workspaces._key_.Classes.Index>()?
+            //    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._key_.Classes.Index>()?
             //        .SetParameters
             //        (
             //            new KeyParameter(row.Key)

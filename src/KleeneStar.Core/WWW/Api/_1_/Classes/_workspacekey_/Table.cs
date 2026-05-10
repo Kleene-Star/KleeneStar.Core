@@ -6,10 +6,12 @@ using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
 {
@@ -221,6 +223,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
                 .BindParameters(request)
                 .BindParameters(new ClassIdParameter(row.Id));
 
+            var iconTheme = request?.ApplicationContext.IconTheme ?? TypeIconTheme.Light;
+
             yield return new RestApiOptionHeader(request)
             {
                 Text = "webexpress.webapp:header.setting.label"
@@ -228,11 +232,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
 
             yield return new RestApiOptionEdit(request)
             {
+                Icon = new IconPen(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionClone(request)
             {
+                Icon = new IconClone(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
             };
 
@@ -241,6 +247,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
             yield return new RestApiOptionSeparator(request);
             yield return new RestApiOptionDelete(request)
             {
+                Icon = new IconTrash(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Small)
             };
         }

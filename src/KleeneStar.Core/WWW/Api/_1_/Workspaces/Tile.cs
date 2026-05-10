@@ -210,7 +210,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             yield return new RestApiOptionCustom(request)
             {
-                Uri = CoreHub.GetUri<WWW.Classes._workspacekey_.Index>()?
+                Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                     .BindParameters
                     (
                         new WorkspaceKeyParameter(row.Key)

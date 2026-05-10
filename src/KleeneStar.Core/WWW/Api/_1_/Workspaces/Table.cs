@@ -1,5 +1,4 @@
-﻿using KleeneStar.Core.WebIcon;
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
@@ -9,6 +8,7 @@ using System.Linq;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
@@ -294,6 +294,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             var deleteUri = _deleteFormUri?
                 .BindParameters(new WorkspaceKeyParameter(row.Key));
 
+            var iconTheme = request?.ApplicationContext.IconTheme ?? TypeIconTheme.Light;
+
             yield return new RestApiOptionHeader(request)
             {
                 Text = "webexpress.webapp:header.setting.label"
@@ -301,18 +303,20 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             yield return new RestApiOptionEdit(request)
             {
+                Icon = new IconPen(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionClone(request)
             {
+                Icon = new IconClone(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionCustom(request)
             {
                 Text = I18N.Translate(request, "kleenestar.core:workspace.permissions.label"),
-                Icon = new IconUserShield(),
+                Icon = new IconUserShield(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", permissionsUri, TypeModalSize.ExtraLarge)
             };
 
@@ -324,12 +328,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                         new WorkspaceKeyParameter(row.Key)
                     ),
                 Text = I18N.Translate(request, "kleenestar.core:class.manage.label"),
-                Icon = new ClassIcon()
+                Icon = new IconClass(iconTheme)
             };
 
             yield return new RestApiOptionSeparator(request);
             yield return new RestApiOptionDelete(request)
             {
+                Icon = new IconTrash(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Small)
             };
         }

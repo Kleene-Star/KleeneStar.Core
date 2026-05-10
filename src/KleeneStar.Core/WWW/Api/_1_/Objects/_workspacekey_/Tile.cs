@@ -29,9 +29,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         /// </summary>
         public Tile()
         {
-            //_editFormUri = CoreHub.GetUri<WWW.Workspaces._workspacekey_.Edit>();
-            //_cloneFormUri = CoreHub.GetUri<WWW.Workspaces._workspacekey_.Clone>();
-            //_deleteFormUri = CoreHub.GetUri<WWW.Workspaces._workspacekey_.Delete>();
+            //_editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Edit>();
+            //_cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Clone>();
+            //_deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Delete>();
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
 
             //yield return new RestApiOptionCustom(request)
             //{
-            //    Uri = CoreHub.GetUri<WWW.Workspaces._workspacekey_.Classes.Index>()?
+            //    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Classes.Index>()?
             //        .BindParameters
             //        (
             //            new WorkspaceKeyParameter(row.Key)

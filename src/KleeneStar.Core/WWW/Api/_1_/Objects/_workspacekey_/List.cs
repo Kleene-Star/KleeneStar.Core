@@ -1,4 +1,5 @@
-﻿using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebControl;
+using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
                     Id = x.Id.ToString(),
                     Text = x.Summary,
                     Image = x.Icon?.Uri?.ToString(),
-                    PrimaryAction = new ActionFrame("frame_DD186C20B00041378929FF6B74D5A60B")
+                    PrimaryAction = new ActionFrame(ListDetailControl.FrameId)
                     {
                         Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Index>()
                             .BindParameters(new ObjectKeyParameter(x.Key))

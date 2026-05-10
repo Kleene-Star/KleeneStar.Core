@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WebControl
         {
             Text = _ => "kleenestar.core:workspace.add.label",
             Icon = _ => new IconPlus(TypeIconTheme.Light),
-            PrimaryAction = _ => new ActionModal("modal-form", CoreHub.GetUri<WWW.Workspaces.Add>(), TypeModalSize.ExtraLarge),
+            PrimaryAction = _ => new ActionModal("modal-form", CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces.Add>(), TypeModalSize.ExtraLarge),
         };
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace KleeneStar.Core.WebControl
         public ControlDropdownItemLink ManageWorkspace { get; } = new()
         {
             Text = _ => "kleenestar.core:workspace.manage.label",
-            Uri = _ => CoreHub.GetUri<WWW.Workspaces.Index>(),
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces.Index>(),
         };
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace KleeneStar.Core.WebControl
         public WorkspaceDropdownControl(string id)
             : base(id)
         {
-            RestUri = _ => CoreHub.GetUri<WWW.Api._1_.Workspaces.Dropdown>();
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Dropdown>();
 
             Add(AddWorkspace);
             Add(ManageWorkspace);
