@@ -4,6 +4,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -35,6 +36,7 @@ namespace KleeneStar.Core.WebFragment.Form
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Secondary);
             Outline = _ => true;
+            Uri = renderContext => GetUri(renderContext);
         }
 
         /// <summary>
@@ -49,14 +51,29 @@ namespace KleeneStar.Core.WebFragment.Form
             {
                 return null;
             }
+
+            return base.Render(renderContext, visualTree);
+        }
+
+        /// <summary>
+        /// Retrieves the URI for the index page of a form based on the current render context.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The context for the current render operation, providing access to request parameters and
+        /// rendering state.
+        /// </param>
+        /// <returns>
+        /// An object representing the URI for the form's index page, with parameters bound according 
+        /// to the current context.
+        /// </returns>
+        private static IUri GetUri(IRenderControlContext renderContext)
+        {
             var formIdParameter = renderContext.Request.GetParameter<FormIdParameter>();
             var formId = Guid.TryParse(formIdParameter?.Value, out var result) ? result : Guid.Empty;
             var form = CoreHub.FormManager.GetForm(formId);
 
-            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Index>()
+            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Index>()
                 .BindParameters(new ClassIdParameter(form.ClassId));
-
-            return base.Render(renderContext, visualTree);
         }
     }
 }

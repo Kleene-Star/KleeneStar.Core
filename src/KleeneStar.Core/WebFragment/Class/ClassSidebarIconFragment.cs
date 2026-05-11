@@ -91,7 +91,7 @@ namespace KleeneStar.Core.WebFragment.Class
                 throw new InvalidOperationException("One of the parameters 'class', 'form' or 'workflow' must be set.");
             }
 
-            // normalize the class parameter:
+            // normalize the class parameter
             if (classParameter == null && formParameter != null)
             {
                 var formId = Guid.TryParse(formParameter.Value, out var formGuid)
@@ -141,8 +141,41 @@ namespace KleeneStar.Core.WebFragment.Class
         private IIcon GetIcon(IRenderControlContext renderContext)
         {
             var classParameter = renderContext.Request.GetParameter<ClassIdParameter>();
+            var formParameter = renderContext.Request.GetParameter<FormIdParameter>();
+            var workflowParameter = renderContext.Request.GetParameter<WorkflowIdParameter>();
 
-            var guid = Guid.TryParse(classParameter.Value, out var classGuid)
+            // ensure that at least one of the required parameters is present
+            if (classParameter == null && formParameter == null && workflowParameter == null)
+            {
+                throw new InvalidOperationException("One of the parameters 'class', 'form' or 'workflow' must be set.");
+            }
+
+            // normalize the class parameter
+            if (classParameter == null && formParameter != null)
+            {
+                var formId = Guid.TryParse(formParameter.Value, out var formGuid)
+                    ? formGuid
+                    : Guid.Empty;
+
+                var form = CoreHub.FormManager.GetForm(formId) ?? throw new InvalidOperationException($"Form with ID '{formId}' not found.");
+
+                // create a synthetic class parameter based on the form's ClassId
+                classParameter = new ClassIdParameter(form.ClassId.ToString());
+            }
+            else if (classParameter == null && workflowParameter != null)
+            {
+                var workflowId = Guid.TryParse(workflowParameter.Value, out var formGuid)
+                    ? formGuid
+                    : Guid.Empty;
+
+                var workflow = CoreHub.WorkflowManager.GetWorkflow(workflowId)
+                    ?? throw new InvalidOperationException($"Workflow with ID '{workflowId}' not found.");
+
+                // create a synthetic class parameter based on the form's ClassId
+                classParameter = new ClassIdParameter(workflow.ClassId.ToString());
+            }
+
+            var guid = Guid.TryParse(classParameter?.Value, out var classGuid)
                 ? classGuid
                 : Guid.Empty;
             var @class = _classManager.GetClass(guid);

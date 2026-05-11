@@ -1,30 +1,43 @@
-﻿using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebControl;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
+using WebExpress.WebUI.WebSection;
 
 namespace KleeneStar.Core.WebFragment.Form
 {
     /// <summary>
-    /// Represents a fragment control for managing form tables, providing functionality to 
-    /// render the fragment as HTML.
+    /// Represents a fragment that provides advanced search functionality within a form view.
     /// </summary>
-    [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Forms._classid_.Index>]
+    [Section<SectionViewHeaderPrimary>]
+    //[Policy<FormViewPolicy>]
+    [Scope<FormViewFragment>]
     [Cache]
-    public sealed class FormViewFragment : FragmentControlView
+    public sealed class FormViewSearchFragment : FragmentControlViewHeader
     {
+        /// <summary>
+        /// Represents the unique identifier for the content used in the application.
+        /// </summary>
+        public static readonly string ContentId = "id_3D9AAF71F5014085AA81B46633238611";
+
+        /// <summary>
+        /// Gets the search control used to query and filter data.
+        /// </summary>
+        public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch(ContentId)
+        {
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Wql>()
+        };
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public FormViewFragment(IFragmentContext fragmentContext)
+        public FormViewSearchFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Layout = _ => TypeLayoutView.ToggleGroup;
+            Add(Search);
         }
 
         /// <summary>

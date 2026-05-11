@@ -26,6 +26,7 @@ namespace KleeneStar.Core.WebFragment.Form
         public FormDetailViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            RestUri = renderContext => GetUri(renderContext);
         }
 
         /// <summary>
@@ -41,14 +42,28 @@ namespace KleeneStar.Core.WebFragment.Form
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var formIdParam = renderContext.Request.GetParameter<FormIdParameter>();
+            return base.Render(renderContext, visualTree);
+        }
 
+        /// <summary>
+        /// Generates a URI for the form editor resource based on the specified render context.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The rendering context containing the request and parameters used to construct the URI.
+        /// </param>
+        /// <returns>
+        /// An <see cref="IUri"/> representing the form editor resource with query parameters bound 
+        /// from the render context. Returns null if the base URI cannot be resolved.
+        /// </returns>
+        private static IUri GetUri(IRenderControlContext renderContext)
+        {
+            var formIdParam = renderContext.Request.GetParameter<FormIdParameter>();
             var restUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.FormEditor>()?
                 .Add(new UriQuery("id", formIdParam?.Value.ToString()))
                 .BindParameters(formIdParam)
                 .BindParameters(renderContext.Request);
 
-            return base.Render(renderContext, visualTree);
+            return restUri;
         }
     }
 }

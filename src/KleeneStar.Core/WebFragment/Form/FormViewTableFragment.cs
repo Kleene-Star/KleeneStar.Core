@@ -1,10 +1,13 @@
-﻿using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebControl;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
+using WebExpress.WebUI.WebSection;
 
 namespace KleeneStar.Core.WebFragment.Form
 {
@@ -12,19 +15,36 @@ namespace KleeneStar.Core.WebFragment.Form
     /// Represents a fragment control for managing form tables, providing functionality to 
     /// render the fragment as HTML.
     /// </summary>
-    [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Forms._classid_.Index>]
+    [Section<SectionViewItemPrimary>]
+    //[Policy<FormViewPolicy>]
+    [Scope<FormViewFragment>]
     [Cache]
-    public sealed class FormViewFragment : FragmentControlView
+    public sealed class FormViewTableFragment : FragmentControlViewItem
     {
+        /// <summary>
+        /// Gets the table of control view items used to display 
+        /// workspace data.
+        /// </summary>
+        public ControlRestTable Table { get; } = new ControlRestTable()
+        {
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms._classid_.Table>()
+        };
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public FormViewFragment(IFragmentContext fragmentContext)
+        public FormViewTableFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Layout = _ => TypeLayoutView.ToggleGroup;
+            Icon = _ => new IconTable(TypeIconTheme.Light);
+            Title = _ => "kleenestar.core:view.table.title";
+            Table.Bind = _ => new Binding()
+                .Add(new BindSearch() { Source = FormViewSearchFragment.ContentId })
+                .Add(new BindFilter())
+                .Add(new BindPaging() { Source = FormViewPaginationFragment.ContentId });
+
+            Add(Table);
         }
 
         /// <summary>

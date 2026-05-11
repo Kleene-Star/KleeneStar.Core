@@ -31,6 +31,11 @@ namespace KleeneStar.Core.WebFragment.Form
             : base(fragmentContext)
         {
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Index>();
+            ItemId = renderContext =>
+            {
+                var formId = renderContext.Request.GetParameter<FormIdParameter>();
+                return formId?.Value?.ToString();
+            };
         }
 
         /// <summary>

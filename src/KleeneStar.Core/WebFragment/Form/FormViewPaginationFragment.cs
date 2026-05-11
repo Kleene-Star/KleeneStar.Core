@@ -1,30 +1,42 @@
-﻿using WebExpress.WebApp.WebSection;
-using WebExpress.WebCore.WebAttribute;
+﻿using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
+using WebExpress.WebUI.WebSection;
 
 namespace KleeneStar.Core.WebFragment.Form
 {
     /// <summary>
-    /// Represents a fragment control for managing form tables, providing functionality to 
-    /// render the fragment as HTML.
+    /// Provides a footer fragment that enables pagination controls for form views.
     /// </summary>
-    [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Forms._classid_.Index>]
+    [Section<SectionViewFooterPrimary>]
+    //[Policy<FormViewPolicy>]
+    [Scope<FormViewFragment>]
     [Cache]
-    public sealed class FormViewFragment : FragmentControlView
+    public sealed class FormViewPaginationFragment : FragmentControlViewFooter
     {
+        /// <summary>
+        /// Represents the unique identifier for the content used in this context.
+        /// </summary>
+        public static readonly string ContentId = "id_208F88C44D674430BB92AB3A54A4A72B";
+
+        /// <summary>
+        /// Gets the pagination settings for controlling how data is divided into pages.
+        /// </summary>
+        public ControlPagination Pagination { get; } = new ControlPagination(ContentId)
+        {
+        };
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public FormViewFragment(IFragmentContext fragmentContext)
+        public FormViewPaginationFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Layout = _ => TypeLayoutView.ToggleGroup;
+            Add(Pagination);
         }
 
         /// <summary>

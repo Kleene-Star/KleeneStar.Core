@@ -68,6 +68,11 @@ namespace KleeneStar.Core.WebFragment.Form
             Add(FormState);
 
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Index>();
+            ItemId = renderContext =>
+            {
+                var formId = renderContext.Request.GetParameter<FormIdParameter>();
+                return formId?.Value?.ToString();
+            };
         }
 
         /// <summary>
@@ -84,8 +89,6 @@ namespace KleeneStar.Core.WebFragment.Form
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var param = renderContext.Request.GetParameter<FormIdParameter>();
-
             return base.Render(renderContext, visualTree);
         }
     }
