@@ -69,7 +69,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Statuses
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:status.add.title");
+            return RetrieveForCreate(request);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Statuses
                 State = StatusState.Active
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:status.clone.title");
+            return RetrieveForClone(request, newItem);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Statuses
             var data = CoreHub.StatusManager.GetStatuses(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:status.edit.title");
+            return RetrieveForUpdate(request, data);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Statuses
             var data = CoreHub.StatusManager.GetStatuses(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:status.delete.title", data?.Id.ToString());
+            return RetrieveForDelete(request, data, data?.Id.ToString());
         }
 
         /// <summary>

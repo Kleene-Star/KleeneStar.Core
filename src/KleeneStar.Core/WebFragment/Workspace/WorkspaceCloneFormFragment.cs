@@ -1,7 +1,6 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebApiControl;
-using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -149,7 +148,6 @@ namespace KleeneStar.Core.WebFragment.Workspace
             Add(Tenant);
             Add(WorkspaceState);
 
-            Mode = _ => TypeRestFormMode.Clone;
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
             ItemId = renderContext =>
             {

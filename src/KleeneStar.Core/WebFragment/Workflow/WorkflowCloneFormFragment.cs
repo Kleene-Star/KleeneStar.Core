@@ -1,6 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
-using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -68,7 +67,6 @@ namespace KleeneStar.Core.WebFragment.Workflow
             Add(Description);
             Add(WorkflowState);
 
-            Mode = _ => TypeRestFormMode.Clone;
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>();
         }
 

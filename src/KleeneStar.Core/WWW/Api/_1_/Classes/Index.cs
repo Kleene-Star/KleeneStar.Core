@@ -69,7 +69,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:class.add.title");
+            return RetrieveForCreate(request);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
                 AccessModifier = data.AccessModifier
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:class.clone.title");
+            return RetrieveForClone(request, newItem);
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             var data = CoreHub.ClassManager.GetClasses(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:class.edit.title");
+            return RetrieveForUpdate(request, data);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             var data = CoreHub.ClassManager.GetClasses(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:class.delete.title", data?.Id.ToString());
+            return RetrieveForDelete(request, data, data?.Id.ToString());
         }
 
         /// <summary>

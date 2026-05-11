@@ -1,5 +1,4 @@
 ﻿using WebExpress.WebApp.WebApiControl;
-using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -183,7 +182,6 @@ namespace KleeneStar.Core.WebFragment.Field
             Add(DefaultSpec);
             Add(FieldState);
 
-            Mode = _ => TypeRestFormMode.Add;
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
         }
 

@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebParameter;
-using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -26,7 +25,6 @@ namespace KleeneStar.Core.WebFragment.Workspace
         public WorkspaceDeleteFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Mode = _ => TypeRestFormMode.Delete;
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
             ItemId = renderContext =>
             {

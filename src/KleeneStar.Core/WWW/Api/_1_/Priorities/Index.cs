@@ -69,7 +69,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:priority.add.title");
+            return RetrieveForCreate(request);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities
                 State = PriorityState.Active
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:priority.clone.title");
+            return RetrieveForClone(request, newItem);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities
             var data = CoreHub.PriorityManager.GetPriorities(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:priority.edit.title");
+            return RetrieveForUpdate(request, data);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities
             var data = CoreHub.PriorityManager.GetPriorities(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:priority.delete.title", data?.Id.ToString());
+            return RetrieveForDelete(request, data, data?.Id.ToString());
         }
 
         /// <summary>

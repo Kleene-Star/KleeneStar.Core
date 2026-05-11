@@ -1,6 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
-using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -144,7 +143,6 @@ namespace KleeneStar.Core.WebFragment.Class
             Add(ClassSealed);
             Add(ClassState);
 
-            Mode = _ => TypeRestFormMode.Clone;
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
             ItemId = renderContext =>
             {

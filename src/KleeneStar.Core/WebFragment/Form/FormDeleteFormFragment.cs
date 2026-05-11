@@ -1,6 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
 using System;
-using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.Internationalization;
@@ -31,7 +30,6 @@ namespace KleeneStar.Core.WebFragment.Form
         public FormDeleteFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Mode = _ => TypeRestFormMode.Delete;
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Index>();
         }
 

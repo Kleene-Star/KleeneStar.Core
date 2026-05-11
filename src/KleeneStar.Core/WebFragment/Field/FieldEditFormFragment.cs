@@ -1,6 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
-using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -183,8 +182,12 @@ namespace KleeneStar.Core.WebFragment.Field
             Add(DefaultSpec);
             Add(FieldState);
 
-            Mode = _ => TypeRestFormMode.Edit;
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
+            ItemId = renderContext =>
+            {
+                var fieldId = renderContext.Request.GetParameter<FieldIdParameter>();
+                return fieldId?.Value?.ToString();
+            };
         }
 
         /// <summary>
@@ -201,8 +204,6 @@ namespace KleeneStar.Core.WebFragment.Field
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var param = renderContext.Request.GetParameter<FieldIdParameter>();
-
             return base.Render(renderContext, visualTree);
         }
     }

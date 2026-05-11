@@ -85,7 +85,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:workspace.add.title");
+            return RetrieveForCreate(request);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 Tenants = data.Tenants
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:workspace.clone.title");
+            return RetrieveForClone(request, newItem);
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             var data = CoreHub.WorkspaceManager.GetWorkspaces(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:workspace.edit.title");
+            return RetrieveForUpdate(request, data);
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             var data = CoreHub.WorkspaceManager.GetWorkspaces(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:workspace.delete.title", data?.Key);
+            return RetrieveForDelete(request, data, data?.Key);
         }
 
         /// <summary>

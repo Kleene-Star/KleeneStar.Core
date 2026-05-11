@@ -1,6 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
-using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -19,7 +18,7 @@ namespace KleeneStar.Core.WebFragment.Field
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Field._fieldid_.Configure>]
     [Cache]
-    public sealed class FieldConfigureFormFragment : FragmentControlRestFormEdit
+    public sealed class FieldConfigureFormFragment : FragmentControlRestForm
     {
         /// <summary>
         /// Gets the numeric input control for the minimum number of values the field must contain.
@@ -140,9 +139,13 @@ namespace KleeneStar.Core.WebFragment.Field
         public FieldConfigureFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Mode = _ => TypeRestFormMode.Edit;
+            Mode = _ => "configure";
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields.Index>();
-
+            ItemId = renderContext =>
+            {
+                var fieldId = renderContext.Request.GetParameter<FieldIdParameter>();
+                return fieldId?.Value?.ToString();
+            };
             CardinalityMax.Bind = _ => new Binding().Add(new BindDisable()
             {
                 Source = CardinalityUnlimited.Id,
@@ -220,7 +223,7 @@ namespace KleeneStar.Core.WebFragment.Field
                         .Add(SelectedPriorities)
                 );
 
-            return base.Render(renderContext, visualTree);
+            return base.Render(renderContext, visualTree, [tab]);
         }
     }
 }

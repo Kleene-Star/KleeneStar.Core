@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebApiControl;
-using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -64,7 +63,6 @@ namespace KleeneStar.Core.WebFragment.Object
         public ObjectEditFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Mode = _ => TypeRestFormMode.Edit;
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Index>();
         }
 
