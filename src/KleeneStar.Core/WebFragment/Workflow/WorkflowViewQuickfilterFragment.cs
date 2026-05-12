@@ -1,30 +1,44 @@
-﻿using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebControl;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
+using WebExpress.WebUI.WebSection;
 
 namespace KleeneStar.Core.WebFragment.Workflow
 {
     /// <summary>
-    /// Represents a fragment control for managing field tables, providing functionality to 
-    /// render the fragment as HTML.
+    /// Represents a fragment that provides a quick filter control for REST-based workspace queries in
+    /// the workflow view.
     /// </summary>
-    [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Workflows._classid_.Index>]
+    [Section<SectionViewHeaderSecondary>]
+    //[Policy<WorkflowViewPolicy>]
+    [Scope<WorkflowViewFragment>]
     [Cache]
-    public sealed class WorkflowViewFragment : FragmentControlView
+    public sealed class WorkflowViewQuickfilterFragment : FragmentControlViewHeader
     {
+        /// <summary>
+        /// Represents the unique identifier for the content.
+        /// </summary>
+        public static readonly string ContentId = "id_1545B710DAD642FF8E83222E5130B437";
+
+        /// <summary>
+        /// Gets the quick filter control for REST-based workspace queries.
+        /// </summary>
+        public ControlRestQuickfilter Quickfilter { get; } = new ControlRestQuickfilter(ContentId)
+        {
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows._classid_.Quickfilter>()
+        };
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public WorkflowViewFragment(IFragmentContext fragmentContext)
+        public WorkflowViewQuickfilterFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Layout = _ => TypeLayoutView.ToggleGroup;
+            Add(Quickfilter);
         }
 
         /// <summary>

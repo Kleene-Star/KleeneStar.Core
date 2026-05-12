@@ -73,9 +73,9 @@ namespace KleeneStar.Core.WWW.Fields._classid_
                 .BindParameters(new WorkspaceKeyParameter(workspace?.Key))
                 .BindParameters(renderContext.Request);
 
-            visualTree.Content.MainPanel.Headline.Title = $"{@class.Name} - {I18N.Translate(renderContext, renderContext.PageContext.PageTitle)}";
-
             visualTree.BreadcrumbUri = uri;
+
+            visualTree.Content.MainPanel.Headline.Title = $"{@class.Name} - {I18N.Translate(renderContext, renderContext.PageContext.PageTitle)}";
         }
     }
 }

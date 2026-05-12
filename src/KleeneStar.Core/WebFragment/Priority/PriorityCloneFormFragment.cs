@@ -68,6 +68,11 @@ namespace KleeneStar.Core.WebFragment.Priority
             Add(PriorityState);
 
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>();
+            ItemId = renderContext =>
+            {
+                var priorityId = renderContext.Request.GetParameter<PriorityIdParameter>();
+                return priorityId?.Value?.ToString();
+            };
         }
 
         /// <summary>
@@ -84,8 +89,6 @@ namespace KleeneStar.Core.WebFragment.Priority
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var param = renderContext.Request.GetParameter<PriorityIdParameter>();
-
             return base.Render(renderContext, visualTree);
         }
     }

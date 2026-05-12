@@ -21,6 +21,8 @@ namespace KleeneStar.Core.WebFragment.Form
     [Cache]
     public sealed class FormBackButtonFragment : FragmentControlButtonLink
     {
+        private static readonly IUri _uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Index>();
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -72,8 +74,7 @@ namespace KleeneStar.Core.WebFragment.Form
             var formId = Guid.TryParse(formIdParameter?.Value, out var result) ? result : Guid.Empty;
             var form = CoreHub.FormManager.GetForm(formId);
 
-            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Forms._classid_.Index>()
-                .BindParameters(new ClassIdParameter(form.ClassId));
+            return _uri.BindParameters(new ClassIdParameter(form.ClassId));
         }
     }
 }

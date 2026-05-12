@@ -1,10 +1,12 @@
 ﻿using KleeneStar.Core.WebParameter;
 using System;
+using System.Linq;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebIcon;
+using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -27,6 +29,8 @@ namespace KleeneStar.Core.WebFragment.Class
     [Cache]
     public sealed class ClassSidebarClassLinkFragment : FragmentControlSidebarItemLink
     {
+        private static readonly IUri _uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Index>();
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -39,8 +43,8 @@ namespace KleeneStar.Core.WebFragment.Class
         {
             Icon = _ => new IconClass(TypeIconTheme.Light);
             Text = _ => "kleenestar.core:class.link.label";
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Index>();
-            Active = renderContext => IsActive(renderContext, ResolveClassId(renderContext))
+            Uri = _ => _uri;
+            Active = renderContext => IsActive(renderContext)
                 ? TypeActive.Active
                 : TypeActive.None;
         }
@@ -53,9 +57,6 @@ namespace KleeneStar.Core.WebFragment.Class
         /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            // bind the classId into the main URI
-            //var uri = Uri.BindParameters(new ClassIdParameter(classId));
-
             return base.Render(renderContext, visualTree);
         }
 
@@ -123,29 +124,42 @@ namespace KleeneStar.Core.WebFragment.Class
         /// The rendering context that provides information about the current 
         /// HTTP request.
         /// </param>
-        /// <param name="classId">
-        /// The identifier of the class for which the target URIs should be resolved
-        /// and compared against the current request URI.
-        /// </param>
-        /// <returns>
         /// true if the current request URI matches one of the target URIs; 
         /// otherwise, false.
         /// </returns>
-        private bool IsActive(IRenderControlContext renderContext, Guid classId)
+        private bool IsActive(IRenderControlContext renderContext)
         {
-            //var targetUris = new[]
-            //{
-            //    Uri,
-            //    // add more uris here in the future
-            //}
-            //    .Select(x => x.BindParameters(new ClassIdParameter(classId)))
-            //    .Select(x => x.BindParameters(renderContext.Request))
-            //    .Select(x => string.Join("/", x.PathSegments ?? []));
+            var targetUris = new[]
+            {
+                GetUri(renderContext),
+                // add more uris here in the future
+            }
+                .Select(x => x.BindParameters(new ClassIdParameter(ResolveClassId(renderContext))))
+                .Select(x => x.BindParameters(renderContext.Request))
+                .Select(x => string.Join("/", x.PathSegments ?? []));
 
-            //var currentUri = string.Join("/", renderContext.Request.Uri.PathSegments ?? []);
+            var currentUri = string.Join("/", renderContext.Request.Uri.PathSegments ?? []);
 
-            //return targetUris.Any(uri => string.Equals(currentUri, uri, StringComparison.OrdinalIgnoreCase));
-            return false;
+            return targetUris.Any(uri => string.Equals(currentUri, uri, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// Retrieves a URI instance for the specified render context, binding the resolved class 
+        /// identifier as a parameter.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The render context used to resolve the class identifier and generate the corresponding 
+        /// URI. Cannot be null.
+        /// </param>
+        /// <returns>
+        /// An IUri instance representing the resource associated with the resolved class identifier.
+        /// </returns>
+        private static IUri GetUri(IRenderControlContext renderContext)
+        {
+            var classId = ResolveClassId(renderContext);
+
+            // bind the classId into the main URI
+            return _uri.BindParameters(new ClassIdParameter(classId));
         }
     }
 }

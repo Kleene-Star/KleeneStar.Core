@@ -4,6 +4,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -19,6 +20,8 @@ namespace KleeneStar.Core.WebFragment.Form
     [Cache]
     public sealed class FormEditButtonFragment : FragmentControlButtonLink
     {
+        private static readonly IUri _uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Form._formid_.Edit>();
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -33,6 +36,12 @@ namespace KleeneStar.Core.WebFragment.Form
             Icon = _ => new IconPen();
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
+            PrimaryAction = renderContext => new ActionModal
+            (
+                "modal-form",
+                GetUri(renderContext),
+                TypeModalSize.ExtraLarge
+            );
         }
 
         /// <summary>
@@ -48,24 +57,26 @@ namespace KleeneStar.Core.WebFragment.Form
                 return null;
             }
 
+            return base.Render(renderContext, visualTree);
+        }
+
+        /// <summary>
+        /// Retrieves the URI for the edit page of a form based on the current render context.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The context for the current render operation, providing access to request parameters and
+        /// rendering state.
+        /// </param>
+        /// <returns>
+        /// An object representing the URI for the edit page, with parameters bound according 
+        /// to the current context.
+        /// </returns>
+        private static IUri GetUri(IRenderControlContext renderContext)
+        {
             var formIdParameter = renderContext.Request.GetParameter<FormIdParameter>();
             var formId = Guid.TryParse(formIdParameter?.Value, out var result) ? result : Guid.Empty;
-            var form = CoreHub.FormManager.GetForm(formId);
 
-            if (form?.FormType == Model.Entities.FormType.Create)
-            {
-                return null;
-            }
-
-            var primaryAction = new ActionModal
-            (
-                "modal-form",
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Form._formid_.Edit>()
-                    .BindParameters(renderContext.Request),
-                TypeModalSize.ExtraLarge
-                );
-
-            return base.Render(renderContext, visualTree);
+            return _uri.BindParameters(new FormIdParameter(formId));
         }
     }
 }

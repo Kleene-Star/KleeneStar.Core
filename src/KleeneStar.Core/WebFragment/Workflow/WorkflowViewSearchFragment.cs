@@ -1,30 +1,43 @@
-﻿using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebControl;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
+using WebExpress.WebUI.WebSection;
 
-namespace KleeneStar.Core.WebFragment.Priority
+namespace KleeneStar.Core.WebFragment.Workflow
 {
     /// <summary>
-    /// Represents a fragment control for managing priority tables, providing functionality to 
-    /// render the fragment as HTML.
+    /// Represents a fragment that provides advanced search functionality within a workflow view.
     /// </summary>
-    [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
+    [Section<SectionViewHeaderPrimary>]
+    //[Policy<WorkflowViewPolicy>]
+    [Scope<WorkflowViewFragment>]
     [Cache]
-    public sealed class PriorityViewFragment : FragmentControlView
+    public sealed class WorkflowViewSearchFragment : FragmentControlViewHeader
     {
+        /// <summary>
+        /// Represents the unique identifier for the content used in the application.
+        /// </summary>
+        public static readonly string ContentId = "id_986DD50581AF4FE09A9A6DBBC3A7321F";
+
+        /// <summary>
+        /// Gets the search control used to query and filter data.
+        /// </summary>
+        public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch(ContentId)
+        {
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Wql>()
+        };
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public PriorityViewFragment(IFragmentContext fragmentContext)
+        public WorkflowViewSearchFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Layout = _ => TypeLayoutView.ToggleGroup;
+            Add(Search);
         }
 
         /// <summary>

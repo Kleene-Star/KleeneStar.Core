@@ -1,30 +1,42 @@
-﻿using WebExpress.WebApp.WebSection;
-using WebExpress.WebCore.WebAttribute;
+﻿using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
+using WebExpress.WebUI.WebSection;
 
 namespace KleeneStar.Core.WebFragment.Priority
 {
     /// <summary>
-    /// Represents a fragment control for managing priority tables, providing functionality to 
-    /// render the fragment as HTML.
+    /// Provides a footer fragment that enables pagination controls for priority views.
     /// </summary>
-    [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
+    [Section<SectionViewFooterPrimary>]
+    //[Policy<PriorityViewPolicy>]
+    [Scope<PriorityViewFragment>]
     [Cache]
-    public sealed class PriorityViewFragment : FragmentControlView
+    public sealed class PriorityViewPaginationFragment : FragmentControlViewFooter
     {
+        /// <summary>
+        /// Represents the unique identifier for the content used in this context.
+        /// </summary>
+        public static readonly string ContentId = "id_2A6D6BC8F61647148BC5D10F0FF63DB4";
+
+        /// <summary>
+        /// Gets the pagination settings for controlling how data is divided into pages.
+        /// </summary>
+        public ControlPagination Pagination { get; } = new ControlPagination(ContentId)
+        {
+        };
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public PriorityViewFragment(IFragmentContext fragmentContext)
+        public PriorityViewPaginationFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Layout = _ => TypeLayoutView.ToggleGroup;
+            Add(Pagination);
         }
 
         /// <summary>

@@ -32,6 +32,13 @@ namespace KleeneStar.Core.WebFragment.Priority
             Icon = _ => new IconPlus(TypeIconTheme.Light);
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
+            PrimaryAction = renderContext => new ActionModal
+            (
+                "modal-form",
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Priorities._classid_.Add>()
+                    .BindParameters(renderContext.Request),
+                TypeModalSize.ExtraLarge
+            );
         }
 
         /// <summary>
@@ -46,14 +53,6 @@ namespace KleeneStar.Core.WebFragment.Priority
             {
                 return null;
             }
-
-            var primaryAction = new ActionModal
-            (
-                "modal-form",
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Priorities._classid_.Add>()
-                    .BindParameters(renderContext.Request),
-                TypeModalSize.ExtraLarge
-                );
 
             return base.Render(renderContext, visualTree);
         }

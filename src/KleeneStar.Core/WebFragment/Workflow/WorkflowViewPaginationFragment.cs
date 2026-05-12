@@ -1,30 +1,42 @@
-﻿using WebExpress.WebApp.WebSection;
-using WebExpress.WebCore.WebAttribute;
+﻿using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
+using WebExpress.WebUI.WebSection;
 
-namespace KleeneStar.Core.WebFragment.Priority
+namespace KleeneStar.Core.WebFragment.Workflow
 {
     /// <summary>
-    /// Represents a fragment control for managing priority tables, providing functionality to 
-    /// render the fragment as HTML.
+    /// Provides a footer fragment that enables pagination controls for workflow views.
     /// </summary>
-    [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
+    [Section<SectionViewFooterPrimary>]
+    //[Policy<WorkflowViewPolicy>]
+    [Scope<WorkflowViewFragment>]
     [Cache]
-    public sealed class PriorityViewFragment : FragmentControlView
+    public sealed class WorkflowViewPaginationFragment : FragmentControlViewFooter
     {
+        /// <summary>
+        /// Represents the unique identifier for the content used in this context.
+        /// </summary>
+        public static readonly string ContentId = "id_4C67E1CC79C54269A04A95A94D66AB64";
+
+        /// <summary>
+        /// Gets the pagination settings for controlling how data is divided into pages.
+        /// </summary>
+        public ControlPagination Pagination { get; } = new ControlPagination(ContentId)
+        {
+        };
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public PriorityViewFragment(IFragmentContext fragmentContext)
+        public WorkflowViewPaginationFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Layout = _ => TypeLayoutView.ToggleGroup;
+            Add(Pagination);
         }
 
         /// <summary>

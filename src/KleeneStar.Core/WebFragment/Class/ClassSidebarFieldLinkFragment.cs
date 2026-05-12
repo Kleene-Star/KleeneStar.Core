@@ -29,6 +29,8 @@ namespace KleeneStar.Core.WebFragment.Class
     [Cache]
     public sealed class ClassSidebarFieldLinkFragment : FragmentControlSidebarItemLink
     {
+        private static readonly IUri _uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Fields._classid_.Index>();
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -158,8 +160,7 @@ namespace KleeneStar.Core.WebFragment.Class
             var classId = ResolveClassId(renderContext);
 
             // bind the classId into the main URI
-            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Fields._classid_.Index>()
-                .BindParameters(new ClassIdParameter(classId));
+            return _uri.BindParameters(new ClassIdParameter(classId));
         }
     }
 }

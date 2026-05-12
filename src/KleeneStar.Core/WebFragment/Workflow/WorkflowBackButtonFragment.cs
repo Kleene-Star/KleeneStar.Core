@@ -4,6 +4,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -20,6 +21,8 @@ namespace KleeneStar.Core.WebFragment.Workflow
     [Cache]
     public sealed class WorkflowBackButtonFragment : FragmentControlButtonLink
     {
+        private static readonly IUri _uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workflows._classid_.Index>();
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -35,6 +38,7 @@ namespace KleeneStar.Core.WebFragment.Workflow
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Secondary);
             Outline = _ => true;
+            Uri = renderContext => GetUri(renderContext);
         }
 
         /// <summary>
@@ -50,14 +54,27 @@ namespace KleeneStar.Core.WebFragment.Workflow
                 return null;
             }
 
+            return base.Render(renderContext, visualTree);
+        }
+
+        /// <summary>
+        /// Retrieves the URI for the back page of the current render context.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The context for the current render operation, providing access to request parameters and
+        /// rendering state.
+        /// </param>
+        /// <returns>
+        /// An object representing the URI for the form's back page, with parameters bound according 
+        /// to the current context.
+        /// </returns>
+        private static IUri GetUri(IRenderControlContext renderContext)
+        {
             var workflowIdParameter = renderContext.Request.GetParameter<WorkflowIdParameter>();
             var workflowId = Guid.TryParse(workflowIdParameter?.Value, out var result) ? result : Guid.Empty;
             var workflow = CoreHub.WorkflowManager.GetWorkflow(workflowId);
 
-            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workflows._classid_.Index>()
-                .BindParameters(new ClassIdParameter(workflow.ClassId));
-
-            return base.Render(renderContext, visualTree);
+            return _uri.BindParameters(new ClassIdParameter(workflow.ClassId));
         }
     }
 }

@@ -68,6 +68,11 @@ namespace KleeneStar.Core.WebFragment.Workflow
             Add(WorkflowState);
 
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>();
+            ItemId = renderContext =>
+            {
+                var workflowId = renderContext.Request.GetParameter<WorkflowIdParameter>();
+                return workflowId?.Value?.ToString();
+            };
         }
 
         /// <summary>
@@ -84,8 +89,6 @@ namespace KleeneStar.Core.WebFragment.Workflow
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var param = renderContext.Request.GetParameter<WorkflowIdParameter>();
-
             return base.Render(renderContext, visualTree);
         }
     }
