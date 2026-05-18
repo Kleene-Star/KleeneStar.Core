@@ -294,7 +294,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             var deleteUri = _deleteFormUri?
                 .BindParameters(new WorkspaceKeyParameter(row.Key));
 
-            var iconTheme = request?.ApplicationContext.IconTheme ?? TypeIconTheme.Light;
+            var iconTheme = request?.ApplicationContext?.DefaultTheme?.IconTheme ?? TypeIconTheme.Light;
 
             yield return new RestApiOptionHeader(request)
             {

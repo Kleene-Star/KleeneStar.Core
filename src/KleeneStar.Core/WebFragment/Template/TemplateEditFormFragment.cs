@@ -8,27 +8,27 @@ using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment
+namespace KleeneStar.Core.WebFragment.Template
 {
     /// <summary>
-    /// Represents an add form fragment for a template.
+    /// Represents an edit form fragment for a template.
     /// </summary>
-    [Title("kleenestar.core:template.add.title")]
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Templates._workspacekey_.Add>]
+    [Scope<global::KleeneStar.Core.WWW.Template._templateid_.Edit>]
     [Cache]
-    public sealed class TemplateAddFormFragment : FragmentControlRestFormAdd
+    public sealed class TemplateEditFormFragment : FragmentControlRestFormEdit
     {
         /// <summary>
         /// Gets the input control configuration for the template name field.
         /// </summary>
-        public ControlFormItemInputText TemplateName { get; } = new()
+        public ControlRestFormItemInputUnique TemplateName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Template.Name),
             Label = _ => "kleenestar.core:template.name.label",
             Placeholder = _ => "kleenestar.core:template.name.placeholder",
             Help = _ => "kleenestar.core:template.name.help",
-            Required = _ => true
+            Required = _ => true,
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates.UniqueName>()
         };
 
         /// <summary>
@@ -81,16 +81,10 @@ namespace KleeneStar.Core.WebFragment
         };
 
         /// <summary>
-        /// Initializes a new instance of the TemplateAddFormFragment class for creating a new template.
+        /// Initializes a new instance of the class.
         /// </summary>
-        /// <remarks>
-        /// This form fragment is intended for creating new templates and automatically sets the mode to Add.
-        /// The associated URI points to the index endpoint for templates within the current workspace.
-        /// </remarks>
-        /// <param name="fragmentContext">
-        /// The fragment context used to initialize the form fragment. Must not be null.
-        /// </param>
-        public TemplateAddFormFragment(IFragmentContext fragmentContext)
+        /// <param name="fragmentContext">The context of the fragment.</param>
+        public TemplateEditFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Add(TemplateName);
@@ -100,13 +94,27 @@ namespace KleeneStar.Core.WebFragment
             Add(TemplateState);
 
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Index>();
+            ItemId = renderContext =>
+            {
+                var templateId = renderContext.Request.GetParameter<TemplateIdParameter>();
+                return templateId?.Value?.ToString();
+            };
         }
 
+        /// <summary>
+        /// Renders the control as an HTML node.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var param1 = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
-            var p = param1?.Value;
-
             return base.Render(renderContext, visualTree);
         }
     }

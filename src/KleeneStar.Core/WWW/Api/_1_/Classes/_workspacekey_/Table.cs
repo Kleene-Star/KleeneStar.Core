@@ -223,7 +223,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
                 .BindParameters(request)
                 .BindParameters(new ClassIdParameter(row.Id));
 
-            var iconTheme = request?.ApplicationContext.IconTheme ?? TypeIconTheme.Light;
+            var iconTheme = request?.ApplicationContext?.DefaultTheme?.IconTheme ?? TypeIconTheme.Light;
 
             yield return new RestApiOptionHeader(request)
             {

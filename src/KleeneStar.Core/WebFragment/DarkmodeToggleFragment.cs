@@ -1,5 +1,6 @@
 ﻿using WebExpress.WebApp.WebScope;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebCore.WebFragment;
@@ -33,7 +34,11 @@ namespace KleeneStar.Core.WebFragment
             Icon = _ => new IconMoon();
             PrimaryAction = _ => new ActionDarkmode();
             Text = _ => "webexpress.webui:darkmode.text.light";
-            Bind = _ => new Binding().Add(new BindDarkmode());
+            Bind = ctx => new Binding().Add(new BindDarkmode
+            {
+                TextLight = I18N.Translate(ctx, "webexpress.webui:darkmode.text.light"),
+                TextDark = I18N.Translate(ctx, "webexpress.webui:darkmode.text.dark")
+            });
         }
 
         /// <summary>
