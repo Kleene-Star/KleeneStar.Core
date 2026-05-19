@@ -32,6 +32,7 @@ namespace KleeneStar.Core
         private static IdentityManager _identityManager;
         private static GroupManager _groupManager;
         private static TemplateManager _templateManager;
+        private static ObjectViewManager _objectViewManager;
 
         /// <summary>
         /// Gets the shared instance of the component hub used for managing and coordinating application components.
@@ -112,6 +113,12 @@ namespace KleeneStar.Core
         /// Gets the template manager responsible for managing templates within the workspace.
         /// </summary>
         public static ITemplateManager TemplateManager => _templateManager ??= ComponentHub.GetComponentManager<TemplateManager>();
+
+        /// <summary>
+        /// Gets the object view manager responsible for managing the persisted tabs that
+        /// wrap the objects index of a workspace.
+        /// </summary>
+        public static IObjectViewManager ObjectViewManager => _objectViewManager ??= ComponentHub.GetComponentManager<ObjectViewManager>();
 
         /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.

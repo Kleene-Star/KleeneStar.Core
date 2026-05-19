@@ -1,7 +1,8 @@
-﻿using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
@@ -9,14 +10,13 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Represents a fragment control for managing object tables, providing functionality to 
-    /// render the fragment as HTML.
+    /// Represents a cached fragment view for rendering objects within a primary content 
+    /// section, with conditional rendering based on fragment context.
     /// </summary>
     [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Objects.Index>]
     [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>]
     [Cache]
-    public sealed class ObjectViewFragment : FragmentControlView
+    public sealed class ObjectViewFragment : FragmentControlView, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -25,23 +25,21 @@ namespace KleeneStar.Core.WebFragment.Object
         public ObjectViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            //Search.RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Wql>();
-            //Quickfilter.RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Quickfilter>();
-            //Table.RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Table>();
-            //Tile.RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Tile>();
-            //List.List.RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.List>();
-
             Layout = _ => TypeLayoutView.ToggleGroup;
         }
 
         /// <summary>
-        /// Convert the fragment to HTML.
+        /// Renders the <c>wx-template</c> root, embedding a <c>wx-webui-view</c>
+        /// container whose header/item/footer slots are populated by the sibling
+        /// fragments scoped to <see cref="ObjectViewFragment"/>.
         /// </summary>
-        /// <param name="renderContext">The context in which the fragment is rendered.</param>
-        /// <param name="visualTree">The visual tree used for rendering the fragment.</param>
-        /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
+            if (!FragmentContext.Conditions.Check(renderContext?.Request))
+            {
+                return null;
+            }
+
             return base.Render(renderContext, visualTree);
         }
     }

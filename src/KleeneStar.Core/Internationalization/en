@@ -14,6 +14,7 @@ kleenestar.label=KleeneStar
 
 view.table.title=Table
 view.tile.title=Tile
+view.list.title=List
 view.split.title=Split
 
 workspace.dropdown.label=Workspace
@@ -356,6 +357,8 @@ template.permissions.done.label=Done
 object.add.title=Add Object
 object.add.label=Add Object
 object.edit.label=Edit Object
+object.clone.title=Clone Object
+object.delete.title=Delete Object
 object.summary.label=Summary
 object.summary.placeholder=Enter a brief summary of the object.
 object.summary.help=The summary provides a quick overview of the object's content.
@@ -366,6 +369,27 @@ object.workspaceclass.placeholder=Select a workspace and class.
 object.workspaceclass.help=Choose the workspace and class in which the new object will be created.
 object.template.label=Template
 object.template.help=Select a template to use as a starting point for the new object.
+
+object.tab.header=Views
+object.view.table.label=Table
+object.view.table.description=Tabular view of objects with sortable, filterable columns.
+object.view.table.title=Object Table
+object.view.list.label=List
+object.view.list.description=Compact one-line-per-item list of objects.
+object.view.list.title=Object List
+object.view.dashboard.label=Dashboard
+object.view.dashboard.description=Aggregated KPIs and widgets over the objects of the workspace.
+object.view.dashboard.title=Object Dashboard
+object.view.kanban.label=Kanban
+object.view.kanban.description=Kanban board that groups objects in columns by status.
+object.view.kanban.title=Kanban Board
+object.view.scrum.sprint.label=Sprint
+object.view.scrum.sprint.description=Scrum sprint board for the active iteration.
+object.view.scrum.sprint.title=Scrum Sprint
+object.view.scrum.backlog.label=Backlog
+object.view.scrum.backlog.description=Product backlog for Scrum planning.
+object.view.scrum.backlog.title=Scrum Backlog
+
 dashboard.label=Dashboard
 dashboard.dropdown.label=Dashboard
 dashboard.manage.title=Dashboards
@@ -491,3 +515,6 @@ fieldtype.tag.label=Tag
 
 fieldcardinality.single.label=Single
 fieldcardinality.multiple.label=Multiple
+
+theme.light.name=Light
+theme.light.description=The default KleeneStar theme using lightweight SVG icons.

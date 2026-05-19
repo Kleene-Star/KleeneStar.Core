@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WWW.Class._classid_;
 using KleeneStar.Model;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,9 +28,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         /// </summary>
         public Table()
         {
-            _editFormUri = CoreHub.GetUri<Edit>();
-            _cloneFormUri = CoreHub.GetUri<Clone>();
-            _deleteFormUri = CoreHub.GetUri<Delete>();
+            _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Edit>();
+            _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Clone>();
+            _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Delete>();
         }
 
         /// <summary>
@@ -176,13 +175,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         {
             var editUri = _editFormUri?
                 .BindParameters(request)
-                .BindParameters(new ClassIdParameter(row.Id));
+                .BindParameters(new ObjectKeyParameter(row.Key));
             var cloneUri = _cloneFormUri?
                 .BindParameters(request)
-                .BindParameters(new ClassIdParameter(row.Id));
+                .BindParameters(new ObjectKeyParameter(row.Key));
             var deleteUri = _deleteFormUri?
                 .BindParameters(request)
-                .BindParameters(new ClassIdParameter(row.Id));
+                .BindParameters(new ObjectKeyParameter(row.Key));
 
             yield return new RestApiOptionHeader(request)
             {

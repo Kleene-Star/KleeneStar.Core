@@ -15,17 +15,14 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Represents a edit form fragment for a object. The visible structure is derived
-    /// dynamically from the <see cref="FormType.Edit"/> form configured for the object's
-    /// class as exposed via <see cref="WWW.Api._1_.Forms.FormEditor"/>; tabs, layout
-    /// groups, and field references defined there are reproduced one-to-one as
-    /// <see cref="IControlFormItem"/> instances.
+    /// Provides a form fragment for cloning objects, dynamically building the form 
+    /// structure from the configured edit form of the object's class.
     /// </summary>
-    [Title("kleenestar.core:object.add.title")]
+    [Title("kleenestar.core:object.clone.title")]
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Edit>]
+    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Clone>]
     [Cache]
-    public sealed class ObjectEditFormFragment : FragmentControlRestFormEdit
+    public sealed class ObjectCloneFormFragment : FragmentControlRestFormClone
     {
         /// <summary>
         /// Gets the input text control for specifying the summary of the object. This
@@ -60,7 +57,7 @@ namespace KleeneStar.Core.WebFragment.Object
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ObjectEditFormFragment(IFragmentContext fragmentContext)
+        public ObjectCloneFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Index>();

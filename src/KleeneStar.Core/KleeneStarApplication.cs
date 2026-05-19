@@ -1,4 +1,5 @@
-﻿using KleeneStar.Model;
+﻿using KleeneStar.Core.WebTheme;
+using KleeneStar.Model;
 using KleeneStar.Model.Config;
 using Microsoft.EntityFrameworkCore;
 using System.IO;
@@ -12,13 +13,14 @@ using WebExpress.WebCore.WebIcon;
 namespace KleeneStar.Core
 {
     /// <summary>
-    /// Represents a the KleeneStar application with a specific name, description, 
+    /// Represents a the KleeneStar application with a specific name, description,
     /// icon, and context path.
     /// </summary>
     [Name("kleenestar.core:app.name")]
     [Description("kleenestar.core:app.description")]
     [Icon("/assets/img/kleenestar.svg")]
     [IconTheme(TypeIconTheme.Light)]
+    [Theme<LightTheme>]
     [ContextPath("/kleenestar")]
     public sealed class KleeneStarApplication : IApplication
     {
