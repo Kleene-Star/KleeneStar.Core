@@ -1,4 +1,4 @@
-﻿using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -22,7 +22,7 @@ namespace KleeneStar.Core.WebFragment.Tenant
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">
-        /// The context associated with the fragment, providing necessary data and services for its operation. 
+        /// The context associated with the fragment, providing necessary data and services for its operation.
         /// Cannot be null.
         /// </param>
         public TenantAddButtonFragment(IFragmentContext fragmentContext)
@@ -32,6 +32,13 @@ namespace KleeneStar.Core.WebFragment.Tenant
             Icon = _ => new IconPlus(TypeIconTheme.Light);
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
+            PrimaryAction = renderContext => new ActionModal
+            (
+                "modal-form",
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Settings.Tenants.Add>()
+                    .BindParameters(renderContext.Request),
+                TypeModalSize.ExtraLarge
+            );
         }
 
         /// <summary>
@@ -46,14 +53,6 @@ namespace KleeneStar.Core.WebFragment.Tenant
             {
                 return null;
             }
-
-            var primaryAction = new ActionModal
-            (
-                "modal-form",
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Settings.Tenants.Add>()
-                    .BindParameters(renderContext.Request),
-                TypeModalSize.ExtraLarge
-                );
 
             return base.Render(renderContext, visualTree);
         }

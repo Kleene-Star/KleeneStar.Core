@@ -46,7 +46,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
         /// </summary>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request);
+            return base.RetrieveForCreate(request);
         }
 
         /// <summary>

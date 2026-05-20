@@ -11,7 +11,7 @@ namespace KleeneStar.Core.WWW.Settings.Tenant._tenantid_
     /// Represents the main page for a tenant within the class.
     /// </summary>
     [WebIcon<IconList>]
-    [Title("kleenestar.core:tenant.manage.label")]
+    [Title("kleenestar.core:setting.tenant.manage.label")]
     [TenantIdSegment]
     [Scope<IScopeGeneral>]
     [Domain<Model.Entities.Tenant>]

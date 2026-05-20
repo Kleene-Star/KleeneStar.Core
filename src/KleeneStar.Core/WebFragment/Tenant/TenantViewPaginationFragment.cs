@@ -1,30 +1,41 @@
-using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
+using WebExpress.WebUI.WebSection;
 
 namespace KleeneStar.Core.WebFragment.Tenant
 {
     /// <summary>
-    /// Represents a fragment control for managing tenant tables, providing functionality to
-    /// render the fragment as HTML.
+    /// Provides a footer fragment that enables pagination controls for tenant views.
     /// </summary>
-    [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Settings.Tenants.Index>]
+    [Section<SectionViewFooterPrimary>]
+    [Scope<TenantViewFragment>]
     [Cache]
-    public sealed class TenantViewFragment : FragmentControlView
+    public sealed class TenantViewPaginationFragment : FragmentControlViewFooter
     {
+        /// <summary>
+        /// Represents the unique identifier for the content used in this context.
+        /// </summary>
+        public static readonly string ContentId = "id_F634309F15A241BBB9A34A41802907EB";
+
+        /// <summary>
+        /// Gets the pagination settings for controlling how data is divided into pages.
+        /// </summary>
+        public ControlPagination Pagination { get; } = new ControlPagination(ContentId)
+        {
+        };
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public TenantViewFragment(IFragmentContext fragmentContext)
+        public TenantViewPaginationFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Layout = _ => TypeLayoutView.ToggleGroup;
+            Add(Pagination);
         }
 
         /// <summary>
@@ -32,9 +43,7 @@ namespace KleeneStar.Core.WebFragment.Tenant
         /// </summary>
         /// <param name="renderContext">The context in which the fragment is rendered.</param>
         /// <param name="visualTree">The visual tree used for rendering the fragment.</param>
-        /// <returns>
-        /// An HTML node representing the rendered fragments. Can be null if no nodes are present.
-        /// </returns>
+        /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);

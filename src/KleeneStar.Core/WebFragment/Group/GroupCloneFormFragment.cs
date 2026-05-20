@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WebFragment.Group
     public sealed class GroupCloneFormFragment : FragmentControlRestFormClone
     {
         /// <summary>
-        /// Gets the input for the group name.
+        /// Gets the input text control for specifying the name of the group.
         /// </summary>
         public ControlRestFormItemInputUnique GroupName { get; } = new()
         {
@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebFragment.Group
         };
 
         /// <summary>
-        /// Gets the input for the description.
+        /// Gets the input text control for specifying the description of the group.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
@@ -46,6 +46,7 @@ namespace KleeneStar.Core.WebFragment.Group
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
+        /// <param name="fragmentContext">The context of the fragment.</param>
         public GroupCloneFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
@@ -53,15 +54,27 @@ namespace KleeneStar.Core.WebFragment.Group
             Add(Description);
 
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Groups.Index>();
+            ItemId = renderContext =>
+            {
+                var groupId = renderContext.Request.GetParameter<GroupIdParameter>();
+                return groupId?.Value?.ToString();
+            };
         }
 
         /// <summary>
-        /// Renders the control as HTML.
+        /// Renders the control as an HTML node.
         /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var param = renderContext.Request.GetParameter<GroupIdParameter>();
-
             return base.Render(renderContext, visualTree);
         }
     }

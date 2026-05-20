@@ -8,8 +8,14 @@ namespace KleeneStar.Core.WebFragment
 {
     /// <summary>
     /// Represents a modal form for all purpose within the application.
+    /// Section <see cref="SectionBodySecondary"/>: <see cref="WebExpress.WebApp.WebSettingPage.VisualTreeWebAppSetting"/>
+    /// (the visual tree used by setting pages like Tenants/Groups/Identities)
+    /// does not render the epilogue sections, so a fragment in
+    /// <c>SectionEpiloguePrimary</c> would never reach the DOM there and the
+    /// modal target id <c>modal-form</c> would be missing for the Add/Edit/
+    /// Clone/Delete buttons on those pages.
     /// </summary>
-    [Section<SectionEpiloguePrimary>]
+    [Section<SectionBodySecondary>]
     [Scope<IScopeGeneral>]
     [Scope<IScopeAdmin>]
     [Cache]

@@ -42,6 +42,12 @@ namespace KleeneStar.Core.WebFragment
             _componentHub = componentHub;
             Text = _ => "webexpress.webapp:login.label";
             Icon = _ => new IconRightToBracket();
+            PrimaryAction = renderContext => new ActionModal
+            (
+                "modal-login",
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Session.Index>(),
+                TypeModalSize.Default
+            );
         }
 
         /// <summary>
@@ -52,9 +58,6 @@ namespace KleeneStar.Core.WebFragment
         /// <returns>An HTML node representing the rendered control.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var loginUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Session.Index>();
-            var primaryAction = new ActionModal("modal-form", loginUri, TypeModalSize.Default);
-
             return base.Render(renderContext, visualTree);
         }
     }

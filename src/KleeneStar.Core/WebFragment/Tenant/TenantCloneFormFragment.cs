@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -11,7 +11,7 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Tenant
 {
     /// <summary>
-    /// Represents a clone form fragment for a form.
+    /// Represents a clone form fragment for a tenant.
     /// </summary>
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Settings.Tenant._tenantid_.Clone>]
@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WebFragment.Tenant
     public sealed class TenantCloneFormFragment : FragmentControlRestFormClone
     {
         /// <summary>
-        /// Gets the input text control for specifying the name of the form.
+        /// Gets the input text control for specifying the name of the tenant.
         /// </summary>
         public ControlRestFormItemInputUnique TenantName { get; } = new()
         {
@@ -28,11 +28,11 @@ namespace KleeneStar.Core.WebFragment.Tenant
             Placeholder = _ => "kleenestar.core:setting.tenant.name.placeholder",
             Help = _ => "kleenestar.core:setting.tenant.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.UniqueName>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.UniqueName>()
         };
 
         /// <summary>
-        /// Gets the input text control for specifying the description of the form.
+        /// Gets the input text control for specifying the description of the tenant.
         /// </summary>
         public ControlFormItemInputText Description { get; } = new ControlFormItemInputText()
         {
@@ -68,6 +68,11 @@ namespace KleeneStar.Core.WebFragment.Tenant
             Add(TenantState);
 
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.Index>();
+            ItemId = renderContext =>
+            {
+                var tenantId = renderContext.Request.GetParameter<TenantIdParameter>();
+                return tenantId?.Value?.ToString();
+            };
         }
 
         /// <summary>
@@ -84,8 +89,6 @@ namespace KleeneStar.Core.WebFragment.Tenant
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var param = renderContext.Request.GetParameter<TenantIdParameter>();
-
             return base.Render(renderContext, visualTree);
         }
     }

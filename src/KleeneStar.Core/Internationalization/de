@@ -12,6 +12,8 @@ app.version.label={0} Version {1} erstellt mit {2} Version {3}.
 
 kleenestar.label=KleeneStar
 
+login.title=Bei KleeneStar anmelden
+
 view.table.title=Tabelle
 view.tile.title=Kacheln
 view.list.title=Liste
@@ -448,6 +450,8 @@ setting.tenant.state.help=Der Status bestimmt, ob der Mandant aktiv oder archivi
 setting.tenant.edit.title=Mandant bearbeiten
 setting.tenant.clone.title=Mandant klonen
 setting.tenant.delete.title=Mandant löschen
+setting.tenant.manage.label=Mandanten
+setting.tenant.table.header=Mandanten
 
 setting.identity.title=Identitätsverwaltung
 setting.identity.header=Identitätsverwaltung

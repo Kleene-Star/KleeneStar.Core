@@ -1,4 +1,4 @@
-﻿using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -10,7 +10,7 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Identity
 {
     /// <summary>
-    /// Represents an add form fragment for an identity.
+    /// Represents a add form fragment for an identity.
     /// </summary>
     [Title("kleenestar.core:setting.identity.add.title")]
     [Section<SectionContentPreferences>]
@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WebFragment.Identity
     public sealed class IdentityAddFormFragment : FragmentControlRestFormAdd
     {
         /// <summary>
-        /// Gets the input for the identity name.
+        /// Gets the input text control for specifying the name of the identity.
         /// </summary>
         public ControlRestFormItemInputUnique IdentityName { get; } = new()
         {
@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebFragment.Identity
         };
 
         /// <summary>
-        /// Gets the input for the email.
+        /// Gets the input text control for specifying the email of the identity.
         /// </summary>
         public ControlFormItemInputText Email { get; } = new ControlFormItemInputText()
         {
@@ -43,7 +43,7 @@ namespace KleeneStar.Core.WebFragment.Identity
         };
 
         /// <summary>
-        /// Gets the input for the state.
+        /// Gets the input selection control for the state.
         /// </summary>
         public ControlRestFormItemInputSelection IdentityState { get; } = new()
         {
@@ -58,6 +58,7 @@ namespace KleeneStar.Core.WebFragment.Identity
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
+        /// <param name="fragmentContext">The context of the fragment.</param>
         public IdentityAddFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
@@ -69,8 +70,17 @@ namespace KleeneStar.Core.WebFragment.Identity
         }
 
         /// <summary>
-        /// Renders the control as HTML.
+        /// Renders the control as an HTML node.
         /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);

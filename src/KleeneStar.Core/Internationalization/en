@@ -12,6 +12,8 @@ app.version.label={0} version {1} created with {2} version {3}.
 
 kleenestar.label=KleeneStar
 
+login.title=Sign in to KleeneStar
+
 view.table.title=Table
 view.tile.title=Tile
 view.list.title=List
@@ -449,6 +451,8 @@ setting.tenant.state.help=The status determines the availability of the tenant. 
 setting.tenant.edit.title=Edit Tenant
 setting.tenant.clone.title=Clone Tenant
 setting.tenant.delete.title=Delete Tenant
+setting.tenant.manage.label=Tenants
+setting.tenant.table.header=Tenants
 
 setting.identity.title=Identities
 setting.identity.header=Identity Management

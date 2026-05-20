@@ -11,7 +11,7 @@ namespace KleeneStar.Core.WWW.Settings.Tenant._tenantid_
     /// Represents a page that provides a form for edit a tenant within the class.
     /// </summary>
     [WebIcon<IconPlus>]
-    [Title("kleenestar.core:tenant.edit.title")]
+    [Title("kleenestar.core:setting.tenant.edit.title")]
     [Scope<IScopeGeneral>]
     public sealed class Edit : IPage<VisualTreeWebApp>, IScope
     {

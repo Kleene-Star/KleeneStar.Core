@@ -18,7 +18,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
     /// Represents a REST API table for managing tenants entities, providing data retrieval 
     /// and option generation functionality for tenant records.
     /// </summary>
-    [Title("kleenestar.core:tenant.table.header")]
+    [Title("kleenestar.core:setting.tenant.table.header")]
     [Cache]
     public sealed class Table : RestApiTable<Model.Entities.Tenant>
     {

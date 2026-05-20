@@ -255,15 +255,16 @@ The object overview page is the central view for displaying objects of a specifi
 ║│ / Service Desk                                                                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Workspace─────────────┐ ┌Object Content─────────────────────────────────────────────┐║
-║│[Name]                │░│                                                           │║
-║│                      │░│ Incident                                              […] │║
-║│      [Icon]          │░│                                                  [Search] │║
-║│                      │░│ Summary                          | Status  | Impact     + │║
-║│           [ Search ] │░│----------------------------------|---------|--------------│║
-║│ Issue                │░│ VPN connection disrupted         | Open    | High     […] │║
-║│ ├─ Incident          │░│ Outlook won't start              | Open    | Medium    ¦  │║
-║│ ├─ Problem           │░│ Printer on floor 3 offline       | Assigne┌────────────┴┐ │║
-║│ └─ ServiceRequest    │░│ File upload fails                | In Prog│ Edit        │ │║
+║│[Name]                │░│ Incident                                              […] │║
+║│                      │░│ View Dashboard Scrum +                                    │║
+║│      [Icon]          │░│ ────                                   [Table|Tile|Split] │║
+║│                      │░│                                                  [Search] │║
+║│           [ Search ] │░│ Summary                          | Status  | Impact     + │║
+║│ Issue                │░│----------------------------------|---------|--------------│║
+║│ ├─ Incident          │░│ VPN connection disrupted         | Open    | High     […] │║
+║│ ├─ Problem           │░│ Outlook won't start              | Open    | Medium    ¦  │║
+║│ └─ ServiceRequest    │░│ Printer on floor 3 offline       | Assigne┌────────────┴┐ │║
+║│                      │░│ File upload fails                | In Prog│ Edit        │ │║
 ║│                      │░│ Remote desktop not reachable     | Open   │ Clone       │ │║
 ║│                      │<│ Password reset not possible      | Closed │ Permissions │ │║
 ║│                      │<│ Wi-Fi outage in conference room  | Open   │ <section>   │ │║
@@ -271,7 +272,6 @@ The object overview page is the central view for displaying objects of a specifi
 ║│                      │░│ Scanner not sending PDFs         | Assigne│ Delete      │ │║
 ║│                      │░│ SharePoint access denied         | Open   └─────────────┘ │║
 ║│                      │░│ Software update blocks startup   | In Prog.| High     […] │║
-║│                      │░│ Screen flickers intermittently   | Closed  | Medium   […] │║
 ║│                      │░│                                                           │║
 ║│                      │░│                                   ‹ Prev  1  2  3  Next › │║
 ║├──────────────────────┤░│                                                           │║

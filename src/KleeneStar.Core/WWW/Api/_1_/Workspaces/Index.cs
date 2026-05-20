@@ -85,7 +85,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request);
+            return base.RetrieveForCreate(request);
         }
 
         /// <summary>

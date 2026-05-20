@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -68,6 +68,11 @@ namespace KleeneStar.Core.WebFragment.Tenant
             Add(TenantState);
 
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.Index>();
+            ItemId = renderContext =>
+            {
+                var tenantId = renderContext.Request.GetParameter<TenantIdParameter>();
+                return tenantId?.Value?.ToString();
+            };
         }
 
         /// <summary>
@@ -84,8 +89,6 @@ namespace KleeneStar.Core.WebFragment.Tenant
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var param = renderContext.Request.GetParameter<TenantIdParameter>();
-
             return base.Render(renderContext, visualTree);
         }
     }
