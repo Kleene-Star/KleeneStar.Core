@@ -27,8 +27,8 @@ namespace KleeneStar.Core.WebFragment.Form
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">
-        /// The context associated with the fragment, providing necessary data and services for its operation. 
-        /// Cannot be null.
+        /// The context associated with the fragment, providing necessary data and services for 
+        /// its operation. Cannot be null.
         /// </param>
         public FormBackButtonFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)

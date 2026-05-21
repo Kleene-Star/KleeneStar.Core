@@ -428,6 +428,128 @@ setting.category.usermanagement.description=
 setting.group.usermanagement.name=User Management
 setting.group.usermanagement.description=
 
+profile.dropdown.label=Profile
+profile.sidebar.header=My Profile
+
+profile.title=Profile
+profile.header=Profile
+profile.description=Publicly visible information in your KleeneStar tenant - name, picture, contact details and a short bio.
+profile.field.displayname.label=Display name
+profile.field.displayname.placeholder=Shown in comments and @-mentions.
+profile.field.bio.label=About me
+profile.field.bio.placeholder=Short description for your profile. Markdown supported.
+profile.field.phone.label=Phone
+profile.field.phone.placeholder=Only visible to members of your tenant.
+profile.field.website.label=Website
+profile.field.website.placeholder=Personal site, portfolio or blog.
+profile.field.location.label=Location
+profile.field.location.placeholder=Helps colleagues with time-zone coordination.
+profile.field.position.label=Position / Role
+profile.field.position.placeholder=Job title within the tenant.
+
+profile.account.title=Account
+profile.account.header=Account
+profile.account.description=Login credentials, language, time zone and regional formats.
+profile.account.email.label=Email address
+profile.account.email.help=Used for login and notifications.
+profile.account.username.label=Username
+profile.account.username.help=Unique handle - shown in URLs and @-mentions.
+profile.account.language.label=Interface language
+profile.account.language.help=Affects menus, buttons and system messages.
+profile.account.timezone.label=Time zone
+profile.account.timezone.help=Controls date and time display across the app.
+profile.account.dateformat.label=Date format
+profile.account.dateformat.help=e.g. 2026-05-21 or 21/05/2026.
+profile.account.weekstart.label=Week start
+profile.account.weekstart.help=Monday, Sunday or Saturday.
+
+profile.appearance.title=Appearance
+profile.appearance.header=Appearance
+profile.appearance.description=Theme, accent color and surface density.
+profile.appearance.theme.label=Theme
+profile.appearance.theme.help=Light, dark or system.
+profile.appearance.accent.label=Accent color
+profile.appearance.accent.help=Used for actions, links and selected rows.
+profile.appearance.density.label=Density
+profile.appearance.density.help=Cozy or compact - controls row height.
+profile.appearance.fontscale.label=Font size
+profile.appearance.fontscale.help=Global UI font size.
+profile.appearance.reducemotion.label=Reduced motion
+profile.appearance.reducemotion.help=Disables animations and transitions.
+
+profile.notifications.title=Notifications
+profile.notifications.header=Notifications
+profile.notifications.description=Which events reach you and through which channel.
+profile.notifications.column.event=Event
+profile.notifications.column.email=Email
+profile.notifications.column.inapp=In-App
+profile.notifications.column.slack=Slack
+profile.notifications.event.mention=Mentions
+profile.notifications.event.assign=Assignments
+profile.notifications.event.comment=Comments
+profile.notifications.event.status=Status changes
+profile.notifications.event.review=Review requests
+profile.notifications.event.digest=Daily digest
+profile.notifications.on=on
+profile.notifications.off=off
+
+profile.security.title=Security
+profile.security.header=Security & 2FA
+profile.security.description=Password, two-factor authentication, recovery codes and login alerts.
+profile.security.password.label=Password
+profile.security.password.help=Strength and last change date of the current password.
+profile.security.twofa.label=Two-factor authentication
+profile.security.twofa.help=Extra security at every sign-in - recommended.
+profile.security.recovery.label=Recovery codes
+profile.security.recovery.help=One-time codes for when no authenticator is available.
+profile.security.sso.label=Enforce SSO
+profile.security.sso.help=Sign in only through the configured identity provider.
+profile.security.loginalerts.label=Login alerts
+profile.security.loginalerts.help=Email when a new device or location signs in.
+
+profile.sessions.title=Active sessions
+profile.sessions.header=Active sessions
+profile.sessions.description=Devices and browsers currently signed in to your account.
+profile.sessions.column.device=Device
+profile.sessions.column.browser=Browser
+profile.sessions.column.location=Location
+profile.sessions.column.lastactive=Last active
+
+profile.tokens.title=Access tokens
+profile.tokens.header=Personal Access Tokens
+profile.tokens.description=Tokens authenticate API requests and integrations on behalf of your account.
+profile.tokens.column.name=Name
+profile.tokens.column.prefix=Prefix
+profile.tokens.column.scopes=Scopes
+profile.tokens.column.expires=Expires
+profile.tokens.column.status=Status
+
+profile.integrations.title=Integrations
+profile.integrations.header=Integrations
+profile.integrations.description=Connected accounts and services at the user level.
+profile.integrations.column.service=Service
+profile.integrations.column.description=Description
+profile.integrations.column.status=Status
+
+profile.data.title=Data & export
+profile.data.header=Data & export
+profile.data.description=Download all data of your account - GDPR-compliant.
+profile.data.export.label=Data export
+profile.data.export.help=Tickets, comments, attachments, forms and workflows as ZIP.
+profile.data.activity.label=Activity log
+profile.data.activity.help=All actions performed by your account in the last 90 days.
+profile.data.retention.label=Tenant data on departure
+profile.data.retention.help=Retention period configured by the tenant admin.
+
+profile.delete.title=Delete account
+profile.delete.header=Delete account
+profile.delete.description=This action is final and cannot be undone.
+profile.delete.deactivate.label=Deactivate account
+profile.delete.deactivate.help=Temporary sign-out, data is preserved.
+profile.delete.remove.label=Permanently delete account
+profile.delete.remove.help=Requires password confirmation and a 30-day grace period.
+
+
 setting.database.title=Database Settings
 setting.group.database.label=Database
 setting.database.provider.label=Database Provider
