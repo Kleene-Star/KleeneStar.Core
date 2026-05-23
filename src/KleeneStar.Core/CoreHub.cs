@@ -33,6 +33,7 @@ namespace KleeneStar.Core
         private static GroupManager _groupManager;
         private static TemplateManager _templateManager;
         private static ObjectViewManager _objectViewManager;
+        private static SlaManager _slaManager;
 
         /// <summary>
         /// Gets the shared instance of the component hub used for managing and coordinating application components.
@@ -119,6 +120,12 @@ namespace KleeneStar.Core
         /// wrap the objects index of a workspace.
         /// </summary>
         public static IObjectViewManager ObjectViewManager => _objectViewManager ??= ComponentHub.GetComponentManager<ObjectViewManager>();
+
+        /// <summary>
+        /// Gets the SLA manager responsible for managing service-level-agreement policies
+        /// attached to classes.
+        /// </summary>
+        public static ISlaManager SlaManager => _slaManager ??= ComponentHub.GetComponentManager<SlaManager>();
 
         /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.

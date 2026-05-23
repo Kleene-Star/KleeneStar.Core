@@ -30,6 +30,7 @@ namespace KleeneStar.Core.Test
             ("_tenantManager",    typeof(TenantManager)),
             ("_identityManager",  typeof(IdentityManager)),
             ("_groupManager",     typeof(GroupManager)),
+            ("_slaManager",       typeof(SlaManager)),
         ];
 
         /// <summary>

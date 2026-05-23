@@ -24,8 +24,10 @@ namespace KleeneStar.Core.WebFragment.Class
     [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Workflows._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Statuses._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Slas._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Workflow._workflowid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Sla._slaid_.Index>]
     [Cache]
     public sealed class ClassSidebarFieldLinkFragment : FragmentControlSidebarItemLink
     {
