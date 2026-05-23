@@ -31,6 +31,7 @@ namespace KleeneStar.Core.Test
             ("_identityManager",  typeof(IdentityManager)),
             ("_groupManager",     typeof(GroupManager)),
             ("_slaManager",       typeof(SlaManager)),
+            ("_calendarManager",  typeof(CalendarManager)),
         ];
 
         /// <summary>

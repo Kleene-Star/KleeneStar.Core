@@ -30,6 +30,8 @@ namespace KleeneStar.Core.WWW.Settings.Groups
         /// <summary>
         /// Processing of the resource.
         /// </summary>
+        /// <param name="renderContext">The context for rendering the page.</param>
+        /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebAppSetting visualTree)
         {
             visualTree.Content.MainPanel.AddPrimary(new ControlText()

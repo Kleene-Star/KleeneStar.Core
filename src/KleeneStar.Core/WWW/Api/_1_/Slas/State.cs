@@ -22,7 +22,17 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas
         {
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the four selectable <see cref="SlaPolicyState"/> entries (Draft,
+        /// Active, Inactive, Archived), each tagged with its localized label and color
+        /// so the picker can render them.
+        /// </summary>
+        /// <param name="query">The query criteria. Ignored — the selection is a fixed list.</param>
+        /// <param name="context">The query context. Ignored.</param>
+        /// <param name="request">
+        /// The request used to resolve the active culture for the label translation.
+        /// </param>
+        /// <returns>The four-element list of selection items.</returns>
         protected override IQueryable<RestApiSelectionItem> RetrieveItems(IQuery<SlaPolicy> query, IQueryContext context, IRequest request)
         {
             var list = new List<RestApiSelectionItem>
@@ -56,7 +66,15 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas
             return list.AsQueryable();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Narrows the SLA-policy query by name when a free-text filter is supplied
+        /// (case-insensitive contains match). Returns the query unchanged when the
+        /// filter is null or the literal string <c>"null"</c>.
+        /// </summary>
+        /// <param name="filter">The free-text filter expression.</param>
+        /// <param name="query">The policy query to refine.</param>
+        /// <param name="request">The request providing operational context.</param>
+        /// <returns>The (possibly refined) policy query.</returns>
         protected override IQuery<SlaPolicy> Filter(string filter, IQuery<SlaPolicy> query, IRequest request)
         {
             if (filter is null || filter == "null")

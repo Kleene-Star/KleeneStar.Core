@@ -19,7 +19,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas._classid_
         {
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the quick-filter chips displayed above the SLA-policy table. Selecting
+        /// a chip narrows the table to one of the lifecycle states or to the critical
+        /// priority bucket.
+        /// </summary>
+        /// <param name="context">The query context. Ignored — the chips are fixed.</param>
+        /// <param name="request">The HTTP request providing operational context.</param>
+        /// <returns>The fixed set of quick-filter items.</returns>
         protected override IEnumerable<RestApiQuickfilterItem> RetrieveItems(IQueryContext context, IRequest request)
         {
             yield return new RestApiQuickfilterItem { Id = "qf_active",    Name = "Active" };

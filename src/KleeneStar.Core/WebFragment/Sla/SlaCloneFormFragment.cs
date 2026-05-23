@@ -1,4 +1,5 @@
 using KleeneStar.Core.WebParameter;
+using System;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -70,16 +71,28 @@ namespace KleeneStar.Core.WebFragment.Sla
         };
 
         /// <summary>
-        /// Gets the selection control for the working calendar.
+        /// Gets the selection control for the working-hours calendar. The endpoint is
+        /// class-scoped — the class id is resolved from the source SLA id parameter.
         /// </summary>
         public ControlRestFormItemInputSelection SlaCalendar { get; } = new()
         {
-            Name = _ => nameof(Model.Entities.SlaPolicy.Calendar),
+            Name = _ => nameof(Model.Entities.SlaPolicy.CalendarId),
             Label = _ => "kleenestar.core:sla.calendar.label",
             Placeholder = _ => "kleenestar.core:sla.calendar.placeholder",
             Help = _ => "kleenestar.core:sla.calendar.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Slas.Calendar>()
+            RestUri = renderContext =>
+            {
+                var slaParam = renderContext.Request.GetParameter<SlaIdParameter>();
+                var slaId = Guid.TryParse(slaParam?.Value, out var id) ? id : Guid.Empty;
+                var policy = CoreHub.SlaManager.GetSla(slaId);
+
+                // bind the request FIRST, then bind the resolved class id LAST so that
+                // the explicit class id always wins over an empty/missing one from the request.
+                return CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Slas._classid_.Calendar>()
+                    .BindParameters(renderContext.Request)
+                    .BindParameters(new ClassIdParameter(policy?.ClassId ?? Guid.Empty));
+            }
         };
 
         /// <summary>

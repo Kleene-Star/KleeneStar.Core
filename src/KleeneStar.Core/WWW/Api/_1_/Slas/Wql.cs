@@ -19,7 +19,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas
         {
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the WQL expressions that pre-populate the advanced-search prompt
+        /// suggestion list. These are pre-canned starter queries the user can refine
+        /// without learning WQL syntax from scratch.
+        /// </summary>
+        /// <param name="request">The HTTP request providing additional context.</param>
+        /// <returns>The seeded WQL history entries.</returns>
         protected override IEnumerable<string> GetHistory(IRequest request)
         {
             yield return "Name ~ \"VIP\"";

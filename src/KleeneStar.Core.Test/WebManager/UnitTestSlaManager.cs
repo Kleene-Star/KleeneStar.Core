@@ -170,7 +170,7 @@ namespace KleeneStar.Core.Test.WebManager
             ClassId = ClassId,
             State = SlaPolicyState.Active,
             Priority = SlaPriority.Critical,
-            Calendar = SlaCalendar.TwentyFourSeven,
+            CalendarId = null,
             Notifications = SlaNotificationChannels.Email | SlaNotificationChannels.Slack,
             Targets =
             {

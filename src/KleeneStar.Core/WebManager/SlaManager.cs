@@ -20,13 +20,22 @@ namespace KleeneStar.Core.WebManager
         private readonly IComponentHub _componentHub;
         private readonly IHttpServerContext _httpServerContext;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Raised when a new SLA policy has been added to the manager.
+        /// </summary>
         public event EventHandler<SlaPolicy> SlaAdded;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Raised when an SLA policy's scalar properties or child collections
+        /// (targets, scope rules, escalations) have been updated.
+        /// </summary>
         public event EventHandler<SlaPolicy> SlaUpdated;
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Raised when an SLA policy has been removed from the manager. The event fires
+        /// after the underlying cascade has cleaned up the dependent targets, scope rules,
+        /// and escalation levels.
+        /// </summary>
         public event EventHandler<SlaPolicy> SlaRemoved;
 
         /// <summary>
@@ -51,7 +60,12 @@ namespace KleeneStar.Core.WebManager
             _httpServerContext = httpServerContext;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the SLA policy identified by the supplied id, including its targets,
+        /// scope rules, escalation levels, class, owner, and referenced calendar.
+        /// </summary>
+        /// <param name="slaId">The policy id.</param>
+        /// <returns>The policy, or <c>null</c> when no entry matches.</returns>
         public SlaPolicy GetSla(Guid slaId)
         {
             var query = new Query<SlaPolicy>()
@@ -61,7 +75,11 @@ namespace KleeneStar.Core.WebManager
             return ModelHub.GetSlaPolicies(query).FirstOrDefault();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the SLA policy identified by the supplied URL-bound id parameter.
+        /// </summary>
+        /// <param name="slaId">The id parameter parsed from the URL path.</param>
+        /// <returns>The policy, or <c>null</c> when no entry matches.</returns>
         public SlaPolicy GetSla(SlaIdParameter slaId)
         {
             ArgumentNullException.ThrowIfNull(slaId);
@@ -71,7 +89,12 @@ namespace KleeneStar.Core.WebManager
             return GetSla(guid);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns every SLA policy attached to the class addressed by the supplied
+        /// URL-bound class-id parameter.
+        /// </summary>
+        /// <param name="classId">The class-id parameter parsed from the URL path.</param>
+        /// <returns>The policies belonging to the class. The collection may be empty.</returns>
         public IEnumerable<SlaPolicy> GetSlas(ClassIdParameter classId)
         {
             ArgumentNullException.ThrowIfNull(classId);
@@ -81,7 +104,11 @@ namespace KleeneStar.Core.WebManager
             return GetSlas(guid);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns every SLA policy attached to the class with the supplied id.
+        /// </summary>
+        /// <param name="classId">The class id.</param>
+        /// <returns>The policies belonging to the class. The collection may be empty.</returns>
         public IEnumerable<SlaPolicy> GetSlas(Guid classId)
         {
             var query = new Query<SlaPolicy>()
@@ -90,19 +117,37 @@ namespace KleeneStar.Core.WebManager
             return ModelHub.GetSlaPolicies(query);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the SLA policies that satisfy the supplied query. The manager opens
+        /// its own DbContext for the call.
+        /// </summary>
+        /// <param name="query">The query criteria.</param>
+        /// <returns>The matching policies.</returns>
         public IEnumerable<SlaPolicy> GetSlas(IQuery<SlaPolicy> query)
         {
             return ModelHub.GetSlaPolicies(query);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Returns the SLA policies that satisfy the supplied query, executed inside
+        /// the supplied <see cref="IQueryContext"/> (expected to be a
+        /// <see cref="KleeneStarDbContext"/>).
+        /// </summary>
+        /// <param name="query">The query criteria.</param>
+        /// <param name="context">The query context.</param>
+        /// <returns>The matching policies.</returns>
         public IEnumerable<SlaPolicy> GetSlas(IQuery<SlaPolicy> query, IQueryContext context)
         {
             return ModelHub.GetSlaPolicies(query, context as KleeneStarDbContext);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Adds the supplied policy to the database (together with its targets, scope
+        /// rules, and escalation levels), raises <see cref="SlaAdded"/>, and emits a UI
+        /// notification. Returns the manager instance to allow chaining.
+        /// </summary>
+        /// <param name="policy">The policy to add.</param>
+        /// <returns>The current manager instance.</returns>
         public ISlaManager Add(SlaPolicy policy)
         {
             ArgumentNullException.ThrowIfNull(policy);
@@ -116,7 +161,13 @@ namespace KleeneStar.Core.WebManager
             return this;
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Persists the supplied policy's scalar properties and replaces its targets,
+        /// scope rules, and escalation levels with the entries on the incoming entity.
+        /// Raises <see cref="SlaUpdated"/> and emits a UI notification.
+        /// </summary>
+        /// <param name="policy">The policy to update.</param>
+        /// <returns>The current manager instance.</returns>
         public ISlaManager Update(SlaPolicy policy)
         {
             ArgumentNullException.ThrowIfNull(policy);
@@ -145,7 +196,13 @@ namespace KleeneStar.Core.WebManager
             }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Removes the SLA policy identified by the supplied id, cascading the deletion
+        /// to its targets, scope rules, and escalation levels. Raises
+        /// <see cref="SlaRemoved"/>. No-op when no policy matches the id.
+        /// </summary>
+        /// <param name="slaId">The id of the policy to remove.</param>
+        /// <returns>The current manager instance.</returns>
         public ISlaManager Remove(Guid slaId)
         {
             var existing = GetSla(slaId);

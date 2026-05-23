@@ -37,24 +37,60 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas._classid_
             _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Sla._slaid_.Delete>();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Creates a new instance of an object that implements the IQueryContext interface.
+        /// </summary>
+        /// <returns>
+        /// An IQueryContext instance that can be used to execute queries.
+        /// </returns>
         protected override IQueryContext CreateContext()
         {
             return ModelHub.CreateDbContext();
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Retrieves the collection of columns for the specified REST API request.
+        /// </summary>
+        /// <param name="request">
+        /// The request for which to retrieve the table columns. Cannot be null.
+        /// </param>
+        /// <returns>
+        /// An enumerable collection of columns associated with the specified request. The 
+        /// collection may be empty if no columns are available.
+        /// </returns>
         protected override IEnumerable<RestApiTableColumn> RetrieveColums(IRequest request)
         {
-            yield return new RestApiTableColumn { Id = "name",     Label = "Name",     Visible = true };
+            yield return new RestApiTableColumn { Id = "name", Label = "Name", Visible = true };
             yield return new RestApiTableColumn { Id = "priority", Label = "Priority", Visible = true };
             yield return new RestApiTableColumn { Id = "calendar", Label = "Calendar", Visible = true };
-            yield return new RestApiTableColumn { Id = "state",    Label = "State",    Visible = true };
-            yield return new RestApiTableColumn { Id = "targets",  Label = "Targets",  Visible = true };
-            yield return new RestApiTableColumn { Id = "updated",  Label = "Updated",  Visible = false };
+            yield return new RestApiTableColumn { Id = "state", Label = "State", Visible = true };
+            yield return new RestApiTableColumn { Id = "targets", Label = "Targets", Visible = true };
+            yield return new RestApiTableColumn { Id = "updated", Label = "Updated", Visible = false };
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Retrieves a collection of table rows that match the specified query 
+        /// and context.
+        /// </summary>
+        /// <param name="query">
+        /// The query that defines the criteria for selecting table rows.
+        /// </param>
+        /// <param name="context">
+        /// The context in which the query is executed, providing additional 
+        /// information or constraints.
+        /// </param>
+        /// <param name="columns">
+        /// The collection of columns to include in the result set. Only the specified 
+        /// columns will be present in the returned rows.
+        /// </param>
+        /// <param name="request">
+        /// The request object containing metadata or parameters relevant to the 
+        /// retrieval operation.
+        /// </param>
+        /// <returns>
+        /// An enumerable collection of table rows that satisfy the query and context. 
+        /// The collection may be empty if no rows match the criteria.
+        /// </returns>
         protected override IEnumerable<RestApiTableRow> RetrieveRows(IQuery<SlaPolicy> query, IQueryContext context, IEnumerable<RestApiTableColumn> columns, IRequest request)
         {
             var classId = request.GetParameter<ClassIdParameter>();
@@ -80,7 +116,24 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas._classid_
                 });
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Applies the specified filter criteria to the given query object.
+        /// </summary>
+        /// <param name="filter">
+        /// A string representing the filter expression to apply. The format and supported 
+        /// operators depend on the implementation.
+        /// </param>
+        /// <param name="query">
+        /// The query object to which the filter will be applied.
+        /// </param>
+        /// <param name="request">
+        /// The request that provides the operational context for resolving
+        /// the appropriate REST API URI.
+        /// </param>
+        /// <returns>
+        /// A query representing the filtered set of items that match the criteria defined by 
+        /// the filter statement.
+        /// </returns>
         protected override IQuery<SlaPolicy> Filter(string filter, IQuery<SlaPolicy> query, IRequest request)
         {
             if (string.IsNullOrWhiteSpace(filter) || filter == "null")
@@ -91,7 +144,23 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas._classid_
             return query.WhereContainsIgnoreCase(x => x.Name, filter);
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Applies the specified filter criteria to the given query object.
+        /// </summary>
+        /// <param name="filters">
+        /// A collection of quickfilter identifiers that should be applied in addition to the WQL criteria.
+        /// </param>
+        /// <param name="query">
+        /// The query object to which the filter will be applied.
+        /// </param>
+        /// <param name="request">
+        /// The request that provides the operational context for resolving
+        /// the appropriate REST API URI.
+        /// </param>
+        /// <returns>
+        /// A query representing the filtered set of items that match the criteria defined by 
+        /// the filter statement.
+        /// </returns>
         protected override IQuery<SlaPolicy> Filter(IEnumerable<string> filters, IQuery<SlaPolicy> query, IRequest request)
         {
             foreach (var filter in filters.Where(f => f.StartsWith("qf_", StringComparison.OrdinalIgnoreCase)))
@@ -121,8 +190,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas._classid_
         }
 
         /// <summary>
-        /// Emits the per-row option entries (header, edit, clone, separator, delete).
+        /// Retrieves a collection of options.
         /// </summary>
+        /// <param name="row">
+        /// The row object for which options are being retrieved. Cannot be null.
+        /// </param>
+        /// <param name="request">
+        /// The request object containing the criteria for retrieving options. Cannot be null.
+        /// </param>
         private IEnumerable<RestApiOption> GetOptions(SlaPolicy row, IRequest request)
         {
             var editUri = _editFormUri?
@@ -164,8 +239,17 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas._classid_
         }
 
         /// <summary>
-        /// Returns the URI a row click navigates to. Returning <c>null</c> keeps the row inert.
+        /// Retrieves a URI that represents the specified request within the given workspace context.
         /// </summary>
+        /// <param name="row">
+        /// The workspace context in which the request is evaluated. Cannot be null.
+        /// </param>
+        /// <param name="request">
+        /// The request for which to obtain the corresponding URI. Cannot be null.
+        /// </param>
+        /// <returns>
+        /// An object implementing <see cref="IUri"/> that represents the URI for the specified request and workspace.
+        /// </returns>
         private static IUri GetUri(SlaPolicy row, IRequest request)
         {
             return null;

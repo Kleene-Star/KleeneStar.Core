@@ -18,8 +18,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas
     public sealed partial class UniqueName : RestApiUnique
     {
         /// <summary>
-        /// Matches names of 1 to 128 non-control Unicode characters.
+        /// Matches names of 1 to 128 non-control Unicode characters. Used to reject
+        /// inputs with control characters, line breaks, or overly long values before
+        /// the database is consulted.
         /// </summary>
+        /// <returns>The compiled regular expression.</returns>
         [GeneratedRegex(@"^[\P{C}]{1,128}$")]
         private static partial Regex NameRegex();
 
@@ -30,7 +33,16 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas
         {
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Determines whether the supplied candidate policy name is available. A name
+        /// is rejected when it is empty/whitespace, when it equals one of the
+        /// <see cref="SlaManager.ReservedSlaNames"/> URL segments, when it contains
+        /// characters disallowed by <see cref="NameRegex"/>, or when a policy with the
+        /// same name already exists (case-insensitive comparison).
+        /// </summary>
+        /// <param name="value">The candidate policy name.</param>
+        /// <param name="request">The HTTP request providing additional context.</param>
+        /// <returns><c>true</c> when the name is available; <c>false</c> otherwise.</returns>
         protected override bool CheckAvailable(string value, Request request)
         {
             if (string.IsNullOrWhiteSpace(value))

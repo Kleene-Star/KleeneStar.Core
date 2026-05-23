@@ -71,16 +71,18 @@ namespace KleeneStar.Core.WebFragment.Sla
         };
 
         /// <summary>
-        /// Gets the selection control for the working calendar.
+        /// Gets the selection control for the working-hours calendar. The endpoint is
+        /// class-scoped so the dropdown only lists calendars belonging to the active class.
         /// </summary>
         public ControlRestFormItemInputSelection SlaCalendar { get; } = new()
         {
-            Name = _ => nameof(Model.Entities.SlaPolicy.Calendar),
+            Name = _ => nameof(Model.Entities.SlaPolicy.CalendarId),
             Label = _ => "kleenestar.core:sla.calendar.label",
             Placeholder = _ => "kleenestar.core:sla.calendar.placeholder",
             Help = _ => "kleenestar.core:sla.calendar.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Slas.Calendar>()
+            RestUri = renderContext => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Slas._classid_.Calendar>()
+                .BindParameters(renderContext.Request)
         };
 
         /// <summary>
