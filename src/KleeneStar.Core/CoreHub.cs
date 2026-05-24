@@ -35,6 +35,7 @@ namespace KleeneStar.Core
         private static ObjectViewManager _objectViewManager;
         private static SlaManager _slaManager;
         private static CalendarManager _calendarManager;
+        private static CommentManager _commentManager;
 
         /// <summary>
         /// Gets the shared instance of the component hub used for managing and coordinating application components.
@@ -133,6 +134,12 @@ namespace KleeneStar.Core
         /// attached to classes.
         /// </summary>
         public static ICalendarManager CalendarManager => _calendarManager ??= ComponentHub.GetComponentManager<CalendarManager>();
+
+        /// <summary>
+        /// Gets the comment manager responsible for managing discussion threads attached
+        /// to objects.
+        /// </summary>
+        public static ICommentManager CommentManager => _commentManager ??= ComponentHub.GetComponentManager<CommentManager>();
 
         /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.

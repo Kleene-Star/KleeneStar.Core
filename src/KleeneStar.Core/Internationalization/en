@@ -711,3 +711,10 @@ calendar.region.placeholder=e.g. DE, DE-BW, US-CA
 calendar.region.help=Optional region tag for holidays.
 calendar.isdefault.label=Default
 calendar.isdefault.help=Use this calendar as the default for the class.
+
+comment.api.title=Comments
+comment.composer.placeholder=Write a comment…
+comment.state.active.label=Active
+comment.state.edited.label=Edited
+comment.state.deleted.label=Deleted
+comment.state.hidden.label=Hidden

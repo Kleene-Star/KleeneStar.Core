@@ -711,3 +711,10 @@ calendar.region.placeholder=z. B. DE, DE-BW, US-CA
 calendar.region.help=Optionaler Regions-Tag für Feiertage.
 calendar.isdefault.label=Standard
 calendar.isdefault.help=Verwende diesen Kalender als Default für die Klasse.
+
+comment.api.title=Kommentare
+comment.composer.placeholder=Kommentar verfassen…
+comment.state.active.label=Aktiv
+comment.state.edited.label=Bearbeitet
+comment.state.deleted.label=Gelöscht
+comment.state.hidden.label=Ausgeblendet
