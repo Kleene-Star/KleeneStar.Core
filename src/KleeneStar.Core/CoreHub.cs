@@ -36,6 +36,7 @@ namespace KleeneStar.Core
         private static SlaManager _slaManager;
         private static CalendarManager _calendarManager;
         private static CommentManager _commentManager;
+        private static ValueManager _valueManager;
 
         /// <summary>
         /// Gets the shared instance of the component hub used for managing and coordinating application components.
@@ -140,6 +141,12 @@ namespace KleeneStar.Core
         /// to objects.
         /// </summary>
         public static ICommentManager CommentManager => _commentManager ??= ComponentHub.GetComponentManager<CommentManager>();
+
+        /// <summary>
+        /// Gets the value manager responsible for the per-object per-field value rows
+        /// that back the typed inputs on the object detail and edit views.
+        /// </summary>
+        public static IValueManager ValueManager => _valueManager ??= ComponentHub.GetComponentManager<ValueManager>();
 
         /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.

@@ -2,6 +2,7 @@ using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -98,17 +99,16 @@ namespace KleeneStar.Core.WebFragment.Object
                 .Where(f => !f.Deprecated && f.State == FieldState.Active)
                 .ToDictionary(f => f.Id);
 
+            var values = LoadValuesForObject(@object.Id);
+
             var orderedTabs = form.Tabs.OrderBy(t => t.Position).ToList();
 
             if (orderedTabs.Count == 1)
             {
-                foreach (var element in orderedTabs[0].Elements.OrderBy(e => e.Position))
+                var grid = BuildFieldGrid(orderedTabs[0].Elements, fields, values, @object, objectUri);
+                if (grid is not null)
                 {
-                    var node = RenderElement(element, fields, @object, objectUri, renderContext, visualTree);
-                    if (node is not null)
-                    {
-                        html.Add(node);
-                    }
+                    html.Add(grid.Render(renderContext, visualTree));
                 }
 
                 return html;
@@ -126,13 +126,10 @@ namespace KleeneStar.Core.WebFragment.Object
                     Title = _ => t.Name
                 };
 
-                foreach (var element in t.Elements.OrderBy(e => e.Position))
+                var tabGrid = BuildFieldGrid(t.Elements, fields, values, @object, objectUri);
+                if (tabGrid is not null)
                 {
-                    var node = BuildElementControl(element, fields, @object, objectUri);
-                    if (node is not null)
-                    {
-                        view.Add(node);
-                    }
+                    view.Add(tabGrid);
                 }
 
                 tabControl.Add(view);
@@ -144,78 +141,125 @@ namespace KleeneStar.Core.WebFragment.Object
         }
 
         /// <summary>
-        /// Renders a single top-level element directly into the view. Group elements are
-        /// emitted as a panel that recurses into their children; field references are
-        /// rendered as inline-editable smart-edit controls.
+        /// Flattens the supplied form elements (descending recursively into groups) into
+        /// a single two-column data grid: column one shows the field name with the field
+        /// description as a native HTML <c>title</c> tooltip; column two shows the
+        /// inline-editable smart-edit bound to the value. Field references whose name
+        /// aliases a system attribute already rendered outside the form (currently only
+        /// <see cref="Model.Entities.Object.Description"/>) are skipped to avoid the
+        /// duplicate render path. Group labels are not surfaced in this view — the data
+        /// grid intentionally collapses the form's visual structure into a flat
+        /// name/value table.
         /// </summary>
-        private static IHtmlNode RenderElement
+        /// <returns>The data grid control, or <c>null</c> when no visible field rows
+        /// remain after filtering.</returns>
+        private static IControl BuildFieldGrid
         (
-            FormElement element,
+            IEnumerable<FormElement> elements,
             IDictionary<Guid, Model.Entities.Field> fields,
-            Model.Entities.Object @object,
-            IUri objectUri,
-            IRenderControlContext renderContext,
-            IVisualTreeControl visualTree
-        )
-        {
-            var control = BuildElementControl(element, fields, @object, objectUri);
-
-            return control?.Render(renderContext, visualTree);
-        }
-
-        /// <summary>
-        /// Builds a panel control for a top-level element. Group elements recurse into
-        /// their child elements; field references resolve to inline-editable smart-edit
-        /// controls.
-        /// </summary>
-        private static IControl BuildElementControl
-        (
-            FormElement element,
-            IDictionary<Guid, Model.Entities.Field> fields,
+            IDictionary<Guid, Value> values,
             Model.Entities.Object @object,
             IUri objectUri
         )
         {
-            if (element is FormFieldRefElement fieldRef)
-            {
-                return fields.TryGetValue(fieldRef.FieldId, out var field)
-                    ? BuildFieldSmartEdit(@object, objectUri, field)
-                    : null;
-            }
+            var rows = new List<IControlTableRow>();
 
-            if (element is FormGroupElement group)
+            foreach (var fieldRef in FlattenFieldRefs(elements))
             {
-                var panel = new ControlPanel("group-" + group.Id.ToString("N"))
+                if (!fields.TryGetValue(fieldRef.FieldId, out var field))
                 {
-                    Direction = _ => MapGroupDirection(group.Layout)
-                };
-
-                if (!string.IsNullOrWhiteSpace(group.Label))
-                {
-                    panel.Add(new ControlText() { Text = _ => group.Label });
+                    continue;
                 }
 
-                foreach (var child in group.Children.OrderBy(c => c.Position))
+                if (IsSystemAttributeAlias(field.Name))
                 {
-                    var childControl = BuildElementControl(child, fields, @object, objectUri);
-                    if (childControl is not null)
-                    {
-                        panel.Add(childControl);
-                    }
+                    continue;
                 }
 
-                return panel;
+                values.TryGetValue(field.Id, out var value);
+                rows.Add(BuildFieldRow(@object, objectUri, field, value));
             }
 
-            return null;
+            if (rows.Count == 0)
+            {
+                return null;
+            }
+
+            var nameColumn = new ControlTableColumn("col-name") { Title = _ => "Name" };
+            var valueColumn = new ControlTableColumn("col-value") { Title = _ => "Value" };
+
+            return new ControlTable("field-grid-" + @object.Id.ToString("N"), [nameColumn, valueColumn], [.. rows])
+            {
+                SuppressHeaders = _ => true,
+                Striped = _ => TypeStripedTable.Row
+            };
         }
 
         /// <summary>
-        /// Builds a smart-edit control bound to a single class field. Each rendered field
-        /// becomes its own inline editor that PUTs back to the object endpoint when the
-        /// user commits the change.
+        /// Recursively yields every <see cref="FormFieldRefElement"/> contained in the
+        /// supplied element tree, in document order honouring <see cref="FormElement.Position"/>.
+        /// Group containers are descended into but not emitted themselves.
         /// </summary>
-        private static ControlSmartEdit BuildFieldSmartEdit(Model.Entities.Object @object, IUri objectUri, Model.Entities.Field field)
+        private static IEnumerable<FormFieldRefElement> FlattenFieldRefs(IEnumerable<FormElement> elements)
+        {
+            foreach (var element in elements.OrderBy(e => e.Position))
+            {
+                if (element is FormFieldRefElement fieldRef)
+                {
+                    yield return fieldRef;
+                }
+                else if (element is FormGroupElement group)
+                {
+                    foreach (var inner in FlattenFieldRefs(group.Children))
+                    {
+                        yield return inner;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Loads the persisted field values of the supplied object via
+        /// <see cref="CoreHub.ValueManager"/> and returns them keyed by
+        /// <see cref="Value.FieldId"/>. The smart-edit controls use this map to
+        /// initialize their inputs so the inline editor shows the current value instead
+        /// of being empty on first render.
+        /// </summary>
+        /// <param name="objectId">The object id.</param>
+        /// <returns>The value map; empty when the object has no stored values yet.</returns>
+        private static IDictionary<Guid, Value> LoadValuesForObject(Guid objectId)
+        {
+            return CoreHub.ValueManager
+                .GetValues(objectId)
+                .GroupBy(v => v.FieldId)
+                .ToDictionary(g => g.Key, g => g.First());
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> when the supplied field name aliases a system attribute
+        /// of <see cref="Model.Entities.Object"/> that is rendered outside the form
+        /// structure (currently only <see cref="Model.Entities.Object.Description"/>).
+        /// </summary>
+        /// <param name="fieldName">The field name as configured on the class.</param>
+        /// <returns><c>true</c> when the field duplicates a system attribute.</returns>
+        private static bool IsSystemAttributeAlias(string fieldName)
+        {
+            return string.Equals(fieldName, nameof(Model.Entities.Object.Description), StringComparison.OrdinalIgnoreCase);
+        }
+
+        /// <summary>
+        /// Builds a data-grid row with the field name in the name cell and the
+        /// inline-editable smart-edit in the value cell. The name cell carries the field
+        /// description as a native HTML <c>title</c> attribute so hovering it shows the
+        /// description as a browser tooltip; required fields get a trailing asterisk.
+        /// </summary>
+        /// <remarks>
+        /// When a <paramref name="value"/> exists for the field, it is converted to the
+        /// matching <see cref="ControlFormInputValue{T}"/> type and pushed into the input
+        /// via <see cref="ControlSmartEdit.Initialize(System.Action{System.Object})"/>;
+        /// without this step the input renders empty regardless of the persisted value.
+        /// </remarks>
+        private static ControlTableRow BuildFieldRow(Model.Entities.Object @object, IUri objectUri, Model.Entities.Field field, Value value)
         {
             var input = CreateInputForField(field);
 
@@ -229,7 +273,95 @@ namespace KleeneStar.Core.WebFragment.Object
 
             smartEdit.Add(input);
 
-            return smartEdit;
+            var initialValue = BuildInputValue(field, value?.Data);
+            if (initialValue is not null)
+            {
+                smartEdit.Initialize(args => args.SetValue(input, initialValue));
+            }
+
+            var label = new ControlHtml("field-label-" + field.Id.ToString("N"))
+            {
+                Html = _ =>
+                {
+                    var span = new HtmlElementTextSemanticsSpan
+                    {
+                        Class = "wx-kleenestar-field-label"
+                    };
+
+                    if (!string.IsNullOrWhiteSpace(field.Description))
+                    {
+                        span.AddUserAttribute("title", field.Description);
+                    }
+
+                    span.Add(new HtmlText(field.Name + (field.Required ? " *" : "") + ":"));
+                    return span.ToString();
+                }
+            };
+
+            var nameCell = new ControlTableCellPanel("name-" + field.Id.ToString("N"))
+            {
+                Class = _ => "wx-kleenestar-field-name"
+            };
+            nameCell.Add(label);
+
+            var valueCell = new ControlTableCellPanel("value-" + field.Id.ToString("N"))
+            {
+                Class = _ => "wx-kleenestar-field-value"
+            };
+            valueCell.Add(smartEdit);
+
+            return new ControlTableRow("field-row-" + field.Id.ToString("N"), [nameCell, valueCell]);
+        }
+
+        /// <summary>
+        /// Converts the persisted <see cref="Value.Data"/> string of a field into the
+        /// strongly-typed input value that matches the input control produced by
+        /// <see cref="CreateInputForField(Model.Entities.Field)"/>. Boolean and date
+        /// fields parse the raw payload, tag fields split on commas, everything else
+        /// falls through to a plain string value.
+        /// </summary>
+        /// <param name="field">The field whose input is being initialised.</param>
+        /// <param name="data">The persisted value payload; <c>null</c> or empty for a
+        /// field that has not been set yet.</param>
+        /// <returns>The input-value wrapper, or <c>null</c> when no value should be pushed
+        /// into the input (currently only for <see cref="FieldType.Attachment"/>).</returns>
+        private static IControlFormInputValue BuildInputValue(Model.Entities.Field field, string data)
+        {
+            switch (field.FieldType)
+            {
+                case FieldType.Boolean:
+                    return new ControlFormInputValueBool(
+                        bool.TryParse(data, out var b) && b);
+
+                case FieldType.Date:
+                    if (string.IsNullOrEmpty(data))
+                    {
+                        return new ControlFormInputValueDate((DateTime?)null);
+                    }
+                    return DateTime.TryParse(data, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var dt)
+                        ? new ControlFormInputValueDate(dt)
+                        : new ControlFormInputValueDate((DateTime?)null);
+
+                case FieldType.Tag:
+                    var items = string.IsNullOrEmpty(data)
+                        ? []
+                        : data.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+                    return new ControlFormInputValueStringList(items);
+
+                case FieldType.Attachment:
+                    // attachments are referenced through their own upload pipeline, not
+                    // through the inline smart-edit value initialisation.
+                    return null;
+
+                case FieldType.Number:
+                case FieldType.Reference:
+                case FieldType.Selection:
+                case FieldType.Workflow:
+                case FieldType.User:
+                case FieldType.Text:
+                default:
+                    return new ControlFormInputValueString(data ?? string.Empty);
+            }
         }
 
         /// <summary>
@@ -302,27 +434,19 @@ namespace KleeneStar.Core.WebFragment.Object
                 : withQuery.BindParameters(renderContext.Request);
         }
 
-        /// <summary>
-        /// Maps a form group layout to the direction setting of a panel that hosts the
-        /// group's read-only children. Mixed and column layouts are flattened to vertical
-        /// because the read-only view does not need the form's label/help-below
-        /// arrangements.
-        /// </summary>
-        private static TypeDirection MapGroupDirection(FormGroupLayout layout)
-        {
-            return layout switch
-            {
-                FormGroupLayout.Horizontal => TypeDirection.Horizontal,
-                FormGroupLayout.ColumnHorizontal => TypeDirection.Horizontal,
-                _ => TypeDirection.Vertical,
-            };
-        }
 
         /// <summary>
         /// Creates a typed input control for the given field, mirroring the mapping used
         /// by the edit form so the inline editor presents the same widget the user knows
         /// from the modal.
         /// </summary>
+        /// <remarks>
+        /// The label is always the field name; the <c>Help</c> property of each input is
+        /// driven by <see cref="Field.Description"/> so the description renders as the
+        /// tooltip on the help icon next to the label. <see cref="Field.HelpText"/> is
+        /// surfaced through the input's <c>Description</c> property (where supported) so
+        /// the longer inline help text stays visible beneath the value.
+        /// </remarks>
         private static IControlFormItemInput CreateInputForField(Model.Entities.Field field)
         {
             switch (field.FieldType)
@@ -332,7 +456,8 @@ namespace KleeneStar.Core.WebFragment.Object
                     {
                         Name = _ => field.Name,
                         Label = _ => field.Name,
-                        Help = _ => field.HelpText,
+                        Description = _ => field.HelpText,
+                        Help = _ => field.Description,
                         Required = _ => field.Required
                     };
 
@@ -342,7 +467,8 @@ namespace KleeneStar.Core.WebFragment.Object
                         Name = _ => field.Name,
                         Label = _ => field.Name,
                         Placeholder = _ => field.Placeholder,
-                        Help = _ => field.HelpText,
+                        Description = _ => field.HelpText,
+                        Help = _ => field.Description,
                         Required = _ => field.Required
                     };
 
@@ -352,7 +478,7 @@ namespace KleeneStar.Core.WebFragment.Object
                         Name = _ => field.Name,
                         Label = _ => field.Name,
                         Placeholder = _ => field.Placeholder,
-                        Help = _ => field.HelpText,
+                        Help = _ => field.Description,
                         Required = _ => field.Required
                     };
                     foreach (var option in field.Options ?? [])
@@ -371,7 +497,7 @@ namespace KleeneStar.Core.WebFragment.Object
                         Name = _ => field.Name,
                         Label = _ => field.Name,
                         Placeholder = _ => field.Placeholder,
-                        Help = _ => field.HelpText,
+                        Help = _ => field.Description,
                         Required = _ => field.Required
                     };
 
@@ -381,7 +507,7 @@ namespace KleeneStar.Core.WebFragment.Object
                         Name = _ => field.Name,
                         Label = _ => field.Name,
                         Placeholder = _ => field.Placeholder,
-                        Help = _ => field.HelpText,
+                        Help = _ => field.Description,
                         Required = _ => field.Required
                     };
 
@@ -396,7 +522,8 @@ namespace KleeneStar.Core.WebFragment.Object
                         Name = _ => field.Name,
                         Label = _ => field.Name,
                         Placeholder = _ => field.Placeholder,
-                        Help = _ => field.HelpText,
+                        Description = _ => field.HelpText,
+                        Help = _ => field.Description,
                         Required = _ => field.Required
                     };
             }
