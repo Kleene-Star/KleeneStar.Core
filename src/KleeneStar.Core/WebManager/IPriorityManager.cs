@@ -100,6 +100,14 @@ namespace KleeneStar.Core.WebManager
         IPriorityManager Update(Priority priorityEntity);
 
         /// <summary>
+        /// Applies a new display order to a set of priorities. The position of each id
+        /// in <paramref name="orderedIds"/> becomes the persisted Order value (0-based).
+        /// </summary>
+        /// <param name="orderedIds">The priority ids in the desired display order.</param>
+        /// <returns>The current instance to allow for method chaining.</returns>
+        IPriorityManager Reorder(IReadOnlyList<Guid> orderedIds);
+
+        /// <summary>
         /// Removes the specified priority from the manager.
         /// </summary>
         /// <remarks>This method removes the specified priority from the manager. If the field does

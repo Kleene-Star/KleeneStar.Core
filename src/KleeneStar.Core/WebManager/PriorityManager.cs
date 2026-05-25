@@ -182,6 +182,30 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Applies a new display order to a set of priorities. The position of each id
+        /// in <paramref name="orderedIds"/> becomes the persisted Order value (0-based).
+        /// </summary>
+        /// <param name="orderedIds">The priority ids in the desired display order.</param>
+        /// <returns>The current instance to allow for method chaining.</returns>
+        public IPriorityManager Reorder(IReadOnlyList<Guid> orderedIds)
+        {
+            ArgumentNullException.ThrowIfNull(orderedIds);
+
+            ModelHub.ReorderPriorities(orderedIds);
+
+            foreach (var id in orderedIds)
+            {
+                var priority = GetPriority(id);
+                if (priority is not null)
+                {
+                    PriorityUpdated?.Invoke(this, priority);
+                }
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// Removes the specified priority from the manager.
         /// </summary>
         /// <remarks>This method removes the specified priority from the manager. If the field does

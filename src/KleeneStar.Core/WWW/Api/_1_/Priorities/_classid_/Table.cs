@@ -113,6 +113,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities._classid_
             query = query.WhereEquals(x => x.ClassId, guid);
 
             return CoreHub.PriorityManager.GetPriorities(query, context)
+                .OrderBy(x => x.Order)
                 .Select(x => new RestApiTableRow
                 {
                     Id = x.Id.ToString(),
@@ -131,6 +132,27 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities._classid_
                     Options = GetOptions(x, request).Select(o => o.ToJson()),
                     Uri = GetUri(x, request)?.ToString()
                 });
+        }
+
+        /// <summary>
+        /// Persists the user-defined row order produced by drag-and-drop in the UI.
+        /// The position of each id becomes its new <see cref="Model.Entities.Priority.Order"/>.
+        /// </summary>
+        /// <param name="rowIds">The priority ids in the order chosen by the user.</param>
+        /// <param name="request">The triggering request.</param>
+        protected override void UpdateRows(IEnumerable<string> rowIds, IRequest request)
+        {
+            var ordered = rowIds?
+                .Select(s => Guid.TryParse(s, out var g) ? g : Guid.Empty)
+                .Where(g => g != Guid.Empty)
+                .ToList();
+
+            if (ordered is null || ordered.Count == 0)
+            {
+                return;
+            }
+
+            CoreHub.PriorityManager.Reorder(ordered);
         }
 
         /// <summary>

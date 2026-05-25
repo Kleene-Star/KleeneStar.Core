@@ -27,7 +27,8 @@ namespace KleeneStar.Core.WebFragment.Priority
         /// </summary>
         public ControlRestTable Table { get; } = new ControlRestTable()
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities._classid_.Table>()
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities._classid_.Table>(),
+            //MovableRow = _ => true
         };
 
         /// <summary>
@@ -52,7 +53,9 @@ namespace KleeneStar.Core.WebFragment.Priority
         /// </summary>
         /// <param name="renderContext">The context in which the fragment is rendered.</param>
         /// <param name="visualTree">The visual tree used for rendering the fragment.</param>
-        /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
+        /// <returns>
+        /// An HTML node representing the rendered fragments. Can be null if no nodes are present.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);
