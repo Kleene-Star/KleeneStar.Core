@@ -391,6 +391,8 @@ object.view.scrum.sprint.title=Scrum-Sprint
 object.view.scrum.backlog.label=Backlog
 object.view.scrum.backlog.description=Produkt-Backlog für die Scrum-Planung.
 object.view.scrum.backlog.title=Scrum-Backlog
+object.sla.card.header=Service Level Agreement
+object.sla.card.none=Für diese Klasse sind keine SLA-Richtlinien konfiguriert.
 
 dashboard.label=Dashboard
 dashboard.dropdown.label=Dashboard
@@ -681,6 +683,17 @@ sla.calendar.help=Verweist auf einen Geschäftszeiten-Kalender der Klasse. Besti
 sla.pauseon.label=Pause bei Status
 sla.pauseon.placeholder=z. B. Warte auf Kunde, Geplante Wartung
 sla.pauseon.help=Komma-getrennte Liste von Status, in denen die SLA-Uhr angehalten wird.
+sla.targetkind.response.label=Erste Reaktion
+sla.targetkind.resolution.label=Lösung
+sla.targetkind.update.label=Aktualisierung
+sla.targetkind.approval.label=Freigabe
+sla.targetkind.implementation.label=Umsetzung
+sla.targetkind.fulfillment.label=Erfüllung
+sla.targetkind.custom.label=Benutzerdefiniert
+sla.targetunit.minutes.label=Minuten
+sla.targetunit.hours.label=Stunden
+sla.targetunit.days.label=Tage
+sla.targetunit.businessdays.label=Arbeitstage
 
 calendar.manage.title=Kalender
 calendar.manage.label=Kalender

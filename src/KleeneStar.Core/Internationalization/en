@@ -391,6 +391,8 @@ object.view.scrum.sprint.title=Scrum Sprint
 object.view.scrum.backlog.label=Backlog
 object.view.scrum.backlog.description=Product backlog for Scrum planning.
 object.view.scrum.backlog.title=Scrum Backlog
+object.sla.card.header=Service Level Agreement
+object.sla.card.none=No SLA policies are configured for this class.
 
 dashboard.label=Dashboard
 dashboard.dropdown.label=Dashboard
@@ -681,6 +683,17 @@ sla.calendar.help=References a working-hours calendar of the class. Controls whe
 sla.pauseon.label=Pause on status
 sla.pauseon.placeholder=e.g. Waiting for customer, Scheduled maintenance
 sla.pauseon.help=Comma-separated list of statuses that pause the SLA clock.
+sla.targetkind.response.label=First response
+sla.targetkind.resolution.label=Resolution
+sla.targetkind.update.label=Update
+sla.targetkind.approval.label=Approval
+sla.targetkind.implementation.label=Implementation
+sla.targetkind.fulfillment.label=Fulfillment
+sla.targetkind.custom.label=Custom
+sla.targetunit.minutes.label=Minutes
+sla.targetunit.hours.label=Hours
+sla.targetunit.days.label=Days
+sla.targetunit.businessdays.label=Business Days
 
 calendar.manage.title=Calendars
 calendar.manage.label=Calendar
