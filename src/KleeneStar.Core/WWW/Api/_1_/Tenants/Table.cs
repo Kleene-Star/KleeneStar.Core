@@ -1,9 +1,10 @@
-﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using KleeneStar.Core.WebRestApi;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
@@ -20,7 +21,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
     /// </summary>
     [Title("kleenestar.core:setting.tenant.table.header")]
     [Cache]
-    public sealed class Table : RestApiTable<Model.Entities.Tenant>
+    public sealed class Table : KleeneStarRestApiTable<Model.Entities.Tenant>
     {
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
@@ -57,7 +58,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
         /// An enumerable collection of columns associated with the specified request. The 
         /// collection may be empty if no columns are available.
         /// </returns>
-        protected override IEnumerable<RestApiTableColumn> RetrieveColums(IRequest request)
+        protected override IEnumerable<RestApiTableColumn> RetrieveDefaultColumns(IRequest request)
         {
             yield return new RestApiTableColumn()
             {

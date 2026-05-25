@@ -38,6 +38,7 @@ namespace KleeneStar.Core
         private static CommentManager _commentManager;
         private static ValueManager _valueManager;
         private static ObjectLinkManager _objectLinkManager;
+        private static SessionManager _sessionManager;
 
         /// <summary>
         /// Gets the shared instance of the component hub used for managing and coordinating application components.
@@ -156,6 +157,12 @@ namespace KleeneStar.Core
         public static IObjectLinkManager ObjectLinkManager => _objectLinkManager ??= ComponentHub.GetComponentManager<ObjectLinkManager>();
 
         /// <summary>
+        /// Gets the session manager responsible for per-identity session/preference
+        /// entries (e.g. persisted REST API table column layouts).
+        /// </summary>
+        public static ISessionManager SessionManager => _sessionManager ??= ComponentHub.GetComponentManager<SessionManager>();
+
+        /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.
         /// </summary>
         /// <typeparam name="TEndpoint">
@@ -191,10 +198,25 @@ namespace KleeneStar.Core
         /// </returns>
         public static INotification AddNotification(string header, string message, int durability = -1)
         {
-            return ComponentHub.GetComponentManager<NotificationManager>()?.AddNotification
+            // best-effort: callers (manager Add/Update/Remove) rely on this returning
+            // null silently when the host is not fully initialized (e.g. in unit tests
+            // where CoreHub is wired without a real component hub), rather than NREing.
+            var notificationManager = ComponentHub?.GetComponentManager<NotificationManager>();
+            if (notificationManager is null)
+            {
+                return null;
+            }
+
+            var application = WebEx.ComponentHub?.ApplicationManager?.GetApplication<KleeneStarApplication>();
+            if (application is null)
+            {
+                return null;
+            }
+
+            return notificationManager.AddNotification
             (
-                applicationContext: WebEx.ComponentHub.ApplicationManager.GetApplication<KleeneStarApplication>(),
-                icon: ApplicationContet.Icon?.ToUri()?.ToString(),
+                applicationContext: application,
+                icon: ApplicationContet?.Icon?.ToUri()?.ToString(),
                 heading: header,
                 message: message,
                 durability: durability

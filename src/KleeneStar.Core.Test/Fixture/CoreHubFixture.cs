@@ -34,6 +34,10 @@ namespace KleeneStar.Core.Test
             ("_calendarManager",  typeof(CalendarManager)),
             ("_commentManager",   typeof(CommentManager)),
             ("_valueManager",     typeof(ValueManager)),
+            ("_templateManager",  typeof(TemplateManager)),
+            ("_objectViewManager",typeof(ObjectViewManager)),
+            ("_objectLinkManager",typeof(ObjectLinkManager)),
+            ("_sessionManager",   typeof(SessionManager)),
         ];
 
         /// <summary>

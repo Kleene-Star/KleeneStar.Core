@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using KleeneStar.Core.WebRestApi;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
@@ -23,7 +24,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
     /// </summary>
     [Title("kleenestar.core:workspace.table.header")]
     [Cache]
-    public sealed class Table : RestApiTable<Workspace>
+    public sealed class Table : KleeneStarRestApiTable<Workspace>
     {
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
@@ -62,7 +63,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// An enumerable collection of columns associated with the specified request. The 
         /// collection may be empty if no columns are available.
         /// </returns>
-        protected override IEnumerable<RestApiTableColumn> RetrieveColums(IRequest request)
+        protected override IEnumerable<RestApiTableColumn> RetrieveDefaultColumns(IRequest request)
         {
             yield return new RestApiTableColumn()
             {

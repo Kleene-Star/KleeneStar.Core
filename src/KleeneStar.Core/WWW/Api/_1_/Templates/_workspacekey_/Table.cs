@@ -4,6 +4,7 @@ using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using KleeneStar.Core.WebRestApi;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebIcon;
@@ -21,7 +22,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_
     /// </summary>
     [Title("kleenestar.core:template.table.header")]
     [Cache]
-    public sealed class Table : RestApiTable<Model.Entities.Template>
+    public sealed class Table : KleeneStarRestApiTable<Model.Entities.Template>
     {
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
@@ -48,7 +49,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_
         /// <summary>
         /// Retrieves the collection of columns for the specified REST API request.
         /// </summary>
-        protected override IEnumerable<RestApiTableColumn> RetrieveColums(IRequest request)
+        protected override IEnumerable<RestApiTableColumn> RetrieveDefaultColumns(IRequest request)
         {
             yield return new RestApiTableColumn()
             {

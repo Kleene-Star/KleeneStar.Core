@@ -19,18 +19,26 @@ namespace KleeneStar.Core.WebManager
         private readonly IComponentHub _componentHub;
         private readonly IHttpServerContext _httpServerContext;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Fires when an object view is added.
+        /// </summary>
         public event EventHandler<ObjectView> ObjectViewAdded;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Fires when an object view is updated.
+        /// </summary>
         public event EventHandler<ObjectView> ObjectViewUpdated;
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Fires when an object view is removed.
+        /// </summary>
         public event EventHandler<ObjectView> ObjectViewRemoved;
 
         /// <summary>
         /// Initializes a new instance via reflection.
         /// </summary>
+        /// <param name="componentHub">The component hub.</param>
+        /// <param name="httpServerContext">The reference to the context of the host.</param>
         [SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "Used via Reflection.")]
         private ObjectViewManager(IComponentHub componentHub, IHttpServerContext httpServerContext)
         {
@@ -38,7 +46,11 @@ namespace KleeneStar.Core.WebManager
             _httpServerContext = httpServerContext;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns the object view with the specified id, or <c>null</c> if not found.
+        /// </summary>
+        /// <param name="viewId">The unique id of the view.</param>
+        /// <returns>The matching object view, or <c>null</c>.</returns>
         public ObjectView GetObjectView(Guid viewId)
         {
             var query = new Query<ObjectView>()
@@ -49,13 +61,23 @@ namespace KleeneStar.Core.WebManager
                 .FirstOrDefault();
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns all object views matching the supplied query.
+        /// </summary>
+        /// <param name="query">The query criteria. Cannot be null.</param>
+        /// <returns>An enumerable collection of object views matching the query.</returns>
         public IEnumerable<ObjectView> GetObjectViews(IQuery<ObjectView> query)
         {
             return ModelHub.GetObjectViews(query);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns all object views matching the supplied query in the given context.
+        /// </summary>
+        /// <param name="query">The query criteria. Cannot be null.</param>
+        /// <param name="context">The query context.</param>
+        /// <returns>An enumerable collection of object views matching the query, or an empty
+        /// collection when <paramref name="context"/> is not a <see cref="KleeneStarDbContext"/>.</returns>
         public IEnumerable<ObjectView> GetObjectViews(IQuery<ObjectView> query, IQueryContext context)
         {
             if (context is KleeneStarDbContext db)
@@ -66,7 +88,12 @@ namespace KleeneStar.Core.WebManager
             return [];
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Returns the active object views attached to the workspace identified by <paramref name="workspaceId"/>,
+        /// ordered by <see cref="ObjectView.Order"/>.
+        /// </summary>
+        /// <param name="workspaceId">The owning workspace id.</param>
+        /// <returns>An enumerable collection of views attached to the workspace, ordered by display position.</returns>
         public IEnumerable<ObjectView> GetViewsForWorkspace(Guid workspaceId)
         {
             var query = new Query<ObjectView>()
@@ -76,7 +103,11 @@ namespace KleeneStar.Core.WebManager
             return ModelHub.GetObjectViews(query);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Persists a new object view.
+        /// </summary>
+        /// <param name="viewEntry">The view to add. Cannot be null.</param>
+        /// <returns>The current instance for method chaining.</returns>
         public IObjectViewManager AddObjectView(ObjectView viewEntry)
         {
             ModelHub.Add(viewEntry);
@@ -84,7 +115,11 @@ namespace KleeneStar.Core.WebManager
             return this;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Updates an existing object view.
+        /// </summary>
+        /// <param name="viewEntry">The view holding updated values. Cannot be null.</param>
+        /// <returns>The current instance for method chaining.</returns>
         public IObjectViewManager UpdateObjectView(ObjectView viewEntry)
         {
             ModelHub.Update(viewEntry);
@@ -92,7 +127,11 @@ namespace KleeneStar.Core.WebManager
             return this;
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Removes the specified object view.
+        /// </summary>
+        /// <param name="viewEntry">The view to remove. Cannot be null.</param>
+        /// <returns>The current instance for method chaining.</returns>
         public IObjectViewManager RemoveObjectView(ObjectView viewEntry)
         {
             ModelHub.Remove(viewEntry);
