@@ -105,5 +105,25 @@ namespace KleeneStar.Core.WebManager
         /// <param name="objectId">The object id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
         IObjectManager Remove(System.Guid objectId);
+
+        /// <summary>
+        /// Returns the parent of the specified object, or <c>null</c> when none is set.
+        /// </summary>
+        /// <param name="objectId">The id of the child object.</param>
+        Object GetParent(System.Guid objectId);
+
+        /// <summary>
+        /// Returns the immediate children of the specified object.
+        /// </summary>
+        /// <param name="objectId">The id of the parent object.</param>
+        IEnumerable<Object> GetChildren(System.Guid objectId);
+
+        /// <summary>
+        /// Returns the siblings of the specified object: every other object inside the
+        /// same workspace and class. The supplied object itself is excluded from the
+        /// result.
+        /// </summary>
+        /// <param name="objectId">The id of the reference object.</param>
+        IEnumerable<Object> GetSiblings(System.Guid objectId);
     }
 }

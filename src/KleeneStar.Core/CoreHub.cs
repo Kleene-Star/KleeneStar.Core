@@ -37,6 +37,7 @@ namespace KleeneStar.Core
         private static CalendarManager _calendarManager;
         private static CommentManager _commentManager;
         private static ValueManager _valueManager;
+        private static ObjectLinkManager _objectLinkManager;
 
         /// <summary>
         /// Gets the shared instance of the component hub used for managing and coordinating application components.
@@ -147,6 +148,12 @@ namespace KleeneStar.Core
         /// that back the typed inputs on the object detail and edit views.
         /// </summary>
         public static IValueManager ValueManager => _valueManager ??= ComponentHub.GetComponentManager<ValueManager>();
+
+        /// <summary>
+        /// Gets the object-link manager responsible for the typed directional links
+        /// between objects (e.g. blocked-by, duplicates, relates-to).
+        /// </summary>
+        public static IObjectLinkManager ObjectLinkManager => _objectLinkManager ??= ComponentHub.GetComponentManager<ObjectLinkManager>();
 
         /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.

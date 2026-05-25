@@ -393,6 +393,20 @@ object.view.scrum.backlog.description=Product backlog for Scrum planning.
 object.view.scrum.backlog.title=Scrum Backlog
 object.sla.card.header=Service Level Agreement
 object.sla.card.none=No SLA policies are configured for this class.
+object.sidebar.workspace.label=Workspace
+object.sidebar.class.label=Class
+object.sidebar.parent.label=Parent object
+object.sidebar.children.label=Child objects
+object.sidebar.siblings.label=Siblings
+object.sidebar.links.label=Linked objects
+
+objectlink.relationtype.relatesto.label=relates to
+objectlink.relationtype.blockedby.label=blocked by
+objectlink.relationtype.blocks.label=blocks
+objectlink.relationtype.duplicateof.label=duplicates
+objectlink.relationtype.causedby.label=caused by
+objectlink.relationtype.causes.label=causes
+objectlink.relationtype.partof.label=part of
 
 dashboard.label=Dashboard
 dashboard.dropdown.label=Dashboard

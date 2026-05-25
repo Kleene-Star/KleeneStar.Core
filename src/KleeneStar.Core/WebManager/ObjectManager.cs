@@ -199,6 +199,56 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Returns the parent of the specified object, or <c>null</c> when none is set.
+        /// </summary>
+        /// <param name="objectId">The id of the child object.</param>
+        public Model.Entities.Object GetParent(Guid objectId)
+        {
+            var child = GetObject(objectId);
+
+            if (child?.ParentId is null)
+            {
+                return null;
+            }
+
+            return GetObject(child.ParentId.Value);
+        }
+
+        /// <summary>
+        /// Returns the immediate children of the specified object.
+        /// </summary>
+        /// <param name="objectId">The id of the parent object.</param>
+        public IEnumerable<Model.Entities.Object> GetChildren(Guid objectId)
+        {
+            var query = new Query<Model.Entities.Object>()
+                .Where(x => x.ParentId == objectId);
+
+            return ModelHub.GetObjects(query);
+        }
+
+        /// <summary>
+        /// Returns the siblings of the specified object: every other object inside the
+        /// same workspace and class. The supplied object itself is excluded.
+        /// </summary>
+        /// <param name="objectId">The id of the reference object.</param>
+        public IEnumerable<Model.Entities.Object> GetSiblings(Guid objectId)
+        {
+            var reference = GetObject(objectId);
+
+            if (reference is null)
+            {
+                return [];
+            }
+
+            var query = new Query<Model.Entities.Object>()
+                .Where(x => x.WorkspaceId == reference.WorkspaceId
+                         && x.ClassId == reference.ClassId
+                         && x.Id != objectId);
+
+            return ModelHub.GetObjects(query);
+        }
+
+        /// <summary>
         /// Release of unmanaged resources reserved during use.
         /// </summary>
         public void Dispose()
