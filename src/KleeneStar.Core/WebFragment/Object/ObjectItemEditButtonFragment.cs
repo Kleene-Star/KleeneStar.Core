@@ -31,6 +31,13 @@ namespace KleeneStar.Core.WebFragment.Object
             Icon = _ => new IconPen();
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
+            PrimaryAction = renderContext => new ActionModal
+            (
+                "modal-form",
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Edit>()
+                    .BindParameters(renderContext.Request),
+                TypeModalSize.ExtraLarge
+            );
         }
 
         /// <summary>
@@ -38,22 +45,11 @@ namespace KleeneStar.Core.WebFragment.Object
         /// </summary>
         /// <param name="renderContext">The context in which the fragment is rendered.</param>
         /// <param name="visualTree">The visual tree used for rendering the fragment.</param>
-        /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
+        /// <returns>
+        /// An HTML node representing the rendered fragments. Can be null if no nodes are present.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            if (!FragmentContext.Conditions.Check(renderContext?.Request))
-            {
-                return null;
-            }
-
-            var primaryAction = new ActionModal
-            (
-                "modal-form",
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Edit>()
-                    .BindParameters(renderContext.Request),
-                TypeModalSize.ExtraLarge
-                );
-
             return base.Render(renderContext, visualTree);
         }
     }
