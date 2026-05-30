@@ -262,7 +262,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             newItem = new Model.Entities.Object(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = WorkspaceState.Active
+                State = WorkspaceState.Active,
+                CreatorId = CoreHub.SessionManager.GetCurrentIdentityId(request)
             };
 
             fieldMap.BindTo(newItem);
@@ -305,7 +306,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             newItem = new Model.Entities.Object(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = WorkspaceState.Active
+                State = WorkspaceState.Active,
+                CreatorId = CoreHub.SessionManager.GetCurrentIdentityId(request)
             };
 
             fieldMap.BindTo(newItem);

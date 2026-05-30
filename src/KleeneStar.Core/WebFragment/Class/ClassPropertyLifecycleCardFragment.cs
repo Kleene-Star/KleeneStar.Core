@@ -57,7 +57,8 @@ namespace KleeneStar.Core.WebFragment.Class
 
             var card = new ControlPanelCard("class-property-lifecycle-card")
             {
-                Header = _ => "kleenestar.core:class.property.lifecycle.header"
+                Header = _ => "kleenestar.core:class.property.lifecycle.header",
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
             };
 
             card.Add(new ControlAttribute("class-property-created")

@@ -73,7 +73,8 @@ namespace KleeneStar.Core.WebFragment.Object
 
             var card = new ControlPanelCard("object-sla-card")
             {
-                Header = _ => "kleenestar.core:object.sla.card.header"
+                Header = _ => "kleenestar.core:object.sla.card.header",
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
             };
 
             var policies = _slaManager

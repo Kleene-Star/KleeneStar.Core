@@ -1,3 +1,4 @@
+using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
@@ -11,23 +12,26 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Object-scoped fragment that renders the existing comment thread for the object
+    /// Object-scoped content card that renders the comment thread for the object
     /// currently displayed on <see cref="WWW.Object._objectkey_.Index"/>.
     /// </summary>
     /// <remarks>
-    /// The fragment hosts a single <see cref="ControlRestComment"/> whose
+    /// The card hosts a single <see cref="ControlRestComment"/> whose
     /// <see cref="ControlRestComment.RestUri"/> points at the class-scoped
     /// <see cref="WWW.Api._1_.Comments._objectkey_.Index"/> REST endpoint with the
     /// <see cref="ObjectKeyParameter"/> bound from the request. The control
     /// asynchronously fetches the comments via <c>GET</c>, supports edit / delete /
     /// reply via the matching REST verbs, and renders soft-deleted comments as
-    /// placeholders.
+    /// placeholders. The matching new-comment composer is rendered separately, always
+    /// at the end of the page, by <see cref="ObjectCommentComposerCardFragment"/>.
     /// </remarks>
     [Section<SectionContentSecondary>]
     [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
     [Cache]
-    public sealed class ObjectCommentFragment : FragmentControlPanel
+    public sealed class ObjectCommentCardFragment : FragmentControlPanel
     {
+        private readonly IObjectManager _objectManager;
+
         /// <summary>
         /// Gets the REST-backed comment list control.
         /// </summary>
@@ -40,23 +44,25 @@ namespace KleeneStar.Core.WebFragment.Object
         };
 
         /// <summary>
-        /// Initializes a new instance of the class and attaches the comment list control
-        /// to the fragment.
+        /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The fragment context.</param>
-        public ObjectCommentFragment(IFragmentContext fragmentContext)
+        /// <param name="objectManager">The object manager used to resolve the current
+        /// object from the URL-bound object key.</param>
+        public ObjectCommentCardFragment(IFragmentContext fragmentContext, IObjectManager objectManager)
             : base(fragmentContext)
         {
-            Add(Comments);
+            _objectManager = objectManager;
         }
 
         /// <summary>
-        /// Renders the fragment.
+        /// Renders the comment card for the current object. Returns <c>null</c> when the
+        /// fragment's render conditions exclude it or when no object can be resolved from
+        /// the request.
         /// </summary>
         /// <param name="renderContext">The render context.</param>
         /// <param name="visualTree">The visual tree.</param>
-        /// <returns>The HTML node, or <c>null</c> when the fragment's render conditions
-        /// (e.g. permissions / scope filters) exclude it.</returns>
+        /// <returns>The HTML node, or <c>null</c>.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             if (!FragmentContext.Conditions.Check(renderContext?.Request))
@@ -64,7 +70,23 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            return base.Render(renderContext, visualTree);
+            var keyParameter = renderContext?.Request?.GetParameter<ObjectKeyParameter>();
+            var @object = _objectManager.GetObjectByKey(keyParameter?.Value);
+
+            if (@object is null)
+            {
+                return null;
+            }
+
+            var card = new ControlPanelCard("object-comments-card")
+            {
+                Header = _ => "kleenestar.core:object.comments.card.header",
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+            };
+
+            card.Add(Comments);
+
+            return card.Render(renderContext, visualTree);
         }
     }
 }

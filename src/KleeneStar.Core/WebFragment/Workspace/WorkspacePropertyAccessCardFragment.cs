@@ -1,7 +1,6 @@
 using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebPolicies;
-using KleeneStar.Model.Entities;
 using System.Linq;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.Internationalization;
@@ -58,7 +57,8 @@ namespace KleeneStar.Core.WebFragment.Workspace
 
             var card = new ControlPanelCard("workspace-property-access-card")
             {
-                Header = _ => "kleenestar.core:workspace.property.access.header"
+                Header = _ => "kleenestar.core:workspace.property.access.header",
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
             };
 
             card.Add(new ControlAttribute("workspace-property-permissionprofiles")

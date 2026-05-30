@@ -37,6 +37,7 @@ namespace KleeneStar.Core
         private static CalendarManager _calendarManager;
         private static CommentManager _commentManager;
         private static WatcherManager _watcherManager;
+        private static ObjectTagManager _objectTagManager;
         private static ValueManager _valueManager;
         private static ObjectLinkManager _objectLinkManager;
         private static SessionManager _sessionManager;
@@ -150,6 +151,11 @@ namespace KleeneStar.Core
         /// on objects.
         /// </summary>
         public static IWatcherManager WatcherManager => _watcherManager ??= ComponentHub.GetComponentManager<WatcherManager>();
+
+        /// <summary>
+        /// Gets the object-tag manager responsible for the tags (labels) attached to objects.
+        /// </summary>
+        public static IObjectTagManager ObjectTagManager => _objectTagManager ??= ComponentHub.GetComponentManager<ObjectTagManager>();
 
         /// <summary>
         /// Gets the value manager responsible for the per-object per-field value rows

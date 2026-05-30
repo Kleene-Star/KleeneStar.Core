@@ -1,30 +1,43 @@
-using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
+using WebExpress.WebUI.WebSection;
 
 namespace KleeneStar.Core.WebFragment.Dashboard
 {
     /// <summary>
-    /// Represents a fragment control for managing dashboard views, providing functionality to
-    /// render the fragment as HTML.
+    /// Represents a fragment that provides a quick filter control for REST-based dashboard queries in
+    /// the dashboard view.
     /// </summary>
-    [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Dashboards.Index>]
+    [Section<SectionViewHeaderSecondary>]
+    [Scope<DashboardViewFragment>]
     [Cache]
-    public sealed class DashboardViewFragment : FragmentControlView
+    public sealed class DashboardViewQuickfilterFragment : FragmentControlViewHeader
     {
+        /// <summary>
+        /// Represents the unique identifier for the content.
+        /// </summary>
+        public static readonly string ContentId = "id_600D431AF3DC450F92833BE961107789";
+
+        /// <summary>
+        /// Gets the quick filter control for REST-based dashboard queries.
+        /// </summary>
+        public ControlRestQuickfilter Quickfilter { get; } = new ControlRestQuickfilter(ContentId)
+        {
+            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Quickfilter>()
+        };
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public DashboardViewFragment(IFragmentContext fragmentContext)
+        public DashboardViewQuickfilterFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Layout = _ => TypeLayoutView.ToggleGroup;
+            Add(Quickfilter);
         }
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Watchers._objectkey_
 {
     /// <summary>
     /// REST endpoint backing the <c>ControlRestObserver</c> hosted by
-    /// <see cref="WebFragment.Object.ObjectPropertyWatcherCardFragment"/> on an object
+    /// <see cref="WebFragment.Object.ObjectPropertyPeopleCardFragment"/> on an object
     /// detail page. The URL is <c>/api/1/watchers/{objectkey}</c>; the
     /// <c>{objectkey}</c> URL segment is declared via
     /// <see cref="ObjectKeySegmentAttribute"/> so callers can bind the segment by

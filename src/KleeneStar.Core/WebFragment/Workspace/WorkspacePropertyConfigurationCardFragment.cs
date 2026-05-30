@@ -59,7 +59,8 @@ namespace KleeneStar.Core.WebFragment.Workspace
 
             var card = new ControlPanelCard("workspace-property-configuration-card")
             {
-                Header = _ => "kleenestar.core:workspace.property.configuration.header"
+                Header = _ => "kleenestar.core:workspace.property.configuration.header",
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
             };
 
             card.Add(new ControlAttribute("workspace-property-accessmodifier")

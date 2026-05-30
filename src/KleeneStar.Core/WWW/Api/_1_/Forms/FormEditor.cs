@@ -49,9 +49,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
         /// </returns>
         protected override IEnumerable<RestApiFormEditorFieldItem> RetrieveCatalog(string formId, IQueryContext context, IRequest request)
         {
-            var db = context as KleeneStarDbContext;
             var guid = Guid.TryParse(formId, out var g) ? g : Guid.Empty;
             var form = CoreHub.FormManager.GetForm(guid);
+
+            if (form is null)
+            {
+                return [];
+            }
 
             return CoreHub.FieldManager
                 .GetFields(new ClassIdParameter(form.ClassId))
@@ -61,10 +65,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
                 {
                     Id = f.Id.ToString(),
                     Label = f.Name,
-                    Type = "string",
+                    Type = MapFieldType(f.FieldType),
                     Required = f.Required,
-                    Help = f.HelpText,
-                    //Placeholder = f.Placeholder
+                    Help = f.HelpText
                 });
         }
 
@@ -85,13 +88,21 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
                 return null;
             }
 
-            var db = context as KleeneStarDbContext;
             var form = CoreHub.FormManager.GetFormWithStructure(guid);
 
             if (form is null)
             {
                 return null;
             }
+
+            // The persisted structure only stores field references (FieldId); the field
+            // metadata (name, type, required, help) lives on the Field entity, which the
+            // structure loader does not hydrate. Resolve the class fields once and index them
+            // by id so each reference can surface the real name and type instead of the
+            // "unknown" / "string" fallbacks.
+            var fields = CoreHub.FieldManager
+                .GetFields(new ClassIdParameter(form.ClassId))
+                .ToDictionary(f => f.Id);
 
             return new RestApiFormEditorItem()
             {
@@ -104,7 +115,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
                 {
                     Id = t.Id.ToString(),
                     Name = t.Name,
-                    Children = t.Elements.Select(e => GetChildren(e))
+                    Children = t.Elements
+                        .OrderBy(e => e.Position)
+                        .Select(e => GetChildren(e, fields))
                 })
             };
         }
@@ -161,15 +174,19 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
         /// <returns>
         /// A node item representing the form element, or null if the element type is not supported.
         /// </returns>
-        private static RestApiFormEditorNodeItem GetChildren(FormElement element)
+        private static RestApiFormEditorNodeItem GetChildren(FormElement element, IDictionary<Guid, Model.Entities.Field> fields)
         {
-            if (element is FormFieldRefElement field)
+            if (element is FormFieldRefElement fieldRef)
             {
+                fields.TryGetValue(fieldRef.FieldId, out var field);
+
                 return new RestApiFormEditorFieldItem()
                 {
-                    Id = field.Id.ToString(),
-                    Label = field.Field?.Name ?? "unkown",
-                    Type = "string"
+                    Id = fieldRef.Id.ToString(),
+                    Label = field?.Name ?? fieldRef.Field?.Name ?? "unknown",
+                    Type = MapFieldType(field?.FieldType),
+                    Required = field?.Required ?? false,
+                    Help = field?.HelpText
                 };
             }
             else if (element is FormGroupElement group)
@@ -179,11 +196,40 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
                     Id = group.Id.ToString(),
                     Label = group.Label,
                     Layout = group.Layout.ToString(),
-                    Children = group.Children.Select(c => GetChildren(c))
+                    Children = (group.Children ?? [])
+                        .OrderBy(c => c.Position)
+                        .Select(c => GetChildren(c, fields))
                 };
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Maps a KleeneStar <see cref="FieldType"/> onto the logical field-type string the
+        /// form editor understands (<c>string</c>, <c>text</c>, <c>number</c>,
+        /// <c>timestamp</c>, <c>ref</c>, <c>enum</c>, <c>tags</c>, <c>file</c>). A missing or
+        /// unrecognized type falls back to <c>string</c>.
+        /// </summary>
+        /// <param name="type">The field type, or <c>null</c> when the field could not be
+        /// resolved from the catalog.</param>
+        /// <returns>The editor field-type discriminator.</returns>
+        private static string MapFieldType(FieldType? type)
+        {
+            return type switch
+            {
+                FieldType.Text => "string",
+                FieldType.Number => "number",
+                FieldType.Date => "timestamp",
+                FieldType.Boolean => "enum",
+                FieldType.Selection => "enum",
+                FieldType.Reference => "ref",
+                FieldType.Workflow => "enum",
+                FieldType.Attachment => "file",
+                FieldType.User => "ref",
+                FieldType.Tag => "tags",
+                _ => "string"
+            };
         }
     }
 }

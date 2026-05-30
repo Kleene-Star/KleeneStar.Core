@@ -1,3 +1,4 @@
+using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
@@ -12,12 +13,14 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Object-scoped fragment that renders the new-comment composer at the bottom of
-    /// the object detail page.
+    /// Object-scoped content card that renders the new-comment composer for the object
+    /// currently displayed on <see cref="WWW.Object._objectkey_.Index"/>. The card is
+    /// pinned to the end of the page via the maximum <see cref="OrderAttribute"/> value
+    /// so it always renders below every other content fragment.
     /// </summary>
     /// <remarks>
     /// The composer posts via <c>POST /api/1/comments/{objectkey}</c> to the same REST
-    /// endpoint the <see cref="ObjectCommentFragment"/> reads from
+    /// endpoint the <see cref="ObjectCommentCardFragment"/> reads from
     /// (<see cref="WWW.Api._1_.Comments._objectkey_.Index"/>). The
     /// <see cref="ControlRestCommentComposer.RestUri"/> is bound to the current
     /// request's <see cref="ObjectKeyParameter"/>; the
@@ -26,10 +29,12 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </remarks>
     [Section<SectionContentSecondary>]
     [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
-    [Order(99)]
+    [Order(int.MaxValue)]
     [Cache]
-    public sealed class ObjectCommentComposerFragment : FragmentControlPanel
+    public sealed class ObjectCommentComposerCardFragment : FragmentControlPanel
     {
+        private readonly IObjectManager _objectManager;
+
         /// <summary>
         /// Gets the REST-backed comment composer control.
         /// </summary>
@@ -43,23 +48,25 @@ namespace KleeneStar.Core.WebFragment.Object
         };
 
         /// <summary>
-        /// Initializes a new instance of the class and attaches the composer control to
-        /// the fragment.
+        /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The fragment context.</param>
-        public ObjectCommentComposerFragment(IFragmentContext fragmentContext)
+        /// <param name="objectManager">The object manager used to resolve the current
+        /// object from the URL-bound object key.</param>
+        public ObjectCommentComposerCardFragment(IFragmentContext fragmentContext, IObjectManager objectManager)
             : base(fragmentContext)
         {
-            Add(Composer);
+            _objectManager = objectManager;
         }
 
         /// <summary>
-        /// Renders the fragment.
+        /// Renders the composer card for the current object. Returns <c>null</c> when the
+        /// fragment's render conditions exclude it or when no object can be resolved from
+        /// the request.
         /// </summary>
         /// <param name="renderContext">The render context.</param>
         /// <param name="visualTree">The visual tree.</param>
-        /// <returns>The HTML node, or <c>null</c> when the fragment's render conditions
-        /// exclude it.</returns>
+        /// <returns>The HTML node, or <c>null</c>.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             if (!FragmentContext.Conditions.Check(renderContext?.Request))
@@ -67,7 +74,23 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            return base.Render(renderContext, visualTree);
+            var keyParameter = renderContext?.Request?.GetParameter<ObjectKeyParameter>();
+            var @object = _objectManager.GetObjectByKey(keyParameter?.Value);
+
+            if (@object is null)
+            {
+                return null;
+            }
+
+            var card = new ControlPanelCard("object-comment-composer-card")
+            {
+                Header = _ => "kleenestar.core:object.comment.composer.card.header",
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+            };
+
+            card.Add(Composer);
+
+            return card.Render(renderContext, visualTree);
         }
     }
 }

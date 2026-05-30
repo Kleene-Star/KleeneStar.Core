@@ -59,7 +59,8 @@ namespace KleeneStar.Core.WebFragment.Workspace
 
             var card = new ControlPanelCard("workspace-property-lifecycle-card")
             {
-                Header = _ => "kleenestar.core:workspace.property.lifecycle.header"
+                Header = _ => "kleenestar.core:workspace.property.lifecycle.header",
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
             };
 
             card.Add(new ControlAttribute("workspace-property-created")

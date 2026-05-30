@@ -57,7 +57,8 @@ namespace KleeneStar.Core.WebFragment.Class
 
             var card = new ControlPanelCard("class-property-configuration-card")
             {
-                Header = _ => "kleenestar.core:class.property.configuration.header"
+                Header = _ => "kleenestar.core:class.property.configuration.header",
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
             };
 
             card.Add(new ControlAttribute("class-property-accessmodifier")
