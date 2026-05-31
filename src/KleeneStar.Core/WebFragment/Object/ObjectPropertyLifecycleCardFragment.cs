@@ -75,14 +75,49 @@ namespace KleeneStar.Core.WebFragment.Object
                 Value = _ => @object.Updated.ToString("g", CultureInfo.InvariantCulture)
             });
 
-            card.Add(new ControlAttribute("object-property-state")
+            card.Add(new ControlPanelFlex
+            (
+                "object-property-state",
+                new ControlIcon
+                {
+                    Icon = _ => new IconTrafficLight(),
+                    Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.One, PropertySpacing.Space.None, PropertySpacing.Space.None)
+                },
+                new ControlText
+                {
+                    Text = ctx => I18N.Translate(ctx, "kleenestar.core:object.state.label") + ":",
+                    Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.One, PropertySpacing.Space.None, PropertySpacing.Space.None)
+                },
+                new ControlBadge("object-property-state-badge")
+                {
+                    Value = ctx => I18N.Translate(ctx, @object.State.Text()),
+                    Pill = _ => TypePillBadge.Pill,
+                    BackgroundColor = _ => new PropertyColorBackgroundBadge(MapStateBadgeColor(@object.State))
+                }
+            )
             {
-                Icon = _ => new IconTrafficLight(),
-                Key = _ => "kleenestar.core:object.state.label",
-                Value = ctx => I18N.Translate(ctx, @object.State.Text())
+                Layout = _ => TypeLayoutFlex.Default,
+                Align = _ => TypeAlignFlex.Center,
+                Justify = _ => TypeJustifiedFlex.Start
             });
 
             return card.Render(renderContext, visualTree);
+        }
+
+        /// <summary>
+        /// Maps a workspace lifecycle state to the badge background color used to render it
+        /// in the lifecycle card: green for active, grey for archived.
+        /// </summary>
+        /// <param name="state">The lifecycle state.</param>
+        /// <returns>The badge background color.</returns>
+        private static TypeColorBackgroundBadge MapStateBadgeColor(WorkspaceState state)
+        {
+            return state switch
+            {
+                WorkspaceState.Active => TypeColorBackgroundBadge.Success,
+                WorkspaceState.Archived => TypeColorBackgroundBadge.Secondary,
+                _ => TypeColorBackgroundBadge.Default
+            };
         }
     }
 }

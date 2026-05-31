@@ -259,11 +259,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         protected override IRestApiCrudResultCreate Create(RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Object newItem)
         {
             var id = Guid.NewGuid();
+            var currentUser = CoreHub.SessionManager.GetCurrentIdentityId(request);
             newItem = new Model.Entities.Object(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
                 State = WorkspaceState.Active,
-                CreatorId = CoreHub.SessionManager.GetCurrentIdentityId(request)
+                CreatorId = currentUser,
+                UpdaterId = currentUser
             };
 
             fieldMap.BindTo(newItem);
@@ -303,11 +305,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         protected override IRestApiCrudResultCreate Clone(Model.Entities.Object existingItem, RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Object newItem)
         {
             var id = Guid.NewGuid();
+            var currentUser = CoreHub.SessionManager.GetCurrentIdentityId(request);
             newItem = new Model.Entities.Object(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
                 State = WorkspaceState.Active,
-                CreatorId = CoreHub.SessionManager.GetCurrentIdentityId(request)
+                CreatorId = currentUser,
+                UpdaterId = currentUser
             };
 
             fieldMap.BindTo(newItem);
@@ -337,6 +341,15 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         protected override IRestApiCrudResultUpdate Update(Model.Entities.Object existingItem, RestApiCrudFormData payload, IRequest request)
         {
             var res = base.Update(existingItem, payload, request);
+
+            // stamp the identity that performed this update (best-effort; keep the prior
+            // updater when the request is unauthenticated so the FK never points at an
+            // empty identity).
+            var currentUser = CoreHub.SessionManager.GetCurrentIdentityId(request);
+            if (currentUser != Guid.Empty)
+            {
+                existingItem.UpdaterId = currentUser;
+            }
 
             CoreHub.ObjectManager.Update(existingItem);
 

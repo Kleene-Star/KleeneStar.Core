@@ -120,12 +120,8 @@ namespace KleeneStar.Core.WebFragment.Class
                 classParameter = new ClassIdParameter(workflow.ClassId.ToString());
             }
 
-            var guid = Guid.TryParse(classParameter.Value, out var classGuid)
-                ? classGuid
-                : Guid.Empty;
-            var @class = _classManager.GetClass(guid);
             var uri = CoreHub.GetUri<Avatar>()?
-                .BindParameters(renderContext.Request);
+                .BindParameters(classParameter);
 
             return uri;
         }

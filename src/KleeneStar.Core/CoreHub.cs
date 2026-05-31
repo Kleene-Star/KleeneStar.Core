@@ -36,6 +36,7 @@ namespace KleeneStar.Core
         private static SlaManager _slaManager;
         private static CalendarManager _calendarManager;
         private static CommentManager _commentManager;
+        private static AttachmentManager _attachmentManager;
         private static WatcherManager _watcherManager;
         private static ObjectTagManager _objectTagManager;
         private static ValueManager _valueManager;
@@ -145,6 +146,11 @@ namespace KleeneStar.Core
         /// to objects.
         /// </summary>
         public static ICommentManager CommentManager => _commentManager ??= ComponentHub.GetComponentManager<CommentManager>();
+
+        /// <summary>
+        /// Gets the attachment manager responsible for the files attached to objects.
+        /// </summary>
+        public static IAttachmentManager AttachmentManager => _attachmentManager ??= ComponentHub.GetComponentManager<AttachmentManager>();
 
         /// <summary>
         /// Gets the watcher manager responsible for the per-identity watch relationships

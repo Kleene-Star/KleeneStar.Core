@@ -68,12 +68,13 @@ namespace KleeneStar.Core.WebFragment.Object
         /// </returns>
         private IUri GetUri(IRenderControlContext renderContext)
         {
-            var keyParameter = renderContext.Request.GetParameter<ObjectKeyParameter>();
-            var @object = _objectManager.GetObjectByKey(keyParameter?.Value);
+            var objectParameter = renderContext.Request.GetParameter<ObjectKeyParameter>();
+            var workspaceKey = !string.IsNullOrEmpty(objectParameter?.Value)
+                ? _objectManager.GetObjectByKey(objectParameter.Value)?.Workspace?.Key
+                : renderContext.Request.GetParameter<WorkspaceKeyParameter>()?.Value;
 
             return CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Avatar>()?
-                .BindParameters(renderContext.Request)
-                .BindParameters(new WorkspaceKeyParameter(@object?.Workspace?.Id.ToString()));
+                .BindParameters(new WorkspaceKeyParameter(workspaceKey));
         }
 
         /// <summary>

@@ -34,7 +34,12 @@ namespace KleeneStar.Core.WebFragment.Class
         {
             Add(Avatar);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>();
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
+            ItemId = renderContext =>
+            {
+                var classId = renderContext.Request.GetParameter<ClassIdParameter>();
+                return classId?.Value?.ToString();
+            };
         }
 
         /// <summary>
@@ -51,8 +56,6 @@ namespace KleeneStar.Core.WebFragment.Class
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var id = renderContext.Request.GetParameter<ClassIdParameter>();
-
             return base.Render(renderContext, visualTree);
         }
     }

@@ -37,6 +37,12 @@ namespace KleeneStar.Core.WebFragment.Workspace
             Add(Avatar);
 
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
+            ItemId = renderContext =>
+            {
+                var key = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
+                var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value);
+                return workspace?.Id.ToString();
+            };
         }
 
         /// <summary>
@@ -53,10 +59,6 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
-            var key = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
-            var id = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value)?
-                .Id.ToString();
-
             return base.Render(renderContext, visualTree);
         }
     }
