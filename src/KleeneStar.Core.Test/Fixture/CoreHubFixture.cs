@@ -33,6 +33,7 @@ namespace KleeneStar.Core.Test
             ("_slaManager",       typeof(SlaManager)),
             ("_calendarManager",  typeof(CalendarManager)),
             ("_commentManager",   typeof(CommentManager)),
+            ("_attachmentManager",typeof(AttachmentManager)),
             ("_watcherManager",   typeof(WatcherManager)),
             ("_valueManager",     typeof(ValueManager)),
             ("_templateManager",  typeof(TemplateManager)),

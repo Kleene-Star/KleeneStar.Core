@@ -109,7 +109,7 @@ namespace KleeneStar.Core.Test.WebManager
             var view = Sample("DeleteMe");
             CoreHub.ObjectViewManager.AddObjectView(view);
 
-            ObjectView raised = null;
+            ObjectView? raised = null;
             CoreHub.ObjectViewManager.ObjectViewRemoved += (_, v) => raised = v;
 
             CoreHub.ObjectViewManager.RemoveObjectView(view);

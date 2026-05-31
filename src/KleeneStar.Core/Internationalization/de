@@ -217,6 +217,7 @@ field.configure.priority.default.placeholder=Wählen Sie eine Standardpriorität
 field.configure.priority.default.help=Die Priorität, die vorausgewählt wird, wenn an einem Objekt keine explizite Priorität gesetzt ist.
 field.configure.priority.selected.label=Ausgewählte Prioritäten
 field.configure.priority.available.label=Verfügbare Prioritäten
+field.configure.empty=Für diesen Feldtyp gibt es keine konfigurierbaren Optionen.
 field.edit.title=Feld bearbeiten
 field.clone.title=Feld klonen
 field.delete.title=Feld löschen
@@ -697,6 +698,7 @@ fieldtype.workflow.label=Workflow
 fieldtype.attachment.label=Anhang
 fieldtype.user.label=Benutzer
 fieldtype.tag.label=Schlagwort
+fieldtype.priority.label=Priorität
 
 fieldcardinality.single.label=Einfach
 fieldcardinality.multiple.label=Mehrfach

@@ -103,7 +103,7 @@ namespace KleeneStar.Core.Test.WebManager
             var workflow = Sample("DeleteMe");
             CoreHub.WorkflowManager.Add(workflow);
 
-            Workflow raised = null;
+            Workflow? raised = null;
             CoreHub.WorkflowManager.WorkflowRemoved += (_, w) => raised = w;
 
             CoreHub.WorkflowManager.Remove(workflow.Id);

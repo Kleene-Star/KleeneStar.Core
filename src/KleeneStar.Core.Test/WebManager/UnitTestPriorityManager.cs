@@ -103,7 +103,7 @@ namespace KleeneStar.Core.Test.WebManager
             var priority = Sample("DeleteMe");
             CoreHub.PriorityManager.Add(priority);
 
-            Priority raised = null;
+            Priority? raised = null;
             CoreHub.PriorityManager.PriorityRemoved += (_, p) => raised = p;
 
             CoreHub.PriorityManager.Remove(priority.Id);

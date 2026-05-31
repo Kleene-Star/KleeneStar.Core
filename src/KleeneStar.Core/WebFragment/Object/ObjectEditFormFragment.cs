@@ -283,6 +283,25 @@ namespace KleeneStar.Core.WebFragment.Object
                     }
                     return combo;
 
+                case FieldType.Priority:
+                    var priorityCombo = new ControlFormItemInputCombo()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Placeholder = _ => field.Placeholder,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+                    foreach (var priority in ResolveFieldPriorities(field))
+                    {
+                        priorityCombo.Add(new ControlFormItemInputComboItem()
+                        {
+                            Text = _ => priority.Name,
+                            Value = _ => priority.Name
+                        });
+                    }
+                    return priorityCombo;
+
                 case FieldType.Tag:
                     return new ControlFormItemInputTag()
                     {
@@ -318,6 +337,31 @@ namespace KleeneStar.Core.WebFragment.Object
                         Required = _ => field.Required
                     };
             }
+        }
+
+        /// <summary>
+        /// Resolves the priorities offered for a priority-typed field. When the field
+        /// configuration restricts the field to a specific set of priorities
+        /// (<see cref="Model.Entities.Field.SelectedPriorityIds"/>), only those are returned;
+        /// otherwise every active priority of the field's class is offered. The result is
+        /// ordered by the priority display order.
+        /// </summary>
+        /// <param name="field">The priority-typed field whose options are resolved.</param>
+        /// <returns>The priorities to present, in display order.</returns>
+        private static IEnumerable<Model.Entities.Priority> ResolveFieldPriorities(Model.Entities.Field field)
+        {
+            if (field.SelectedPriorityIds is { Count: > 0 })
+            {
+                return field.SelectedPriorityIds
+                    .Select(id => CoreHub.PriorityManager.GetPriority(id))
+                    .Where(p => p != null)
+                    .OrderBy(p => p.Order);
+            }
+
+            return CoreHub.PriorityManager
+                .GetPriorities(new ClassIdParameter(field.ClassId))
+                .Where(p => p.State == PriorityState.Active)
+                .OrderBy(p => p.Order);
         }
     }
 }

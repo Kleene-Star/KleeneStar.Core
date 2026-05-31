@@ -108,7 +108,7 @@ namespace KleeneStar.Core.Test.WebManager
             var status = Sample("DeleteMe");
             CoreHub.StatusManager.Add(status);
 
-            Status raised = null;
+            Status? raised = null;
             CoreHub.StatusManager.StatusRemoved += (_, s) => raised = s;
 
             CoreHub.StatusManager.Remove(status.Id);

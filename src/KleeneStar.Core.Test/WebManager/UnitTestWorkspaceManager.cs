@@ -83,7 +83,7 @@ namespace KleeneStar.Core.Test.WebManager
             var workspace = Sample("delete-me");
             CoreHub.WorkspaceManager.Add(workspace);
 
-            Workspace raised = null;
+            Workspace? raised = null;
             CoreHub.WorkspaceManager.WorkspaceRemoved += (_, w) => raised = w;
 
             CoreHub.WorkspaceManager.Remove(workspace.Id);

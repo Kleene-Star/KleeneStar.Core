@@ -122,7 +122,7 @@ namespace KleeneStar.Core.Test.WebManager
             var policy = SamplePolicy();
             CoreHub.SlaManager.Add(policy);
 
-            SlaPolicy raised = null;
+            SlaPolicy? raised = null;
             CoreHub.SlaManager.SlaRemoved += (_, p) => raised = p;
 
             // act
@@ -163,7 +163,7 @@ namespace KleeneStar.Core.Test.WebManager
             Assert.Contains("api",    KleeneStar.Core.WebManager.SlaManager.ReservedSlaNames);
         }
 
-        private static SlaPolicy SamplePolicy(string name = null) => new()
+        private static SlaPolicy SamplePolicy(string? name = null) => new()
         {
             Id = Guid.NewGuid(),
             Name = name ?? "P1 · Enterprise",

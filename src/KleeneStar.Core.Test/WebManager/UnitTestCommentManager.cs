@@ -128,7 +128,7 @@ namespace KleeneStar.Core.Test.WebManager
             var comment = SampleComment();
             CoreHub.CommentManager.Add(comment);
 
-            Comment raised = null;
+            Comment? raised = null;
             CoreHub.CommentManager.CommentRemoved += (_, c) => raised = c;
 
             CoreHub.CommentManager.Remove(comment.Id);
@@ -263,7 +263,7 @@ namespace KleeneStar.Core.Test.WebManager
             Assert.Equal(parent.Id, loaded.ParentCommentId);
         }
 
-        private static Comment SampleComment(string content = null) => new()
+        private static Comment SampleComment(string? content = null) => new()
         {
             Id = Guid.NewGuid(),
             ObjectId = ObjectId,

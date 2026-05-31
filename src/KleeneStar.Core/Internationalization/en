@@ -217,6 +217,7 @@ field.configure.priority.default.placeholder=Select a default priority.
 field.configure.priority.default.help=The priority pre-selected when no explicit priority is set on an object.
 field.configure.priority.selected.label=Selected Priorities
 field.configure.priority.available.label=Available Priorities
+field.configure.empty=This field type has no configurable options.
 field.edit.title=Edit Field
 field.clone.title=Clone Field
 field.delete.title=Delete Field
@@ -697,6 +698,7 @@ fieldtype.workflow.label=Workflow
 fieldtype.attachment.label=Attachment
 fieldtype.user.label=User
 fieldtype.tag.label=Tag
+fieldtype.priority.label=Priority
 
 fieldcardinality.single.label=Single
 fieldcardinality.multiple.label=Multiple

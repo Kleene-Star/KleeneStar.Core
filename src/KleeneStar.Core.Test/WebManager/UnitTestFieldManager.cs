@@ -104,7 +104,7 @@ namespace KleeneStar.Core.Test.WebManager
             var field = Sample("DeleteMe");
             CoreHub.FieldManager.Add(field);
 
-            Field raised = null;
+            Field? raised = null;
             CoreHub.FieldManager.FieldRemoved += (_, f) => raised = f;
 
             CoreHub.FieldManager.Remove(field.Id);

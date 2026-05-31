@@ -68,7 +68,7 @@ namespace KleeneStar.Core.Test.WebManager
             var dashboard = Sample("DeleteMe");
             CoreHub.DashboardManager.Add(dashboard);
 
-            Dashboard raised = null;
+            Dashboard? raised = null;
             CoreHub.DashboardManager.DashboardRemoved += (_, d) => raised = d;
 
             CoreHub.DashboardManager.Remove(dashboard.Id);

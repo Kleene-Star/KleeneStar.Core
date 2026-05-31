@@ -68,7 +68,7 @@ namespace KleeneStar.Core.Test.WebManager
             var tenant = Sample("DeleteMe");
             CoreHub.TenantManager.Add(tenant);
 
-            Tenant raised = null;
+            Tenant? raised = null;
             CoreHub.TenantManager.TenantRemoved += (_, t) => raised = t;
 
             CoreHub.TenantManager.Remove(tenant.Id);

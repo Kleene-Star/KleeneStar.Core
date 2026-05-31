@@ -98,7 +98,7 @@ namespace KleeneStar.Core.Test.WebManager
             var classEntity = Sample("Delete");
             CoreHub.ClassManager.Add(classEntity);
 
-            Class raised = null;
+            Class? raised = null;
             CoreHub.ClassManager.ClassRemoved += (_, c) => raised = c;
 
             CoreHub.ClassManager.Remove(classEntity.Id);

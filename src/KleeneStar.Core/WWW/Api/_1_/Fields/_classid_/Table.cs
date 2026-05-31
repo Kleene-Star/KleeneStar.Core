@@ -157,7 +157,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
                             Content = x.Description
                         },
                         new() {
-                            Content = x.FieldType
+                            Content = I18N.Translate(request, x.FieldType.Text())
                         },
                         new() {
                             Content = x.Cardinality.ToString()

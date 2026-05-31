@@ -69,7 +69,7 @@ namespace KleeneStar.Core.Test.WebManager
             var identity = Sample("DeleteMe", "del@kleenestar.test");
             CoreHub.IdentityManager.Add(identity);
 
-            Identity raised = null;
+            Identity? raised = null;
             CoreHub.IdentityManager.IdentityRemoved += (_, i) => raised = i;
 
             CoreHub.IdentityManager.Remove(identity.Id);

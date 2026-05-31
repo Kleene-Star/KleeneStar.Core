@@ -68,7 +68,7 @@ namespace KleeneStar.Core.Test.WebManager
             var group = Sample("DeleteMe");
             CoreHub.GroupManager.Add(group);
 
-            Group raised = null;
+            Group? raised = null;
             CoreHub.GroupManager.GroupRemoved += (_, g) => raised = g;
 
             CoreHub.GroupManager.Remove(group.Id);

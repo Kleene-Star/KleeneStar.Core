@@ -193,7 +193,7 @@ namespace KleeneStar.Core.Test.WebManager
 
             CoreHub.WatcherManager.Add(ObjectId, IdentityId);
 
-            ObjectWatcher raised = null;
+            ObjectWatcher? raised = null;
             CoreHub.WatcherManager.WatcherRemoved += (_, w) => raised = w;
 
             var first = CoreHub.WatcherManager.Remove(ObjectId, IdentityId);

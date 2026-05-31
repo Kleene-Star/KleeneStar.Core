@@ -20,18 +20,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
     [Cache]
     public sealed class Tile : RestApiTile<Model.Entities.Object>
     {
-        private readonly IUri _editFormUri;
-        private readonly IUri _cloneFormUri;
-        private readonly IUri _deleteFormUri;
-
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public Tile()
         {
-            //_editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Edit>();
-            //_cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Clone>();
-            //_deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Delete>();
         }
 
         /// <summary>

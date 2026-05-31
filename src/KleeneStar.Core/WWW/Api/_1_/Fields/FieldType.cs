@@ -126,6 +126,12 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
                     Id = Model.Entities.FieldType.Tag.Id(),
                     Text = I18N.Translate(request, Model.Entities.FieldType.Tag.Text()),
                     Color = Model.Entities.FieldType.Tag.Color()
+                },
+                new()
+                {
+                    Id = Model.Entities.FieldType.Priority.Id(),
+                    Text = I18N.Translate(request, Model.Entities.FieldType.Priority.Text()),
+                    Color = Model.Entities.FieldType.Priority.Color()
                 }
             };
 

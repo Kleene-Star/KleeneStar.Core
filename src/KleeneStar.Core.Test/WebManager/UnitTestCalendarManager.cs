@@ -112,7 +112,7 @@ namespace KleeneStar.Core.Test.WebManager
             var calendar = SampleCalendar();
             CoreHub.CalendarManager.Add(calendar);
 
-            Calendar raised = null;
+            Calendar? raised = null;
             CoreHub.CalendarManager.CalendarRemoved += (_, c) => raised = c;
 
             CoreHub.CalendarManager.Remove(calendar.Id);
@@ -149,7 +149,7 @@ namespace KleeneStar.Core.Test.WebManager
             Assert.Contains("api",    KleeneStar.Core.WebManager.CalendarManager.ReservedCalendarNames);
         }
 
-        private static Calendar SampleCalendar(string name = null) => new()
+        private static Calendar SampleCalendar(string? name = null) => new()
         {
             Id = Guid.NewGuid(),
             Name = name ?? "Standard · Europe/Berlin",

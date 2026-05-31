@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
+using System.Collections.Generic;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -154,7 +155,11 @@ namespace KleeneStar.Core.WebFragment.Field
         }
 
         /// <summary>
-        /// Renders the control as an HTML node.
+        /// Renders the control as an HTML node. Only the configuration categories that are
+        /// meaningful for the field's <see cref="Model.Entities.FieldType"/> are emitted as
+        /// tab views; non-applicable categories are hidden. When the field type resolves to a
+        /// scalar value with nothing to configure (e.g. Boolean), an explanatory note is shown
+        /// instead of an empty form.
         /// </summary>
         /// <param name="renderContext">
         /// The context in which the control is rendered.
@@ -168,63 +173,146 @@ namespace KleeneStar.Core.WebFragment.Field
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
             var param = renderContext.Request.GetParameter<FieldIdParameter>();
+            var field = param is not null ? CoreHub.FieldManager.GetField(param) : null;
 
-            var tab = new ControlFormItemGroupTab()
+            // A null type means the field could not be resolved; the predicates below then
+            // fall back to exposing every category rather than hiding the whole form.
+            var type = field?.FieldType;
+
+            var views = new List<IControlFormItemGroupTabView>();
+
+            if (AppliesToCardinality(type))
             {
+                views.Add((IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                {
+                    Title = _ => "kleenestar.core:field.configure.tab.cardinality"
+                }
+                    .Add(CardinalityMin)
+                    .Add(CardinalityUnlimited)
+                    .Add(CardinalityMax));
             }
-                .AddView
-                (
-                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
-                    {
-                        Title = _ => "kleenestar.core:field.configure.tab.cardinality"
-                    }
-                        .Add(CardinalityMin)
-                        .Add(CardinalityUnlimited)
-                        .Add(CardinalityMax))
-                .AddView
-                (
-                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
-                    {
-                        Title = _ => "kleenestar.core:field.configure.tab.validation"
-                    }
-                        .Add(RegexPattern)
-                )
-                .AddView
-                (
-                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
-                    {
-                        Title = _ => "kleenestar.core:field.configure.tab.options"
-                    }
-                        .Add(Options)
-                )
-                .AddView
-                (
-                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
-                    {
-                        Title = _ => "kleenestar.core:field.configure.tab.filter"
-                    }
-                        .Add(FilterWql)
-                )
-                .AddView
-                (
-                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
-                    {
-                        Title = _ => "kleenestar.core:field.configure.tab.workflow"
-                    }
-                        .Add(WorkflowSelection)
-                )
-                .AddView
-                (
-                    (IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
-                    {
-                        Title = _ => "kleenestar.core:field.configure.tab.priority"
-                    }
-                        .Add(DefaultPrioritySelection)
-                        .Add(SelectedPriorities)
-                );
+
+            if (AppliesToValidation(type))
+            {
+                views.Add((IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                {
+                    Title = _ => "kleenestar.core:field.configure.tab.validation"
+                }
+                    .Add(RegexPattern));
+            }
+
+            if (AppliesToOptions(type))
+            {
+                views.Add((IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                {
+                    Title = _ => "kleenestar.core:field.configure.tab.options"
+                }
+                    .Add(Options));
+            }
+
+            if (AppliesToFilter(type))
+            {
+                views.Add((IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                {
+                    Title = _ => "kleenestar.core:field.configure.tab.filter"
+                }
+                    .Add(FilterWql));
+            }
+
+            if (AppliesToWorkflow(type))
+            {
+                views.Add((IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                {
+                    Title = _ => "kleenestar.core:field.configure.tab.workflow"
+                }
+                    .Add(WorkflowSelection));
+            }
+
+            if (AppliesToPriority(type))
+            {
+                views.Add((IControlFormItemGroupTabView)new ControlFormItemGroupTabView()
+                {
+                    Title = _ => "kleenestar.core:field.configure.tab.priority"
+                }
+                    .Add(DefaultPrioritySelection)
+                    .Add(SelectedPriorities));
+            }
+
+            if (views.Count == 0)
+            {
+                // No configuration category applies to this field type (e.g. Boolean).
+                // Render an explanatory note rather than an empty form.
+                var note = new ControlFormItemStaticText()
+                {
+                    Text = _ => "kleenestar.core:field.configure.empty"
+                };
+
+                return base.Render(renderContext, visualTree, [note]);
+            }
+
+            var tab = new ControlFormItemGroupTab();
+            tab.AddView([.. views]);
 
             return base.Render(renderContext, visualTree, [tab]);
         }
+
+        /// <summary>
+        /// Determines whether the Cardinality category applies to the given field type.
+        /// Cardinality controls value multiplicity, so it is hidden for strictly scalar
+        /// field types (Text, Boolean, Workflow, Priority) that always hold a single value.
+        /// </summary>
+        /// <param name="type">The resolved field type, or <c>null</c> when it cannot be determined.</param>
+        /// <returns><c>true</c> when the category should be shown; otherwise <c>false</c>.</returns>
+        private static bool AppliesToCardinality(Model.Entities.FieldType? type)
+            => type is not (Model.Entities.FieldType.Text
+                or Model.Entities.FieldType.Boolean
+                or Model.Entities.FieldType.Workflow
+                or Model.Entities.FieldType.Priority);
+
+        /// <summary>
+        /// Determines whether the Validation category applies to the given field type.
+        /// Regular-expression validation is only meaningful for text-based fields.
+        /// </summary>
+        /// <param name="type">The resolved field type, or <c>null</c> when it cannot be determined.</param>
+        /// <returns><c>true</c> when the category should be shown; otherwise <c>false</c>.</returns>
+        private static bool AppliesToValidation(Model.Entities.FieldType? type)
+            => type is null or Model.Entities.FieldType.Text;
+
+        /// <summary>
+        /// Determines whether the Options category applies to the given field type.
+        /// Selectable option values are only meaningful for enumerable fields.
+        /// </summary>
+        /// <param name="type">The resolved field type, or <c>null</c> when it cannot be determined.</param>
+        /// <returns><c>true</c> when the category should be shown; otherwise <c>false</c>.</returns>
+        private static bool AppliesToOptions(Model.Entities.FieldType? type)
+            => type is null or Model.Entities.FieldType.Selection;
+
+        /// <summary>
+        /// Determines whether the Filter objects category applies to the given field type.
+        /// A WQL target filter is only meaningful for referential fields.
+        /// </summary>
+        /// <param name="type">The resolved field type, or <c>null</c> when it cannot be determined.</param>
+        /// <returns><c>true</c> when the category should be shown; otherwise <c>false</c>.</returns>
+        private static bool AppliesToFilter(Model.Entities.FieldType? type)
+            => type is null or Model.Entities.FieldType.Reference;
+
+        /// <summary>
+        /// Determines whether the Workflow category applies to the given field type.
+        /// Workflow assignment is only meaningful for fields of type Workflow.
+        /// </summary>
+        /// <param name="type">The resolved field type, or <c>null</c> when it cannot be determined.</param>
+        /// <returns><c>true</c> when the category should be shown; otherwise <c>false</c>.</returns>
+        private static bool AppliesToWorkflow(Model.Entities.FieldType? type)
+            => type is null or Model.Entities.FieldType.Workflow;
+
+        /// <summary>
+        /// Determines whether the Priority category applies to the given field type.
+        /// Priority assignment is only meaningful for fields of type Priority.
+        /// </summary>
+        /// <param name="type">The resolved field type, or <c>null</c> when it cannot be determined.</param>
+        /// <returns><c>true</c> when the category should be shown; otherwise <c>false</c>.</returns>
+        private static bool AppliesToPriority(Model.Entities.FieldType? type)
+            => type is null or Model.Entities.FieldType.Priority;
     }
 }
 
