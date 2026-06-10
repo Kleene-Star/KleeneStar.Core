@@ -274,9 +274,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
 
             UpsertFieldValues(newItem, fieldMap);
 
-            // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -320,9 +317,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
 
             UpsertFieldValues(newItem, fieldMap);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -354,9 +348,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             CoreHub.ObjectManager.Update(existingItem);
 
             UpsertFieldValues(existingItem, payload);
-
-            // update notification
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }
@@ -394,6 +385,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
                 .Where(f => !f.Deprecated && f.State == FieldState.Active)
                 .ToDictionary(f => f.Name.ToLowerInvariant(), f => f);
 
+            // load the object's existing values once and index them by field, rather than
+            // issuing one ValueManager.GetValue(objectId, fieldId) query per payload entry.
+            var existingByField = CoreHub.ValueManager
+                .GetValues(@object.Id)
+                .GroupBy(v => v.FieldId)
+                .ToDictionary(g => g.Key, g => g.First());
+
             foreach (var kv in payload)
             {
                 if (systemProps.Contains(kv.Key))
@@ -409,7 +407,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
                 }
 
                 var raw = SerializePayloadValue(kv.Value);
-                var existing = CoreHub.ValueManager.GetValue(@object.Id, field.Id);
+                existingByField.TryGetValue(field.Id, out var existing);
 
                 if (existing is null)
                 {

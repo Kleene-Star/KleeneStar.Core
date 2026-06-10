@@ -211,9 +211,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             // automatically create the standard form for the new class
             CoreHub.FormManager.CreateStandardForm(newItem.Id);
 
-            // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -255,9 +252,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             // automatically create the standard form for the cloned class
             CoreHub.FormManager.CreateStandardForm(newItem.Id);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -278,9 +272,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.ClassManager.Update(existingItem);
-
-            // update notification
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

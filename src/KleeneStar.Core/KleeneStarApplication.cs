@@ -38,7 +38,7 @@ namespace KleeneStar.Core
             ModelHub.HttpServerContext = httpServerContext;
             CoreHub.ComponentHub = componentHub;
             ModelHub.ComponentHub = componentHub;
-            CoreHub.ApplicationContet = applicationContext;
+            CoreHub.ApplicationContext = applicationContext;
             ModelHub.ApplicationContext = applicationContext;
 
             CoreHub.ComponentHub.IdentityManager.RegisterIdentityProvider(new WebIdentity.IdentityProvider(), applicationContext);

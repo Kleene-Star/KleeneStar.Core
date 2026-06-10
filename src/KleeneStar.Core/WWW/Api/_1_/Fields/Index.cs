@@ -215,9 +215,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
 
             CoreHub.FieldManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -256,9 +253,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
 
             CoreHub.FieldManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -279,9 +273,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.FieldManager.Update(existingItem);
-
-            // update notification
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

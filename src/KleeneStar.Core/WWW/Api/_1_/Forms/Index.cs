@@ -203,9 +203,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
 
             CoreHub.FormManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -244,9 +241,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
 
             CoreHub.FormManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -267,9 +261,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.FormManager.Update(existingItem);
-
-            // update notification
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

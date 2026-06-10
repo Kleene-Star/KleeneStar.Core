@@ -961,6 +961,8 @@ For programmatic interaction with object management, **KleeneStar** provides a R
 |`/api/1/objects/{workspaceKey}/{objectKey}/restore`                     |POST        |Restores a previously archived object.
 |`/api/1/objects/{workspaceKey}/{objectKey}/transitions`                 |GET         |Lists all available workflow transitions for the object.
 |`/api/1/objects/{workspaceKey}/{objectKey}/transitions/{transitionKey}` |POST        |Executes a workflow transition for the object. May include field values in the body.
+|`/api/1/hierarchy/{objectKey}`                                          |GET         |Returns the hierarchy of the object: the ancestor chain (nearest first), the parent, the object itself, the immediate children (with their resolved workflow status), and the siblings.
+|`/api/1/hierarchy/{objectKey}`                                          |PUT         |Sets or clears the parent. Body: `{ "parent": "KEY" }` (object key or id) or `{ "parent": null }`. Validates against self-parenting, cycles, cross-workspace links, and the allowed-children declaration of the parent's class.
 
 Standard error responses include `400 Bad Request` for validation errors (e.g., a key that is already taken), `401 Unauthorized` for missing authentication, `403 Forbidden` for insufficient permissions, and `404 Not Found` if the requested resource does not exist. A successful creation (POST) is acknowledged with `201 Created`, while a successful deletion (DELETE) results in a `204 No Content` response.
 

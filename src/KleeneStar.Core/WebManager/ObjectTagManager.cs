@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -142,7 +142,7 @@ namespace KleeneStar.Core.WebManager
 
             ModelHub.Add(tag);
             TagAdded?.Invoke(this, tag);
-            TryAddNotification("Create");
+            TryAddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.tag.created");
 
             return tag;
         }
@@ -165,7 +165,7 @@ namespace KleeneStar.Core.WebManager
 
             ModelHub.Remove(existing);
             TagRemoved?.Invoke(this, existing);
-            TryAddNotification("Delete");
+            TryAddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.tag.deleted");
 
             return true;
         }
@@ -182,12 +182,13 @@ namespace KleeneStar.Core.WebManager
         /// Emits a UI notification via <see cref="CoreHub.AddNotification"/>, swallowing any
         /// exception so that tests with a partially wired host don't crash.
         /// </summary>
-        /// <param name="header">The notification header.</param>
-        private static void TryAddNotification(string header)
+        /// <param name="titleKey">The i18n key of the notification title.</param>
+        /// <param name="messageKey">The i18n key of the notification message.</param>
+        private static void TryAddNotification(string titleKey, string messageKey)
         {
             try
             {
-                CoreHub.AddNotification(header, "success", 5000);
+                CoreHub.AddNotification(titleKey, messageKey, 5000);
             }
             catch
             {

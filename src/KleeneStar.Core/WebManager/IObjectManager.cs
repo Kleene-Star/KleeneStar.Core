@@ -125,5 +125,40 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="objectId">The id of the reference object.</param>
         IEnumerable<Object> GetSiblings(System.Guid objectId);
+
+        /// <summary>
+        /// Returns the ancestor chain of the specified object, nearest first (parent,
+        /// grandparent, …, root). The chain stops defensively when a cycle is detected
+        /// in persisted data.
+        /// </summary>
+        /// <param name="objectId">The id of the object whose ancestors are resolved.</param>
+        /// <returns>The ancestors, nearest first. The collection may be empty.</returns>
+        IEnumerable<Object> GetAncestors(System.Guid objectId);
+
+        /// <summary>
+        /// Returns every descendant of the specified object (children, grandchildren, …)
+        /// in breadth-first order. The traversal stops defensively when a cycle is
+        /// detected in persisted data.
+        /// </summary>
+        /// <param name="objectId">The id of the object whose subtree is resolved.</param>
+        /// <returns>The descendants in breadth-first order. The collection may be empty.</returns>
+        IEnumerable<Object> GetDescendants(System.Guid objectId);
+
+        /// <summary>
+        /// Sets or clears the parent of the specified object after validating the
+        /// hierarchy rules: the parent must exist, must not be the object itself, must
+        /// not be one of the object's descendants (no cycles), must live in the same
+        /// workspace, and — when the parent's class declares
+        /// <see cref="Class.AllowedChildren"/> — the object's class must be allowed.
+        /// </summary>
+        /// <param name="objectId">The id of the object whose parent is set.</param>
+        /// <param name="parentId">The id of the new parent, or <c>null</c> to detach.</param>
+        /// <returns>
+        /// The updated object, or <c>null</c> when no object with the supplied id exists.
+        /// </returns>
+        /// <exception cref="System.InvalidOperationException">
+        /// Thrown when one of the hierarchy rules is violated.
+        /// </exception>
+        Object SetParent(System.Guid objectId, System.Guid? parentId);
     }
 }

@@ -41,11 +41,11 @@ namespace KleeneStar.Core.WebManager
         public event EventHandler<Class> ClassRemoved;
 
         /// <summary>
-        /// Gets the collection of workspace keys that are reserved and cannot be used for custom workspaces.
+        /// Gets the collection of class names that are reserved and cannot be used for custom classes.
         /// </summary>
         /// <remarks>
-        /// The reserved keys typically represent system-defined workspaces and are not available
-        /// for user-defined or custom workspace creation.
+        /// The reserved names typically represent system-defined routes and are not available
+        /// for user-defined or custom class creation.
         /// </remarks>
         public static IEnumerable<string> ReservedClassNames =>
         [
@@ -140,7 +140,7 @@ namespace KleeneStar.Core.WebManager
             ClassAdded?.Invoke(this, classEntity);
 
             // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.class.created", 5000);
 
             return this;
         }
@@ -158,8 +158,8 @@ namespace KleeneStar.Core.WebManager
 
             ClassUpdated?.Invoke(this, classEntity);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
+            // update notification
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.class.updated", 5000);
 
             return this;
         }

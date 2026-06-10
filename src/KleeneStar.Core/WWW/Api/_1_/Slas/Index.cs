@@ -1,4 +1,4 @@
-using KleeneStar.Model;
+﻿using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
@@ -207,8 +207,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas
 
             CoreHub.SlaManager.Add(newItem);
 
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -251,8 +249,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas
 
             CoreHub.SlaManager.Add(newItem);
 
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -275,8 +271,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Slas
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.SlaManager.Update(existingItem);
-
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
@@ -153,7 +153,7 @@ namespace KleeneStar.Core.WebManager
 
             CalendarAdded?.Invoke(this, calendar);
 
-            TryAddNotification("Create");
+            TryAddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.calendar.created");
 
             return this;
         }
@@ -173,7 +173,7 @@ namespace KleeneStar.Core.WebManager
 
             CalendarUpdated?.Invoke(this, calendar);
 
-            TryAddNotification("Update");
+            TryAddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.calendar.updated");
 
             return this;
         }
@@ -207,11 +207,11 @@ namespace KleeneStar.Core.WebManager
         }
 
         // Wraps CoreHub.AddNotification so unit tests with a partially wired host don't crash.
-        private static void TryAddNotification(string header)
+        private static void TryAddNotification(string titleKey, string messageKey)
         {
             try
             {
-                CoreHub.AddNotification(header, "success", 5000);
+                CoreHub.AddNotification(titleKey, messageKey, 5000);
             }
             catch
             {

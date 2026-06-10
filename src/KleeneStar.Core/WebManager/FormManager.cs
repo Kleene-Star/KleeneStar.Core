@@ -43,11 +43,11 @@ namespace KleeneStar.Core.WebManager
         public event EventHandler<Form> FormRemoved;
 
         /// <summary>
-        /// Gets the collection of workspace keys that are reserved and cannot be used for custom workspaces.
+        /// Gets the collection of form names that are reserved and cannot be used for custom forms.
         /// </summary>
         /// <remarks>
-        /// The reserved keys typically represent system-defined workspaces and are not available
-        /// for user-defined or custom workspace creation.
+        /// The reserved names typically represent system-defined routes and are not available
+        /// for user-defined or custom form creation.
         /// </remarks>
         public static IEnumerable<string> ReservedFormNames =>
         [
@@ -196,7 +196,7 @@ namespace KleeneStar.Core.WebManager
             FormAdded?.Invoke(this, formEntity);
 
             // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.form.created", 5000);
 
             return this;
         }
@@ -214,8 +214,8 @@ namespace KleeneStar.Core.WebManager
 
             FormUpdated?.Invoke(this, formEntity);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
+            // update notification
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.form.updated", 5000);
 
             return this;
         }

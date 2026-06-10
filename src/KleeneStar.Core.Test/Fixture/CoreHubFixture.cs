@@ -35,6 +35,8 @@ namespace KleeneStar.Core.Test
             ("_commentManager",   typeof(CommentManager)),
             ("_attachmentManager",typeof(AttachmentManager)),
             ("_watcherManager",   typeof(WatcherManager)),
+            ("_shareManager",     typeof(ShareManager)),
+            ("_objectTagManager", typeof(ObjectTagManager)),
             ("_valueManager",     typeof(ValueManager)),
             ("_templateManager",  typeof(TemplateManager)),
             ("_objectViewManager",typeof(ObjectViewManager)),

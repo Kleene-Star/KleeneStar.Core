@@ -114,8 +114,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Groups
 
             CoreHub.GroupManager.Add(newItem);
 
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -134,8 +132,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Groups
 
             CoreHub.GroupManager.Add(newItem);
 
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -147,8 +143,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Groups
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.GroupManager.Update(existingItem);
-
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

@@ -116,8 +116,10 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
-        /// Adds the supplied value to the database, raises <see cref="ValueAdded"/>,
-        /// and emits a UI notification. Returns the manager instance to allow chaining.
+        /// Adds the supplied value to the database and raises <see cref="ValueAdded"/>.
+        /// Returns the manager instance to allow chaining. Values are sub-resources of an
+        /// object save and intentionally do not emit their own UI notification — the
+        /// owning object's create/update notification already covers the operation.
         /// </summary>
         /// <param name="value">The value to add.</param>
         /// <returns>The current manager instance.</returns>
@@ -127,7 +129,6 @@ namespace KleeneStar.Core.WebManager
 
             ModelHub.Add(value);
             ValueAdded?.Invoke(this, value);
-            TryAddNotification("Create");
 
             return this;
         }
@@ -143,7 +144,6 @@ namespace KleeneStar.Core.WebManager
 
             ModelHub.Update(value);
             ValueUpdated?.Invoke(this, value);
-            TryAddNotification("Update");
 
             return this;
         }
@@ -173,23 +173,6 @@ namespace KleeneStar.Core.WebManager
         public void Dispose()
         {
             GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Emits a UI notification via <see cref="CoreHub.AddNotification"/>, swallowing
-        /// any exception so that tests with a partially wired host don't crash.
-        /// </summary>
-        /// <param name="header">The notification header.</param>
-        private static void TryAddNotification(string header)
-        {
-            try
-            {
-                CoreHub.AddNotification(header, "success", 5000);
-            }
-            catch
-            {
-                // notification is best-effort; ignore failures from incomplete host state
-            }
         }
     }
 }

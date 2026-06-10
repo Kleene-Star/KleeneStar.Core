@@ -350,16 +350,22 @@ namespace KleeneStar.Core.WebFragment.Object
         /// <returns>The priorities to present, in display order.</returns>
         private static IEnumerable<Model.Entities.Priority> ResolveFieldPriorities(Model.Entities.Field field)
         {
+            // Load the field's class priorities in a single round-trip and filter in memory.
+            // The previous per-id GetPriority(id) loop opened a fresh DbContext and ran one
+            // query for every selected id; priorities are class-scoped, so the selected ids
+            // are a subset of the class priorities loaded here.
+            var priorities = CoreHub.PriorityManager
+                .GetPriorities(new ClassIdParameter(field.ClassId));
+
             if (field.SelectedPriorityIds is { Count: > 0 })
             {
-                return field.SelectedPriorityIds
-                    .Select(id => CoreHub.PriorityManager.GetPriority(id))
-                    .Where(p => p != null)
+                var selected = field.SelectedPriorityIds.ToHashSet();
+                return priorities
+                    .Where(p => selected.Contains(p.Id))
                     .OrderBy(p => p.Order);
             }
 
-            return CoreHub.PriorityManager
-                .GetPriorities(new ClassIdParameter(field.ClassId))
+            return priorities
                 .Where(p => p.State == PriorityState.Active)
                 .OrderBy(p => p.Order);
         }

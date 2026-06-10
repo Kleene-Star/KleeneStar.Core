@@ -37,14 +37,14 @@ namespace KleeneStar.Core.WebManager
 
         /// <summary>
         /// An event that fires when an priority is removed.
-        /// </summary>>
+        /// </summary>
         public event EventHandler<Priority> PriorityRemoved;
 
         /// <summary>
-        /// Returns the collection of priority keys that are reserved and cannot be used for custom workspaces.
+        /// Returns the collection of priority names that are reserved and cannot be used for custom priorities.
         /// </summary>
         /// <remarks>
-        /// The reserved keys typically represent system-defined priority and are not available
+        /// The reserved names typically represent system-defined routes and are not available
         /// for user-defined or custom priority creation.
         /// </remarks>
         public static IEnumerable<string> ReservedPriorityNames =>
@@ -157,7 +157,7 @@ namespace KleeneStar.Core.WebManager
             PriorityAdded?.Invoke(this, priorityEntity);
 
             // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.priority.created", 5000);
 
             return this;
         }
@@ -175,8 +175,8 @@ namespace KleeneStar.Core.WebManager
 
             PriorityUpdated?.Invoke(this, priorityEntity);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
+            // update notification
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.priority.updated", 5000);
 
             return this;
         }
@@ -193,12 +193,23 @@ namespace KleeneStar.Core.WebManager
 
             ModelHub.ReorderPriorities(orderedIds);
 
-            foreach (var id in orderedIds)
+            // raise the per-entity updated events in the requested order. The reordered
+            // priorities are reloaded with a single query (filtered in memory) rather than
+            // one GetPriority(id) round-trip per id; skipped entirely when nobody listens.
+            var handler = PriorityUpdated;
+            if (handler is not null && orderedIds.Count > 0)
             {
-                var priority = GetPriority(id);
-                if (priority is not null)
+                var ids = orderedIds.ToHashSet();
+                var byId = GetPriorities(new Query<Priority>())
+                    .Where(p => ids.Contains(p.Id))
+                    .ToDictionary(p => p.Id);
+
+                foreach (var id in orderedIds)
                 {
-                    PriorityUpdated?.Invoke(this, priority);
+                    if (byId.TryGetValue(id, out var priority))
+                    {
+                        handler(this, priority);
+                    }
                 }
             }
 

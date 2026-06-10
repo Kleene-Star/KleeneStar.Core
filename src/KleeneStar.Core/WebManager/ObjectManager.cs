@@ -11,12 +11,12 @@ using WebExpress.WebIndex.Queries;
 namespace KleeneStar.Core.WebManager
 {
     /// <summary>
-    /// Defines the contract for managing classes, including adding, retrieving, and removing, as well as
-    /// handling class-related events.
+    /// Defines the contract for managing objects, including adding, retrieving, and removing, as well as
+    /// handling object-related events.
     /// </summary>
     /// <remarks>
-    /// The interface provides methods for managing classes and events for tracking changes 
-    /// to the class collection. Implementations of this interface should ensure thread
+    /// The interface provides methods for managing objects and events for tracking changes
+    /// to the object collection. Implementations of this interface should ensure thread
     /// safety if used in a multi-threaded environment.
     /// </remarks>
     public sealed class ObjectManager : IObjectManager
@@ -122,7 +122,7 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
-        /// Retrieves a collection of bojects that satisfy the specified filter criteria.
+        /// Retrieves a collection of objects that satisfy the specified filter criteria.
         /// </summary>
         /// <param name="query">
         /// The query criteria used to filter the returned objects. Must not be null.
@@ -154,7 +154,7 @@ namespace KleeneStar.Core.WebManager
             ObjectAdded?.Invoke(this, objectEntity);
 
             // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.object.created", 5000);
 
             return this;
         }
@@ -173,7 +173,7 @@ namespace KleeneStar.Core.WebManager
             ObjectUpdated?.Invoke(this, objectEntity);
 
             // create notification
-            CoreHub.AddNotification("Update", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.object.updated", 5000);
 
             return this;
         }
@@ -246,6 +246,149 @@ namespace KleeneStar.Core.WebManager
                          && x.Id != objectId);
 
             return ModelHub.GetObjects(query);
+        }
+
+        /// <summary>
+        /// Returns the ancestor chain of the specified object, nearest first (parent,
+        /// grandparent, …, root). The walk keeps a visited set so a cycle persisted by
+        /// older data terminates instead of looping forever.
+        /// </summary>
+        /// <param name="objectId">The id of the object whose ancestors are resolved.</param>
+        /// <returns>The ancestors, nearest first. The collection may be empty.</returns>
+        public IEnumerable<Model.Entities.Object> GetAncestors(Guid objectId)
+        {
+            var ancestors = new List<Model.Entities.Object>();
+            var visited = new HashSet<Guid> { objectId };
+
+            var current = GetObject(objectId);
+
+            while (current?.ParentId is not null && visited.Add(current.ParentId.Value))
+            {
+                current = GetObject(current.ParentId.Value);
+
+                if (current is null)
+                {
+                    break;
+                }
+
+                ancestors.Add(current);
+            }
+
+            return ancestors;
+        }
+
+        /// <summary>
+        /// Returns every descendant of the specified object (children, grandchildren, …)
+        /// in breadth-first order. The traversal keeps a visited set so a cycle persisted
+        /// by older data terminates instead of looping forever.
+        /// </summary>
+        /// <param name="objectId">The id of the object whose subtree is resolved.</param>
+        /// <returns>The descendants in breadth-first order. The collection may be empty.</returns>
+        public IEnumerable<Model.Entities.Object> GetDescendants(Guid objectId)
+        {
+            var descendants = new List<Model.Entities.Object>();
+            var visited = new HashSet<Guid> { objectId };
+            var frontier = new Queue<Guid>();
+            frontier.Enqueue(objectId);
+
+            while (frontier.Count > 0)
+            {
+                foreach (var child in GetChildren(frontier.Dequeue()))
+                {
+                    if (!visited.Add(child.Id))
+                    {
+                        continue;
+                    }
+
+                    descendants.Add(child);
+                    frontier.Enqueue(child.Id);
+                }
+            }
+
+            return descendants;
+        }
+
+        /// <summary>
+        /// Sets or clears the parent of the specified object after validating the
+        /// hierarchy rules: the parent must exist, must not be the object itself, must
+        /// not be one of the object's descendants (no cycles), must live in the same
+        /// workspace, and — when the parent's class declares allowed child classes —
+        /// the object's class must be among them. An empty
+        /// <see cref="Model.Entities.Class.AllowedChildren"/> list is treated as
+        /// "composition not restricted" so existing data stays linkable.
+        /// </summary>
+        /// <param name="objectId">The id of the object whose parent is set.</param>
+        /// <param name="parentId">The id of the new parent, or <c>null</c> to detach.</param>
+        /// <returns>
+        /// The updated object, or <c>null</c> when no object with the supplied id exists.
+        /// </returns>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when one of the hierarchy rules is violated.
+        /// </exception>
+        public Model.Entities.Object SetParent(Guid objectId, Guid? parentId)
+        {
+            var objectEntity = GetObject(objectId);
+
+            if (objectEntity is null)
+            {
+                return null;
+            }
+
+            if (parentId is null)
+            {
+                if (objectEntity.ParentId is null)
+                {
+                    return objectEntity;
+                }
+
+                objectEntity.ParentId = null;
+                objectEntity.Updated = DateTime.UtcNow;
+                Update(objectEntity);
+
+                return objectEntity;
+            }
+
+            if (parentId.Value == objectId)
+            {
+                throw new InvalidOperationException("An object cannot be its own parent.");
+            }
+
+            var parent = GetObject(parentId.Value);
+
+            if (parent is null)
+            {
+                throw new InvalidOperationException($"The parent object '{parentId}' does not exist.");
+            }
+
+            if (parent.WorkspaceId != objectEntity.WorkspaceId)
+            {
+                throw new InvalidOperationException("Parent and child must belong to the same workspace.");
+            }
+
+            if (GetDescendants(objectId).Any(d => d.Id == parentId.Value))
+            {
+                throw new InvalidOperationException("The chosen parent is a descendant of the object; the link would create a cycle.");
+            }
+
+            var parentClass = CoreHub.ClassManager.GetClass(parent.ClassId);
+
+            if (parentClass?.AllowedChildren is { Count: > 0 }
+                && parentClass.AllowedChildren.All(c => c.Id != objectEntity.ClassId))
+            {
+                throw new InvalidOperationException(
+                    $"Objects of this class are not allowed beneath '{parentClass.Name}' (see the class's allowed children).");
+            }
+
+            if (objectEntity.ParentId == parentId)
+            {
+                return objectEntity;
+            }
+
+            objectEntity.ParentId = parentId;
+            objectEntity.Updated = DateTime.UtcNow;
+            Update(objectEntity);
+
+            return objectEntity;
         }
 
         /// <summary>

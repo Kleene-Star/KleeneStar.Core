@@ -117,8 +117,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
 
             CoreHub.IdentityManager.Add(newItem);
 
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -138,8 +136,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
 
             CoreHub.IdentityManager.Add(newItem);
 
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -151,8 +147,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.IdentityManager.Update(existingItem);
-
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

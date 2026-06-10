@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using WebExpress.WebCore;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebApplication;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebCore.WebEndpoint;
@@ -38,6 +39,7 @@ namespace KleeneStar.Core
         private static CommentManager _commentManager;
         private static AttachmentManager _attachmentManager;
         private static WatcherManager _watcherManager;
+        private static ShareManager _shareManager;
         private static ObjectTagManager _objectTagManager;
         private static ValueManager _valueManager;
         private static ObjectLinkManager _objectLinkManager;
@@ -51,7 +53,7 @@ namespace KleeneStar.Core
         /// <summary>
         /// Gets the current application context, which provides access to application-wide services and configurations.
         /// </summary>
-        public static IApplicationContext ApplicationContet { get; internal set; }
+        public static IApplicationContext ApplicationContext { get; internal set; }
 
         /// <summary>
         /// Gets the current HTTP server context for the application.
@@ -159,6 +161,12 @@ namespace KleeneStar.Core
         public static IWatcherManager WatcherManager => _watcherManager ??= ComponentHub.GetComponentManager<WatcherManager>();
 
         /// <summary>
+        /// Gets the share manager responsible for the per-identity share relationships
+        /// on objects (e.g. portal issues shared with additional tenant members).
+        /// </summary>
+        public static IShareManager ShareManager => _shareManager ??= ComponentHub.GetComponentManager<ShareManager>();
+
+        /// <summary>
         /// Gets the object-tag manager responsible for the tags (labels) attached to objects.
         /// </summary>
         public static IObjectTagManager ObjectTagManager => _objectTagManager ??= ComponentHub.GetComponentManager<ObjectTagManager>();
@@ -196,20 +204,28 @@ namespace KleeneStar.Core
         public static IUri GetUri<TEndpoint>(params Parameter[] parameters)
             where TEndpoint : IEndpoint
         {
-            return ComponentHub.SitemapManager.GetUri<TEndpoint>(ApplicationContet, parameters);
+            return ComponentHub.SitemapManager.GetUri<TEndpoint>(ApplicationContext, parameters);
         }
 
         /// <summary>
         /// Creates and displays a notification with the specified header and message.
         /// </summary>
+        /// <remarks>
+        /// Both <paramref name="header"/> and <paramref name="message"/> are treated as
+        /// internationalization keys (e.g. <c>kleenestar.core:notification.title.created</c>)
+        /// and resolved against the application's default culture via
+        /// <see cref="I18N.Translate(string)"/>. A string that is not a known key is rendered
+        /// verbatim, so plain text continues to work as a fallback. The global notification is
+        /// not request-scoped, hence the default culture is used rather than a per-user one.
+        /// </remarks>
         /// <param name="header">
-        /// The title or heading text to display in the notification. Cannot be null.
+        /// The i18n key of the title/heading to display in the notification. Cannot be null.
         /// </param>
         /// <param name="message">
-        /// The main content or body text of the notification. Cannot be null.
+        /// The i18n key of the main content/body text of the notification. Cannot be null.
         /// </param>
         /// <param name="durability">
-        /// The duration, in milliseconds, that the notification remains visible. Specify -1 
+        /// The duration, in milliseconds, that the notification remains visible. Specify -1
         /// to use the default duration.
         /// </param>
         /// <returns>
@@ -235,9 +251,9 @@ namespace KleeneStar.Core
             return notificationManager.AddNotification
             (
                 applicationContext: application,
-                icon: ApplicationContet?.Icon?.ToUri()?.ToString(),
-                heading: header,
-                message: message,
+                icon: ApplicationContext?.Icon?.ToUri()?.ToString(),
+                heading: I18N.Translate(header),
+                message: I18N.Translate(message),
                 durability: durability
             );
         }
@@ -247,9 +263,11 @@ namespace KleeneStar.Core
         /// </summary>
         /// <remarks>
         /// The icon color is selected from a palette of 32 distinct colors based on the hash
-        /// code of the provided identifier. The generated icon is saved as an SVG file in the 
-        /// application's icons directory and can be accessed via a URI endpoint. This method 
-        /// creates the icons directory if it does not already exist.
+        /// code of the provided identifier. The generated icon is saved as an SVG file in the
+        /// application's icons directory and can be accessed via a URI endpoint. This method
+        /// creates the icons directory if it does not already exist. Because the file content
+        /// is fully determined by the identifier, an already generated icon is reused as-is
+        /// instead of being regenerated and rewritten.
         /// </remarks>
         /// <param name="id">
         /// The unique identifier used to select the icon color and determine the icon file name.
@@ -259,6 +277,22 @@ namespace KleeneStar.Core
         /// </returns>
         public static ImageIcon GenerateIcon(Guid id)
         {
+            // define target icon directory, file name, and the public URI of the icon
+            var iconDirectory = Path.Combine(AppContext.BaseDirectory, HttpServerContext?.DataPath, "icons");
+            var iconFileName = $"{id}.svg";
+            var outputPath = Path.Combine(iconDirectory, iconFileName);
+            var icon = new ImageIcon(ApplicationContext.Route.Concat($"/assets/icons/{iconFileName}").ToUri());
+
+            // the icon is a deterministic function of the id: the same id always maps to
+            // the same color and therefore the same file content. If it has already been
+            // generated, reuse the file on disk instead of re-reading the embedded
+            // template, re-running the regex, and rewriting identical bytes — this path
+            // runs on every entity create/edit, so the short-circuit avoids redundant I/O.
+            if (File.Exists(outputPath))
+            {
+                return icon;
+            }
+
             // color palette: 32 distinct, contrast-rich colors
             var colors = new[]
             {
@@ -279,15 +313,16 @@ namespace KleeneStar.Core
 
             var colorHex = colors[colorIndex];
 
-            // load the embedded kleenestar.svg resource from assembly
+            // load the embedded kleenestar.svg resource from assembly. The manifest name is
+            // produced from the csproj LogicalName template, whose %(RecursiveDir) token uses
+            // the build host's directory separator ('\' on Windows, '/' elsewhere). Normalize
+            // both separators to '.' before matching so icon generation works regardless of
+            // the platform the assembly was built on.
             var assembly = typeof(WorkspaceManager).Assembly;
             var resourceName = assembly.GetManifestResourceNames()
-                .FirstOrDefault(x => x.EndsWith("KleeneStar.Core.Assets.img\\kleenestar.svg", StringComparison.OrdinalIgnoreCase))
+                .FirstOrDefault(x => x.Replace('\\', '.').Replace('/', '.')
+                    .EndsWith("KleeneStar.Core.Assets.img.kleenestar.svg", StringComparison.OrdinalIgnoreCase))
                 ?? throw new FileNotFoundException("Embedded kleenestar.svg resource not found.");
-
-            // define target icon directory and icon filename
-            var iconDirectory = Path.Combine(AppContext.BaseDirectory, HttpServerContext?.DataPath, "icons");
-            var iconFileName = $"{id}.svg";
 
             using var stream = assembly.GetManifestResourceStream(resourceName)
                 ?? throw new FileNotFoundException("SVG asset stream not found.");
@@ -306,10 +341,9 @@ namespace KleeneStar.Core
             Directory.CreateDirectory(iconDirectory);
 
             // write the modified SVG to the icon file
-            var outputPath = Path.Combine(iconDirectory, iconFileName);
             File.WriteAllText(outputPath, newContent);
 
-            return new ImageIcon(ApplicationContet.Route.Concat($"/assets/icons/{iconFileName}").ToUri());
+            return icon;
         }
     }
 }

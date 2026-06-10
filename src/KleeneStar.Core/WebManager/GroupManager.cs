@@ -103,7 +103,7 @@ namespace KleeneStar.Core.WebManager
 
             GroupAdded?.Invoke(this, groupEntity);
 
-            CoreHub.AddNotification("Create", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.group.created", 5000);
 
             return this;
         }
@@ -119,7 +119,7 @@ namespace KleeneStar.Core.WebManager
 
             GroupUpdated?.Invoke(this, groupEntity);
 
-            CoreHub.AddNotification("Update", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.group.updated", 5000);
 
             return this;
         }
