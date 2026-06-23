@@ -154,6 +154,97 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Returns the active workspaces the supplied identity has favorited, ordered by name.
+        /// Backs the pinned section at the top of the workspace dropdown.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <returns>The favorited workspaces. The collection may be empty.</returns>
+        public IReadOnlyList<Workspace> GetFavoriteWorkspaces(Guid ownerId)
+        {
+            return [.. ModelHub.GetWorkspaceBookmarks(new Query<WorkspaceBookmark>())
+                .Where(x => x.OwnerId == ownerId
+                    && x.Favorite
+                    && x.Workspace is not null
+                    && x.Workspace.State == WorkspaceState.Active)
+                .OrderBy(x => x.Workspace.Name, StringComparer.OrdinalIgnoreCase)
+                .Select(x => x.Workspace)];
+        }
+
+        /// <summary>
+        /// Returns the active workspaces the supplied identity has most recently visited,
+        /// newest first, capped at <paramref name="count"/>. Backs the "recently used"
+        /// section of the workspace dropdown.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="count">The maximum number of workspaces to return.</param>
+        /// <returns>The recently visited workspaces, newest first. The collection may be empty.</returns>
+        public IReadOnlyList<Workspace> GetRecentWorkspaces(Guid ownerId, int count)
+        {
+            return [.. ModelHub.GetWorkspaceBookmarks(new Query<WorkspaceBookmark>())
+                .Where(x => x.OwnerId == ownerId
+                    && x.LastVisited != default
+                    && x.Workspace is not null
+                    && x.Workspace.State == WorkspaceState.Active)
+                .OrderByDescending(x => x.LastVisited)
+                .Take(Math.Max(0, count))
+                .Select(x => x.Workspace)];
+        }
+
+        /// <summary>
+        /// Returns whether the supplied identity has favorited the supplied workspace.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="workspaceId">The id of the workspace.</param>
+        /// <returns><see langword="true"/> when the workspace is favorited by the identity.</returns>
+        public bool IsFavorite(Guid ownerId, Guid workspaceId)
+        {
+            return ModelHub.GetWorkspaceBookmark(ownerId, workspaceId)?.Favorite ?? false;
+        }
+
+        /// <summary>
+        /// Sets the favorite state of the supplied workspace for the supplied identity,
+        /// inserting or updating the backing bookmark. Returns <see langword="null"/> when the
+        /// owner or workspace does not exist.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="workspaceId">The id of the workspace.</param>
+        /// <param name="favorite">The new favorite state.</param>
+        /// <returns>The persisted bookmark, or <see langword="null"/>.</returns>
+        public WorkspaceBookmark SetFavorite(Guid ownerId, Guid workspaceId, bool favorite)
+        {
+            var bookmark = ModelHub.UpsertWorkspaceBookmark(ownerId, workspaceId, favorite, recordVisit: false);
+
+            if (bookmark is not null)
+            {
+                WorkspaceUpdated?.Invoke(this, GetWorkspace(workspaceId));
+
+                // confirmation toast (pushed over the message queue; harmless when the host is not wired)
+                CoreHub.AddNotification
+                (
+                    favorite ? "kleenestar.core:notification.title.favorited" : "kleenestar.core:notification.title.unfavorited",
+                    favorite ? "kleenestar.core:notification.workspace.favorited" : "kleenestar.core:notification.workspace.unfavorited",
+                    5000
+                );
+            }
+
+            return bookmark;
+        }
+
+        /// <summary>
+        /// Records that the supplied identity has just opened the supplied workspace by
+        /// advancing the bookmark's last-visited timestamp (inserting the bookmark when needed).
+        /// The mutation is deliberately quiet because it fires on every workspace page load.
+        /// Returns <see langword="null"/> when the owner or workspace does not exist.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="workspaceId">The id of the workspace.</param>
+        /// <returns>The persisted bookmark, or <see langword="null"/>.</returns>
+        public WorkspaceBookmark RecordVisit(Guid ownerId, Guid workspaceId)
+        {
+            return ModelHub.UpsertWorkspaceBookmark(ownerId, workspaceId, favorite: null, recordVisit: true);
+        }
+
+        /// <summary>
         /// Adds a workspace to the workspace manager.
         /// </summary>
         /// <param name="workspace">The workspace to add. Cannot be null.</param>

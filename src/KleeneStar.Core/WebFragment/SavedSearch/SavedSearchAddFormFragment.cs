@@ -1,0 +1,92 @@
+using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebFragment;
+using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebFragment;
+using WebExpress.WebCore.WebHtml;
+using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebPage;
+
+namespace KleeneStar.Core.WebFragment.SavedSearch
+{
+    /// <summary>
+    /// Represents the add form fragment for a saved search.
+    /// </summary>
+    [Section<SectionContentPreferences>]
+    [Scope<global::KleeneStar.Core.WWW.SavedSearches.Add>]
+    [Cache]
+    public sealed class SavedSearchAddFormFragment : FragmentControlRestFormAdd
+    {
+        /// <summary>
+        /// Gets the input control for the saved-search name.
+        /// </summary>
+        public ControlFormItemInputText SavedSearchName { get; } = new()
+        {
+            Name = _ => nameof(Model.Entities.SavedSearch.Name),
+            Label = _ => "kleenestar.core:search.saved.name.label",
+            Placeholder = _ => "kleenestar.core:search.saved.name.placeholder",
+            Help = _ => "kleenestar.core:search.saved.name.help",
+            Required = _ => true
+        };
+
+        /// <summary>
+        /// Gets the input control for the query expression.
+        /// </summary>
+        public ControlFormItemInputText Query { get; } = new()
+        {
+            Name = _ => nameof(Model.Entities.SavedSearch.Query),
+            Label = _ => "kleenestar.core:search.saved.query.label",
+            Placeholder = _ => "kleenestar.core:search.saved.query.placeholder",
+            Help = _ => "kleenestar.core:search.saved.query.help",
+            Required = _ => true
+        };
+
+        /// <summary>
+        /// Gets the input control for the optional description.
+        /// </summary>
+        public ControlFormItemInputText Description { get; } = new()
+        {
+            Name = _ => nameof(Model.Entities.SavedSearch.Description),
+            Label = _ => "kleenestar.core:search.saved.description.label",
+            Placeholder = _ => "kleenestar.core:search.saved.description.placeholder",
+            Required = _ => false
+        };
+
+        /// <summary>
+        /// Gets the checkbox control for the starred flag.
+        /// </summary>
+        public ControlFormItemInputCheck Starred { get; } = new()
+        {
+            Name = _ => nameof(Model.Entities.SavedSearch.Starred),
+            Label = _ => "kleenestar.core:search.saved.starred.label",
+            Help = _ => "kleenestar.core:search.saved.starred.help",
+            Layout = _ => TypeLayoutCheck.Switch
+        };
+
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        /// <param name="fragmentContext">The context of the fragment.</param>
+        public SavedSearchAddFormFragment(IFragmentContext fragmentContext)
+            : base(fragmentContext)
+        {
+            Add(SavedSearchName);
+            Add(Query);
+            Add(Description);
+            Add(Starred);
+
+            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.SavedSearches.Index>();
+        }
+
+        /// <summary>
+        /// Renders the control as an HTML node.
+        /// </summary>
+        /// <param name="renderContext">The context in which the control is rendered.</param>
+        /// <param name="visualTree">The visual tree representing the control's structure.</param>
+        /// <returns>An HTML node representing the rendered control.</returns>
+        public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
+        {
+            return base.Render(renderContext, visualTree, Items);
+        }
+    }
+}

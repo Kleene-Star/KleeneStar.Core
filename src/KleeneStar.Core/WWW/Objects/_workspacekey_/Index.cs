@@ -44,6 +44,15 @@ namespace KleeneStar.Core.WWW.Objects._workspacekey_
 
             visualTree.Title = workspace?.Name;
             visualTree.Content.MainPanel.Headline.Title = workspace?.Name;
+
+            // record that the current identity opened this workspace (its content view and the
+            // object/class subpages reached from here all record a visit), so it surfaces at the
+            // top of the workspace dropdown's "recently used" section (newest first)
+            if (workspace is not null)
+            {
+                var ownerId = CoreHub.SessionManager.GetCurrentIdentityId(renderContext.Request);
+                _workspaceManager.RecordVisit(ownerId, workspace.Id);
+            }
         }
     }
 }

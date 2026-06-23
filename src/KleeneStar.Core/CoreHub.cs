@@ -44,6 +44,7 @@ namespace KleeneStar.Core
         private static ValueManager _valueManager;
         private static ObjectLinkManager _objectLinkManager;
         private static SessionManager _sessionManager;
+        private static SavedSearchManager _savedSearchManager;
 
         /// <summary>
         /// Gets the shared instance of the component hub used for managing and coordinating application components.
@@ -188,6 +189,12 @@ namespace KleeneStar.Core
         /// entries (e.g. persisted REST API table column layouts).
         /// </summary>
         public static ISessionManager SessionManager => _sessionManager ??= ComponentHub.GetComponentManager<SessionManager>();
+
+        /// <summary>
+        /// Gets the saved-search manager responsible for the per-identity saved searches
+        /// that back the global search dropdown and the search-page sidebar.
+        /// </summary>
+        public static ISavedSearchManager SavedSearchManager => _savedSearchManager ??= ComponentHub.GetComponentManager<SavedSearchManager>();
 
         /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.

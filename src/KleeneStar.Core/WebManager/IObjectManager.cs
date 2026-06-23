@@ -84,6 +84,27 @@ namespace KleeneStar.Core.WebManager
         IEnumerable<Object> GetObjects(IQuery<Object> query, IQueryContext context);
 
         /// <summary>
+        /// Returns the active objects the supplied identity has most recently opened, newest
+        /// first, capped at <paramref name="count"/>. Backs the "recently used" section of the
+        /// object dropdown in the application header.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="count">The maximum number of objects to return.</param>
+        /// <returns>The recently opened objects, newest first. The collection may be empty.</returns>
+        IReadOnlyList<Object> GetRecentObjects(System.Guid ownerId, int count);
+
+        /// <summary>
+        /// Records that the supplied identity has just opened the supplied object by advancing the
+        /// visit's last-visited timestamp (inserting the visit when needed). The mutation is
+        /// deliberately quiet because it fires on every object detail page load. Returns
+        /// <see langword="null"/> when the owner or object does not exist.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <returns>The persisted visit, or <see langword="null"/>.</returns>
+        ObjectVisit RecordVisit(System.Guid ownerId, System.Guid objectId);
+
+        /// <summary>
         /// Adds a object to the manager.
         /// </summary>
         /// <param name="objectEntity">The object to add. Cannot be null.</param>

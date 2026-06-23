@@ -141,6 +141,40 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Returns the active objects the supplied identity has most recently opened, newest
+        /// first, capped at <paramref name="count"/>. Backs the "recently used" section of the
+        /// object dropdown in the application header.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="count">The maximum number of objects to return.</param>
+        /// <returns>The recently opened objects, newest first. The collection may be empty.</returns>
+        public IReadOnlyList<Model.Entities.Object> GetRecentObjects(Guid ownerId, int count)
+        {
+            return [.. ModelHub.GetObjectVisits(new Query<Model.Entities.ObjectVisit>())
+                .Where(x => x.OwnerId == ownerId
+                    && x.LastVisited != default
+                    && x.Object is not null
+                    && x.Object.State == Model.Entities.WorkspaceState.Active)
+                .OrderByDescending(x => x.LastVisited)
+                .Take(Math.Max(0, count))
+                .Select(x => x.Object)];
+        }
+
+        /// <summary>
+        /// Records that the supplied identity has just opened the supplied object by advancing the
+        /// visit's last-visited timestamp (inserting the visit when needed). The mutation is
+        /// deliberately quiet because it fires on every object detail page load. Returns
+        /// <see langword="null"/> when the owner or object does not exist.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <returns>The persisted visit, or <see langword="null"/>.</returns>
+        public Model.Entities.ObjectVisit RecordVisit(Guid ownerId, Guid objectId)
+        {
+            return ModelHub.UpsertObjectVisit(ownerId, objectId);
+        }
+
+        /// <summary>
         /// Adds a object to the manager.
         /// </summary>
         /// <param name="objectEntity">The object to add. Cannot be null.</param>

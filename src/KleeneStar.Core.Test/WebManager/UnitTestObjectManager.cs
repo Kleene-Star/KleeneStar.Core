@@ -138,6 +138,139 @@ namespace KleeneStar.Core.Test.WebManager
         }
 
         /// <summary>
+        /// Verifies that <c>RecordVisit</c> creates a visit that surfaces in
+        /// <c>GetRecentObjects</c>.
+        /// </summary>
+        [Fact]
+        public void RecordVisit_CreatesVisit_AndSurfacesInRecent()
+        {
+            Seed(nameof(RecordVisit_CreatesVisit_AndSurfacesInRecent));
+            var ownerId = SeedOwner(nameof(RecordVisit_CreatesVisit_AndSurfacesInRecent));
+
+            var obj = Sample("INC-1", "Server down");
+            CoreHub.ObjectManager.Add(obj);
+
+            var visit = CoreHub.ObjectManager.RecordVisit(ownerId, obj.Id);
+
+            Assert.NotNull(visit);
+
+            var recent = CoreHub.ObjectManager.GetRecentObjects(ownerId, 10);
+            Assert.Single(recent);
+            Assert.Equal(obj.Id, recent[0].Id);
+        }
+
+        /// <summary>
+        /// Verifies that visiting the same object twice updates the single visit row in place
+        /// rather than creating a duplicate (the composite unique index contract).
+        /// </summary>
+        [Fact]
+        public void RecordVisit_Twice_DoesNotDuplicate()
+        {
+            Seed(nameof(RecordVisit_Twice_DoesNotDuplicate));
+            var ownerId = SeedOwner(nameof(RecordVisit_Twice_DoesNotDuplicate));
+
+            var obj = Sample("INC-2", "Outage");
+            CoreHub.ObjectManager.Add(obj);
+
+            CoreHub.ObjectManager.RecordVisit(ownerId, obj.Id);
+            CoreHub.ObjectManager.RecordVisit(ownerId, obj.Id);
+
+            using var db = CoreHubFixture.CreateDbContext(nameof(RecordVisit_Twice_DoesNotDuplicate));
+            Assert.Equal(1, db.ObjectVisits.Count(x => x.OwnerId == ownerId && x.ObjectId == obj.Id));
+        }
+
+        /// <summary>
+        /// Verifies that <c>RecordVisit</c> with an unknown owner or object persists nothing and
+        /// returns <c>null</c> (the foreign keys would otherwise reject the write).
+        /// </summary>
+        [Fact]
+        public void RecordVisit_UnknownOwnerOrObject_ReturnsNull()
+        {
+            Seed(nameof(RecordVisit_UnknownOwnerOrObject_ReturnsNull));
+            var ownerId = SeedOwner(nameof(RecordVisit_UnknownOwnerOrObject_ReturnsNull));
+
+            var obj = Sample("INC-3", "Thing");
+            CoreHub.ObjectManager.Add(obj);
+
+            Assert.Null(CoreHub.ObjectManager.RecordVisit(Guid.NewGuid(), obj.Id));
+            Assert.Null(CoreHub.ObjectManager.RecordVisit(ownerId, Guid.NewGuid()));
+        }
+
+        /// <summary>
+        /// Verifies that <c>GetRecentObjects</c> orders by last-visited descending (newest first)
+        /// and honours the count cap.
+        /// </summary>
+        [Fact]
+        public void GetRecentObjects_OrdersByLastVisitedDescending()
+        {
+            Seed(nameof(GetRecentObjects_OrdersByLastVisitedDescending));
+            var ownerId = SeedOwner(nameof(GetRecentObjects_OrdersByLastVisitedDescending));
+
+            var older = Sample("INC-10", "older");
+            var middle = Sample("INC-11", "middle");
+            var newest = Sample("INC-12", "newest");
+            CoreHub.ObjectManager.Add(older);
+            CoreHub.ObjectManager.Add(middle);
+            CoreHub.ObjectManager.Add(newest);
+
+            var now = DateTime.UtcNow;
+            SeedVisit(nameof(GetRecentObjects_OrdersByLastVisitedDescending), ownerId, older.Id, now.AddHours(-10));
+            SeedVisit(nameof(GetRecentObjects_OrdersByLastVisitedDescending), ownerId, middle.Id, now.AddHours(-5));
+            SeedVisit(nameof(GetRecentObjects_OrdersByLastVisitedDescending), ownerId, newest.Id, now.AddHours(-1));
+
+            var recent = CoreHub.ObjectManager.GetRecentObjects(ownerId, 10);
+            Assert.Equal([newest.Id, middle.Id, older.Id], recent.Select(o => o.Id).ToList());
+
+            var capped = CoreHub.ObjectManager.GetRecentObjects(ownerId, 2);
+            Assert.Equal([newest.Id, middle.Id], capped.Select(o => o.Id).ToList());
+        }
+
+        /// <summary>
+        /// Seeds an owning identity into the in-memory database and returns its id. The owner must
+        /// exist so the visit foreign keys accept the write.
+        /// </summary>
+        /// <param name="connectionString">The per-test in-memory database name.</param>
+        /// <returns>The id of the seeded identity.</returns>
+        private static Guid SeedOwner(string connectionString)
+        {
+            var ownerId = Guid.NewGuid();
+
+            using var db = CoreHubFixture.CreateDbContext(connectionString);
+            db.Identities.Add(new Identity
+            {
+                Id = ownerId,
+                Name = "Owner",
+                Email = "owner@kleenestar.org",
+                PasswordHash = "$test$"
+            });
+            db.SaveChanges();
+
+            return ownerId;
+        }
+
+        /// <summary>
+        /// Seeds a single object visit with an explicit last-visited value so ordering tests do
+        /// not depend on wall-clock resolution.
+        /// </summary>
+        /// <param name="connectionString">The per-test in-memory database name.</param>
+        /// <param name="ownerId">The owning identity id.</param>
+        /// <param name="objectId">The visited object id.</param>
+        /// <param name="lastVisited">The last-visited timestamp.</param>
+        private static void SeedVisit(string connectionString, Guid ownerId, Guid objectId, DateTime lastVisited)
+        {
+            using var db = CoreHubFixture.CreateDbContext(connectionString);
+            db.ObjectVisits.Add(new ObjectVisit
+            {
+                OwnerId = ownerId,
+                ObjectId = objectId,
+                LastVisited = lastVisited,
+                Created = DateTime.UtcNow,
+                Updated = DateTime.UtcNow
+            });
+            db.SaveChanges();
+        }
+
+        /// <summary>
         /// Creates a sample object attached to the seeded class and workspace.
         /// </summary>
         /// <param name="key">The object key.</param>

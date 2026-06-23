@@ -42,6 +42,16 @@ namespace KleeneStar.Core.WWW.Object._objectkey_
             var objectParameter = renderContext.Request.GetParameter<ObjectKeyParameter>();
             var @object = _objectManager.GetObjectByKey(objectParameter?.Value);
 
+            // record the visit so this object surfaces at the top of the object dropdown's
+            // "recently used" list; an object detail page is also a subpage of its workspace,
+            // so the workspace recency is advanced too
+            if (@object is not null)
+            {
+                var ownerId = CoreHub.SessionManager.GetCurrentIdentityId(renderContext.Request);
+                CoreHub.ObjectManager.RecordVisit(ownerId, @object.Id);
+                CoreHub.WorkspaceManager.RecordVisit(ownerId, @object.WorkspaceId);
+            }
+
             var uri = renderContext.PageContext.ApplicationContext.Route
                 .Concat(new WorkspaceKeyUriPathSegmentVariable<WorkspaceKeyParameter>()
                 {

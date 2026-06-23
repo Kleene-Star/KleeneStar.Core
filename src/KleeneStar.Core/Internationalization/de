@@ -38,6 +38,8 @@ workspace.avatar.title=Avatar des Arbeitsbereichs bearbeiten
 workspace.manage.title=Arbeitsbereiche
 workspace.manage.label=Arbeitsbereiche
 workspace.manage.description=Diese Übersicht listet alle verfügbaren Arbeitsbereiche auf. Jeder Arbeitsbereich stellt eine eigene Umgebung mit eigenen Rollen, Klassen und Konfigurationsumfang dar.
+workspace.favorite.add.label=Zu Favoriten hinzufügen
+workspace.favorite.remove.label=Aus Favoriten entfernen
 workspace.name.label=Arbeitsbereichsname
 workspace.name.placeholder=Geben Sie den Namen des Arbeitsbereichs ein.
 workspace.name.help=Der Name hilft Ihnen, diesen Arbeitsbereich schnell zu identifizieren.
@@ -364,6 +366,8 @@ template.permissions.table.group=Zugewiesene Gruppe
 template.permissions.table.policy=Gültige Richtlinie
 template.permissions.done.label=Fertig
 
+object.dropdown.label=Objekt
+object.dropdown.search.label=Suche
 object.add.title=Neues Objekt
 object.add.label=Objekt hinzufügen
 object.edit.label=Objekt bearbeiten
@@ -797,11 +801,15 @@ notification.title.created=Erstellt
 notification.title.updated=Aktualisiert
 notification.title.deleted=Gelöscht
 notification.title.pinned=Angeheftet
+notification.title.favorited=Favorit hinzugefügt
+notification.title.unfavorited=Favorit entfernt
 
 # notification messages (entity + operation)
 notification.workspace.created=Der Arbeitsbereich wurde erfolgreich erstellt.
 notification.workspace.updated=Der Arbeitsbereich wurde erfolgreich aktualisiert.
 notification.workspace.deleted=Der Arbeitsbereich wurde erfolgreich gelöscht.
+notification.workspace.favorited=Der Arbeitsbereich wurde zu Ihren Favoriten hinzugefügt.
+notification.workspace.unfavorited=Der Arbeitsbereich wurde aus Ihren Favoriten entfernt.
 notification.class.created=Die Klasse wurde erfolgreich erstellt.
 notification.class.updated=Die Klasse wurde erfolgreich aktualisiert.
 notification.field.created=Das Feld wurde erfolgreich erstellt.
@@ -841,3 +849,49 @@ notification.tag.created=Das Tag wurde hinzugefügt.
 notification.tag.deleted=Das Tag wurde entfernt.
 notification.attachment.created=Der Anhang wurde hochgeladen.
 notification.attachment.deleted=Der Anhang wurde entfernt.
+
+# Globale Suche (Suche über alle Workspaces)
+search.title=Suche
+search.headline=Suche über alle Workspaces
+search.nav.label=Suche
+search.dropdown.label=Suche
+search.dropdown.all.label=Über alle Workspaces suchen
+search.header.placeholder=Über alle Workspaces suchen …
+
+# Tabelle der globalen Suchergebnisse
+search.results.table.header=Ergebnisse
+search.results.column.key=Schlüssel
+search.results.column.summary=Zusammenfassung
+search.results.column.workspace=Workspace
+search.results.column.description=Beschreibung
+
+# Seitenleiste der Suchseite (gespeicherte Suchanfragen)
+search.sidebar.new.label=Neue Suche
+search.sidebar.saved.heading=GESPEICHERTE SUCHANFRAGEN
+search.sidebar.add.label=+ Neue gespeicherte Suche
+
+# Gespeicherte Suchanfragen
+search.saved.table.header=Gespeicherte Suchanfragen
+search.saved.column.name=Name
+search.saved.column.query=Abfrage
+search.saved.column.starred=Gesternt
+search.saved.run.label=Ausführen
+search.saved.quickfilter.starred=Gesternt
+search.saved.add.title=Neue gespeicherte Suche
+search.saved.edit.title=Gespeicherte Suche bearbeiten
+search.saved.delete.title=Gespeicherte Suche löschen
+search.saved.name.label=Name
+search.saved.name.placeholder=z. B. Meine offenen Vorfälle
+search.saved.name.help=Ein kurzer, einprägsamer Name für diese Suche.
+search.saved.query.label=Abfrage
+search.saved.query.placeholder=z. B. Summary ~ "incident"
+search.saved.query.help=Die Abfrage, die beim Öffnen dieser gespeicherten Suche ausgeführt wird.
+search.saved.description.label=Beschreibung
+search.saved.description.placeholder=Optionale Notizen zu dieser Suche
+search.saved.starred.label=Gesternt
+search.saved.starred.help=Gesternte Suchanfragen werden oben in der Seitenleiste angeheftet.
+
+# Benachrichtigungen für gespeicherte Suchanfragen
+notification.savedsearch.created=Die gespeicherte Suche wurde erfolgreich erstellt.
+notification.savedsearch.updated=Die gespeicherte Suche wurde erfolgreich aktualisiert.
+notification.savedsearch.deleted=Die gespeicherte Suche wurde erfolgreich gelöscht.

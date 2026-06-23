@@ -38,6 +38,8 @@ workspace.avatar.title=Edit Workspace Avatar
 workspace.manage.title=Workspaces
 workspace.manage.label=Workspaces
 workspace.manage.description=This overview lists all available workspaces. Each workspace represents a distinct environment with its own roles, classes, and configuration scope.
+workspace.favorite.add.label=Add to favorites
+workspace.favorite.remove.label=Remove from favorites
 workspace.name.label=Workspace Name
 workspace.name.placeholder=Enter the name of the workspace.
 workspace.name.help=The name helps you quickly identify this workspace.
@@ -364,6 +366,8 @@ template.permissions.table.group=Assigned Group
 template.permissions.table.policy=Effective Policy
 template.permissions.done.label=Done
 
+object.dropdown.label=Object
+object.dropdown.search.label=Search
 object.add.title=Add Object
 object.add.label=Add Object
 object.edit.label=Edit Object
@@ -797,11 +801,15 @@ notification.title.created=Created
 notification.title.updated=Updated
 notification.title.deleted=Deleted
 notification.title.pinned=Pinned
+notification.title.favorited=Favorite added
+notification.title.unfavorited=Favorite removed
 
 # notification messages (entity + operation)
 notification.workspace.created=The workspace has been created successfully.
 notification.workspace.updated=The workspace has been updated successfully.
 notification.workspace.deleted=The workspace has been deleted successfully.
+notification.workspace.favorited=The workspace has been added to your favorites.
+notification.workspace.unfavorited=The workspace has been removed from your favorites.
 notification.class.created=The class has been created successfully.
 notification.class.updated=The class has been updated successfully.
 notification.field.created=The field has been created successfully.
@@ -841,3 +849,49 @@ notification.tag.created=The tag has been added.
 notification.tag.deleted=The tag has been removed.
 notification.attachment.created=The attachment has been uploaded.
 notification.attachment.deleted=The attachment has been removed.
+
+# Global search (search over all workspaces)
+search.title=Search
+search.headline=Search across all workspaces
+search.nav.label=Search
+search.dropdown.label=Search
+search.dropdown.all.label=Search all workspaces
+search.header.placeholder=Search all workspaces …
+
+# Global search results table
+search.results.table.header=Results
+search.results.column.key=Key
+search.results.column.summary=Summary
+search.results.column.workspace=Workspace
+search.results.column.description=Description
+
+# Search page sidebar (saved searches)
+search.sidebar.new.label=New search
+search.sidebar.saved.heading=SAVED SEARCHES
+search.sidebar.add.label=+ New saved search
+
+# Saved searches
+search.saved.table.header=Saved searches
+search.saved.column.name=Name
+search.saved.column.query=Query
+search.saved.column.starred=Starred
+search.saved.run.label=Run
+search.saved.quickfilter.starred=Starred
+search.saved.add.title=New saved search
+search.saved.edit.title=Edit saved search
+search.saved.delete.title=Delete saved search
+search.saved.name.label=Name
+search.saved.name.placeholder=e.g. My open incidents
+search.saved.name.help=A short, recognizable name for this search.
+search.saved.query.label=Query
+search.saved.query.placeholder=e.g. Summary ~ "incident"
+search.saved.query.help=The query that runs when this saved search is opened.
+search.saved.description.label=Description
+search.saved.description.placeholder=Optional notes about this search
+search.saved.starred.label=Starred
+search.saved.starred.help=Starred searches are pinned to the top of the sidebar.
+
+# Saved-search notifications
+notification.savedsearch.created=The saved search has been created successfully.
+notification.savedsearch.updated=The saved search has been updated successfully.
+notification.savedsearch.deleted=The saved search has been deleted successfully.
