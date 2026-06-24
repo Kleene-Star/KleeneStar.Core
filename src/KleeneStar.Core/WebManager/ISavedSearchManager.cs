@@ -87,7 +87,10 @@ namespace KleeneStar.Core.WebManager
         ISavedSearchManager Update(SavedSearch savedSearch);
 
         /// <summary>
-        /// Removes the saved search with the given id and raises <see cref="SavedSearchRemoved"/>.
+        /// Soft-deletes the saved search with the given id by setting its
+        /// <see cref="SavedSearch.State"/> to <see cref="SavedSearchState.Deleted"/> (every
+        /// read path filters on <see cref="SavedSearchState.Active"/>, so the row stops being
+        /// surfaced) and raises <see cref="SavedSearchRemoved"/>. No-op when none exists.
         /// </summary>
         /// <param name="savedSearchId">The id of the saved search to remove.</param>
         /// <returns>The current instance for chaining.</returns>

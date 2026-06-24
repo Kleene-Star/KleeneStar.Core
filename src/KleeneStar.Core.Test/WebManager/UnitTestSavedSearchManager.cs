@@ -144,19 +144,24 @@ namespace KleeneStar.Core.Test.WebManager
         }
 
         /// <summary>
-        /// Verifies that a removed saved search is no longer returned.
+        /// Verifies that removing a saved search soft-deletes it: it stops being surfaced by
+        /// <c>GetForOwner</c> while the row is retained with state <c>Deleted</c>.
         /// </summary>
         [Fact]
-        public void Remove_DeletesSavedSearch()
+        public void Remove_SoftDeletesSavedSearch()
         {
-            Seed(nameof(Remove_DeletesSavedSearch));
+            Seed(nameof(Remove_SoftDeletesSavedSearch));
 
             var item = New("Delete me", starred: false, lastUsedHoursAgo: 1);
             CoreHub.SavedSearchManager.Add(item);
 
             CoreHub.SavedSearchManager.Remove(item.Id);
 
-            Assert.Null(CoreHub.SavedSearchManager.GetSavedSearch(item.Id));
+            Assert.Empty(CoreHub.SavedSearchManager.GetForOwner(OwnerId));
+
+            var soft = CoreHub.SavedSearchManager.GetSavedSearch(item.Id);
+            Assert.NotNull(soft);
+            Assert.Equal(SavedSearchState.Deleted, soft.State);
         }
     }
 }

@@ -114,6 +114,7 @@ namespace KleeneStar.Core.WebManager
         {
             ArgumentNullException.ThrowIfNull(savedSearch);
 
+            savedSearch.Updated = DateTime.UtcNow;
             ModelHub.Update(savedSearch);
 
             SavedSearchUpdated?.Invoke(this, savedSearch);
@@ -130,7 +131,11 @@ namespace KleeneStar.Core.WebManager
 
             if (savedSearch is not null)
             {
-                ModelHub.Remove(savedSearch);
+                // Soft-delete: flip the state to Deleted (every read path filters on Active)
+                // rather than hard-removing the row, mirroring the comment soft-delete.
+                savedSearch.State = SavedSearchState.Deleted;
+                savedSearch.Updated = DateTime.UtcNow;
+                ModelHub.Update(savedSearch);
                 SavedSearchRemoved?.Invoke(this, savedSearch);
 
                 CoreHub.AddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.savedsearch.deleted", 5000);
@@ -168,6 +173,7 @@ namespace KleeneStar.Core.WebManager
             }
 
             savedSearch.Starred = starred;
+            savedSearch.Updated = DateTime.UtcNow;
             ModelHub.Update(savedSearch);
 
             SavedSearchUpdated?.Invoke(this, savedSearch);

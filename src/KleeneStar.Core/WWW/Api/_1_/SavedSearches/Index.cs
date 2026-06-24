@@ -50,15 +50,20 @@ namespace KleeneStar.Core.WWW.Api._1_.SavedSearches
         }
 
         /// <summary>
-        /// Retrieves the saved searches matching the specified query.
+        /// Retrieves the saved searches of the calling identity matching the specified query.
+        /// Saved searches are personal, so the result — and therefore the update/delete item
+        /// lookups that the base class funnels through this method — is scoped to the current
+        /// owner; a query for another identity's saved search yields nothing (404).
         /// </summary>
         /// <param name="query">The query parameters. Cannot be null.</param>
         /// <param name="context">The context in which the query is executed. Cannot be null.</param>
         /// <param name="request">The request that provides the operational context.</param>
-        /// <returns>The matching saved searches.</returns>
+        /// <returns>The matching saved searches owned by the calling identity.</returns>
         protected override IEnumerable<SavedSearch> Retrieve(IQuery<SavedSearch> query, IQueryContext context, IRequest request)
         {
-            return CoreHub.SavedSearchManager.GetSavedSearches(query, context);
+            var ownerId = CoreHub.SessionManager.GetCurrentIdentityId(request);
+
+            return CoreHub.SavedSearchManager.GetSavedSearches(query.WhereEquals(x => x.OwnerId, ownerId), context);
         }
 
         /// <summary>
@@ -76,11 +81,13 @@ namespace KleeneStar.Core.WWW.Api._1_.SavedSearches
         /// </summary>
         /// <param name="query">The query parameters. Cannot be null.</param>
         /// <param name="request">The request context.</param>
-        /// <returns>The saved search for update.</returns>
+        /// <returns>The saved search for update, or none when it is not owned by the caller.</returns>
         protected override IRestApiCrudResultRetrieve RetrieveForUpdate(IQuery<SavedSearch> query, IRequest request)
         {
+            var ownerId = CoreHub.SessionManager.GetCurrentIdentityId(request);
+
             using var context = ModelHub.CreateDbContext();
-            var data = CoreHub.SavedSearchManager.GetSavedSearches(query, context)
+            var data = CoreHub.SavedSearchManager.GetSavedSearches(query.WhereEquals(x => x.OwnerId, ownerId), context)
                 .FirstOrDefault();
 
             return RetrieveForUpdate(request, data);
@@ -91,11 +98,13 @@ namespace KleeneStar.Core.WWW.Api._1_.SavedSearches
         /// </summary>
         /// <param name="query">The query parameters. Cannot be null.</param>
         /// <param name="request">The request context.</param>
-        /// <returns>The saved search and metadata for deletion.</returns>
+        /// <returns>The saved search and metadata for deletion, or none when it is not owned by the caller.</returns>
         protected override IRestApiCrudResultRetrieveDelete RetrieveForDelete(IQuery<SavedSearch> query, IRequest request)
         {
+            var ownerId = CoreHub.SessionManager.GetCurrentIdentityId(request);
+
             using var context = ModelHub.CreateDbContext();
-            var data = CoreHub.SavedSearchManager.GetSavedSearches(query, context)
+            var data = CoreHub.SavedSearchManager.GetSavedSearches(query.WhereEquals(x => x.OwnerId, ownerId), context)
                 .FirstOrDefault();
 
             return RetrieveForDelete(request, data, data?.Name);
