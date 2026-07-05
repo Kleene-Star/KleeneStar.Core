@@ -85,7 +85,8 @@ namespace KleeneStar.Core.WebFragment.Object
 
             var dateFields = _fieldManager
                 .GetFields(new ClassIdParameter(@object.ClassId))
-                .Where(f => !f.Deprecated && f.State == FieldState.Active && f.FieldType == FieldType.Date)
+                .Where(f => !f.Deprecated && f.State == FieldState.Active && f.FieldType == FieldType.Date
+                    && !IsSystemTimestampAlias(f.Name))
                 .ToList();
 
             if (dateFields.Count == 0)
@@ -128,6 +129,15 @@ namespace KleeneStar.Core.WebFragment.Object
             {
                 Name = _ => field.Name,
                 Label = _ => field.Name,
+                // Pin an explicit, culture-neutral ISO format. ControlFormItemInputDate renders the
+                // value with the thread's CurrentCulture but emits data-format from the request culture;
+                // when the two differ (e.g. a German host serving an en-US app) the '/' in a slash
+                // pattern is rewritten to the CurrentCulture date separator ('.'), so data-value
+                // ("6.24.2026") no longer matches data-format ("M/d/yyyy") and the client date control
+                // (webexpress.webui.input.date) fails to parse it, leaving the field blank. "yyyy-MM-dd"
+                // uses a literal '-' that .NET never substitutes and is one of the formats the client
+                // _parseDate understands, so value and format stay in sync across cultures.
+                Format = _ => "yyyy-MM-dd",
                 Placeholder = _ => field.Placeholder,
                 Description = _ => field.HelpText,
                 Help = _ => field.Description,
@@ -169,6 +179,21 @@ namespace KleeneStar.Core.WebFragment.Object
                 Classes = ["wx-kleenestar-field"],
                 Styles = ["display: flex; gap: 0.4em; align-items: baseline; margin-bottom: 0.35em;"]
             };
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> when the supplied date-field name aliases one of the object's
+        /// system lifecycle timestamps (creation / last update). Those are already surfaced by
+        /// <see cref="ObjectPropertyLifecycleCardFragment"/>, so such fields are omitted here to
+        /// avoid showing the creation and update dates twice.
+        /// </summary>
+        /// <param name="fieldName">The field name as configured on the class.</param>
+        /// <returns><c>true</c> when the field duplicates a system lifecycle timestamp.</returns>
+        private static bool IsSystemTimestampAlias(string fieldName)
+        {
+            var normalized = new string((fieldName ?? string.Empty).Where(char.IsLetterOrDigit).ToArray()).ToLowerInvariant();
+
+            return normalized is "created" or "createdat" or "createddate" or "updated" or "updatedat" or "updateddate";
         }
 
         /// <summary>
