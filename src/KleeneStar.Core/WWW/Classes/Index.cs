@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Classes
     /// <summary>
     /// Represents the class page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconCubes>]
+    [WebIcon<IconClass>]
     [SegmentHidden]
     [Title("kleenestar.core:class.manage.label")]
     [Scope<IScopeGeneral>]

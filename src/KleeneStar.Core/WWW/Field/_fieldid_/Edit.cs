@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Field._fieldid_
     /// <summary>
     /// Represents a page that provides a form for edit a field within the class.
     /// </summary>
-    [WebIcon<IconPlus>]
+    [WebIcon<IconPen>]
     [Title("kleenestar.core:field.edit.title")]
     [Scope<IScopeGeneral>]
     public sealed class Edit : IPage<VisualTreeWebApp>, IScope

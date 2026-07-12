@@ -85,7 +85,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:dashboard.add.title");
+            return RetrieveForCreate(request);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
                 State = DashboardState.Active
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:dashboard.clone.title");
+            return RetrieveForClone(request, newItem);
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
             var data = CoreHub.DashboardManager.GetDashboards(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:dashboard.edit.title");
+            return RetrieveForUpdate(request, data);
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
             var data = CoreHub.DashboardManager.GetDashboards(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:dashboard.delete.title", data?.Name);
+            return RetrieveForDelete(request, data, data?.Name);
         }
 
         /// <summary>

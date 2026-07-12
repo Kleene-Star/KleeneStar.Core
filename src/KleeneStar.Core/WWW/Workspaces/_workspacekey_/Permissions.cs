@@ -1,6 +1,5 @@
 ﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.Internationalization;
@@ -17,7 +16,7 @@ namespace KleeneStar.Core.WWW.Workspaces._workspacekey_
     /// </summary>
     [WebIcon<IconUserShield>]
     [Title("kleenestar.core:workspace.permissions.title")]
-    [Policy<WorkspaceAdminPolicy>]
+    //[Policy<WorkspaceAdminPolicy>]
     [Scope<IScopeGeneral>]
     public sealed class Permissions : IPage<VisualTreeWebApp>, IScope
     {

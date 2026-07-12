@@ -1,12 +1,14 @@
-﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using KleeneStar.Core.WebRestApi;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
@@ -21,7 +23,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
     /// </summary>
     [Title("kleenestar.core:field.table.header")]
     [Cache]
-    public sealed class Table : RestApiTable<Model.Entities.Field>
+    public sealed class Table : KleeneStarRestApiTable<Model.Entities.Field>
     {
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
@@ -60,7 +62,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
         /// An enumerable collection of columns associated with the specified request. The 
         /// collection may be empty if no columns are available.
         /// </returns>
-        protected override IEnumerable<RestApiTableColumn> RetrieveColums(IRequest request)
+        protected override IEnumerable<RestApiTableColumn> RetrieveDefaultColumns(IRequest request)
         {
             yield return new RestApiTableColumn()
             {
@@ -155,7 +157,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
                             Content = x.Description
                         },
                         new() {
-                            Content = x.FieldType
+                            Content = I18N.Translate(request, x.FieldType.Text())
                         },
                         new() {
                             Content = x.Cardinality.ToString()
@@ -266,6 +268,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
                 .BindParameters(request)
                 .BindParameters(new FieldIdParameter(row.Id));
 
+            var iconTheme = request?.ApplicationContext?.DefaultTheme?.IconTheme ?? TypeIconTheme.Light;
+
             yield return new RestApiOptionHeader(request)
             {
                 Text = "webexpress.webapp:header.setting.label"
@@ -273,24 +277,27 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields._classid_
 
             yield return new RestApiOptionEdit(request)
             {
+                Icon = new IconPen(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionCustom(request)
             {
                 Text = I18N.Translate(request, "kleenestar.core:field.configure.title"),
-                Icon = new IconCog(),
+                Icon = new IconCog(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", configureUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionClone(request)
             {
+                Icon = new IconClone(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionSeparator(request);
             yield return new RestApiOptionDelete(request)
             {
+                Icon = new IconTrash(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Small)
             };
         }

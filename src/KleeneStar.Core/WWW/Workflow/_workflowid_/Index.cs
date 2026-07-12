@@ -14,7 +14,7 @@ namespace KleeneStar.Core.WWW.Workflow._workflowid_
     /// <summary>
     /// Represents the main page for a workflow within the class.
     /// </summary>
-    [WebIcon<IconDiagramProject>]
+    [WebIcon<IconWorkflow>]
     [Title("kleenestar.core:workflow.manage.label")]
     [WorkflowIdSegment]
     [Scope<IScopeGeneral>]

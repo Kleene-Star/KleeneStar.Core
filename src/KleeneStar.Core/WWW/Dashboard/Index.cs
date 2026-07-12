@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Dashboard
     /// <summary>
     /// Represents the dashboard page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconGauge>]
+    [WebIcon<IconDashboard>]
     [SegmentHidden]
     [Title("kleenestar.core:dashboard.manage.label")]
     [Scope<IScopeGeneral>]

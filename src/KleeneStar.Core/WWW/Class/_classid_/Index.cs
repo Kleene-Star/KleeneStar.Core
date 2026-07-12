@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WWW.Class._classid_
     /// <summary>
     /// Provides functionality for managing the current class page.
     /// </summary>
-    [WebIcon<IconCubes>]
+    [WebIcon<IconClass>]
     [ClassIdSegment]
     [Scope<IScopeGeneral>]
     [Cache]

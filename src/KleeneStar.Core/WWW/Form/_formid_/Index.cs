@@ -14,7 +14,7 @@ namespace KleeneStar.Core.WWW.Form._formid_
     /// <summary>
     /// Represents the main page for a form within the class.
     /// </summary>
-    [WebIcon<IconRectangleList>]
+    [WebIcon<IconListFunction>]
     [Title("kleenestar.core:form.manage.label")]
     [FormIdSegment]
     [Scope<IScopeGeneral>]

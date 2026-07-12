@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Dashboard._dashboardid_
     /// <summary>
     /// Represents the page for cloning a dashboard within the web application.
     /// </summary>
-    [WebIcon<IconCopy>]
+    [WebIcon<IconClone>]
     [Title("kleenestar.core:dashboard.clone.title")]
     [Scope<IScopeGeneral>]
     public sealed class Clone : IPage<VisualTreeWebApp>, IScope

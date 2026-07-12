@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Form._formid_
     /// <summary>
     /// Represents the page for cloning a form within the class. 
     /// </summary>
-    [WebIcon<IconCopy>]
+    [WebIcon<IconClone>]
     [Title("kleenestar.core:form.clone.title")]
     [Scope<IScopeGeneral>]
     public sealed class Clone : IPage<VisualTreeWebApp>, IScope

@@ -135,7 +135,7 @@ namespace KleeneStar.Core.WebManager
 
             DashboardAdded?.Invoke(this, dashboard);
 
-            CoreHub.AddNotification("Create", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.dashboard.created", 5000);
 
             return this;
         }
@@ -153,7 +153,7 @@ namespace KleeneStar.Core.WebManager
 
             DashboardUpdated?.Invoke(this, dashboard);
 
-            CoreHub.AddNotification("Update", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.dashboard.updated", 5000);
 
             return this;
         }
@@ -174,7 +174,7 @@ namespace KleeneStar.Core.WebManager
                 ModelHub.Remove(dashboard);
                 DashboardRemoved?.Invoke(this, dashboard);
 
-                CoreHub.AddNotification("Delete", "success", 5000);
+                CoreHub.AddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.dashboard.deleted", 5000);
             }
 
             return this;

@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Priority
     /// <summary>
     /// Represents the priority page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconList>]
+    [WebIcon<IconFlag>]
     [SegmentHidden]
     [Title("kleenestar.core:priority.manage.title")]
     [Scope<IScopeGeneral>]

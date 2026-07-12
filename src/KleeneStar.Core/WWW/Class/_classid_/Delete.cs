@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Class._classid_
     /// <summary>
     /// Represents a page that handles the class deletion functionality within the web application.
     /// </summary>
-    [WebIcon<IconTrashAlt>]
+    [WebIcon<IconTrash>]
     [Title("kleenestar.core:class.delete.title")]
     [Scope<IScopeGeneral>]
     public sealed class Delete : IPage<VisualTreeWebApp>, IScope

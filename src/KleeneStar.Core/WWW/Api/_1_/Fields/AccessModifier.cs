@@ -1,7 +1,8 @@
-﻿using System;
+﻿using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
@@ -66,10 +67,30 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         {
             var list = new List<RestApiSelectionItem>()
             {
-                new() { Id = Guid.Empty, Text = "Private" },
-                new() { Id = Guid.Empty, Text = "Protected" },
-                new() { Id = Guid.Empty, Text = "Public" },
-                new() { Id = Guid.Empty, Text = "Internal" }
+                new()
+                {
+                    Id = Model.Entities.AccessModifier.Public.Id(),
+                    Text = I18N.Translate(request, Model.Entities.AccessModifier.Public.Text()),
+                    Color = Model.Entities.AccessModifier.Public.Color()
+                },
+                new()
+                {
+                    Id = Model.Entities.AccessModifier.Protected.Id(),
+                    Text = I18N.Translate(request, Model.Entities.AccessModifier.Protected.Text()),
+                    Color = Model.Entities.AccessModifier.Protected.Color()
+                },
+                new()
+                {
+                    Id = Model.Entities.AccessModifier.Private.Id(),
+                    Text = I18N.Translate(request, Model.Entities.AccessModifier.Private.Text()),
+                    Color = Model.Entities.AccessModifier.Private.Color()
+                },
+                new()
+                {
+                    Id = Model.Entities.AccessModifier.Internal.Id(),
+                    Text = I18N.Translate(request, Model.Entities.AccessModifier.Internal.Text()),
+                    Color = Model.Entities.AccessModifier.Internal.Color()
+                }
             };
 
             return list.AsQueryable();

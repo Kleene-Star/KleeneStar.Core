@@ -12,7 +12,7 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_
     /// <summary>
     /// Represents the main class management page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconCubes>]
+    [WebIcon<IconClass>]
     [Title("kleenestar.core:class.manage.label")]
     [WorkspaceKeySegment]
     [Scope<IScopeGeneral>]
@@ -36,6 +36,14 @@ namespace KleeneStar.Core.WWW.Classes._workspacekey_
         {
             var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
             var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(keyParameter?.Value);
+
+            // class management is a subpage of its workspace — record the visit so the workspace
+            // stays at the top of the dropdown's "recently used" list
+            if (workspace is not null)
+            {
+                var ownerId = CoreHub.SessionManager.GetCurrentIdentityId(renderContext.Request);
+                CoreHub.WorkspaceManager.RecordVisit(ownerId, workspace.Id);
+            }
 
             var uri = renderContext.PageContext.ApplicationContext.Route
                 .Concat(new WorkspaceKeyUriPathSegmentVariable<WorkspaceKeyParameter>()

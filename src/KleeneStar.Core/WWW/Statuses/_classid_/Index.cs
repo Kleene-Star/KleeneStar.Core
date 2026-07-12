@@ -5,6 +5,7 @@ using KleeneStar.Core.WebUri;
 using System;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebUri;
@@ -15,7 +16,7 @@ namespace KleeneStar.Core.WWW.Statuses._classid_
     /// <summary>
     /// Provides functionality for overview states.
     /// </summary>
-    [WebIcon<IconCircleDot>]
+    [WebIcon<IconStatus>]
     [Title("kleenestar.core:status.manage.title")]
     [Description("kleenestar.core:status.manage.description")]
     [ClassIdSegment]
@@ -73,6 +74,8 @@ namespace KleeneStar.Core.WWW.Statuses._classid_
                 .BindParameters(renderContext.Request);
 
             visualTree.BreadcrumbUri = uri;
+
+            visualTree.Content.MainPanel.Headline.Title = $"{@class.Name} - {I18N.Translate(renderContext, renderContext.PageContext.PageTitle)}";
         }
     }
 }

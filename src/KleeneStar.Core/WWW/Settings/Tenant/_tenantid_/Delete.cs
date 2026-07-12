@@ -11,7 +11,7 @@ namespace KleeneStar.Core.WWW.Settings.Tenant._tenantid_
     /// Represents a page that handles the tenant deletion functionality within the web application.
     /// </summary>
     [WebIcon<IconTrashAlt>]
-    [Title("kleenestar.core:tenant.delete.title")]
+    [Title("kleenestar.core:setting.tenant.delete.title")]
     [Scope<IScopeGeneral>]
     public sealed class Delete : IPage<VisualTreeWebApp>, IScope
     {

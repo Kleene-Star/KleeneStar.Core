@@ -45,13 +45,13 @@ namespace KleeneStar.Core.WWW.Settings
 
             visualTree.Content.MainPanel.AddPrimary(new ControlText()
             {
-                Text = I18N.Translate
+                Text = _ => I18N.Translate
                 (
                     renderContext,
                     "kleenestar.core:setting.group.database.label"
                 ),
-                TextColor = new PropertyColorText(TypeColorText.Info),
-                Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
+                TextColor = _ => new PropertyColorText(TypeColorText.Info),
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
 
             // mask password for display
@@ -60,8 +60,8 @@ namespace KleeneStar.Core.WWW.Settings
             // create base table and add static rows
             var table = new ControlTable()
             {
-                Striped = TypeStripedTable.Row,
-                SuppressHeaders = true
+                Striped = _ => TypeStripedTable.Row,
+                SuppressHeaders = _ => true
             }
                 .AddColumn("")
                 .AddColumn("")
@@ -69,24 +69,24 @@ namespace KleeneStar.Core.WWW.Settings
                 (
                     new ControlTableCell()
                     {
-                        Text = I18N.Translate(renderContext, "kleenestar.core:setting.database.provider.label")
+                        Text = _ => I18N.Translate(renderContext, "kleenestar.core:setting.database.provider.label")
                     },
                     new ControlTableCellPanel().Add(new ControlText()
                     {
-                        Text = providerName,
-                        Format = TypeFormatText.Code
+                        Text = _ => providerName,
+                        Format = _ => TypeFormatText.Code
                     })
                 )
                 .AddRow
                 (
                     new ControlTableCell()
                     {
-                        Text = I18N.Translate(renderContext, "kleenestar.core:setting.database.datasource.label")
+                        Text = _ => I18N.Translate(renderContext, "kleenestar.core:setting.database.datasource.label")
                     },
                     new ControlTableCellPanel().Add(new ControlText()
                     {
-                        Text = maskedConnectionString,
-                        Format = TypeFormatText.Code
+                        Text = _ => maskedConnectionString,
+                        Format = _ => TypeFormatText.Code
                     })
                 );
 
@@ -116,8 +116,8 @@ namespace KleeneStar.Core.WWW.Settings
 
                 table.AddRow
                 (
-                    new ControlTableCell() { Text = "Server version" },
-                    new ControlTableCellPanel().Add(new ControlText() { Text = serverVersion, Format = TypeFormatText.Code })
+                    new ControlTableCell() { Text = _ => "Server version" },
+                    new ControlTableCellPanel().Add(new ControlText() { Text = _ => serverVersion, Format = _ => TypeFormatText.Code })
                 );
 
                 // provider-specific queries
@@ -126,7 +126,7 @@ namespace KleeneStar.Core.WWW.Settings
                 if (lowerProvider.Contains("sqlclient") || lowerProvider.Contains("sqlserver") || lowerProvider.Contains("system.data.sqlclient"))
                 {
                     // sql server specific queries
-                    table.AddRow(new ControlTableCell() { Text = "Database type" }, new ControlTableCellPanel().Add(new ControlText() { Text = "SQL Server", Format = TypeFormatText.Code }));
+                    table.AddRow(new ControlTableCell() { Text = _ => "Database type" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => "SQL Server", Format = _ => TypeFormatText.Code }));
 
                     using var cmd = conn.CreateCommand();
                     // database size in bytes
@@ -134,7 +134,7 @@ namespace KleeneStar.Core.WWW.Settings
                     var dbSizeObj = cmd.ExecuteScalar();
                     if (dbSizeObj != null && dbSizeObj != DBNull.Value)
                     {
-                        table.AddRow(new ControlTableCell() { Text = "Database size (bytes)" }, new ControlTableCellPanel().Add(new ControlText() { Text = dbSizeObj.ToString(), Format = TypeFormatText.Code }));
+                        table.AddRow(new ControlTableCell() { Text = _ => "Database size (bytes)" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => dbSizeObj.ToString(), Format = _ => TypeFormatText.Code }));
                     }
 
                     // top tables by rowcount
@@ -157,19 +157,19 @@ namespace KleeneStar.Core.WWW.Settings
 
                     if (topRows.Count > 0)
                     {
-                        table.AddRow(new ControlTableCell() { Text = "Top tables (rows)" }, new ControlTableCellPanel().Add(new ControlText() { Text = string.Join(", ", topRows), Format = TypeFormatText.Code }));
+                        table.AddRow(new ControlTableCell() { Text = _ => "Top tables (rows)" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => string.Join(", ", topRows), Format = _ => TypeFormatText.Code }));
                     }
                 }
                 else if (lowerProvider.Contains("sqlite") || lowerProvider.Contains("system.data.sqlite") || LooksLikeSqliteConnectionString(connectionString))
                 {
                     // sqlite: show database file path and size if available
-                    table.AddRow(new ControlTableCell() { Text = "Database type" }, new ControlTableCellPanel().Add(new ControlText() { Text = "SQLite", Format = TypeFormatText.Code }));
+                    table.AddRow(new ControlTableCell() { Text = _ => "Database type" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => "SQLite", Format = _ => TypeFormatText.Code }));
 
                     // attempt to resolve the sqlite file path from the connection string
                     string filePath = ResolveSqliteFilePath(connectionString);
                     if (string.IsNullOrEmpty(filePath))
                     {
-                        table.AddRow(new ControlTableCell() { Text = "Database file" }, new ControlTableCellPanel().Add(new ControlText() { Text = "(unknown or in-memory)", Format = TypeFormatText.Code }));
+                        table.AddRow(new ControlTableCell() { Text = _ => "Database file" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => "(unknown or in-memory)", Format = _ => TypeFormatText.Code }));
                     }
                     else
                     {
@@ -179,38 +179,38 @@ namespace KleeneStar.Core.WWW.Settings
                             var fileInfo = new FileInfo(filePath);
                             if (fileInfo.Exists)
                             {
-                                table.AddRow(new ControlTableCell() { Text = "Database file" }, new ControlTableCellPanel().Add(new ControlText() { Text = fileInfo.FullName, Format = TypeFormatText.Code }));
-                                table.AddRow(new ControlTableCell() { Text = "Database file size (bytes)" }, new ControlTableCellPanel().Add(new ControlText() { Text = fileInfo.Length.ToString(), Format = TypeFormatText.Code }));
+                                table.AddRow(new ControlTableCell() { Text = _ => "Database file" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => fileInfo.FullName, Format = _ => TypeFormatText.Code }));
+                                table.AddRow(new ControlTableCell() { Text = _ => "Database file size (bytes)" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => fileInfo.Length.ToString(), Format = _ => TypeFormatText.Code }));
                             }
                             else
                             {
-                                table.AddRow(new ControlTableCell() { Text = "Database file" }, new ControlTableCellPanel().Add(new ControlText() { Text = fileInfo.FullName + " (not found)", Format = TypeFormatText.Code }));
+                                table.AddRow(new ControlTableCell() { Text = _ => "Database file" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => fileInfo.FullName + " (not found)", Format = _ => TypeFormatText.Code }));
                             }
                         }
                         catch (Exception exFile)
                         {
-                            table.AddRow(new ControlTableCell() { Text = "Database file" }, new ControlTableCellPanel().Add(new ControlText() { Text = $"{filePath} (error: {exFile.Message})", Format = TypeFormatText.Code }));
+                            table.AddRow(new ControlTableCell() { Text = _ => "Database file" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => $"{filePath} (error: {exFile.Message})", Format = _ => TypeFormatText.Code }));
                         }
                     }
                 }
                 else if (lowerProvider.Contains("npgsql") || lowerProvider.Contains("postgres"))
                 {
                     // postgresql specific queries
-                    table.AddRow(new ControlTableCell() { Text = "Database type" }, new ControlTableCellPanel().Add(new ControlText() { Text = "PostgreSQL", Format = TypeFormatText.Code }));
+                    table.AddRow(new ControlTableCell() { Text = _ => "Database type" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => "PostgreSQL", Format = _ => TypeFormatText.Code }));
 
                     using var cmd = conn.CreateCommand();
                     cmd.CommandText = "SELECT version()";
                     var ver = cmd.ExecuteScalar();
                     if (ver is not null)
                     {
-                        table.AddRow(new ControlTableCell() { Text = "Server version" }, new ControlTableCellPanel().Add(new ControlText() { Text = ver.ToString(), Format = TypeFormatText.Code }));
+                        table.AddRow(new ControlTableCell() { Text = _ => "Server version" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => ver.ToString(), Format = _ => TypeFormatText.Code }));
                     }
 
                     cmd.CommandText = "SELECT pg_database_size(current_database())";
                     var sizeObj = cmd.ExecuteScalar();
                     if (sizeObj is not null)
                     {
-                        table.AddRow(new ControlTableCell() { Text = "Database size (bytes)" }, new ControlTableCellPanel().Add(new ControlText() { Text = sizeObj.ToString(), Format = TypeFormatText.Code }));
+                        table.AddRow(new ControlTableCell() { Text = _ => "Database size (bytes)" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => sizeObj.ToString(), Format = _ => TypeFormatText.Code }));
                     }
 
                     cmd.CommandText = @"
@@ -229,27 +229,27 @@ namespace KleeneStar.Core.WWW.Settings
 
                     if (top.Count > 0)
                     {
-                        table.AddRow(new ControlTableCell() { Text = "Top tables (estimate)" }, new ControlTableCellPanel().Add(new ControlText() { Text = string.Join(", ", top), Format = TypeFormatText.Code }));
+                        table.AddRow(new ControlTableCell() { Text = _ => "Top tables (estimate)" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => string.Join(", ", top), Format = _ => TypeFormatText.Code }));
                     }
                 }
                 else if (lowerProvider.Contains("mysql") || lowerProvider.Contains("mariadb"))
                 {
                     // mysql specific queries
-                    table.AddRow(new ControlTableCell() { Text = "Database type" }, new ControlTableCellPanel().Add(new ControlText() { Text = "MySQL/MariaDB", Format = TypeFormatText.Code }));
+                    table.AddRow(new ControlTableCell() { Text = _ => "Database type" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => "MySQL/MariaDB", Format = _ => TypeFormatText.Code }));
 
                     using var cmd = conn.CreateCommand();
                     cmd.CommandText = "SELECT VERSION()";
                     var ver = cmd.ExecuteScalar();
                     if (ver is not null)
                     {
-                        table.AddRow(new ControlTableCell() { Text = "Server version" }, new ControlTableCellPanel().Add(new ControlText() { Text = ver.ToString(), Format = TypeFormatText.Code }));
+                        table.AddRow(new ControlTableCell() { Text = _ => "Server version" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => ver.ToString(), Format = _ => TypeFormatText.Code }));
                     }
 
                     cmd.CommandText = "SELECT SUM(data_length + index_length) FROM information_schema.tables WHERE table_schema = DATABASE()";
                     var sizeObj = cmd.ExecuteScalar();
                     if (sizeObj is not null)
                     {
-                        table.AddRow(new ControlTableCell() { Text = "Database size (bytes)" }, new ControlTableCellPanel().Add(new ControlText() { Text = sizeObj.ToString(), Format = TypeFormatText.Code }));
+                        table.AddRow(new ControlTableCell() { Text = _ => "Database size (bytes)" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => sizeObj.ToString(), Format = _ => TypeFormatText.Code }));
                     }
 
                     cmd.CommandText = @"
@@ -269,13 +269,13 @@ namespace KleeneStar.Core.WWW.Settings
 
                     if (top.Count > 0)
                     {
-                        table.AddRow(new ControlTableCell() { Text = "Top tables (approx.)" }, new ControlTableCellPanel().Add(new ControlText() { Text = string.Join(", ", top), Format = TypeFormatText.Code }));
+                        table.AddRow(new ControlTableCell() { Text = _ => "Top tables (approx.)" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => string.Join(", ", top), Format = _ => TypeFormatText.Code }));
                     }
                 }
                 else
                 {
                     // fallback: display basic connection info
-                    table.AddRow(new ControlTableCell() { Text = "Database type" }, new ControlTableCellPanel().Add(new ControlText() { Text = providerName, Format = TypeFormatText.Code }));
+                    table.AddRow(new ControlTableCell() { Text = _ => "Database type" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => providerName, Format = _ => TypeFormatText.Code }));
                 }
 
                 conn.Close();
@@ -283,7 +283,7 @@ namespace KleeneStar.Core.WWW.Settings
             catch (Exception ex)
             {
                 // in case of failure show the error message in the table
-                table.AddRow(new ControlTableCell() { Text = "Database diagnostics" }, new ControlTableCellPanel().Add(new ControlText() { Text = ex.Message, Format = TypeFormatText.Code }));
+                table.AddRow(new ControlTableCell() { Text = _ => "Database diagnostics" }, new ControlTableCellPanel().Add(new ControlText() { Text = _ => ex.Message, Format = _ => TypeFormatText.Code }));
             }
 
             // add table to main panel

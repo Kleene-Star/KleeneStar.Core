@@ -16,7 +16,7 @@ namespace KleeneStar.Core
         /// </summary>  
         public KleeneStarPlugin()
         {
-            WebEx.Favicon = "/assets/img/kleenestar.ico";
+            WebEx.Favicon = "/assets/img/kleenestar.svg";
         }
 
         /// <summary>  

@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Field
     /// <summary>
     /// Represents the field page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconList>]
+    [WebIcon<IconField>]
     [SegmentHidden]
     [Title("kleenestar.core:field.manage.title")]
     [Scope<IScopeGeneral>]

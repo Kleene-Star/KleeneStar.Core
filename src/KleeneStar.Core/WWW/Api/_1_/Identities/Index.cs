@@ -46,7 +46,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
         /// </summary>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:setting.identity.add.title");
+            return base.RetrieveForCreate(request);
         }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
                 State = IdentityState.Active
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:setting.identity.clone.title");
+            return RetrieveForClone(request, newItem);
         }
 
         /// <summary>
@@ -78,7 +78,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
             var data = CoreHub.IdentityManager.GetIdentities(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:setting.identity.edit.title");
+            return RetrieveForUpdate(request, data);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
             var data = CoreHub.IdentityManager.GetIdentities(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:setting.identity.delete.title", data?.Id.ToString());
+            return RetrieveForDelete(request, data, data?.Id.ToString());
         }
 
         /// <summary>
@@ -117,8 +117,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
 
             CoreHub.IdentityManager.Add(newItem);
 
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -138,8 +136,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
 
             CoreHub.IdentityManager.Add(newItem);
 
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -151,8 +147,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Identities
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.IdentityManager.Update(existingItem);
-
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

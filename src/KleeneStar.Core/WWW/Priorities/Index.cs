@@ -1,16 +1,16 @@
-﻿using KleeneStar.Core.WebIcon;
-using WebExpress.WebApp.WebPage;
+﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Priorities
 {
     /// <summary>
     /// Represents the priority page within the kleenestar web application.
     /// </summary>
-    [WebIcon<ClassIcon>]
+    [WebIcon<IconFlag>]
     [SegmentHidden]
     [Title("kleenestar.core:priority.manage.label")]
     [Scope<IScopeGeneral>]

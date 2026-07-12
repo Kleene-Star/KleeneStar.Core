@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Status._statusid_
     /// <summary>
     /// Represents the page for cloning a state within the class. 
     /// </summary>
-    [WebIcon<IconCopy>]
+    [WebIcon<IconClone>]
     [Title("kleenestar.core:status.clone.title")]
     [Scope<IScopeGeneral>]
     public sealed class Clone : IPage<VisualTreeWebApp>, IScope

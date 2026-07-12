@@ -69,7 +69,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:setting.tenant.add.title");
+            return base.RetrieveForCreate(request);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
                 State = TenantState.Active
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:setting.tenant.clone.title");
+            return RetrieveForClone(request, newItem);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
             var data = CoreHub.TenantManager.GetTenants(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:setting.tenant.edit.title");
+            return RetrieveForUpdate(request, data);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
             var data = CoreHub.TenantManager.GetTenants(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:setting.tenant.delete.title", data?.Id.ToString());
+            return RetrieveForDelete(request, data, data?.Id.ToString());
         }
 
         /// <summary>
@@ -203,9 +203,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
 
             CoreHub.TenantManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -244,9 +241,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
 
             CoreHub.TenantManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -267,9 +261,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.TenantManager.Update(existingItem);
-
-            // update notification
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

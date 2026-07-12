@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Form
     /// <summary>
     /// Represents the form page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconRectangleList>]
+    [WebIcon<IconListFunction>]
     [SegmentHidden]
     [Title("kleenestar.core:form.manage.title")]
     [Scope<IScopeGeneral>]

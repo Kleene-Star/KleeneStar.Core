@@ -12,7 +12,7 @@ namespace KleeneStar.Core.WWW.Field._fieldid_
     /// <summary>
     /// Represents the main page for a field within the class.
     /// </summary>
-    [WebIcon<IconList>]
+    [WebIcon<IconField>]
     [Title("kleenestar.core:field.manage.label")]
     [FieldIdSegment]
     [Scope<IScopeGeneral>]

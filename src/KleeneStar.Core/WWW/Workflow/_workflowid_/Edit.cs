@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Workflow._workflowid_
     /// <summary>
     /// Represents a page that provides a form for edit a workflow within the class.
     /// </summary>
-    [WebIcon<IconPlus>]
+    [WebIcon<IconPen>]
     [Title("kleenestar.core:workflow.edit.title")]
     [Scope<IScopeGeneral>]
     public sealed class Edit : IPage<VisualTreeWebApp>, IScope

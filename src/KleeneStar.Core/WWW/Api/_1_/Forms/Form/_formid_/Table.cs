@@ -3,6 +3,7 @@ using KleeneStar.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using KleeneStar.Core.WebRestApi;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
@@ -19,7 +20,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_
     /// </summary>
     [Title("kleenestar.core:form.field.table.header")]
     [Cache]
-    public sealed class Table : RestApiTable<Model.Entities.Field>
+    public sealed class Table : KleeneStarRestApiTable<Model.Entities.Field>
     {
         private readonly IUri _editFormUri;
         private readonly IUri _deleteFormUri;
@@ -53,7 +54,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_
         /// <returns>
         /// An enumerable collection of columns describing the form element table.
         /// </returns>
-        protected override IEnumerable<RestApiTableColumn> RetrieveColums(IRequest request)
+        protected override IEnumerable<RestApiTableColumn> RetrieveDefaultColumns(IRequest request)
         {
             yield return new RestApiTableColumn()
             {

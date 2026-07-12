@@ -13,7 +13,7 @@ namespace KleeneStar.Core.WWW.Dashboard._dashboardid_
     /// <summary>
     /// Provides functionality for displaying a single dashboard.
     /// </summary>
-    [WebIcon<IconGauge>]
+    [WebIcon<IconDashboard>]
     [DashboardIdSegment]
     [Scope<IScopeGeneral>]
     [Domain<Model.Entities.Dashboard>]

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
@@ -46,13 +47,15 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             {
                 new()
                 {
-                    Id = Guid.Empty,
-                    Text = "Active"
+                    Id = WorkspaceState.Active.Id(),
+                    Text = I18N.Translate(request, WorkspaceState.Active.Text()),
+                    Color = WorkspaceState.Active.Color()
                 },
                 new()
                 {
-                    Id = Guid.Empty,
-                    Text = "Archived"
+                    Id = WorkspaceState.Archived.Id(),
+                    Text = I18N.Translate(request, WorkspaceState.Archived.Text()),
+                    Color = WorkspaceState.Archived.Color()
                 }
             };
 

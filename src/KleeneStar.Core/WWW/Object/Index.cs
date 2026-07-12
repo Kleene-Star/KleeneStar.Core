@@ -3,12 +3,14 @@ using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Object
 {
     /// <summary>
     /// Provides functionality for managing the current workspace page.
     /// </summary>
+    [WebIcon<IconObject>]
     [SegmentHidden]
     [Scope<IScopeGeneral>]
     [Cache]

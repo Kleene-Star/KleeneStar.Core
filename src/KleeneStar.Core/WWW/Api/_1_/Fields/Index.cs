@@ -69,7 +69,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:field.add.title");
+            return base.RetrieveForCreate(request);
         }
 
         /// <summary>
@@ -101,7 +101,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
                 State = FieldState.Active,
                 FieldType = data.FieldType,
                 Cardinality = data.Cardinality,
-                ValidationRules = data.ValidationRules != null ? new System.Collections.Generic.List<string>(data.ValidationRules) : new System.Collections.Generic.List<string>(),
+                ValidationRules = data.ValidationRules != null
+                    ? [.. data.ValidationRules]
+                    : [],
                 DefaultSpec = data.DefaultSpec,
                 Required = data.Required,
                 Unique = data.Unique,
@@ -109,7 +111,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
                 AccessModifier = data.AccessModifier
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:field.clone.title");
+            return RetrieveForClone(request, newItem);
         }
 
         /// <summary>
@@ -131,7 +133,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
             var data = CoreHub.FieldManager.GetFields(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:field.edit.title");
+            return RetrieveForUpdate(request, data);
         }
 
         /// <summary>
@@ -155,7 +157,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
             var data = CoreHub.FieldManager.GetFields(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:field.delete.title", data?.Id.ToString());
+            return RetrieveForDelete(request, data, data?.Id.ToString());
         }
 
         /// <summary>
@@ -213,9 +215,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
 
             CoreHub.FieldManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -254,9 +253,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
 
             CoreHub.FieldManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -277,9 +273,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.FieldManager.Update(existingItem);
-
-            // update notification
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Priority._priorityid_
     /// <summary>
     /// Represents the page for cloning a priority within the class. 
     /// </summary>
-    [WebIcon<IconCopy>]
+    [WebIcon<IconClone>]
     [Title("kleenestar.core:priority.clone.title")]
     [Scope<IScopeGeneral>]
     [Cache]

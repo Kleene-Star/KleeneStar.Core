@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Form._formid_
     /// <summary>
     /// Represents a page that handles the form deletion functionality within the web application.
     /// </summary>
-    [WebIcon<IconTrashAlt>]
+    [WebIcon<IconTrash>]
     [Title("kleenestar.core:form.delete.title")]
     [Scope<IScopeGeneral>]
     public sealed class Delete : IPage<VisualTreeWebApp>, IScope

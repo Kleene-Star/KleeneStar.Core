@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Status._statusid_
     /// <summary>
     /// Represents a page that handles the state deletion functionality within the web application.
     /// </summary>
-    [WebIcon<IconTrashAlt>]
+    [WebIcon<IconTrash>]
     [Title("kleenestar.core:status.delete.title")]
     [Scope<IScopeGeneral>]
     public sealed class Delete : IPage<VisualTreeWebApp>, IScope

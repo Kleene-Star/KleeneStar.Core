@@ -1,5 +1,6 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
+using KleeneStar.Model.Forms;
 using System;
 using System.Collections.Generic;
 using WebExpress.WebCore.WebComponent;
@@ -39,6 +40,28 @@ namespace KleeneStar.Core.WebManager
         /// <param name="formId">The id of the form.</param>
         /// <returns>The form.</returns>
         Form GetForm(Guid formId);
+
+        /// <summary>
+        /// Returns a form together with its complete structural tree (tabs, groups, and
+        /// field references). Used by the form editor to load the full aggregate.
+        /// </summary>
+        /// <param name="formId">The id of the form.</param>
+        /// <returns>The fully populated form, or <c>null</c> if no such form exists.</returns>
+        Form GetFormWithStructure(Guid formId);
+
+        /// <summary>
+        /// Replaces the structural tree of a form with the contents of the supplied
+        /// snapshot, applying optimistic concurrency control via the form's version
+        /// counter.
+        /// </summary>
+        /// <param name="formId">The id of the form to update.</param>
+        /// <param name="snapshot">The new structure to persist.</param>
+        /// <param name="expectedVersion">
+        /// The version the caller saw when loading the form. The save fails when the
+        /// server has moved on.
+        /// </param>
+        /// <returns>The new version number after the save.</returns>
+        int SaveFormStructure(Guid formId, FormStructureSnapshot snapshot, int expectedVersion);
 
         /// <summary>
         /// Returns a form based on its id.

@@ -1,7 +1,8 @@
-﻿using System;
+﻿using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
@@ -66,8 +67,18 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         {
             var list = new List<RestApiSelectionItem>()
             {
-                new() { Id = Guid.Empty, Text = "Single" },
-                new() { Id = Guid.Empty, Text = "Multiple" }
+                new()
+                {
+                    Id = FieldCardinality.Single.Id(),
+                    Text = I18N.Translate(request, FieldCardinality.Single.Text()),
+                    Color = FieldCardinality.Single.Color()
+                },
+                new()
+                {
+                    Id = FieldCardinality.Multiple.Id(),
+                    Text = I18N.Translate(request, FieldCardinality.Multiple.Text()),
+                    Color = FieldCardinality.Multiple.Color()
+                }
             };
 
             return list.AsQueryable();

@@ -1,18 +1,18 @@
 ﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Core.WebIcon;
 using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Objects._workspacekey_
 {
     /// <summary>
     /// Provides functionality for managing the current workspace page.
     /// </summary>
-    [WebIcon<WorkspaceIcon>]
+    [WebIcon<IconObject>]
     [WorkspaceKeySegment]
     [Scope<IScopeGeneral>]
     [Domain<Model.Entities.Object>]
@@ -44,6 +44,15 @@ namespace KleeneStar.Core.WWW.Objects._workspacekey_
 
             visualTree.Title = workspace?.Name;
             visualTree.Content.MainPanel.Headline.Title = workspace?.Name;
+
+            // record that the current identity opened this workspace (its content view and the
+            // object/class subpages reached from here all record a visit), so it surfaces at the
+            // top of the workspace dropdown's "recently used" section (newest first)
+            if (workspace is not null)
+            {
+                var ownerId = CoreHub.SessionManager.GetCurrentIdentityId(renderContext.Request);
+                _workspaceManager.RecordVisit(ownerId, workspace.Id);
+            }
         }
     }
 }

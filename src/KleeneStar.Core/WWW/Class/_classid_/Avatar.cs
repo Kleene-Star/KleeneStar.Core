@@ -11,7 +11,7 @@ namespace KleeneStar.Core.WWW.Class._classid_
     /// Represents the page for editing a workspace within the web application. 
     /// Provides access to the workspace edit form and handles form processing and rendering.
     /// </summary>
-    [WebIcon<IconPencil>]
+    [WebIcon<IconPen>]
     [Title("kleenestar.core:class.avatar.title")]
     [Scope<IScopeGeneral>]
     public sealed class Avatar : IPage<VisualTreeWebApp>, IScope

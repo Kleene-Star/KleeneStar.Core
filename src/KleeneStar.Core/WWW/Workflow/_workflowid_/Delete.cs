@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Workflow._workflowid_
     /// <summary>
     /// Represents a page that handles the workflow deletion functionality within the web application.
     /// </summary>
-    [WebIcon<IconTrashAlt>]
+    [WebIcon<IconTrash>]
     [Title("kleenestar.core:workflow.delete.title")]
     [Scope<IScopeGeneral>]
     public sealed class Delete : IPage<VisualTreeWebApp>, IScope

@@ -136,7 +136,7 @@ namespace KleeneStar.Core.WebManager
             TenantAdded?.Invoke(this, tenantEntity);
 
             // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.tenant.created", 5000);
 
             return this;
         }
@@ -154,8 +154,8 @@ namespace KleeneStar.Core.WebManager
 
             TenantUpdated?.Invoke(this, tenantEntity);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
+            // update notification
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.tenant.updated", 5000);
 
             return this;
         }

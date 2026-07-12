@@ -11,7 +11,7 @@ namespace KleeneStar.Core.WWW.Settings.Tenant._tenantid_
     /// Represents the page for cloning a tenant within the class. 
     /// </summary>
     [WebIcon<IconCopy>]
-    [Title("kleenestar.core:tenant.clone.title")]
+    [Title("kleenestar.core:setting.tenant.clone.title")]
     [Scope<IScopeGeneral>]
     public sealed class Clone : IPage<VisualTreeWebApp>, IScope
     {

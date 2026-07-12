@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Priority._priorityid_
     /// <summary>
     /// Represents a page that handles the priority deletion functionality within the web application.
     /// </summary>
-    [WebIcon<IconTrashAlt>]
+    [WebIcon<IconTrash>]
     [Title("kleenestar.core:priority.delete.title")]
     [Scope<IScopeGeneral>]
     [Cache]

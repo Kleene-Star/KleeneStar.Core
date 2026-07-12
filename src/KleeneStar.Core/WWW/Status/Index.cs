@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Status
     /// <summary>
     /// Represents the state page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconCircleDot>]
+    [WebIcon<IconStatus>]
     [SegmentHidden]
     [Title("kleenestar.core:status.manage.title")]
     [Scope<IScopeGeneral>]

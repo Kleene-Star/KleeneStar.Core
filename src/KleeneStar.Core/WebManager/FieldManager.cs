@@ -41,11 +41,11 @@ namespace KleeneStar.Core.WebManager
         public event EventHandler<Field> FieldRemoved;
 
         /// <summary>
-        /// Returns the collection of workspace keys that are reserved and cannot be used for custom workspaces.
+        /// Returns the collection of field names that are reserved and cannot be used for custom fields.
         /// </summary>
         /// <remarks>
-        /// The reserved keys typically represent system-defined workspaces and are not available
-        /// for user-defined or custom workspace creation.
+        /// The reserved names typically represent system-defined routes and are not available
+        /// for user-defined or custom field creation.
         /// </remarks>
         public static IEnumerable<string> ReservedFieldNames =>
         [
@@ -157,7 +157,7 @@ namespace KleeneStar.Core.WebManager
             FieldAdded?.Invoke(this, fieldEntity);
 
             // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.field.created", 5000);
 
             return this;
         }
@@ -175,8 +175,8 @@ namespace KleeneStar.Core.WebManager
 
             FieldUpdated?.Invoke(this, fieldEntity);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
+            // update notification
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.field.updated", 5000);
 
             return this;
         }

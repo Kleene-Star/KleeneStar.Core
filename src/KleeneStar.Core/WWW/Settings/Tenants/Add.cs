@@ -11,7 +11,7 @@ namespace KleeneStar.Core.WWW.Settings.Tenants
     /// Represents a page that provides a form for adding a new tenant within the class.
     /// </summary>
     [WebIcon<IconPlus>]
-    [Title("kleenestar.core:tenant.add.title")]
+    [Title("kleenestar.core:setting.tenant.add.title")]
     [Scope<IScopeGeneral>]
     public sealed class Add : IPage<VisualTreeWebApp>, IScope
     {

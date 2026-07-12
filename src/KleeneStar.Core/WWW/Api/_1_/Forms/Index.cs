@@ -69,7 +69,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:form.add.title");
+            return base.RetrieveForCreate(request);
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
                 State = FormState.Active
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:form.clone.title");
+            return RetrieveForClone(request, newItem);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
             var data = CoreHub.FormManager.GetForms(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:form.edit.title");
+            return RetrieveForUpdate(request, data);
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
             var data = CoreHub.FormManager.GetForms(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:form.delete.title", data?.Id.ToString());
+            return RetrieveForDelete(request, data, data?.Id.ToString());
         }
 
         /// <summary>
@@ -203,9 +203,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
 
             CoreHub.FormManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -244,9 +241,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
 
             CoreHub.FormManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -267,9 +261,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.FormManager.Update(existingItem);
-
-            // update notification
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

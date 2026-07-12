@@ -1,5 +1,4 @@
 ﻿using KleeneStar.Core.WebIcon;
-using KleeneStar.Core.WebPolicies;
 using KleeneStar.Model.Entities;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
@@ -14,8 +13,9 @@ namespace KleeneStar.Core.WWW.Workspaces
     [WebIcon<WorkspaceIcon>]
     [Title("kleenestar.core:workspace.manage.title")]
     [Scope<IScopeGeneral>]
-    [Policy<WorkspaceViewPolicy>]
+    //[Policy<WorkspaceViewPolicy>]
     [Domain<Workspace>]
+    [Cache]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>

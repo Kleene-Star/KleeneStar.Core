@@ -11,7 +11,7 @@ namespace KleeneStar.Core.WWW.Dashboard._dashboardid_
     /// Represents the page for editing a dashboard within the web application. 
     /// Provides access to the dashboard edit form and handles form processing and rendering.
     /// </summary>
-    [WebIcon<IconPencil>]
+    [WebIcon<IconPen>]
     [Title("kleenestar.core:dashboard.edit.title")]
     [Scope<IScopeGeneral>]
     public sealed class Edit : IPage<VisualTreeWebApp>, IScope

@@ -59,17 +59,17 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
         }
 
         /// <summary>
-        /// Retrieves the data required to create a new workspace entity.
+        /// Retrieves the data required to create a new class entity.
         /// </summary>
         /// <param name="request">
         /// The request context containing parameters and metadata for the retrieval operation.
         /// </param>
         /// <returns>
-        /// An object containing the information necessary to initialize a new workspace for creation.
+        /// An object containing the information necessary to initialize a new class for creation.
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:class.add.title");
+            return RetrieveForCreate(request);
         }
 
         /// <summary>
@@ -104,11 +104,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
                 AccessModifier = data.AccessModifier
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:class.clone.title");
+            return RetrieveForClone(request, newItem);
         }
 
         /// <summary>
-        /// Retrieves a workspace identified by the specified key for update operations.
+        /// Retrieves a class identified by the specified key for update operations.
         /// </summary>
         /// <param name="query">
         /// An object containing the query parameters used to filter and select index items. Cannot 
@@ -118,7 +118,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
         /// The request context containing additional information for the retrieval operation.
         /// </param>
         /// <returns>
-        /// An object containing the workspace associated with the specified key.
+        /// An object containing the class associated with the specified key.
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForUpdate(IQuery<Model.Entities.Class> query, IRequest request)
         {
@@ -126,11 +126,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             var data = CoreHub.ClassManager.GetClasses(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:class.edit.title");
+            return RetrieveForUpdate(request, data);
         }
 
         /// <summary>
-        /// Retrieves the workspace entity identified by the specified ID in preparation for deletion.
+        /// Retrieves the class entity identified by the specified ID in preparation for deletion.
         /// </summary>
         /// <param name="query">
         /// An object containing the query parameters used to filter and select index items. Cannot 
@@ -141,7 +141,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
         /// the retrieval operation.
         /// </param>
         /// <returns>
-        /// An object containing the workspace entity and related information required 
+        /// An object containing the class entity and related information required 
         /// for the delete operation.
         /// </returns>
         protected override IRestApiCrudResultRetrieveDelete RetrieveForDelete(IQuery<Model.Entities.Class> query, IRequest request)
@@ -150,7 +150,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             var data = CoreHub.ClassManager.GetClasses(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:class.delete.title", data?.Id.ToString());
+            return RetrieveForDelete(request, data, data?.Id.ToString());
         }
 
         /// <summary>
@@ -211,9 +211,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             // automatically create the standard form for the new class
             CoreHub.FormManager.CreateStandardForm(newItem.Id);
 
-            // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -255,9 +252,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             // automatically create the standard form for the cloned class
             CoreHub.FormManager.CreateStandardForm(newItem.Id);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
-
             return new RestApiCrudResultCreate();
         }
 
@@ -278,9 +272,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
             var res = base.Update(existingItem, payload, request);
 
             CoreHub.ClassManager.Update(existingItem);
-
-            // update notification
-            CoreHub.AddNotification("Update", "success", 5000);
 
             return res;
         }

@@ -255,15 +255,16 @@ The object overview page is the central view for displaying objects of a specifi
 ║│ / Service Desk                                                                     │║
 ║└────────────────────────────────────────────────────────────────────────────────────┘║
 ║┌Workspace─────────────┐ ┌Object Content─────────────────────────────────────────────┐║
-║│[Name]                │░│                                                           │║
-║│                      │░│ Incident                                              […] │║
-║│      [Icon]          │░│                                                  [Search] │║
-║│                      │░│ Summary                          | Status  | Impact     + │║
-║│           [ Search ] │░│----------------------------------|---------|--------------│║
-║│ Issue                │░│ VPN connection disrupted         | Open    | High     […] │║
-║│ ├─ Incident          │░│ Outlook won't start              | Open    | Medium    ¦  │║
-║│ ├─ Problem           │░│ Printer on floor 3 offline       | Assigne┌────────────┴┐ │║
-║│ └─ ServiceRequest    │░│ File upload fails                | In Prog│ Edit        │ │║
+║│[Name]                │░│ Incident                                              […] │║
+║│                      │░│ View Dashboard Scrum +                                    │║
+║│      [Icon]          │░│ ────                                   [Table|Tile|Split] │║
+║│                      │░│                                                  [Search] │║
+║│           [ Search ] │░│ Summary                          | Status  | Impact     + │║
+║│ Issue                │░│----------------------------------|---------|--------------│║
+║│ ├─ Incident          │░│ VPN connection disrupted         | Open    | High     […] │║
+║│ ├─ Problem           │░│ Outlook won't start              | Open    | Medium    ¦  │║
+║│ └─ ServiceRequest    │░│ Printer on floor 3 offline       | Assigne┌────────────┴┐ │║
+║│                      │░│ File upload fails                | In Prog│ Edit        │ │║
 ║│                      │░│ Remote desktop not reachable     | Open   │ Clone       │ │║
 ║│                      │<│ Password reset not possible      | Closed │ Permissions │ │║
 ║│                      │<│ Wi-Fi outage in conference room  | Open   │ <section>   │ │║
@@ -271,7 +272,6 @@ The object overview page is the central view for displaying objects of a specifi
 ║│                      │░│ Scanner not sending PDFs         | Assigne│ Delete      │ │║
 ║│                      │░│ SharePoint access denied         | Open   └─────────────┘ │║
 ║│                      │░│ Software update blocks startup   | In Prog.| High     […] │║
-║│                      │░│ Screen flickers intermittently   | Closed  | Medium   […] │║
 ║│                      │░│                                                           │║
 ║│                      │░│                                   ‹ Prev  1  2  3  Next › │║
 ║├──────────────────────┤░│                                                           │║
@@ -961,6 +961,8 @@ For programmatic interaction with object management, **KleeneStar** provides a R
 |`/api/1/objects/{workspaceKey}/{objectKey}/restore`                     |POST        |Restores a previously archived object.
 |`/api/1/objects/{workspaceKey}/{objectKey}/transitions`                 |GET         |Lists all available workflow transitions for the object.
 |`/api/1/objects/{workspaceKey}/{objectKey}/transitions/{transitionKey}` |POST        |Executes a workflow transition for the object. May include field values in the body.
+|`/api/1/hierarchy/{objectKey}`                                          |GET         |Returns the hierarchy of the object: the ancestor chain (nearest first), the parent, the object itself, the immediate children (with their resolved workflow status), and the siblings.
+|`/api/1/hierarchy/{objectKey}`                                          |PUT         |Sets or clears the parent. Body: `{ "parent": "KEY" }` (object key or id) or `{ "parent": null }`. Validates against self-parenting, cycles, cross-workspace links, and the allowed-children declaration of the parent's class.
 
 Standard error responses include `400 Bad Request` for validation errors (e.g., a key that is already taken), `401 Unauthorized` for missing authentication, `403 Forbidden` for insufficient permissions, and `404 Not Found` if the requested resource does not exist. A successful creation (POST) is acknowledged with `201 Created`, while a successful deletion (DELETE) results in a `204 No Content` response.
 

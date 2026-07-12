@@ -44,23 +44,23 @@ namespace KleeneStar.Core.WWW.Settings.Tenants
             // section header
             visualTree.Content.MainPanel.AddPrimary(new ControlText()
             {
-                Text = I18N.Translate
+                Text = _ => I18N.Translate
                 (
                     renderContext,
                     "kleenestar.core:setting.tenant.header"
                 ),
-                TextColor = new PropertyColorText(TypeColorText.Info),
-                Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
+                TextColor = _ => new PropertyColorText(TypeColorText.Info),
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
 
             visualTree.Content.MainPanel.AddPrimary(new ControlText()
             {
-                Text = I18N.Translate
+                Text = _ => I18N.Translate
                 (
                     renderContext,
                     "kleenestar.core:setting.tenant.description"
                 ),
-                Margin = new PropertySpacingMargin(PropertySpacing.Space.Two)
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
         }
     }

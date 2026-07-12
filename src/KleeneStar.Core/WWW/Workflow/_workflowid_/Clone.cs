@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Workflow._workflowid_
     /// <summary>
     /// Represents the page for cloning a workflow within the class. 
     /// </summary>
-    [WebIcon<IconCopy>]
+    [WebIcon<IconClone>]
     [Title("kleenestar.core:workflow.clone.title")]
     [Scope<IScopeGeneral>]
     public sealed class Clone : IPage<VisualTreeWebApp>, IScope

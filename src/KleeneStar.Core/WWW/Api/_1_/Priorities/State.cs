@@ -1,7 +1,8 @@
-﻿using System;
+﻿using KleeneStar.Model.Entities;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
@@ -46,13 +47,15 @@ namespace KleeneStar.Core.WWW.Api._1_.Priorities
             {
                 new()
                 {
-                    Id = Guid.Empty,
-                    Text = "Active"
+                    Id = PriorityState.Active.Id(),
+                    Text = I18N.Translate(request, PriorityState.Active.Text()),
+                    Color = PriorityState.Active.Color()
                 },
                 new()
                 {
-                    Id = Guid.Empty,
-                    Text = "Archived"
+                    Id = PriorityState.Archived.Id(),
+                    Text = I18N.Translate(request, PriorityState.Archived.Text()),
+                    Color = PriorityState.Archived.Color()
                 }
             };
 

@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Status._statusid_
     /// <summary>
     /// Represents a page that provides a form for edit a state within the class.
     /// </summary>
-    [WebIcon<IconPlus>]
+    [WebIcon<IconPen>]
     [Title("kleenestar.core:status.edit.title")]
     [Scope<IScopeGeneral>]
     public sealed class Edit : IPage<VisualTreeWebApp>, IScope

@@ -16,7 +16,7 @@ namespace KleeneStar.Core.WebManager
     /// handling workflow states-related events.
     /// </summary>
     /// <remarks>
-    /// The interface provides methods for managing workflow statess and events for tracking changes 
+    /// The interface provides methods for managing workflow states and events for tracking changes
     /// to the workflow state collection. Implementations of this interface should ensure thread
     /// safety if used in a multi-threaded environment.
     /// </remarks>
@@ -41,11 +41,11 @@ namespace KleeneStar.Core.WebManager
         public event EventHandler<Status> StatusRemoved;
 
         /// <summary>
-        /// Gets the collection of workspace state names that are reserved and cannot be used for custom workspaces.
+        /// Gets the collection of status names that are reserved and cannot be used for custom statuses.
         /// </summary>
         /// <remarks>
-        /// The reserved keys typically represent system-defined workspaces and are not available
-        /// for user-defined or custom workspace creation.
+        /// The reserved names typically represent system-defined routes and are not available
+        /// for user-defined or custom status creation.
         /// </remarks>
         public static IEnumerable<string> ReservedStateNames =>
         [
@@ -191,7 +191,7 @@ namespace KleeneStar.Core.WebManager
             StatusAdded?.Invoke(this, stateEntity);
 
             // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.status.created", 5000);
 
             return this;
         }
@@ -209,8 +209,8 @@ namespace KleeneStar.Core.WebManager
 
             StatusUpdated?.Invoke(this, stateEntity);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
+            // update notification
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.status.updated", 5000);
 
             return this;
         }

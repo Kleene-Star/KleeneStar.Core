@@ -12,7 +12,7 @@ namespace KleeneStar.Core.WWW.Status._statusid_
     /// <summary>
     /// Represents the main page for a state within the class.
     /// </summary>
-    [WebIcon<IconCircleDot>]
+    [WebIcon<IconStatus>]
     [Title("kleenestar.core:status.manage.label")]
     [WorkflowStateIdSegment]
     [Scope<IScopeGeneral>]

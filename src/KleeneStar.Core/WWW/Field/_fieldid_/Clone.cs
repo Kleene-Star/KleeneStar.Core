@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Field._fieldid_
     /// <summary>
     /// Represents the page for cloning a field within the class. 
     /// </summary>
-    [WebIcon<IconCopy>]
+    [WebIcon<IconClone>]
     [Title("kleenestar.core:field.clone.title")]
     [Scope<IScopeGeneral>]
     public sealed class Clone : IPage<VisualTreeWebApp>, IScope

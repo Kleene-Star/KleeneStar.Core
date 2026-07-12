@@ -69,15 +69,22 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         /// </returns>
         protected override IRestApiCrudResultRetrieve RetrieveForCreate(IRequest request)
         {
-            return RetrieveForCreate(request, "kleenestar.core:object.add.title");
+            return base.RetrieveForCreate(request);
         }
 
         /// <summary>
-        /// Retrieves a result object containing default values and metadata for 
+        /// Retrieves a result object containing default values and metadata for
         /// cloning a item.
         /// </summary>
+        /// <remarks>
+        /// In addition to the system properties of the source object, the response also
+        /// carries the persisted per-field <see cref="Model.Entities.Value"/> rows, keyed
+        /// by the field name. This lets the dynamic form inputs built from the active
+        /// edit form pre-populate via the form's REST data binding instead of starting
+        /// blank.
+        /// </remarks>
         /// <param name="query">
-        /// An object containing the query parameters used to filter and select index items. Cannot 
+        /// An object containing the query parameters used to filter and select index items. Cannot
         /// be null.
         /// </param>
         /// <param name="request">The request.</param>
@@ -91,22 +98,38 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             var data = CoreHub.ObjectManager.GetObjects(query, context)
                 .FirstOrDefault();
 
+            if (data is null)
+            {
+                return RetrieveForClone(request, null);
+            }
+
             var newItem = new Model.Entities.Object()
             {
                 Summary = data.Summary + " (Copy)",
                 Description = data.Description,
                 Icon = data.Icon,
-                State = WorkspaceState.Active
+                State = WorkspaceState.Active,
+                WorkspaceId = data.WorkspaceId,
+                ClassId = data.ClassId,
+                ParentId = data.ParentId
             };
 
-            return RetrieveForClone(request, newItem, "kleenestar.core:object.clone.title");
+            var result = RetrieveForClone(request, newItem);
+            MergeFieldValues(result, data.Id, data.ClassId);
+            return result;
         }
 
         /// <summary>
         /// Retrieves a workspace identified by the specified key for update operations.
         /// </summary>
+        /// <remarks>
+        /// In addition to the system properties of the object, the response also carries
+        /// the persisted per-field <see cref="Model.Entities.Value"/> rows, keyed by the
+        /// field name. This lets the dynamic form inputs built from the active edit form
+        /// pre-populate via the form's REST data binding instead of starting blank.
+        /// </remarks>
         /// <param name="query">
-        /// An object containing the query parameters used to filter and select index items. Cannot 
+        /// An object containing the query parameters used to filter and select index items. Cannot
         /// be null.
         /// </param>
         /// <param name="request">
@@ -121,7 +144,50 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             var data = CoreHub.ObjectManager.GetObjects(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForUpdate(request, data, "kleenestar.core:object.edit.title");
+            var result = RetrieveForUpdate(request, data);
+
+            if (data is not null)
+            {
+                MergeFieldValues(result, data.Id, data.ClassId);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Adds the persisted field values of the specified object to the JSON data
+        /// dictionary returned by the base CRUD retrieval, keyed by field name so the
+        /// dynamic form inputs can bind them by name. Inactive or deprecated fields are
+        /// skipped to match the structure rendered by the edit form. Existing entries
+        /// in the dictionary (system properties such as <c>Summary</c>, <c>Description</c>)
+        /// are left untouched.
+        /// </summary>
+        /// <param name="result">The retrieve result whose <c>Data</c> dictionary is to
+        /// be augmented. No-op when the data is not a string-keyed dictionary.</param>
+        /// <param name="objectId">The id of the object whose values to merge.</param>
+        /// <param name="classId">The id of the object's class, used to look up the
+        /// field definitions for name + filtering.</param>
+        private static void MergeFieldValues(IRestApiCrudResultRetrieve result, Guid objectId, Guid classId)
+        {
+            if (result?.Data is not IDictionary<string, object> data)
+            {
+                return;
+            }
+
+            var fields = CoreHub.FieldManager
+                .GetFields(new WebParameter.ClassIdParameter(classId))
+                .Where(f => !f.Deprecated && f.State == FieldState.Active)
+                .ToDictionary(f => f.Id);
+
+            foreach (var value in CoreHub.ValueManager.GetValues(objectId))
+            {
+                if (!fields.TryGetValue(value.FieldId, out var field))
+                {
+                    continue;
+                }
+
+                data[field.Name] = value.Data;
+            }
         }
 
         /// <summary>
@@ -145,7 +211,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             var data = CoreHub.ObjectManager.GetObjects(query, context)
                 .FirstOrDefault();
 
-            return RetrieveForDelete(request, data, "kleenestar.core:object.delete.title", data?.Id.ToString());
+            return RetrieveForDelete(request, data, data?.Id.ToString());
         }
 
         /// <summary>
@@ -193,18 +259,20 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         protected override IRestApiCrudResultCreate Create(RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Object newItem)
         {
             var id = Guid.NewGuid();
+            var currentUser = CoreHub.SessionManager.GetCurrentIdentityId(request);
             newItem = new Model.Entities.Object(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = WorkspaceState.Active
+                State = WorkspaceState.Active,
+                CreatorId = currentUser,
+                UpdaterId = currentUser
             };
 
             fieldMap.BindTo(newItem);
 
             CoreHub.ObjectManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Create", "success", 5000);
+            UpsertFieldValues(newItem, fieldMap);
 
             return new RestApiCrudResultCreate();
         }
@@ -234,18 +302,20 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         protected override IRestApiCrudResultCreate Clone(Model.Entities.Object existingItem, RestApiCrudFormData fieldMap, IRequest request, out Model.Entities.Object newItem)
         {
             var id = Guid.NewGuid();
+            var currentUser = CoreHub.SessionManager.GetCurrentIdentityId(request);
             newItem = new Model.Entities.Object(id)
             {
                 Icon = CoreHub.GenerateIcon(id),
-                State = WorkspaceState.Active
+                State = WorkspaceState.Active,
+                CreatorId = currentUser,
+                UpdaterId = currentUser
             };
 
             fieldMap.BindTo(newItem);
 
             CoreHub.ObjectManager.Add(newItem);
 
-            // create notification
-            CoreHub.AddNotification("Clone", "success", 5000);
+            UpsertFieldValues(newItem, fieldMap);
 
             return new RestApiCrudResultCreate();
         }
@@ -266,12 +336,124 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         {
             var res = base.Update(existingItem, payload, request);
 
+            // stamp the identity that performed this update (best-effort; keep the prior
+            // updater when the request is unauthenticated so the FK never points at an
+            // empty identity).
+            var currentUser = CoreHub.SessionManager.GetCurrentIdentityId(request);
+            if (currentUser != Guid.Empty)
+            {
+                existingItem.UpdaterId = currentUser;
+            }
+
             CoreHub.ObjectManager.Update(existingItem);
 
-            // update notification
-            CoreHub.AddNotification("Update", "success", 5000);
+            UpsertFieldValues(existingItem, payload);
 
             return res;
+        }
+
+        /// <summary>
+        /// Persists every payload entry that maps to a configured <see cref="Field"/> of
+        /// the object's class as a <see cref="Model.Entities.Value"/> row.
+        /// </summary>
+        /// <remarks>
+        /// The base <see cref="RestApiCrudFormData"/> binder only writes payload entries
+        /// that match a public property of <see cref="Model.Entities.Object"/>; any other
+        /// key (typically a field name like <c>AffectedCI</c>) is silently dropped. The
+        /// inline <c>ControlSmartEdit</c> on the object detail page (see
+        /// <c>ObjectItemDetailFragment</c>) PUTs exactly such payloads — a single
+        /// <c>{ "FieldName": "new value" }</c> document per edit — so this method fills
+        /// the gap by upserting the matching <see cref="Model.Entities.Value"/> row.
+        /// Payload keys arrive in lower case (see
+        /// <c>JsonExtensionsFieldMap.ToFieldMap</c>); the lookup honours that by
+        /// lowering the field names before comparison.
+        /// </remarks>
+        private static void UpsertFieldValues(Model.Entities.Object @object, RestApiCrudFormData payload)
+        {
+            if (@object is null || payload is null || payload.Count == 0)
+            {
+                return;
+            }
+
+            var systemProps = typeof(Model.Entities.Object)
+                .GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance)
+                .Select(p => p.Name.ToLowerInvariant())
+                .ToHashSet();
+
+            var fieldsByName = CoreHub.FieldManager
+                .GetFields(new WebParameter.ClassIdParameter(@object.ClassId))
+                .Where(f => !f.Deprecated && f.State == FieldState.Active)
+                .ToDictionary(f => f.Name.ToLowerInvariant(), f => f);
+
+            // load the object's existing values once and index them by field, rather than
+            // issuing one ValueManager.GetValue(objectId, fieldId) query per payload entry.
+            var existingByField = CoreHub.ValueManager
+                .GetValues(@object.Id)
+                .GroupBy(v => v.FieldId)
+                .ToDictionary(g => g.Key, g => g.First());
+
+            foreach (var kv in payload)
+            {
+                if (systemProps.Contains(kv.Key))
+                {
+                    // already handled by RestApiCrudFormData.BindTo
+                    continue;
+                }
+
+                if (!fieldsByName.TryGetValue(kv.Key, out var field))
+                {
+                    // unknown / removed / deprecated field — drop silently
+                    continue;
+                }
+
+                var raw = SerializePayloadValue(kv.Value);
+                existingByField.TryGetValue(field.Id, out var existing);
+
+                if (existing is null)
+                {
+                    if (string.IsNullOrEmpty(raw))
+                    {
+                        continue;
+                    }
+
+                    CoreHub.ValueManager.Add(new Model.Entities.Value
+                    {
+                        ObjectId = @object.Id,
+                        FieldId = field.Id,
+                        Data = raw,
+                        Created = DateTime.UtcNow,
+                        Updated = DateTime.UtcNow
+                    });
+                }
+                else
+                {
+                    existing.Data = raw;
+                    existing.Updated = DateTime.UtcNow;
+                    CoreHub.ValueManager.Update(existing);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Serializes a single field-payload value into the string form persisted in
+        /// <see cref="Model.Entities.Value.Data"/>. Tag-style list payloads collapse to
+        /// a comma-separated representation that matches the parse logic of
+        /// <c>ObjectItemDetailFragment.BuildInputValue</c>.
+        /// </summary>
+        private static string SerializePayloadValue(object value)
+        {
+            return value switch
+            {
+                null => null,
+                string s => s,
+                bool b => b ? "true" : "false",
+                System.Collections.IEnumerable list and not string => string.Join
+                (
+                    ",",
+                    list.Cast<object>().Where(x => x is not null).Select(x => x.ToString())
+                ),
+                _ => value.ToString()
+            };
         }
 
         /// <summary>

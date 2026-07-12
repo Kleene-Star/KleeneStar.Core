@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Workflow
     /// <summary>
     /// Represents the workflow page within the kleenestar web application.
     /// </summary>
-    [WebIcon<IconList>]
+    [WebIcon<IconWorkflow>]
     [SegmentHidden]
     [Title("kleenestar.core:workflow.manage.title")]
     [Scope<IScopeGeneral>]

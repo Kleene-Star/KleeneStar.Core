@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Class._classid_
     /// <summary>
     /// Represents the page for cloning a class within the workspace. 
     /// </summary>
-    [WebIcon<IconCopy>]
+    [WebIcon<IconClone>]
     [Title("kleenestar.core:class.clone.title")]
     [Scope<IScopeGeneral>]
     public sealed class Clone : IPage<VisualTreeWebApp>, IScope
