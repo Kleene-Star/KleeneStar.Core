@@ -40,6 +40,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="3.53.3" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <ProjectReference Include="..\..\..\KleeneStar.Model\src\KleeneStar.Model.Sqlite\KleeneStar.Model.Sqlite.csproj" />
 	  <ProjectReference Include="..\..\..\KleeneStar.Model\src\KleeneStar.Model\KleeneStar.Model.csproj" />
 	</ItemGroup>
