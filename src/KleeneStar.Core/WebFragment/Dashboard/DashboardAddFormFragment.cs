@@ -1,6 +1,8 @@
 ﻿using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -16,20 +18,19 @@ namespace KleeneStar.Core.WebFragment.Dashboard
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Dashboards.Add>]
     [Cache]
-    public sealed class DashboardAddFormFragment : FragmentControlRestFormAdd
+    public sealed class DashboardAddFormFragment : FragmentControlDataFormAdd
     {
         /// <summary>
         /// Gets the input text control for specifying the name of the dashboard.
         /// </summary>
-        public ControlRestFormItemInputUnique DashboardName { get; } = new()
+        public ControlDataFormItemInputUnique DashboardName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Dashboard.Name),
             Label = _ => "kleenestar.core:dashboard.name.label",
             Placeholder = _ => "kleenestar.core:dashboard.name.placeholder",
             Help = _ => "kleenestar.core:dashboard.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.UniqueName>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.UniqueName>().ToString())};
 
         /// <summary>
         /// Gets the input tag definition for the category field.
@@ -57,14 +58,13 @@ namespace KleeneStar.Core.WebFragment.Dashboard
         /// <summary>
         /// Gets the input selection control for the state.
         /// </summary>
-        public ControlRestFormItemInputSelection DashboardState { get; } = new()
+        public ControlDataFormItemInputSelection DashboardState { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Dashboard.State),
             Label = _ => "kleenestar.core:dashboard.state.label",
             Placeholder = _ => "kleenestar.core:dashboard.state.placeholder",
             Help = _ => "kleenestar.core:dashboard.state.help",
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.State>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.State>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -78,7 +78,7 @@ namespace KleeneStar.Core.WebFragment.Dashboard
             Add(Description);
             Add(DashboardState);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Index>();
         }
 
         /// <summary>

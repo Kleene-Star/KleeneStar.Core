@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -22,22 +24,21 @@ namespace KleeneStar.Core.WebFragment.Object
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Clone>]
     [Cache]
-    public sealed class ObjectCloneFormFragment : FragmentControlRestFormClone
+    public sealed class ObjectCloneFormFragment : FragmentControlDataFormClone
     {
         /// <summary>
         /// Gets the input text control for specifying the summary of the object. This
         /// system field is always rendered first because every object carries a summary,
         /// regardless of the form configuration.
         /// </summary>
-        public ControlRestFormItemInputUnique Summary { get; } = new()
+        public ControlDataFormItemInputUnique Summary { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Object.Summary),
             Label = _ => "kleenestar.core:object.summary.label",
             Placeholder = _ => "kleenestar.core:object.summary.placeholder",
             Help = _ => "kleenestar.core:object.summary.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>().ToString())};
 
         /// <summary>
         /// Gets the input text control for specifying the description of the object. This
@@ -60,7 +61,7 @@ namespace KleeneStar.Core.WebFragment.Object
         public ObjectCloneFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Objects.Index>();
             ItemId = renderContext =>
             {
                 var objectKey = renderContext.Request.GetParameter<ObjectKeyParameter>();

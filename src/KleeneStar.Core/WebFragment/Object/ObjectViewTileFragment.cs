@@ -1,4 +1,5 @@
 using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -23,10 +24,9 @@ namespace KleeneStar.Core.WebFragment.Object
         /// <summary>
         /// Gets the tile control rendering the objects as cards.
         /// </summary>
-        public ControlRestTile Tile { get; } = new ControlRestTile()
+        public ControlDataTile Tile { get; } = new ControlDataTile()
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Tile>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Tile>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.

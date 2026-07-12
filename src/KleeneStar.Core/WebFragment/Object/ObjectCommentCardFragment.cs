@@ -2,6 +2,7 @@ using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -16,8 +17,8 @@ namespace KleeneStar.Core.WebFragment.Object
     /// currently displayed on <see cref="WWW.Object._objectkey_.Index"/>.
     /// </summary>
     /// <remarks>
-    /// The card hosts a single <see cref="ControlRestComment"/> whose
-    /// <see cref="ControlRestComment.RestUri"/> points at the class-scoped
+    /// The card hosts a single <see cref="ControlDataComment"/> whose
+    /// <see cref="ControlDataComment.RestUri"/> points at the class-scoped
     /// <see cref="WWW.Api._1_.Comments._objectkey_.Index"/> REST endpoint with the
     /// <see cref="ObjectKeyParameter"/> bound from the request. The control
     /// asynchronously fetches the comments via <c>GET</c>, supports edit / delete /
@@ -35,11 +36,14 @@ namespace KleeneStar.Core.WebFragment.Object
         /// <summary>
         /// Gets the REST-backed comment list control.
         /// </summary>
-        public ControlRestComment Comments { get; } = new("object-comments")
+        public ControlDataComment Comments { get; } = new("object-comments")
         {
-            RestUri = renderContext => CoreHub
-                .GetUri<global::KleeneStar.Core.WWW.Api._1_.Comments._objectkey_.Index>()
-                .BindParameters(renderContext.Request),
+            ServiceFactory = renderContext => DataServiceDescriptor.QueryData
+            (
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Comments._objectkey_.Index>()
+                    .BindParameters(renderContext.Request)
+                    .ToString()
+            ),
             CurrentUser = _ => "Admin User"
         };
 

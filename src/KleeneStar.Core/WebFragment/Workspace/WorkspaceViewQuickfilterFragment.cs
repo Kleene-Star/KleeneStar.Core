@@ -1,4 +1,5 @@
 ﻿using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -26,10 +27,9 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// <summary>
         /// Gets the quick filter control for REST-based workspace queries.
         /// </summary>
-        public ControlRestQuickfilter Quickfilter { get; } = new ControlRestQuickfilter(ContentId)
+        public ControlDataQuickfilter Quickfilter { get; } = new ControlDataQuickfilter(ContentId)
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Quickfilter>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Quickfilter>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.

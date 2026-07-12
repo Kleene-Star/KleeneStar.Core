@@ -1,7 +1,9 @@
 ﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -16,20 +18,19 @@ namespace KleeneStar.Core.WebFragment.Class
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Class._classid_.Clone>]
     [Cache]
-    public sealed class ClassCloneFormFragment : FragmentControlRestFormClone
+    public sealed class ClassCloneFormFragment : FragmentControlDataFormClone
     {
         /// <summary>
         /// Gets the input text control for specifying the name of the class.
         /// </summary>
-        public ControlRestFormItemInputUnique ClassName { get; } = new()
+        public ControlDataFormItemInputUnique ClassName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Class.Name),
             Label = _ => "kleenestar.core:class.name.label",
             Placeholder = _ => "kleenestar.core:class.name.placeholder",
             Help = _ => "kleenestar.core:class.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.UniqueName>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.UniqueName>().ToString())};
 
         /// <summary>
         /// Gets the input text control for specifying the description of the class.
@@ -46,14 +47,13 @@ namespace KleeneStar.Core.WebFragment.Class
         /// <summary>
         /// Gets the input selection control for the inherited class.
         /// </summary>
-        public ControlRestFormItemInputSelection InheritedSelection { get; } = new()
+        public ControlDataFormItemInputSelection InheritedSelection { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Class.InheritedId),
             Label = _ => "kleenestar.core:class.inherited.label",
             Placeholder = _ => "kleenestar.core:class.inherited.placeholder",
             Help = _ => "kleenestar.core:class.inherited.help",
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Inherited>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Inherited>().ToString())};
 
         /// <summary>
         /// Gets the checkbox control for the abstract flag.
@@ -69,14 +69,13 @@ namespace KleeneStar.Core.WebFragment.Class
         /// <summary>
         /// Gets the input selection control for the parent class.
         /// </summary>
-        public ControlRestFormItemInputSelection ParentSelection { get; } = new()
+        public ControlDataFormItemInputSelection ParentSelection { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Class.ParentId),
             Label = _ => "kleenestar.core:class.parent.label",
             Placeholder = _ => "kleenestar.core:class.parent.placeholder",
             Help = _ => "kleenestar.core:class.parent.help",
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Parent>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Parent>().ToString())};
 
         /// <summary>
         /// Gets the tag input control for specifying the allowed children classes.
@@ -92,15 +91,14 @@ namespace KleeneStar.Core.WebFragment.Class
         /// <summary>
         /// Gets the input selection control for the access modifier.
         /// </summary>
-        public ControlRestFormItemInputSelection AccessModifierSelection { get; } = new()
+        public ControlDataFormItemInputSelection AccessModifierSelection { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Class.AccessModifier),
             Label = _ => "kleenestar.core:class.accessmodifier.label",
             Placeholder = _ => "kleenestar.core:class.accessmodifier.placeholder",
             Help = _ => "kleenestar.core:class.accessmodifier.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.AccessModifier>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.AccessModifier>().ToString())};
 
         /// <summary>
         /// Gets the checkbox control for the sealed flag.
@@ -116,15 +114,14 @@ namespace KleeneStar.Core.WebFragment.Class
         /// <summary>
         /// Gets the input selection control for the state.
         /// </summary>
-        public ControlRestFormItemInputSelection ClassState { get; } = new()
+        public ControlDataFormItemInputSelection ClassState { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Class.State),
             Label = _ => "kleenestar.core:class.state.label",
             Placeholder = _ => "kleenestar.core:class.state.placeholder",
             Help = _ => "kleenestar.core:class.state.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.State>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.State>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -143,7 +140,7 @@ namespace KleeneStar.Core.WebFragment.Class
             Add(ClassSealed);
             Add(ClassState);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
             ItemId = renderContext =>
             {
                 var classId = renderContext.Request.GetParameter<ClassIdParameter>();

@@ -1,6 +1,8 @@
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -16,20 +18,19 @@ namespace KleeneStar.Core.WebFragment.Identity
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Settings.Identities.Add>]
     [Cache]
-    public sealed class IdentityAddFormFragment : FragmentControlRestFormAdd
+    public sealed class IdentityAddFormFragment : FragmentControlDataFormAdd
     {
         /// <summary>
         /// Gets the input text control for specifying the name of the identity.
         /// </summary>
-        public ControlRestFormItemInputUnique IdentityName { get; } = new()
+        public ControlDataFormItemInputUnique IdentityName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Identity.Name),
             Label = _ => "kleenestar.core:setting.identity.name.label",
             Placeholder = _ => "kleenestar.core:setting.identity.name.placeholder",
             Help = _ => "kleenestar.core:setting.identity.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.UniqueName>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.UniqueName>().ToString())};
 
         /// <summary>
         /// Gets the input text control for specifying the email of the identity.
@@ -45,15 +46,14 @@ namespace KleeneStar.Core.WebFragment.Identity
         /// <summary>
         /// Gets the input selection control for the state.
         /// </summary>
-        public ControlRestFormItemInputSelection IdentityState { get; } = new()
+        public ControlDataFormItemInputSelection IdentityState { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Identity.State),
             Label = _ => "kleenestar.core:setting.identity.state.label",
             Placeholder = _ => "kleenestar.core:setting.identity.state.placeholder",
             Help = _ => "kleenestar.core:setting.identity.state.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.State>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.State>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -66,7 +66,7 @@ namespace KleeneStar.Core.WebFragment.Identity
             Add(Email);
             Add(IdentityState);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Identities.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Identities.Index>();
         }
 
         /// <summary>

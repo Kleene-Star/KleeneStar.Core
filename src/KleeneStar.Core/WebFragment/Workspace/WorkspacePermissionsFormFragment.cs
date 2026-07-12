@@ -1,8 +1,10 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -19,33 +21,31 @@ namespace KleeneStar.Core.WebFragment.Workspace
     [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Permissions>]
     [Policy<WorkspaceAdminPolicy>]
     [Cache]
-    public sealed class WorkspaceEditPermissionsFragment : FragmentControlRestFormEdit
+    public sealed class WorkspaceEditPermissionsFragment : FragmentControlDataFormEdit
     {
         /// <summary>
         /// Gets the input selection control for the group assignment.
         /// </summary>
-        public ControlRestFormItemInputSelection GroupSelection { get; } = new()
+        public ControlDataFormItemInputSelection GroupSelection { get; } = new()
         {
             Name = _ => "Group",
             Label = _ => "kleenestar.core:workspace.permissions.group.label",
             Placeholder = _ => "kleenestar.core:workspace.permissions.group.placeholder",
             Help = _ => "kleenestar.core:workspace.permissions.group.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Groups>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Groups>().ToString())};
 
         /// <summary>
         /// Gets the input selection control for the policy assignment.
         /// </summary>
-        public ControlRestFormItemInputSelection PolicySelection { get; } = new()
+        public ControlDataFormItemInputSelection PolicySelection { get; } = new()
         {
             Name = _ => "Policy",
             Label = _ => "kleenestar.core:workspace.permissions.policy.label",
             Placeholder = _ => "kleenestar.core:workspace.permissions.policy.placeholder",
             Help = _ => "kleenestar.core:workspace.permissions.policy.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Policies>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Policies>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -57,7 +57,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
             Add(GroupSelection);
             Add(PolicySelection);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
         }
 
         /// <summary>

@@ -1,7 +1,11 @@
-﻿using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebManager;
+using KleeneStar.Core.WebParameter;
+using System.Collections.Generic;
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -16,20 +20,21 @@ namespace KleeneStar.Core.WebFragment.Class
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Class._classid_.Edit>]
     [Cache]
-    public sealed class ClassEditFormFragment : FragmentControlRestFormEdit
+    public sealed class ClassEditFormFragment : FragmentControlDataFormEdit
     {
         /// <summary>
         /// Gets the input text control for specifying the name of the class.
         /// </summary>
-        public ControlRestFormItemInputUnique ClassName { get; } = new()
+        public ControlDataFormItemInputUnique ClassName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Class.Name),
             Label = _ => "kleenestar.core:class.name.label",
             Placeholder = _ => "kleenestar.core:class.name.placeholder",
             Help = _ => "kleenestar.core:class.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.UniqueName>()
-        };
+            ServiceFactory = ctx => DataServiceDescriptor
+                .QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.UniqueName>().ToString())
+                .BindPathVariables(BuildWorkspaceKeyBindings(ctx))};
 
         /// <summary>
         /// Gets the input text control for specifying the description of the class.
@@ -46,14 +51,15 @@ namespace KleeneStar.Core.WebFragment.Class
         /// <summary>
         /// Gets the input selection control for the inherited class.
         /// </summary>
-        public ControlRestFormItemInputSelection InheritedSelection { get; } = new()
+        public ControlDataFormItemInputSelection InheritedSelection { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Class.InheritedId),
             Label = _ => "kleenestar.core:class.inherited.label",
             Placeholder = _ => "kleenestar.core:class.inherited.placeholder",
             Help = _ => "kleenestar.core:class.inherited.help",
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Inherited>()
-        };
+            ServiceFactory = ctx => DataServiceDescriptor
+                .QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Inherited>().ToString())
+                .BindPathVariables(BuildWorkspaceKeyBindings(ctx))};
 
         /// <summary>
         /// Gets the checkbox control for the abstract flag.
@@ -69,14 +75,15 @@ namespace KleeneStar.Core.WebFragment.Class
         /// <summary>
         /// Gets the input selection control for the parent class.
         /// </summary>
-        public ControlRestFormItemInputSelection ParentSelection { get; } = new()
+        public ControlDataFormItemInputSelection ParentSelection { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Class.ParentId),
             Label = _ => "kleenestar.core:class.parent.label",
             Placeholder = _ => "kleenestar.core:class.parent.placeholder",
             Help = _ => "kleenestar.core:class.parent.help",
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Parent>()
-        };
+            ServiceFactory = ctx => DataServiceDescriptor
+                .QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Parent>().ToString())
+                .BindPathVariables(BuildWorkspaceKeyBindings(ctx))};
 
         /// <summary>
         /// Gets the tag input control for specifying the allowed children classes.
@@ -92,15 +99,14 @@ namespace KleeneStar.Core.WebFragment.Class
         /// <summary>
         /// Gets the input selection control for the access modifier.
         /// </summary>
-        public ControlRestFormItemInputSelection AccessModifierSelection { get; } = new()
+        public ControlDataFormItemInputSelection AccessModifierSelection { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Class.AccessModifier),
             Label = _ => "kleenestar.core:class.accessmodifier.label",
             Placeholder = _ => "kleenestar.core:class.accessmodifier.placeholder",
             Help = _ => "kleenestar.core:class.accessmodifier.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.AccessModifier>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.AccessModifier>().ToString())};
 
         /// <summary>
         /// Gets the checkbox control for the sealed flag.
@@ -116,15 +122,14 @@ namespace KleeneStar.Core.WebFragment.Class
         /// <summary>
         /// Gets the input selection control for the state.
         /// </summary>
-        public ControlRestFormItemInputSelection ClassState { get; } = new()
+        public ControlDataFormItemInputSelection ClassState { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Class.State),
             Label = _ => "kleenestar.core:class.state.label",
             Placeholder = _ => "kleenestar.core:class.state.placeholder",
             Help = _ => "kleenestar.core:class.state.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.State>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.State>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -143,7 +148,11 @@ namespace KleeneStar.Core.WebFragment.Class
             Add(ClassSealed);
             Add(ClassState);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
+            // The form's REST service is declared by the endpoint type so the
+            // client loads and submits the class through the emitted
+            // wx-service island. ItemId addresses the row in the body.
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Classes.Index>();
+
             ItemId = renderContext =>
             {
                 var classId = renderContext.Request.GetParameter<ClassIdParameter>();
@@ -166,6 +175,46 @@ namespace KleeneStar.Core.WebFragment.Class
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);
+        }
+
+        /// <summary>
+        /// Builds the manual ${workspacekey} path variable bindings for a
+        /// service descriptor whose endpoint is keyed by the workspace route
+        /// parameter but rendered on a page that only carries the class id.
+        /// The class referenced by the request is loaded to read its
+        /// workspace key, which substitutes the placeholder the sitemap
+        /// would otherwise leave in the resolved base address. The
+        /// automatic request binding of <see cref="EmitDataIslands"/>
+        /// leaves the placeholder intact on this scope (the edit page is
+        /// keyed by classid, not workspacekey), so the manual binding is
+        /// required to make the client call the concrete resource.
+        /// </summary>
+        /// <param name="renderContext">The current render context, or null.</param>
+        /// <returns>The bindings to apply, possibly empty when no workspace is resolvable.</returns>
+        private static IEnumerable<KeyValuePair<string, string>> BuildWorkspaceKeyBindings(IRenderControlContext renderContext)
+        {
+            var request = renderContext?.Request;
+            if (request == null)
+            {
+                return System.Array.Empty<KeyValuePair<string, string>>();
+            }
+
+            var classParameter = request.GetParameter<ClassIdParameter>();
+            if (classParameter == null)
+            {
+                return System.Array.Empty<KeyValuePair<string, string>>();
+            }
+
+            var @class = CoreHub.ClassManager?.GetClass(classParameter);
+            if (@class?.Workspace == null || string.IsNullOrEmpty(@class.Workspace.Key))
+            {
+                return System.Array.Empty<KeyValuePair<string, string>>();
+            }
+
+            return new[]
+            {
+                new KeyValuePair<string, string>("workspacekey", @class.Workspace.Key)
+            };
         }
     }
 }

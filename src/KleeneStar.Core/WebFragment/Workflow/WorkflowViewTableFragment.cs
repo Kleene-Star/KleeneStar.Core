@@ -1,4 +1,5 @@
 ﻿using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -25,10 +26,9 @@ namespace KleeneStar.Core.WebFragment.Workflow
         /// Gets the table of control view items used to display 
         /// workspace data.
         /// </summary>
-        public ControlRestTable Table { get; } = new ControlRestTable()
+        public ControlDataTable Table { get; } = new ControlDataTable()
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows._classid_.Table>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.TableData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows._classid_.Table>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.

@@ -1,6 +1,8 @@
 ﻿using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -16,33 +18,31 @@ namespace KleeneStar.Core.WebFragment.Workflow
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Workflows._classid_.Add>]
     [Cache]
-    public sealed class WorkflowAddFormFragment : FragmentControlRestFormAdd
+    public sealed class WorkflowAddFormFragment : FragmentControlDataFormAdd
     {
         /// <summary>
         /// Gets the input text control for specifying the name of the form.
         /// </summary>
-        public ControlRestFormItemInputUnique WorkflowName { get; } = new()
+        public ControlDataFormItemInputUnique WorkflowName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Workflow.Name),
             Label = _ => "kleenestar.core:workflow.name.label",
             Placeholder = _ => "kleenestar.core:workflow.name.placeholder",
             Help = _ => "kleenestar.core:workflow.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.UniqueName>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.UniqueName>().ToString())};
 
         /// <summary>
         /// Gets the input selection control for the state.
         /// </summary>
-        public ControlRestFormItemInputSelection WorkflowState { get; } = new()
+        public ControlDataFormItemInputSelection WorkflowState { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Workflow.State),
             Label = _ => "kleenestar.core:workflow.state.label",
             Placeholder = _ => "kleenestar.core:workflow.state.placeholder",
             Help = _ => "kleenestar.core:workflow.state.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.State>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.State>().ToString())};
 
         /// <summary>
         /// Gets the input text control for specifying the description of the form.
@@ -66,7 +66,7 @@ namespace KleeneStar.Core.WebFragment.Workflow
             Add(WorkflowName);
             Add(Description);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>();
         }
 
         /// <summary>

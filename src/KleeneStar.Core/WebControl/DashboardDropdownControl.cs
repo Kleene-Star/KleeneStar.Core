@@ -1,4 +1,5 @@
 ﻿using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
@@ -10,7 +11,7 @@ namespace KleeneStar.Core.WebControl
     /// <summary>
     /// Represents a dropdown control for selecting a dashboard.
     /// </summary>
-    public class DashboardDropdownControl : ControlRestDropdown
+    public class DashboardDropdownControl : ControlDataDropdown
     {
         /// <summary>
         /// Gets the control link for adding a new dashboard.
@@ -38,7 +39,7 @@ namespace KleeneStar.Core.WebControl
         public DashboardDropdownControl(string id)
             : base(id)
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Dropdown>();
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards.Dropdown>().ToString());
 
             Add(AddDashboard);
             Add(ManageDashboard);

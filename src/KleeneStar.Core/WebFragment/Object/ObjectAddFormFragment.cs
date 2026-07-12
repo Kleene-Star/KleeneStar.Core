@@ -4,6 +4,7 @@ using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -32,7 +33,7 @@ namespace KleeneStar.Core.WebFragment.Object
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Objects.Add>]
     [Cache]
-    public sealed class ObjectAddFormFragment : FragmentControlRestWizard
+    public sealed class ObjectAddFormFragment : FragmentControlDataWizard
     {
         /// <summary>
         /// Gets the cascading input control for selecting a workspace.
@@ -63,7 +64,7 @@ namespace KleeneStar.Core.WebFragment.Object
         /// <summary>
         /// Gets the input text control for specifying the summary of the object.
         /// </summary>
-        public ControlRestFormItemInputUnique Summary { get; } = new()
+        public ControlDataFormItemInputUnique Summary { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Object.Summary),
             Label = _ => "kleenestar.core:object.summary.label",
@@ -91,20 +92,20 @@ namespace KleeneStar.Core.WebFragment.Object
         public ObjectAddFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            var step1 = new ControlRestWizardPage("step-workspace");
+            var step1 = new ControlDataWizardPage("step-workspace");
             step1.Add(WorkspaceSelection);
 
-            var step2 = new ControlRestWizardPage("step-template");
+            var step2 = new ControlDataWizardPage("step-template");
             step2.Add(TemplateSelection);
 
-            var step3 = new ControlRestWizardPage("step-properties");
+            var step3 = new ControlDataWizardPage("step-properties");
             step3.Add(Summary);
             step3.Add(Description);
 
             Add(step1, step2, step3);
 
             Mode = _ => TypeRestFormMode.Add;
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Index>();
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Index>().ToString());
         }
 
         /// <summary>

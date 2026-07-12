@@ -11,7 +11,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_
 {
     /// <summary>
     /// Represents a REST API tab endpoint for managing the tab structure of a specific form.
-    /// Each tab view within the ControlRestTab corresponds to a form tab that may contain
+    /// Each tab view within the ControlDataTab corresponds to a form tab that may contain
     /// form field elements. Supports creating and removing tabs.
     /// </summary>
     [Title("kleenestar.core:form.tab.header")]
@@ -39,7 +39,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms.Form._formid_
         /// <summary>
         /// Retrieves the tab views for the specified form. Each tab view represents one
         /// configurable section of the form and references the form-fields template so that
-        /// the containing ControlRestTab can render the list of form elements.
+        /// the containing ControlDataTab can render the list of form elements.
         /// </summary>
         /// <param name="context">
         /// The query context used for data access. Cannot be null.

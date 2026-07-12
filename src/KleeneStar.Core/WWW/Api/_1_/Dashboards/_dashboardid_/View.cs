@@ -9,7 +9,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards._dashboardid_
 {
     /// <summary>
     /// Provides the REST API endpoint that returns the widget layout for a specific dashboard,
-    /// consumed by the <c>ControlRestDashboard</c> control on the dashboard view page.
+    /// consumed by the <c>ControlDataDashboard</c> control on the dashboard view page.
     /// </summary>
     [Title("kleenestar.core:dashboard.view.label")]
     [Cache]

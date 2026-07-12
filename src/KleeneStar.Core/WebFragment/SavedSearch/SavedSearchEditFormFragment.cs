@@ -1,7 +1,9 @@
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -17,7 +19,7 @@ namespace KleeneStar.Core.WebFragment.SavedSearch
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.SavedSearch._savedsearchid_.Edit>]
     [Cache]
-    public sealed class SavedSearchEditFormFragment : FragmentControlRestFormEdit
+    public sealed class SavedSearchEditFormFragment : FragmentControlDataFormEdit
     {
         /// <summary>
         /// Gets the input control for the saved-search name.
@@ -77,7 +79,16 @@ namespace KleeneStar.Core.WebFragment.SavedSearch
             Add(Description);
             Add(Starred);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.SavedSearches.Index>();
+            // The form's REST service is declared by the endpoint type so the
+            // client loads and submits the saved search through the emitted
+            // wx-service island. ItemId addresses the row in the body.
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.SavedSearches.Index>();
+
+            ItemId = renderContext =>
+            {
+                var savedSearchId = renderContext.Request.GetParameter<SavedSearchIdParameter>();
+                return savedSearchId?.Value?.ToString();
+            };
         }
 
         /// <summary>

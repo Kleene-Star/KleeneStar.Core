@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Core.WebControl;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -29,7 +30,7 @@ namespace KleeneStar.Core.WebFragment.Class
         /// </summary>
         public ListDetailControl List { get; } = new ListDetailControl()
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.List>(),
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.List>().ToString()),
             Bind = _ => new Binding()
                 .Add(new BindSearch() { Source = ClassViewSearchFragment.ContentId })
                 .Add(new BindFilter())

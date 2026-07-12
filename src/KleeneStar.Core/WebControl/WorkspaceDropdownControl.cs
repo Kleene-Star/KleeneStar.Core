@@ -1,4 +1,5 @@
 ﻿using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
@@ -10,7 +11,7 @@ namespace KleeneStar.Core.WebControl
     /// <summary>
     /// Represents a dropdown control for selecting a workspace.
     /// </summary>
-    public class WorkspaceDropdownControl : ControlRestDropdown
+    public class WorkspaceDropdownControl : ControlDataDropdown
     {
         /// <summary>
         /// Gets the control link for adding a new workspace.
@@ -38,7 +39,7 @@ namespace KleeneStar.Core.WebControl
         public WorkspaceDropdownControl(string id)
             : base(id)
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Dropdown>();
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Dropdown>().ToString());
 
             Add(AddWorkspace);
             Add(ManageWorkspace);

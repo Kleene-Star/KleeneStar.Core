@@ -1,4 +1,5 @@
 ﻿using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -25,10 +26,9 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// Gets the configuration tile that provides REST access to 
         /// workspace data.
         /// </summary>
-        public ControlRestTile Tile { get; } = new ControlRestTile()
+        public ControlDataTile Tile { get; } = new ControlDataTile()
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Tile>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Tile>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.

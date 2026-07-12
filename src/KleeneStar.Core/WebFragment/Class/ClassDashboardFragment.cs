@@ -1,6 +1,7 @@
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -18,7 +19,7 @@ namespace KleeneStar.Core.WebFragment.Class
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
     [Cache]
-    public sealed class ClassDashboardFragment : FragmentControlRestDashboard
+    public sealed class ClassDashboardFragment : FragmentControlDataDashboard
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -30,7 +31,7 @@ namespace KleeneStar.Core.WebFragment.Class
         public ClassDashboardFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            RestUri = renderContext => GetRestUri(renderContext);
+            ServiceFactory = renderContext => DataServiceDescriptor.QueryData(GetRestUri(renderContext).ToString());
         }
 
         /// <summary>

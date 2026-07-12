@@ -1,7 +1,9 @@
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -16,20 +18,19 @@ namespace KleeneStar.Core.WebFragment.Template
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Template._templateid_.Clone>]
     [Cache]
-    public sealed class TemplateCloneFormFragment : FragmentControlRestFormClone
+    public sealed class TemplateCloneFormFragment : FragmentControlDataFormClone
     {
         /// <summary>
         /// Gets the input control configuration for the template name field.
         /// </summary>
-        public ControlRestFormItemInputUnique TemplateName { get; } = new()
+        public ControlDataFormItemInputUnique TemplateName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Template.Name),
             Label = _ => "kleenestar.core:template.name.label",
             Placeholder = _ => "kleenestar.core:template.name.placeholder",
             Help = _ => "kleenestar.core:template.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates.UniqueName>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates.UniqueName>().ToString())};
 
         /// <summary>
         /// Gets the input control for editing the template description.
@@ -57,28 +58,26 @@ namespace KleeneStar.Core.WebFragment.Template
         /// <summary>
         /// Gets the configuration for the class selection input used in the form.
         /// </summary>
-        public ControlRestFormItemInputSelection ClassSelection { get; } = new()
+        public ControlDataFormItemInputSelection ClassSelection { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Template.ClassId),
             Label = _ => "kleenestar.core:template.class.label",
             Placeholder = _ => "kleenestar.core:template.class.placeholder",
             Help = _ => "kleenestar.core:template.class.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Index>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Index>().ToString())};
 
         /// <summary>
         /// Gets the input selection configuration for the template state field.
         /// </summary>
-        public ControlRestFormItemInputSelection TemplateState { get; } = new()
+        public ControlDataFormItemInputSelection TemplateState { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Template.State),
             Label = _ => "kleenestar.core:template.state.label",
             Placeholder = _ => "kleenestar.core:template.state.placeholder",
             Help = _ => "kleenestar.core:template.state.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates.State>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates.State>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -93,7 +92,7 @@ namespace KleeneStar.Core.WebFragment.Template
             Add(ClassSelection);
             Add(TemplateState);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Index>();
             ItemId = renderContext =>
             {
                 var templateId = renderContext.Request.GetParameter<TemplateIdParameter>();

@@ -1,6 +1,7 @@
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -17,7 +18,7 @@ namespace KleeneStar.Core.WebFragment.Form
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Form._formid_.Index>]
     [Cache]
-    public sealed class FormDetailViewFragment : FragmentControlRestFormEditor
+    public sealed class FormDetailViewFragment : FragmentControlDataFormEditor
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -26,7 +27,7 @@ namespace KleeneStar.Core.WebFragment.Form
         public FormDetailViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            RestUri = renderContext => GetUri(renderContext);
+            ServiceFactory = renderContext => DataServiceDescriptor.QueryData(GetUri(renderContext).ToString());
         }
 
         /// <summary>

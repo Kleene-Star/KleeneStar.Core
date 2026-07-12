@@ -1,7 +1,9 @@
 ﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -16,20 +18,19 @@ namespace KleeneStar.Core.WebFragment.Form
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Form._formid_.Edit>]
     [Cache]
-    public sealed class FormEditFormFragment : FragmentControlRestFormEdit
+    public sealed class FormEditFormFragment : FragmentControlDataFormEdit
     {
         /// <summary>
         /// Gets the input text control for specifying the name of the form.
         /// </summary>
-        public ControlRestFormItemInputUnique FormName { get; } = new()
+        public ControlDataFormItemInputUnique FormName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Form.Name),
             Label = _ => "kleenestar.core:form.name.label",
             Placeholder = _ => "kleenestar.core:form.name.placeholder",
             Help = _ => "kleenestar.core:form.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.UniqueName>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.UniqueName>().ToString())};
 
         /// <summary>
         /// Gets the input text control for specifying the description of the form.
@@ -46,15 +47,14 @@ namespace KleeneStar.Core.WebFragment.Form
         /// <summary>
         /// Gets the input selection control for the state.
         /// </summary>
-        public ControlRestFormItemInputSelection FormState { get; } = new()
+        public ControlDataFormItemInputSelection FormState { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Form.State),
             Label = _ => "kleenestar.core:form.state.label",
             Placeholder = _ => "kleenestar.core:form.state.placeholder",
             Help = _ => "kleenestar.core:form.state.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.State>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.State>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -66,8 +66,7 @@ namespace KleeneStar.Core.WebFragment.Form
             Add(FormName);
             Add(Description);
             Add(FormState);
-
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Forms.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Forms.Index>();
             ItemId = renderContext =>
             {
                 var formId = renderContext.Request.GetParameter<FormIdParameter>();

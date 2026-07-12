@@ -15,8 +15,8 @@ using WebExpress.WebIndex.Queries;
 namespace KleeneStar.Core.WWW.Api._1_.Comments._objectkey_
 {
     /// <summary>
-    /// REST endpoint backing the <c>ControlRestComment</c> and
-    /// <c>ControlRestCommentComposer</c> controls on an object detail page. The URL is
+    /// REST endpoint backing the <c>ControlDataComment</c> and
+    /// <c>ControlDataCommentComposer</c> controls on an object detail page. The URL is
     /// <c>/api/1/comments/{objectkey}</c>; the <c>{objectkey}</c> URL segment is
     /// declared via <see cref="ObjectKeySegmentAttribute"/> so callers can bind the
     /// segment by passing the current request's <see cref="ObjectKeyParameter"/>

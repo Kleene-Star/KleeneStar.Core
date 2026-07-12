@@ -1,4 +1,5 @@
 using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -24,10 +25,9 @@ namespace KleeneStar.Core.WebFragment.Group
         /// Gets the table of control view items used to display
         /// group data.
         /// </summary>
-        public ControlRestTable Table { get; } = new ControlRestTable()
+        public ControlDataTable Table { get; } = new ControlDataTable()
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Groups.Table>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.TableData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Groups.Table>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.

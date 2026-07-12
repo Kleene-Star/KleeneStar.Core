@@ -1,7 +1,9 @@
 ﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -16,20 +18,19 @@ namespace KleeneStar.Core.WebFragment.Workflow
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Workflow._workflowid_.Clone>]
     [Cache]
-    public sealed class WorkflowCloneFormFragment : FragmentControlRestFormClone
+    public sealed class WorkflowCloneFormFragment : FragmentControlDataFormClone
     {
         /// <summary>
         /// Gets the input text control for specifying the name of the workflow.
         /// </summary>
-        public ControlRestFormItemInputUnique WorkflowName { get; } = new()
+        public ControlDataFormItemInputUnique WorkflowName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Workflow.Name),
             Label = _ => "kleenestar.core:workflow.name.label",
             Placeholder = _ => "kleenestar.core:workflow.name.placeholder",
             Help = _ => "kleenestar.core:workflow.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.UniqueName>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.UniqueName>().ToString())};
 
         /// <summary>
         /// Gets the input text control for specifying the description of the workflow.
@@ -46,15 +47,14 @@ namespace KleeneStar.Core.WebFragment.Workflow
         /// <summary>
         /// Gets the input selection control for the state.
         /// </summary>
-        public ControlRestFormItemInputSelection WorkflowState { get; } = new()
+        public ControlDataFormItemInputSelection WorkflowState { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Workflow.State),
             Label = _ => "kleenestar.core:workflow.state.label",
             Placeholder = _ => "kleenestar.core:workflow.state.placeholder",
             Help = _ => "kleenestar.core:workflow.state.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.State>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.State>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -67,7 +67,7 @@ namespace KleeneStar.Core.WebFragment.Workflow
             Add(Description);
             Add(WorkflowState);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Workflows.Index>();
             ItemId = renderContext =>
             {
                 var workflowId = renderContext.Request.GetParameter<WorkflowIdParameter>();

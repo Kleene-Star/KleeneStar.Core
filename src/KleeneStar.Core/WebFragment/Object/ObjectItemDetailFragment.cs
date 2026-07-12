@@ -78,8 +78,8 @@ namespace KleeneStar.Core.WebFragment.Object
             var body = new HtmlElementTextContentDiv()
             {
                 Id = Id,
-                Class = Css.Concatenate("wx-kleenestar-object-detail", GetClasses()),
-                Style = GetStyles(),
+                Class = Css.Concatenate("wx-kleenestar-object-detail", GetClasses(renderContext)),
+                Style = GetStyles(renderContext),
                 Role = role,
                 //DataTheme = Theme.ToValue()
             };

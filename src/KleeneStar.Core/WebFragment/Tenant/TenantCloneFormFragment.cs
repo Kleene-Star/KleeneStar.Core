@@ -1,7 +1,9 @@
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -16,20 +18,19 @@ namespace KleeneStar.Core.WebFragment.Tenant
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Settings.Tenant._tenantid_.Clone>]
     [Cache]
-    public sealed class TenantCloneFormFragment : FragmentControlRestFormClone
+    public sealed class TenantCloneFormFragment : FragmentControlDataFormClone
     {
         /// <summary>
         /// Gets the input text control for specifying the name of the tenant.
         /// </summary>
-        public ControlRestFormItemInputUnique TenantName { get; } = new()
+        public ControlDataFormItemInputUnique TenantName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Tenant.Name),
             Label = _ => "kleenestar.core:setting.tenant.name.label",
             Placeholder = _ => "kleenestar.core:setting.tenant.name.placeholder",
             Help = _ => "kleenestar.core:setting.tenant.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.UniqueName>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.UniqueName>().ToString())};
 
         /// <summary>
         /// Gets the input text control for specifying the description of the tenant.
@@ -46,15 +47,14 @@ namespace KleeneStar.Core.WebFragment.Tenant
         /// <summary>
         /// Gets the input selection control for the state.
         /// </summary>
-        public ControlRestFormItemInputSelection TenantState { get; } = new()
+        public ControlDataFormItemInputSelection TenantState { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Tenant.State),
             Label = _ => "kleenestar.core:setting.tenant.state.label",
             Placeholder = _ => "kleenestar.core:setting.tenant.state.placeholder",
             Help = _ => "kleenestar.core:setting.tenant.state.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.State>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.State>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -67,7 +67,7 @@ namespace KleeneStar.Core.WebFragment.Tenant
             Add(Description);
             Add(TenantState);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Tenants.Index>();
             ItemId = renderContext =>
             {
                 var tenantId = renderContext.Request.GetParameter<TenantIdParameter>();

@@ -12,7 +12,7 @@ using WebExpress.WebUI.WebSection;
 namespace KleeneStar.Core.WebFragment.Field
 {
     /// <summary>
-    /// Represents a fragment control for managing field tables, providing functionality to 
+    /// Represents a fragment control for managing field tables, providing functionality to
     /// render the fragment as HTML.
     /// </summary>
     [Section<SectionViewItemPrimary>]
@@ -22,12 +22,16 @@ namespace KleeneStar.Core.WebFragment.Field
     public sealed class FieldViewTableFragment : FragmentControlViewItem
     {
         /// <summary>
-        /// Gets the table of control view items used to display 
+        /// Gets the table of control view items used to display
         /// workspace data.
         /// </summary>
-        public ControlRestTable Table { get; } = new ControlRestTable()
+        public ControlDataTable Table { get; } = new ControlDataTable()
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields._classid_.Table>()
+            PageSize = _ => 25,
+            ServiceFactory = _ => WebExpress.WebApp.WebData.DataServiceDescriptor.TableData
+            (
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Fields._classid_.Table>().ToString()
+            )
         };
 
         /// <summary>

@@ -1,4 +1,5 @@
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
@@ -14,7 +15,7 @@ namespace KleeneStar.Core.WebControl
     /// dynamic/static divider — sits a titled "Search" section that opens the global search page;
     /// this section replaces the former standalone search dropdown.
     /// </summary>
-    public class ObjectDropdownControl : ControlRestDropdown
+    public class ObjectDropdownControl : ControlDataDropdown
     {
         /// <summary>
         /// Gets the static link that opens the global search page (the former
@@ -34,7 +35,7 @@ namespace KleeneStar.Core.WebControl
         public ObjectDropdownControl(string id)
             : base(id)
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Dropdown>();
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Dropdown>().ToString());
 
             // the recent objects (dynamic) render at the top; the framework inserts a divider
             // before the static items below. Title that section and add the global-search entry.

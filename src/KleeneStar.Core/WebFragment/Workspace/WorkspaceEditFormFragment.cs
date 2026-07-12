@@ -2,8 +2,10 @@
 using KleeneStar.Core.WebPolicies;
 using System.Reflection;
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -19,25 +21,24 @@ namespace KleeneStar.Core.WebFragment.Workspace
     [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Edit>]
     [Policy<WorkspaceAdminPolicy>]
     [Cache]
-    public sealed class WorkspaceEditFormFragment : FragmentControlRestFormEdit
+    public sealed class WorkspaceEditFormFragment : FragmentControlDataFormEdit
     {
         /// <summary>
         /// Gets the input text control for specifying the name of the workspace.
         /// </summary>
-        public ControlRestFormItemInputUnique WorkspaceName { get; } = new()
+        public ControlDataFormItemInputUnique WorkspaceName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Workspace.Name),
             Label = _ => "kleenestar.core:workspace.name.label",
             Placeholder = _ => "kleenestar.core:workspace.name.placeholder",
             Help = _ => "kleenestar.core:workspace.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueName>().ToString())};
 
         /// <summary>
         /// Gets the input text control for specifying the key of the workspace.
         /// </summary>
-        public ControlRestFormItemInputUnique Key { get; } = new()
+        public ControlDataFormItemInputUnique Key { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Workspace.Key),
             Label = _ => "kleenestar.core:workspace.key.label",
@@ -45,8 +46,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
             Help = _ => "kleenestar.core:workspace.key.help",
             Required = _ => true,
             MaxLength = _ => 10,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueKey>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.UniqueKey>().ToString())};
 
         /// <summary>
         /// Gets the input tag definition for the workspace category field.
@@ -74,40 +74,37 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// <summary>
         /// Gets the input selection control for the state.
         /// </summary>
-        public ControlRestFormItemInputSelection WorkspaceState { get; } = new()
+        public ControlDataFormItemInputSelection WorkspaceState { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Workspace.State),
             Label = _ => "kleenestar.core:workspace.state.label",
             Placeholder = _ => "kleenestar.core:workspace.state.placeholder",
             Help = _ => "kleenestar.core:workspace.state.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.State>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.State>().ToString())};
 
         /// <summary>
         /// Gets the input selection control for the inherited workspace.
         /// </summary>
-        public ControlRestFormItemInputSelection InheritedSelection { get; } = new()
+        public ControlDataFormItemInputSelection InheritedSelection { get; } = new()
         {
             Name = _ => "InheritedId",
             Label = _ => "kleenestar.core:workspace.inherited.label",
             Placeholder = _ => "kleenestar.core:workspace.inherited.placeholder",
             Help = _ => "kleenestar.core:workspace.inherited.help",
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Inherited>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces._workspacekey_.Inherited>().ToString())};
 
         /// <summary>
         /// Gets the input selection control for the access modifier.
         /// </summary>
-        public ControlRestFormItemInputSelection AccessModifierSelection { get; } = new()
+        public ControlDataFormItemInputSelection AccessModifierSelection { get; } = new()
         {
             Name = _ => "AccessModifier",
             Label = _ => "kleenestar.core:workspace.accessmodifier.label",
             Placeholder = _ => "kleenestar.core:workspace.accessmodifier.placeholder",
             Help = _ => "kleenestar.core:workspace.accessmodifier.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.AccessModifier>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.AccessModifier>().ToString())};
 
         /// <summary>
         /// Gets the checkbox control for the sealed flag.
@@ -147,8 +144,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
             Add(WorkspaceSealed);
             Add(Tenant);
             Add(WorkspaceState);
-
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Workspaces.Index>();
             ItemId = renderContext =>
             {
                 var key = renderContext.Request.GetParameter<WorkspaceKeyParameter>();

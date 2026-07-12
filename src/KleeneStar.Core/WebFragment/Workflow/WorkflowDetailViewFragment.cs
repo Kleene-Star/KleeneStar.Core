@@ -16,7 +16,7 @@ namespace KleeneStar.Core.WebFragment.Workflow
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Workflow._workflowid_.Index>]
     [Cache]
-    public sealed class WorkflowDetailViewFragment : FragmentControlRestWorkflow
+    public sealed class WorkflowDetailViewFragment : FragmentControlDataWorkflow
     {
         /// <summary>
         /// Initializes a new instance of the class.

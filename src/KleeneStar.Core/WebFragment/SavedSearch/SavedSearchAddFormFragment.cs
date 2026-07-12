@@ -1,4 +1,5 @@
 using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -15,7 +16,7 @@ namespace KleeneStar.Core.WebFragment.SavedSearch
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.SavedSearches.Add>]
     [Cache]
-    public sealed class SavedSearchAddFormFragment : FragmentControlRestFormAdd
+    public sealed class SavedSearchAddFormFragment : FragmentControlDataFormAdd
     {
         /// <summary>
         /// Gets the input control for the saved-search name.
@@ -75,7 +76,7 @@ namespace KleeneStar.Core.WebFragment.SavedSearch
             Add(Description);
             Add(Starred);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.SavedSearches.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.SavedSearches.Index>();
         }
 
         /// <summary>
@@ -90,3 +91,4 @@ namespace KleeneStar.Core.WebFragment.SavedSearch
         }
     }
 }
+

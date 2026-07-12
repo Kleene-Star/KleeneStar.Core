@@ -2,6 +2,7 @@ using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -25,7 +26,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <see cref="IIdentityManager"/>. The assign / unassign link targets the
     /// <see cref="WWW.Api._1_.Assignee._objectkey_.Index"/> REST endpoint, which flips the
     /// assignment for the current identity and redirects back to this page. The watcher row
-    /// keeps the previous behaviour: a <see cref="ControlRestObserver"/> wired to the
+    /// keeps the previous behaviour: a <see cref="ControlDataWatcher"/> wired to the
     /// <see cref="WWW.Api._1_.Watchers._objectkey_.Index"/> (list / add / remove) and
     /// <see cref="WWW.Api._1_.WatcherUsers._objectkey_.Index"/> (user search) endpoints.
     /// </remarks>
@@ -131,16 +132,12 @@ namespace KleeneStar.Core.WebFragment.Object
                 Format = _ => TypeFormatText.Small
             });
 
-            card.Add(new ControlRestObserver("object-property-watcher")
+            card.Add(new ControlDataWatcher("object-property-watcher")
             {
-                RestUri = ctx => CoreHub
-                    .GetUri<global::KleeneStar.Core.WWW.Api._1_.Watchers._objectkey_.Index>()
-                    .BindParameters(ctx.Request),
-                UsersUri = ctx => CoreHub
-                    .GetUri<global::KleeneStar.Core.WWW.Api._1_.WatcherUsers._objectkey_.Index>()
-                    .BindParameters(ctx.Request),
                 MaxVisible = _ => 6
-            });
+            }
+                .DataService<global::KleeneStar.Core.WWW.Api._1_.Watchers._objectkey_.Index>()
+                .UsersService<global::KleeneStar.Core.WWW.Api._1_.WatcherUsers._objectkey_.Index>());
 
             return card.Render(renderContext, visualTree);
         }

@@ -1,6 +1,8 @@
 ﻿using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -16,20 +18,19 @@ namespace KleeneStar.Core.WebFragment.Priority
     [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Add>]
     [Cache]
-    public sealed class PriorityAddFormFragment : FragmentControlRestFormAdd
+    public sealed class PriorityAddFormFragment : FragmentControlDataFormAdd
     {
         /// <summary>
         /// Gets the input text control for specifying the name of the priority.
         /// </summary>
-        public ControlRestFormItemInputUnique PriorityName { get; } = new()
+        public ControlDataFormItemInputUnique PriorityName { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Priority.Name),
             Label = _ => "kleenestar.core:priority.name.label",
             Placeholder = _ => "kleenestar.core:priority.name.placeholder",
             Help = _ => "kleenestar.core:priority.name.help",
             Required = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.UniqueName>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.UniqueName>().ToString())};
 
         /// <summary>
         /// Gets the input text control for specifying the description of the priority.
@@ -46,15 +47,14 @@ namespace KleeneStar.Core.WebFragment.Priority
         /// <summary>
         /// Gets the input selection control for the state.
         /// </summary>
-        public ControlRestFormItemInputSelection PriorityState { get; } = new()
+        public ControlDataFormItemInputSelection PriorityState { get; } = new()
         {
             Name = _ => nameof(Model.Entities.Priority.State),
             Label = _ => "kleenestar.core:priority.state.label",
             Placeholder = _ => "kleenestar.core:priority.state.placeholder",
             Help = _ => "kleenestar.core:priority.state.help",
             StickySelection = _ => true,
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.State>()
-        };
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.State>().ToString())};
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -67,7 +67,7 @@ namespace KleeneStar.Core.WebFragment.Priority
             Add(Description);
             Add(PriorityState);
 
-            Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Priorities.Index>();
         }
 
         /// <summary>

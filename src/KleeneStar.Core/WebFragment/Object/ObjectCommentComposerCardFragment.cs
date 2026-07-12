@@ -2,6 +2,7 @@ using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -22,9 +23,9 @@ namespace KleeneStar.Core.WebFragment.Object
     /// The composer posts via <c>POST /api/1/comments/{objectkey}</c> to the same REST
     /// endpoint the <see cref="ObjectCommentCardFragment"/> reads from
     /// (<see cref="WWW.Api._1_.Comments._objectkey_.Index"/>). The
-    /// <see cref="ControlRestCommentComposer.RestUri"/> is bound to the current
+    /// <see cref="ControlDataCommentComposer.RestUri"/> is bound to the current
     /// request's <see cref="ObjectKeyParameter"/>; the
-    /// <see cref="ControlRestCommentComposer.Placeholder"/> is sourced from the
+    /// <see cref="ControlDataCommentComposer.Placeholder"/> is sourced from the
     /// <c>kleenestar.core:comment.composer.placeholder</c> translation key.
     /// </remarks>
     [Section<SectionContentSecondary>]
@@ -38,12 +39,15 @@ namespace KleeneStar.Core.WebFragment.Object
         /// <summary>
         /// Gets the REST-backed comment composer control.
         /// </summary>
-        public ControlRestCommentComposer Composer { get; } = new("object-comment-composer")
+        public ControlDataCommentComposer Composer { get; } = new("object-comment-composer")
         {
             Placeholder = renderContext => I18N.Translate(renderContext, "kleenestar.core:comment.composer.placeholder"),
-            RestUri = renderContext => CoreHub
-                .GetUri<global::KleeneStar.Core.WWW.Api._1_.Comments._objectkey_.Index>()
-                .BindParameters(renderContext.Request),
+            ServiceFactory = renderContext => DataServiceDescriptor.QueryData
+            (
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Comments._objectkey_.Index>()
+                    .BindParameters(renderContext.Request)
+                    .ToString()
+            ),
             CurrentUser = _ => "Admin User"
         };
 

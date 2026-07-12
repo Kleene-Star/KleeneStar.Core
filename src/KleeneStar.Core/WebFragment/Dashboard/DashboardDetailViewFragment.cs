@@ -2,6 +2,7 @@ using KleeneStar.Core.WebParameter;
 using System.Linq;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -12,13 +13,13 @@ namespace KleeneStar.Core.WebFragment.Dashboard
 {
     /// <summary>
     /// Renders the selected dashboard on the content area of the dashboard view page using the
-    /// <c>ControlRestDashboard</c> control backed by the <c>RestApiDashboard</c> REST endpoint.
+    /// <c>ControlDataDashboard</c> control backed by the <c>RestApiDashboard</c> REST endpoint.
     /// </summary>
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Index>]
     [Scope<global::KleeneStar.Core.WWW.Dashboard._dashboardid_.Index>]
     [Cache]
-    public sealed class DashboardDetailViewFragment : FragmentControlRestDashboard
+    public sealed class DashboardDetailViewFragment : FragmentControlDataDashboard
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -30,7 +31,7 @@ namespace KleeneStar.Core.WebFragment.Dashboard
         public DashboardDetailViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            RestUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards._dashboardid_.View>();
+            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Dashboards._dashboardid_.View>().ToString());
         }
 
         /// <summary>
