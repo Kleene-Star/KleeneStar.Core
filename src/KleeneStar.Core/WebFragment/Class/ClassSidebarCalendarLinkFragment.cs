@@ -49,6 +49,7 @@ namespace KleeneStar.Core.WebFragment.Class
             Active = renderContext => IsActive(renderContext)
                 ? TypeActive.Active
                 : TypeActive.None;
+            Badge = renderContext => GetBadge(renderContext);
         }
 
         /// <summary>
@@ -133,6 +134,32 @@ namespace KleeneStar.Core.WebFragment.Class
             var classId = ResolveClassId(renderContext);
 
             return _uri.BindParameters(new ClassIdParameter(classId));
+        }
+
+        /// <summary>
+        /// Computes the trailing sidebar badge for the 'calendar' link: the number of calendars
+        /// attached to the resolved class. Returns <c>null</c> when no class can be resolved or
+        /// the class has no calendars, so an empty collection leaves the link badge-free rather
+        /// than showing a noisy zero.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The render context used to resolve the class identifier whose calendars are counted.
+        /// Cannot be null.
+        /// </param>
+        /// <returns>
+        /// The element count as a string, or <c>null</c> when there is nothing to display.
+        /// </returns>
+        private static string GetBadge(IRenderControlContext renderContext)
+        {
+            var classId = ResolveClassId(renderContext);
+            if (classId == Guid.Empty)
+            {
+                return null;
+            }
+
+            var count = CoreHub.CalendarManager.GetCalendars(new ClassIdParameter(classId)).Count();
+
+            return count > 0 ? count.ToString() : null;
         }
     }
 }

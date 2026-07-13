@@ -51,6 +51,7 @@ namespace KleeneStar.Core.WebFragment.Class
             Active = renderContext => IsActive(renderContext)
                 ? TypeActive.Active
                 : TypeActive.None;
+            Badge = renderContext => GetBadge(renderContext);
         }
 
         /// <summary>
@@ -165,6 +166,32 @@ namespace KleeneStar.Core.WebFragment.Class
 
             // bind the classId into the main URI
             return _uri.BindParameters(new ClassIdParameter(classId));
+        }
+
+        /// <summary>
+        /// Computes the trailing sidebar badge for the 'priorities' link: the number of
+        /// priorities defined on the resolved class. Returns <c>null</c> when no class can be
+        /// resolved or the class has no priorities, so an empty collection leaves the link
+        /// badge-free rather than showing a noisy zero.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The render context used to resolve the class identifier whose priorities are counted.
+        /// Cannot be null.
+        /// </param>
+        /// <returns>
+        /// The element count as a string, or <c>null</c> when there is nothing to display.
+        /// </returns>
+        private static string GetBadge(IRenderControlContext renderContext)
+        {
+            var classId = ResolveClassId(renderContext);
+            if (classId == Guid.Empty)
+            {
+                return null;
+            }
+
+            var count = CoreHub.PriorityManager.GetPriorities(new ClassIdParameter(classId)).Count();
+
+            return count > 0 ? count.ToString() : null;
         }
     }
 }
