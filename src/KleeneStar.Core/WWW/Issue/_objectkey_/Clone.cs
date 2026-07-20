@@ -5,22 +5,21 @@ using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Object._objectkey_
+namespace KleeneStar.Core.WWW.Issue._objectkey_
 {
     /// <summary>
-    /// Represents a page that handles the object deletion functionality within the 
-    /// web application.
+    /// Represents the page for cloning a clone within the workspace. 
     /// </summary>
-    [WebIcon<IconTrash>]
-    [Title("kleenestar.core:object.delete.title")]
+    [WebIcon<IconClone>]
+    [Title("kleenestar.core:object.clone.title")]
     [Scope<IScopeGeneral>]
     [Cache]
-    public sealed class Delete : IPage<VisualTreeWebApp>, IScope
+    public sealed class Clone : IPage<VisualTreeWebApp>, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Delete()
+        public Clone()
         {
         }
 

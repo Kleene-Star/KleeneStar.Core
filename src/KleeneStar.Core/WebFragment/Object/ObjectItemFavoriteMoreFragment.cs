@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -14,11 +14,11 @@ namespace KleeneStar.Core.WebFragment.Object
     /// Dropdown item in the object headline 'more' overflow menu that toggles the
     /// calling identity's star on the current object. The label reflects the current
     /// state; following the link flips it via the
-    /// <see cref="global::KleeneStar.Core.WWW.Object._objectkey_.Favorite"/> redirect
+    /// <see cref="global::KleeneStar.Core.WWW.Issue._objectkey_.Favorite"/> redirect
     /// page. Starred objects surface in the issue overview's "starred" quickfilter.
     /// </summary>
     [Section<SectionHeadlineMorePrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Cache]
     public sealed class ObjectItemFavoriteMoreFragment : FragmentControlDropdownItemLink
     {
@@ -36,7 +36,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 ? "kleenestar.core:object.favorite.remove.label"
                 : "kleenestar.core:object.favorite.add.label";
             Icon = _ => new IconStar();
-            Uri = renderContext => CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Favorite>()?
+            Uri = renderContext => CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Favorite>()?
                 .BindParameters(renderContext.Request);
         }
 

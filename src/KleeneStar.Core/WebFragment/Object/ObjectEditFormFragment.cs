@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
@@ -25,7 +25,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </summary>
     [Title("kleenestar.core:object.add.title")]
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Edit>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Edit>]
     [Cache]
     public sealed class ObjectEditFormFragment : FragmentControlDataFormEdit
     {

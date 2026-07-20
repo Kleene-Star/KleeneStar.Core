@@ -59,8 +59,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Assignee._objectkey_
                 CoreHub.ObjectManager.Update(@object);
             }
 
-            var target = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Index>()
-                ?.BindParameters(request);
+            // dispatch to the detail view matching the object's kind (/issue, /document, …)
+            var target = global::KleeneStar.Core.WebFragment.Object.ObjectKindCatalog
+                .ResolveDetailUri(@object)?
+                .BindParameters(request);
 
             return new ResponseMovedTemporarily(target);
         }

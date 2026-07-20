@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using WebExpress.WebCore.WebUri;
 
 namespace KleeneStar.Core.WebFragment.Object
 {
@@ -84,6 +85,99 @@ namespace KleeneStar.Core.WebFragment.Object
             {
                 return _kinds.TryGetValue(normalized, out var kind) ? kind : null;
             }
+        }
+
+        /// <summary>
+        /// Resolves the detail (reading) view route of the supplied object, addressed by
+        /// its kind. This is the single dispatch point every object link uses now that
+        /// the detail view is split per kind (<c>/issue</c>, <c>/document</c>,
+        /// <c>/blog</c>, …).
+        /// </summary>
+        /// <param name="object">The object to link to. May be null.</param>
+        /// <returns>The bound detail route, or <see langword="null"/> when the object is
+        /// null.</returns>
+        public static IUri ResolveDetailUri(Model.Entities.Object @object)
+        {
+            return @object is null ? null : ResolveDetailUri(@object.Kind, @object.Key);
+        }
+
+        /// <summary>
+        /// Resolves the detail (reading) view route for the supplied kind key and object
+        /// key. An unknown kind (e.g. the key of an uninstalled add-on) falls back to the
+        /// issue detail view so the link still resolves to something meaningful.
+        /// </summary>
+        /// <param name="kind">The object's kind key. May be null.</param>
+        /// <param name="objectKey">The object's key. May be null.</param>
+        /// <returns>The bound detail route.</returns>
+        public static IUri ResolveDetailUri(string kind, string objectKey)
+        {
+            var descriptor = GetKind(kind) ?? GetKind(Model.Entities.ObjectKind.Issue);
+
+            return descriptor?.DetailUri(objectKey);
+        }
+
+        /// <summary>
+        /// Resolves the detail route of the supplied object with its trailing object-key
+        /// path segment "frozen" into a constant.
+        /// </summary>
+        /// <remarks>
+        /// Some controls (notably the sidebar link) re-bind the URI they render against
+        /// the current request. On a detail page the request already carries an object
+        /// key, and <c>BindParameters</c> overwrites <em>any</em> matching variable
+        /// segment — so a link that targets a <em>different</em> object of the same kind
+        /// would be rewritten to point at the current object. Rebuilding the object-key
+        /// segment as a constant makes the URI immune to that re-bind while leaving the
+        /// (already constant) route and kind segments untouched. Use this for object links
+        /// rendered inside such a control on a detail page (e.g. the document tree and blog
+        /// timeline).
+        /// </remarks>
+        /// <param name="object">The object to link to. May be null.</param>
+        /// <returns>The frozen detail route, or <see langword="null"/> when the object is null.</returns>
+        public static IUri ResolveDetailUriFrozen(Model.Entities.Object @object)
+        {
+            var uri = ResolveDetailUri(@object);
+
+            if (uri is null)
+            {
+                return null;
+            }
+
+            var segments = uri.PathSegments.ToList();
+
+            // the object-key is the trailing (and only variable) segment of a detail route;
+            // keep the leading constants and re-append it as a constant
+            if (segments.Count < 2)
+            {
+                return uri;
+            }
+
+            return uri.Take(segments.Count - 1).Concat(segments[^1].ToString());
+        }
+
+        /// <summary>
+        /// Resolves the dedicated edit view route of the supplied object, addressed by
+        /// its kind. Returns <see langword="null"/> for kinds that edit inline / via a
+        /// modal (such as the issue kind).
+        /// </summary>
+        /// <param name="object">The object to edit. May be null.</param>
+        /// <returns>The bound edit route, or <see langword="null"/>.</returns>
+        public static IUri ResolveEditUri(Model.Entities.Object @object)
+        {
+            return @object is null ? null : ResolveEditUri(@object.Kind, @object.Key);
+        }
+
+        /// <summary>
+        /// Resolves the dedicated edit view route for the supplied kind key and object
+        /// key. Returns <see langword="null"/> when the kind has no dedicated edit route.
+        /// </summary>
+        /// <param name="kind">The object's kind key. May be null.</param>
+        /// <param name="objectKey">The object's key. May be null.</param>
+        /// <returns>The bound edit route, or <see langword="null"/>.</returns>
+        public static IUri ResolveEditUri(string kind, string objectKey)
+        {
+            var descriptor = GetKind(kind) ?? GetKind(Model.Entities.ObjectKind.Issue);
+
+            return descriptor?.EditUri(objectKey);
         }
     }
 }

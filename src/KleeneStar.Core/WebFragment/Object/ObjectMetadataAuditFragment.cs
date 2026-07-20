@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.Internationalization;
@@ -13,7 +13,7 @@ namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
     /// Headline-metadata fragment that renders the audit trail of the current object on
-    /// <see cref="WWW.Object._objectkey_.Index"/> in plain text: who created it, who last
+    /// <see cref="WWW.Issue._objectkey_.Index"/> in plain text: who created it, who last
     /// updated it, and when the last update happened.
     /// </summary>
     /// <remarks>
@@ -24,7 +24,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// purely informational and carries no interactive controls.
     /// </remarks>
     [Section<SectionHeadlineMetadata>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(1)]
     [Cache]
     public sealed class ObjectMetadataAuditFragment : FragmentControlPanel

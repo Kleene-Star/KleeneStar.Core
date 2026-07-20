@@ -1,4 +1,4 @@
-using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// secondary area and highlighted in the danger color.
     /// </summary>
     [Section<SectionHeadlineMoreSecondary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Cache]
     public sealed class ObjectItemDeleteMoreFragment : FragmentControlDropdownItemLink
     {
@@ -35,7 +35,7 @@ namespace KleeneStar.Core.WebFragment.Object
             PrimaryAction = renderContext => new ActionModal
             (
                 "modal-form",
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Delete>()
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Delete>()
                     .BindParameters(renderContext.Request),
                 TypeModalSize.Default
             );

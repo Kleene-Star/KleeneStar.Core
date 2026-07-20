@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System.Linq;
@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
     /// Object-scoped fragment that renders a card displaying every SLA policy attached
-    /// to the current object's class on <see cref="WWW.Object._objectkey_.Index"/>.
+    /// to the current object's class on <see cref="WWW.Issue._objectkey_.Index"/>.
     /// </summary>
     /// <remarks>
     /// The fragment resolves the object addressed by the request, looks up all active
@@ -26,7 +26,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// empty-state message.
     /// </remarks>
     [Section<SectionPropertyPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(0)]
     [Cache]
     public sealed class ObjectSlaCardFragment : FragmentControlPanel

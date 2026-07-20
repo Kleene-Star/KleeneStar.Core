@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System;
@@ -18,7 +18,7 @@ namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
     /// Object-scoped content card that lists the files attached to the object currently
-    /// displayed on <see cref="WWW.Object._objectkey_.Index"/> and offers a drag-and-drop
+    /// displayed on <see cref="WWW.Issue._objectkey_.Index"/> and offers a drag-and-drop
     /// upload zone for adding new ones.
     /// </summary>
     /// <remarks>
@@ -31,7 +31,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// the attachment metadata through the manager.
     /// </remarks>
     [Section<SectionContentSecondary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(0)]
     [Cache]
     public sealed class ObjectAttachmentCardFragment : FragmentControlPanel
@@ -243,7 +243,7 @@ namespace KleeneStar.Core.WebFragment.Object
         /// <returns>The bound upload URI, or <c>null</c> when the page is not registered.</returns>
         private static IUri ResolveUploadUri(IRenderControlContext renderContext)
         {
-            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Index>();
+            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>();
             if (uri is null)
             {
                 return null;

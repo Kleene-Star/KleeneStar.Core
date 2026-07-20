@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
@@ -22,7 +22,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </summary>
     [Title("kleenestar.core:object.clone.title")]
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Clone>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Clone>]
     [Cache]
     public sealed class ObjectCloneFormFragment : FragmentControlDataFormClone
     {

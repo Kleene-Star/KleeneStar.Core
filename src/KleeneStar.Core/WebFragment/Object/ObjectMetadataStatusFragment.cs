@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
     /// <summary>
     /// Headline-metadata fragment that surfaces the current workflow status of the object on
-    /// <see cref="WWW.Object._objectkey_.Index"/> as a read-only pill badge.
+    /// <see cref="WWW.Issue._objectkey_.Index"/> as a read-only pill badge.
     /// </summary>
     /// <remarks>
     /// The status is resolved exactly like the interactive
@@ -33,7 +33,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// keeping the metadata line clean.
     /// </remarks>
     [Section<SectionHeadlineMetadata>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(0)]
     [Cache]
     public sealed class ObjectMetadataStatusFragment : FragmentControlPanel

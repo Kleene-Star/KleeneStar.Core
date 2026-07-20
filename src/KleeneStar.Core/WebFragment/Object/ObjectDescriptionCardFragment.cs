@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <summary>
     /// Object-scoped content card that renders the
     /// <see cref="Model.Entities.Object.Description"/> of the current object as an
-    /// inline-editable rich-text block on <see cref="WWW.Object._objectkey_.Index"/>.
+    /// inline-editable rich-text block on <see cref="WWW.Issue._objectkey_.Index"/>.
     /// </summary>
     /// <remarks>
     /// The card wraps a <see cref="ControlSmartEdit"/> that persists changes through
@@ -27,7 +27,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// above the form-driven <see cref="ObjectItemDetailFragment"/>.
     /// </remarks>
     [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(0)]
     [Cache]
     public sealed class ObjectDescriptionCardFragment : FragmentControlPanel

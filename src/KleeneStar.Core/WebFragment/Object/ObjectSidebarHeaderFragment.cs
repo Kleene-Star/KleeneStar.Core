@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -10,16 +10,19 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Represents a sidebar header fragment that displays object-related information within
-    /// the user interface sidebar. On the object detail page the header shows the object's
-    /// summary; on the workspace-level object listing the header falls back to the
-    /// workspace name.
+    /// Represents the workspace header shown at the top of the sidebar on the kind
+    /// overviews and the per-kind detail pages. It always displays the workspace name, so
+    /// the detail pages carry the same workspace-navigation sidebar as their overview: on
+    /// the overviews the workspace comes straight from the route, on a detail page it is
+    /// resolved through the addressed object.
     /// </summary>
     [Section<SectionSidebarPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Documents._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Blogs._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Document._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Index>]
     [Cache]
     public sealed class ObjectSidebarHeaderFragment : FragmentControlSidebarItemHeader
     {
@@ -61,15 +64,16 @@ namespace KleeneStar.Core.WebFragment.Object
         /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var objectKey = renderContext.Request.GetParameter<ObjectKeyParameter>();
-            if (!string.IsNullOrEmpty(objectKey?.Value))
-            {
-                var @object = _objectManager.GetObjectByKey(objectKey.Value);
-                return base.Render(renderContext, visualTree, @object?.Summary);
-            }
-
+            // the workspace comes from the route on the overviews and from the addressed
+            // object on the detail pages, so both carry the same workspace header
             var workspaceKey = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
             var workspace = _workspaceManager.GetWorkspaceByKey(workspaceKey?.Value);
+
+            if (workspace is null)
+            {
+                var objectKey = renderContext.Request.GetParameter<ObjectKeyParameter>();
+                workspace = _objectManager.GetObjectByKey(objectKey?.Value)?.Workspace;
+            }
 
             return base.Render(renderContext, visualTree, workspace?.Name);
         }

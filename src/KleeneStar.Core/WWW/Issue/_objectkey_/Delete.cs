@@ -1,26 +1,26 @@
-using WebExpress.WebApp.WebPage;
+﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Object._objectkey_
+namespace KleeneStar.Core.WWW.Issue._objectkey_
 {
     /// <summary>
-    /// Represents a page that handles the object printing functionality within the
+    /// Represents a page that handles the object deletion functionality within the 
     /// web application.
     /// </summary>
-    [WebIcon<IconPrint>]
-    [Title("kleenestar.core:object.print.title")]
+    [WebIcon<IconTrash>]
+    [Title("kleenestar.core:object.delete.title")]
     [Scope<IScopeGeneral>]
     [Cache]
-    public sealed class Print : IPage<VisualTreeWebApp>, IScope
+    public sealed class Delete : IPage<VisualTreeWebApp>, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Print()
+        public Delete()
         {
         }
 

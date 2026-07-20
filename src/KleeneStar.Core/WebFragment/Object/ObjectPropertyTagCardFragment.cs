@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System.Linq;
@@ -14,7 +14,7 @@ namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
     /// Object-scoped property card that renders the tags (labels) attached to the current
-    /// object on <see cref="WWW.Object._objectkey_.Index"/> as a row of colored badges.
+    /// object on <see cref="WWW.Issue._objectkey_.Index"/> as a row of colored badges.
     /// </summary>
     /// <remarks>
     /// The tags are resolved through <see cref="IObjectTagManager"/>. Each tag is rendered as
@@ -23,7 +23,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// when no color is stored. The card is hidden when the object carries no tags.
     /// </remarks>
     [Section<SectionPropertyPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(7)]
     [Cache]
     public sealed class ObjectPropertyTagCardFragment : FragmentControlPanel

@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -203,7 +203,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_
         /// <returns>The table row.</returns>
         private static RestApiTableRow BuildRow(ObjectEntity issue, bool starred, IRequest request)
         {
-            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Index>()?
+            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>()?
                 .BindParameters(new ObjectKeyParameter(issue.Key));
 
             return new RestApiTableRow()
@@ -234,16 +234,16 @@ namespace KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_
         private static IEnumerable<RestApiOption> GetOptions(ObjectEntity issue, bool starred, IRequest request)
         {
             var keyParameter = new ObjectKeyParameter(issue.Key);
-            var editUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Edit>()?
+            var editUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Edit>()?
                 .BindParameters(request)
                 .BindParameters(keyParameter);
-            var cloneUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Clone>()?
+            var cloneUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Clone>()?
                 .BindParameters(request)
                 .BindParameters(keyParameter);
-            var deleteUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Delete>()?
+            var deleteUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Delete>()?
                 .BindParameters(request)
                 .BindParameters(keyParameter);
-            var favoriteUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Favorite>()?
+            var favoriteUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Favorite>()?
                 .BindParameters(request)
                 .BindParameters(keyParameter);
 

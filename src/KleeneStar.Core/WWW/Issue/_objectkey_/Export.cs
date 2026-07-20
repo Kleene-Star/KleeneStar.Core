@@ -1,25 +1,26 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
-using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Object
+namespace KleeneStar.Core.WWW.Issue._objectkey_
 {
     /// <summary>
-    /// Provides functionality for managing the current workspace page.
+    /// Represents a page that handles the object export functionality within the
+    /// web application.
     /// </summary>
-    [WebIcon<IconObject>]
-    [SegmentHidden]
+    [WebIcon<IconFileExport>]
+    [Title("kleenestar.core:object.export.title")]
     [Scope<IScopeGeneral>]
     [Cache]
-    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
+    public sealed class Export : IPage<VisualTreeWebApp>, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Index()
+        public Export()
         {
         }
 
@@ -30,10 +31,6 @@ namespace KleeneStar.Core.WWW.Object
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
-            throw new RedirectException
-            (
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Index>()
-            );
         }
     }
 }

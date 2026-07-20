@@ -186,8 +186,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         {
             return new ActionFrame("object-view-frame")
             {
-                Uri = CoreHub.GetUri<Object._objectkey_.Index>()?
-                        .BindParameters(new ObjectKeyParameter(item.Key))
+                Uri = global::KleeneStar.Core.WebFragment.Object.ObjectKindCatalog
+                        .ResolveDetailUri(item)
             };
         }
     }

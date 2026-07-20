@@ -129,8 +129,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         /// <returns>The object detail URI.</returns>
         private static IUri GetUri(Model.Entities.Object row)
         {
-            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Index>()?
-                .BindParameters(new ObjectKeyParameter(row?.Key));
+            return global::KleeneStar.Core.WebFragment.Object.ObjectKindCatalog
+                .ResolveDetailUri(row);
         }
     }
 }

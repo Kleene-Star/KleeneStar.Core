@@ -95,8 +95,7 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
             {
                 Text = _ => "kleenestar.core:object.kind.documents.open.label",
                 Icon = _ => (IIcon)home.Icon ?? new IconFileLines(),
-                Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Index>()
-                    .BindParameters(new ObjectKeyParameter(home.Key))
+                Uri = _ => ObjectKindCatalog.ResolveDetailUri(home)
             });
 
             return card.Render(renderContext, visualTree);

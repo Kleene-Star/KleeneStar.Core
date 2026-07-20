@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
@@ -35,7 +35,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <see cref="ObjectCommentComposerCardFragment"/>.
     /// </remarks>
     [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Cache]
     public sealed class ObjectItemDetailFragment : FragmentControlPanel
     {

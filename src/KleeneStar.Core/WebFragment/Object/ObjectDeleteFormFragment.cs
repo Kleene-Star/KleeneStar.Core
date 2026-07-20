@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </summary>
     [Title("kleenestar.core:object.delete.title")]
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Delete>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Delete>]
     [Cache]
     public sealed class ObjectDeleteFormFragment : FragmentControlDataFormDelete
     {

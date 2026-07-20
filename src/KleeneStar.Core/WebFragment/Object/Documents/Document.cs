@@ -1,3 +1,4 @@
+using KleeneStar.Core.WebParameter;
 using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
@@ -35,5 +36,25 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
         /// Gets the unbound route of the document overview page (the document tree).
         /// </summary>
         public IUri OverviewUri => CoreHub.GetUri<global::KleeneStar.Core.WWW.Documents._workspacekey_.Index>();
+
+        /// <summary>
+        /// Returns the document reading view bound to the supplied object key
+        /// (<c>/document/{objectkey}</c>).
+        /// </summary>
+        /// <param name="objectKey">The key of the document to address.</param>
+        /// <returns>The bound reading-view route.</returns>
+        public IUri DetailUri(string objectKey) => CoreHub
+            .GetUri<global::KleeneStar.Core.WWW.Document._objectkey_.Index>()?
+            .BindParameters(new ObjectKeyParameter(objectKey));
+
+        /// <summary>
+        /// Returns the document editing view bound to the supplied object key
+        /// (<c>/document/{objectkey}/edit</c>).
+        /// </summary>
+        /// <param name="objectKey">The key of the document to address.</param>
+        /// <returns>The bound editing-view route.</returns>
+        public IUri EditUri(string objectKey) => CoreHub
+            .GetUri<global::KleeneStar.Core.WWW.Document._objectkey_.Edit>()?
+            .BindParameters(new ObjectKeyParameter(objectKey));
     }
 }

@@ -1,4 +1,4 @@
-using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -14,7 +14,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// print dialog for the current object.
     /// </summary>
     [Section<SectionHeadlineMorePrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Cache]
     public sealed class ObjectItemPrintMoreFragment : FragmentControlDropdownItemLink
     {
@@ -33,7 +33,7 @@ namespace KleeneStar.Core.WebFragment.Object
             PrimaryAction = renderContext => new ActionModal
             (
                 "modal-form",
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Print>()
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Print>()
                     .BindParameters(renderContext.Request),
                 TypeModalSize.Large
             );

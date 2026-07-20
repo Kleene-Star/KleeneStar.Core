@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
@@ -14,7 +14,7 @@ namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
     /// Object-scoped content card that renders the comment thread for the object
-    /// currently displayed on <see cref="WWW.Object._objectkey_.Index"/>.
+    /// currently displayed on <see cref="WWW.Issue._objectkey_.Index"/>.
     /// </summary>
     /// <remarks>
     /// The card hosts a single <see cref="ControlDataComment"/> whose
@@ -27,7 +27,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// at the end of the page, by <see cref="ObjectCommentComposerCardFragment"/>.
     /// </remarks>
     [Section<SectionContentSecondary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Cache]
     public sealed class ObjectCommentCardFragment : FragmentControlPanel
     {

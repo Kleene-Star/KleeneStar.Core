@@ -101,22 +101,23 @@ Both kinds are persisted as plain, lower-case string keys (defaulting to `issue`
 
 ### Extensibility (add-ons)
 
-The UI-side counterpart of the persisted key is the `IObjectKind` descriptor (key, i18n label, icon, order, overview route) registered in the `ObjectKindCatalog`. The core registers its three built-in kinds; an add-on introduces a new kind by:
+The UI-side counterpart of the persisted key is the `IObjectKind` descriptor (key, i18n label, icon, order, overview route, and the per-kind **detail route** `DetailUri(objectKey)` plus an optional **edit route** `EditUri(objectKey)`) registered in the `ObjectKindCatalog`. Because each kind now owns its own detail view (see *Object Detail View* below), `ObjectKindCatalog.ResolveDetailUri(object)` and `ResolveEditUri(object)` are the **single dispatch points** every object link uses to reach the view matching an object's kind; an unknown key (e.g. of an uninstalled add-on) falls back to the issue route. The core registers its three built-in kinds; an add-on introduces a new kind by:
 
-1. implementing `IObjectKind` and calling `ObjectKindCatalog.Register(...)` from its plugin initialization,
-2. contributing an overview page for the kind (a workspace-scoped page like `WWW/Documents/{workspacekey}`),
-3. deriving a sidebar link from `ObjectKindSidebarLinkFragment` and scoping it to the kind overviews and the object detail page, and
-4. contributing the kind's view fragments scoped to its overview page.
+1. implementing `IObjectKind` — including `DetailUri`/`EditUri` — and calling `ObjectKindCatalog.Register(...)` from its plugin initialization,
+2. contributing an overview page for the kind (a workspace-scoped page like `WWW/Documents/{workspacekey}`) and a detail page (an object-scoped page like `WWW/Document/{objectkey}`) that `DetailUri` returns,
+3. deriving a sidebar link from `ObjectKindSidebarLinkFragment` and scoping it to the kind overviews and the per-kind detail pages, and
+4. contributing the kind's view fragments scoped to its overview and detail pages.
 
 Because the sidebar links and views compose declaratively via Section/Scope attributes, no core code changes are needed. The catalog does not gate persistence — it is the lookup UI components use to resolve a key to its presentation. Registered kinds automatically appear as options in the "Object type" selection of the class forms.
 
 ### Navigation and starring
 
-Every kind overview and the object detail page carry the kind links (Documents, Blogs, Issues) in their sidebar, so the kinds stay switchable from everywhere. The issue overview is the workspace's content landing page; the former objects overview has been removed entirely (its `/objects/{workspacekey}` route no longer exists), and the organize dialog now lives under `/issues/{workspacekey}/organize`. Only the add-object wizard keeps its `/objects/add` route. Every identity can additionally **star** objects: the star toggle lives in the object headline's more menu and in the issue overview's row menu, and starred issues surface under the issue overview's "Starred" quickfilter. The star is stored per identity on the object visit row (`ObjectVisit.Favorite`), mirroring the combined favorite/recency design of the workspace bookmark.
+Every per-kind detail page carries the **same sidebar as its kind overview** — the workspace header and icon, the kind links (Documents, Blogs, Issues), the workspace settings toolbar, and, for documents and blogs, the document tree resp. blog timeline — so navigation stays continuous when moving from the overview into an object. In that tree/timeline the entry of the currently displayed document (or post) is highlighted as **active** and the path down to it is expanded so it is on screen. The kinds thus stay switchable from everywhere. The issue overview is the workspace's content landing page; the former objects overview has been removed entirely (its `/objects/{workspacekey}` route no longer exists), and the organize dialog now lives under `/issues/{workspacekey}/organize`. Only the add-object wizard keeps its `/objects/add` route. Every identity can additionally **star** objects: the star toggle lives in the object headline's more menu and in the issue overview's row menu, and starred issues surface under the issue overview's "Starred" quickfilter. The star is stored per identity on the object visit row (`ObjectVisit.Favorite`), mirroring the combined favorite/recency design of the workspace bookmark.
 
 ### Known limitations
 
 - The kind is class-wide by design: an object cannot override the kind of its class. To move a single object into another kind overview, move it to a class of that kind.
+- The document and blog detail views are prose-only: their reading view shows the title and rich-text body (plus a date/author line for posts) and their editing view (a fullscreen modal) edits just those, without the class field structure, comment thread, or attachment area of the issue view. To capture structured fields or a discussion on such an object, model it with a class of the issue kind. The reading view behind the modal is not live-refreshed, so the edited prose becomes visible on the next load of the reading page.
 - The document tree and blog timeline in the sidebars render the first 200 objects of their kind ("top 200") to keep the pages responsive; there is no paging within the trees yet. The home document is simply the first root of the tree — a designated home page is not modeled yet.
 - The issue overview filters and pages in memory (the starred scope is a per-identity projection a WebIndex query cannot express); the advanced-search box only feeds the plain-text `q` filter — full WQL is not wired to this projection.
 
@@ -320,13 +321,23 @@ The object overview page is the central view for displaying objects of a specifi
 
 ### Object Management - Object Detail View (Page)
 
-The detail view of an object is presented via a form defined in the form management for the respective object class. This view displays all fields and metadata of the object in a structured form and provides a comprehensive overview of the current state and context. The page is typically divided into sections to present different information areas such as attributes, linked objects, comments, attachments, and version history clearly.
+Each **kind** owns its own detail view, reached at a kind-specific route resolved through `ObjectKindCatalog.ResolveDetailUri` (see *Object Kinds*):
+
+- **Issue** — `/issue/{objectKey}`: the full, form-driven work-item view described in the rest of this section and shown below.
+- **Document** — `/document/{objectKey}` (reading) and `/document/{objectKey}/edit` (editing).
+- **Blog** — `/blog/{objectKey}` (reading) and `/blog/{objectKey}/edit` (editing).
+
+Opening any object link routes to the view matching that object's kind; requesting the wrong route for an object (e.g. a document under `/issue/…`) transparently redirects to the correct one.
+
+The **issue** detail view is presented via a form defined in the form management for the respective object class. This view displays all fields and metadata of the object in a structured form and provides a comprehensive overview of the current state and context. The page is typically divided into sections to present different information areas such as attributes, linked objects, comments, attachments, and version history clearly.
 
 Workflow transitions are prominently offered as actions, enabling the user to advance the process directly from the detail view. These actions are context-sensitive and may offer different options depending on the status and role.
 
 A central component of the detail view is the comment area. Users can add new comments, reply to existing posts, and build a chronological communication history for the object. This supports transparent documentation of decisions, inquiries, and processing steps.
 
 Handling attachments is also user-friendly: files can be dragged and dropped directly into the window, where they are automatically associated with the object and displayed in the "Attachments" section. This makes it easy to quickly add screenshots, documents, or other relevant files without needing separate upload steps.
+
+For the **document** and **blog** kinds the detail view is deliberately reduced to prose. The **reading view** presents the object's title (in the headline) and its rich-text body — a blog post additionally shows a date/author line — without the form-driven field structure, comment thread, or attachment area of the issue view. An **Edit** button in the headline opens the **editing view as a fullscreen modal** (hosted by the object's `/…/edit` route): a focused form for just the title and body that persists through the same object REST endpoint and, like the issue edit modal, closes automatically on a successful save, returning to the reading view. The document reading page keeps the workspace's document tree in the sidebar (blogs keep their timeline), so navigation within the kind is preserved while reading.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
@@ -969,15 +980,17 @@ The sitemap supports both technical integration and conceptual design of the use
 |`/objects`                        |Object overview         |Global, workspace-wide search for objects.
 |`/objects/{workspaceKey}`         |Object overview         |Workspace‑specific search for objects.
 |`/objects/{workspaceKey}/add`     |Object creation         |Opens the modal for selecting an object template to create a new object.
-|`/object/{objectKey}`             |Object detail view      |Detailed view of a single object.
-|`/object/{objectKey}/edit`        |Object editing          |Form for editing the metadata of an existing object.
-|`/object/{objectKey}/delete`      |Object deletion         |Confirmation and execution of the deletion process.
-|`/object/{objectKey}/move`        |Object move             |Move an object to another workspace or class.
-|`/object/{objectKey}/export`      |Object export           |Export an object in different formats.
-|`/object/{objectKey}/permissions` |Permissions management  |Manage access rights for an object.
-|`/object/{objectKey}/link`        |Linking                 |Add links to an object.
-|`/object/{objectKey}/subobject`   |Subobject creation      |Start the process to create a subobject.
-|`/object/{objectKey}/show-as`     |View-as                 |View the object from another user’s perspective.
+|`/issue/{objectKey}`              |Issue detail view       |Full, form-driven detail view of an issue (fields, workflow, comments, attachments).
+|`/issue/{objectKey}/edit`         |Issue editing           |Modal form for editing an issue's metadata.
+|`/issue/{objectKey}/clone`        |Issue clone             |Clone an issue.
+|`/issue/{objectKey}/delete`       |Issue deletion          |Confirmation and execution of the deletion process.
+|`/issue/{objectKey}/export`       |Issue export            |Export an issue in different formats.
+|`/issue/{objectKey}/permission`   |Permissions management  |Manage access rights for an issue.
+|`/issue/{objectKey}/print`        |Issue print             |Printable rendering of an issue.
+|`/document/{objectKey}`           |Document reading view   |Prose reading view of a document (title + rich-text body).
+|`/document/{objectKey}/edit`      |Document editing view   |Fullscreen modal form (opened from the reading view) for a document's title and body.
+|`/blog/{objectKey}`               |Blog reading view       |Prose reading view of a blog post (date/author + body).
+|`/blog/{objectKey}/edit`          |Blog editing view       |Fullscreen modal form (opened from the reading view) for a blog post's title and body.
 
 ## API Interfaces (REST Endpoints)
 

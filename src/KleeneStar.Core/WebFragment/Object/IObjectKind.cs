@@ -49,5 +49,28 @@ namespace KleeneStar.Core.WebFragment.Object
         /// workspace-key parameter) before navigating.
         /// </summary>
         IUri OverviewUri { get; }
+
+        /// <summary>
+        /// Returns the route of the kind's detail (reading) view bound to the supplied
+        /// object key, e.g. <c>/issue/{objectkey}</c> or <c>/document/{objectkey}</c>.
+        /// Every kind has a detail view, so this is expected to be non-null for a
+        /// registered kind.
+        /// </summary>
+        /// <param name="objectKey">The key of the object to address. May be null.</param>
+        /// <returns>The bound detail route, or <see langword="null"/> when the kind has
+        /// no dedicated detail view.</returns>
+        IUri DetailUri(string objectKey);
+
+        /// <summary>
+        /// Returns the route of the kind's dedicated editing view bound to the supplied
+        /// object key, e.g. <c>/document/{objectkey}/edit</c>. Returns
+        /// <see langword="null"/> for kinds that edit inline or through a modal rather
+        /// than on a dedicated page (the issue kind edits via a modal, so it has no edit
+        /// route).
+        /// </summary>
+        /// <param name="objectKey">The key of the object to address. May be null.</param>
+        /// <returns>The bound edit route, or <see langword="null"/> when the kind has no
+        /// dedicated edit view.</returns>
+        IUri EditUri(string objectKey);
     }
 }

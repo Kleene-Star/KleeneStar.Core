@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
@@ -17,7 +17,7 @@ namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
     /// Object-scoped property card that groups the people related to the current object on
-    /// <see cref="WWW.Object._objectkey_.Index"/>: its creator, its current assignee (with a
+    /// <see cref="WWW.Issue._objectkey_.Index"/>: its creator, its current assignee (with a
     /// one-click "assign to me" / "unassign" link), and the watcher avatar row.
     /// </summary>
     /// <remarks>
@@ -31,7 +31,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <see cref="WWW.Api._1_.WatcherUsers._objectkey_.Index"/> (user search) endpoints.
     /// </remarks>
     [Section<SectionPropertyPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(5)]
     [Cache]
     public sealed class ObjectPropertyPeopleCardFragment : FragmentControlPanel

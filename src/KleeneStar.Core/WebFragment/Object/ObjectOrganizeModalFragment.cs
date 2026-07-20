@@ -1,4 +1,4 @@
-using WebExpress.WebApp.WebSection;
+﻿using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -22,7 +22,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// at body level rather than nested inside a content column that could clip it.
     /// </remarks>
     [Section<SectionBodySecondary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Cache]
     public sealed class ObjectOrganizeModalFragment : ControlModalRemotePage, IFragmentControl<ControlModalRemotePage>
     {

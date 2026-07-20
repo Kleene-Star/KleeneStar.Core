@@ -20,6 +20,9 @@ namespace KleeneStar.Core.WebFragment.Workspace
     [Scope<global::KleeneStar.Core.WWW.Documents._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Blogs._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Document._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Index>]
     [Policy<WorkspaceViewPolicy>]
     [Cache]
     public sealed class WorkspaceSidebarSettingFragment : FragmentControlToolbarItemDropdown
@@ -60,6 +63,17 @@ namespace KleeneStar.Core.WebFragment.Workspace
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
+
+            // on the per-kind detail pages the route carries only the object key, so the
+            // workspace-bound action links are resolved through the addressed object's
+            // workspace instead
+            if (string.IsNullOrEmpty(keyParameter?.Value))
+            {
+                var objectKey = renderContext.Request.GetParameter<ObjectKeyParameter>();
+                var workspaceKey = CoreHub.ObjectManager.GetObjectByKey(objectKey?.Value)?.Workspace?.Key;
+                keyParameter = new WorkspaceKeyParameter(workspaceKey);
+            }
+
             var editUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Edit>()?
                 .BindParameters(keyParameter);
             var cloneUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Clone>()?

@@ -13,7 +13,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// Represents a control fragment that provides a button link for edit a object within the workspace.
     /// </summary>
     [Section<SectionHeadlinePrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Cache]
     public sealed class ObjectItemEditButtonFragment : FragmentControlButtonLink
     {
@@ -34,7 +34,7 @@ namespace KleeneStar.Core.WebFragment.Object
             PrimaryAction = renderContext => new ActionModal
             (
                 "modal-form",
-                CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Edit>()
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Edit>()
                     .BindParameters(renderContext.Request),
                 TypeModalSize.ExtraLarge
             );

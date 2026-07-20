@@ -29,9 +29,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         /// </summary>
         public Table()
         {
-            _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Edit>();
-            _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Clone>();
-            _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Delete>();
+            // this table lists the issue kind only (see RetrieveRows), so the edit / clone /
+            // delete modals target the issue action pages that host the generic object CRUD
+            _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Edit>();
+            _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Clone>();
+            _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Delete>();
         }
 
         /// <summary>
@@ -225,8 +227,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         /// </returns>
         private static IUri GetUri(Model.Entities.Object row, IRequest request)
         {
-            return CoreHub.GetUri<Object._objectkey_.Index>()?
-                .BindParameters(new ObjectKeyParameter(row?.Key))
+            return global::KleeneStar.Core.WebFragment.Object.ObjectKindCatalog
+                .ResolveDetailUri(row)?
                 .BindParameters(request);
         }
 

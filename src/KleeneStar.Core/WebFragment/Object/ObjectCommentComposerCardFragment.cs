@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
     /// Object-scoped content card that renders the new-comment composer for the object
-    /// currently displayed on <see cref="WWW.Object._objectkey_.Index"/>. The card is
+    /// currently displayed on <see cref="WWW.Issue._objectkey_.Index"/>. The card is
     /// pinned to the end of the page via the maximum <see cref="OrderAttribute"/> value
     /// so it always renders below every other content fragment.
     /// </summary>
@@ -29,7 +29,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <c>kleenestar.core:comment.composer.placeholder</c> translation key.
     /// </remarks>
     [Section<SectionContentSecondary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(int.MaxValue)]
     [Cache]
     public sealed class ObjectCommentComposerCardFragment : FragmentControlPanel

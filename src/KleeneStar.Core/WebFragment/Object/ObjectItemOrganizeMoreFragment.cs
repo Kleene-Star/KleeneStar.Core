@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -22,7 +22,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// controller (<c>assets/js/objectmovetree.js</c>) onto the parent page during render.
     /// </remarks>
     [Section<SectionHeadlineMorePrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Cache]
     public sealed class ObjectItemOrganizeMoreFragment : FragmentControlDropdownItemLink
     {

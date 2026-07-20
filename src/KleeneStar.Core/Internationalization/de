@@ -408,6 +408,13 @@ object.kind.issues.column.key=Schlüssel
 object.kind.issues.column.summary=Zusammenfassung
 object.kind.issues.column.updated=Aktualisiert
 
+# object kind detail views (document / blog reading + editing)
+object.prose.edit.label=Bearbeiten
+object.kind.document.read.empty=Dieses Dokument hat noch keinen Inhalt.
+object.kind.blog.read.empty=Dieser Beitrag hat noch keinen Inhalt.
+object.kind.document.edit.title=Dokument bearbeiten
+object.kind.blog.edit.title=Beitrag bearbeiten
+
 # objects index view tabs (ControlDataTab)
 object.tab.header=Ansichten
 object.view.table.label=Tabelle

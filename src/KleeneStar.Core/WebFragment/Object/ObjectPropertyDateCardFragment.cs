@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System;
@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <summary>
     /// Object-scoped property card that surfaces every <see cref="FieldType.Date"/> field of
     /// the current object's class as an inline-editable "field name: value" row on
-    /// <see cref="WWW.Object._objectkey_.Index"/>.
+    /// <see cref="WWW.Issue._objectkey_.Index"/>.
     /// </summary>
     /// <remarks>
     /// The date fields are intentionally omitted from the form-driven detail view rendered by
@@ -28,7 +28,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// so edits persist inline via the object REST API exactly as they did in the detail list.
     /// </remarks>
     [Section<SectionPropertyPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(3)]
     [Cache]
     public sealed class ObjectPropertyDateCardFragment : FragmentControlPanel

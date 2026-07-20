@@ -38,6 +38,8 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
     /// </remarks>
     [Section<SectionSidebarPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Blogs._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Edit>]
     [Policy<WorkspaceViewPolicy>]
     [Order(10)]
     [Cache]
@@ -89,6 +91,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
 
             var posts = GetPosts(renderContext);
             var culture = renderContext?.Request?.Culture ?? CultureInfo.CurrentCulture;
+            var currentKey = renderContext?.Request?.GetParameter<ObjectKeyParameter>()?.Value;
 
             var header = new ControlSidebarItemHeader(Id + "-header")
             {
@@ -104,7 +107,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
                 return nodes;
             }
 
-            foreach (var entry in BuildEntries(posts, culture))
+            foreach (var entry in BuildEntries(posts, culture, currentKey))
             {
                 nodes.Add(entry.Render(renderContext, visualTree));
             }
@@ -154,10 +157,19 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
         /// </summary>
         /// <param name="posts">The fetched posts, newest first.</param>
         /// <param name="culture">The culture used to format the month labels.</param>
+        /// <param name="currentKey">The key of the currently displayed post, or <c>null</c>.</param>
         /// <returns>The year entries carrying their month and post subtrees.</returns>
-        private static IEnumerable<IControlSidebarItem> BuildEntries(IReadOnlyList<Model.Entities.Object> posts, CultureInfo culture)
+        private static IEnumerable<IControlSidebarItem> BuildEntries(IReadOnlyList<Model.Entities.Object> posts, CultureInfo culture, string currentKey)
         {
             var newestYear = posts.Count > 0 ? posts[0].Created.Year : 0;
+
+            // the currently displayed post is highlighted as active and its year and month
+            // are expanded so it is on screen
+            var current = string.IsNullOrEmpty(currentKey)
+                ? null
+                : posts.FirstOrDefault(x => string.Equals(x.Key, currentKey, StringComparison.OrdinalIgnoreCase));
+            var currentYear = current?.Created.Year;
+            var currentMonth = current?.Created.Month;
 
             foreach (var yearGroup in posts.GroupBy(x => x.Created.Year).OrderByDescending(g => g.Key))
             {
@@ -165,7 +177,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
                 {
                     Text = _ => yearGroup.Key.ToString(culture),
                     Icon = _ => new IconCalendarDays(),
-                    Expanded = _ => yearGroup.Key == newestYear
+                    Expanded = _ => yearGroup.Key == newestYear || yearGroup.Key == currentYear
                 };
 
                 foreach (var monthGroup in yearGroup.GroupBy(x => x.Created.Month).OrderByDescending(g => g.Key))
@@ -175,11 +187,12 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
                         Text = _ => culture.DateTimeFormat.GetMonthName(monthGroup.Key),
                         Icon = _ => new IconCalendar(),
                         Expanded = _ => yearGroup.Key == newestYear
+                            || (yearGroup.Key == currentYear && monthGroup.Key == currentMonth)
                     };
 
                     foreach (var post in monthGroup.OrderByDescending(x => x.Created))
                     {
-                        month.Add(BuildPostEntry(post));
+                        month.Add(BuildPostEntry(post, currentKey));
                     }
 
                     year.Add(month);
@@ -201,6 +214,14 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
             var keyParameter = renderContext?.Request?.GetParameter<WorkspaceKeyParameter>();
             var workspace = _workspaceManager.GetWorkspaceByKey(keyParameter?.Value);
 
+            // on the blog detail/edit pages the route carries the object key, not the
+            // workspace key, so fall back to the workspace of the addressed post
+            if (workspace is null)
+            {
+                var objectParameter = renderContext?.Request?.GetParameter<ObjectKeyParameter>();
+                workspace = _objectManager.GetObjectByKey(objectParameter?.Value)?.Workspace;
+            }
+
             if (workspace is null)
             {
                 return [];
@@ -220,16 +241,21 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
         /// label, linked to the object detail page.
         /// </summary>
         /// <param name="post">The post to render as an entry.</param>
+        /// <param name="currentKey">The key of the currently displayed post, or <c>null</c>.</param>
         /// <returns>The link entry representing the post.</returns>
-        private static IControlSidebarItem BuildPostEntry(Model.Entities.Object post)
+        private static IControlSidebarItem BuildPostEntry(Model.Entities.Object post, string currentKey)
         {
             return new ControlSidebarItemLink("post-" + post.Id.ToString("N"))
             {
                 Text = _ => $"{post.Created:yyyy-MM-dd}  {post.Summary}",
                 Tooltip = _ => post.Key,
-                Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Index>()
-                    .BindParameters(new ObjectKeyParameter(post.Key)),
-                Icon = _ => (IIcon)post.Icon ?? new IconBlog()
+                // frozen so the sidebar's request re-bind cannot repoint every entry at the
+                // currently displayed post (see ResolveDetailUriFrozen)
+                Uri = _ => ObjectKindCatalog.ResolveDetailUriFrozen(post),
+                Icon = _ => (IIcon)post.Icon ?? new IconBlog(),
+                Active = _ => string.Equals(post.Key, currentKey, StringComparison.OrdinalIgnoreCase)
+                    ? TypeActive.Active
+                    : TypeActive.None
             };
         }
     }

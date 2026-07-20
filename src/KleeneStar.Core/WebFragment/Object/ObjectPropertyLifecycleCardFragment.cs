@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System.Globalization;
@@ -20,7 +20,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <see cref="ControlPanelCard"/>.
     /// </summary>
     [Section<SectionPropertyPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(9)]
     [Cache]
     public sealed class ObjectPropertyLifecycleCardFragment : FragmentControlPanel

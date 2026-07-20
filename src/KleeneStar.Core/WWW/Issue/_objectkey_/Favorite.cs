@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
@@ -6,7 +6,7 @@ using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
 
-namespace KleeneStar.Core.WWW.Object._objectkey_
+namespace KleeneStar.Core.WWW.Issue._objectkey_
 {
     /// <summary>
     /// Toggles the calling identity's star on the addressed object and redirects back

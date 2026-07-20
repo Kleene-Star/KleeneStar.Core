@@ -37,6 +37,8 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
     /// </remarks>
     [Section<SectionSidebarPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Documents._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Document._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Document._objectkey_.Edit>]
     [Policy<WorkspaceViewPolicy>]
     [Order(10)]
     [Cache]
@@ -88,6 +90,11 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
 
             var documents = GetDocuments(renderContext);
 
+            // the tree entry of the currently displayed document is highlighted as active,
+            // and the path from the roots down to it is expanded so it is on screen
+            var currentKey = renderContext?.Request?.GetParameter<ObjectKeyParameter>()?.Value;
+            var activePath = ResolveActivePath(documents, currentKey);
+
             var header = new ControlSidebarItemHeader(Id + "-header")
             {
                 Text = _ => "kleenestar.core:object.kind.documents.label"
@@ -108,7 +115,7 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
                 return nodes;
             }
 
-            foreach (var entry in BuildEntries(documents))
+            foreach (var entry in BuildEntries(documents, currentKey, activePath))
             {
                 nodes.Add(entry.Render(renderContext, visualTree));
             }
@@ -117,13 +124,47 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
         }
 
         /// <summary>
+        /// Resolves the set of document ids that must be expanded so the currently
+        /// displayed document is visible: the document addressed by
+        /// <paramref name="currentKey"/> and each of its ancestors within the fetched set.
+        /// Returns an empty set when no document is being displayed (e.g. on the overview).
+        /// </summary>
+        /// <param name="documents">The fetched workspace documents.</param>
+        /// <param name="currentKey">The key of the currently displayed document, or <c>null</c>.</param>
+        /// <returns>The ids on the path from a root down to the current document.</returns>
+        private static IReadOnlySet<Guid> ResolveActivePath(IReadOnlyList<Model.Entities.Object> documents, string currentKey)
+        {
+            var path = new HashSet<Guid>();
+
+            if (string.IsNullOrEmpty(currentKey))
+            {
+                return path;
+            }
+
+            var byId = documents.ToDictionary(x => x.Id);
+            var cursor = documents.FirstOrDefault(x => string.Equals(x.Key, currentKey, StringComparison.OrdinalIgnoreCase));
+
+            // walk up the parent chain; the visited guard (path.Add) also breaks cycles
+            while (cursor is not null && path.Add(cursor.Id))
+            {
+                cursor = cursor.ParentId.HasValue && byId.TryGetValue(cursor.ParentId.Value, out var parent)
+                    ? parent
+                    : null;
+            }
+
+            return path;
+        }
+
+        /// <summary>
         /// Builds the root link entries from the fetched documents, grouping every
         /// document under its parent (when the parent is part of the fetched set) and
         /// promoting the rest to root entries. The traversal is cycle-safe.
         /// </summary>
         /// <param name="documents">The fetched workspace documents.</param>
+        /// <param name="currentKey">The key of the currently displayed document, or <c>null</c>.</param>
+        /// <param name="activePath">The ids to force-expand so the current document is visible.</param>
         /// <returns>The root entries, each carrying its descendant subtree.</returns>
-        private static IEnumerable<IControlSidebarItem> BuildEntries(IReadOnlyList<Model.Entities.Object> documents)
+        private static IEnumerable<IControlSidebarItem> BuildEntries(IReadOnlyList<Model.Entities.Object> documents, string currentKey, IReadOnlySet<Guid> activePath)
         {
             var ids = new HashSet<Guid>(documents.Select(x => x.Id));
 
@@ -138,7 +179,7 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
             {
                 if (visited.Add(root.Id))
                 {
-                    yield return BuildEntry(root, childrenByParent, visited, 0);
+                    yield return BuildEntry(root, childrenByParent, visited, 0, currentKey, activePath);
                 }
             }
         }
@@ -154,6 +195,14 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
         {
             var keyParameter = renderContext?.Request?.GetParameter<WorkspaceKeyParameter>();
             var workspace = _workspaceManager.GetWorkspaceByKey(keyParameter?.Value);
+
+            // on the document detail/edit pages the route carries the object key, not the
+            // workspace key, so fall back to the workspace of the addressed document
+            if (workspace is null)
+            {
+                var objectParameter = renderContext?.Request?.GetParameter<ObjectKeyParameter>();
+                workspace = _objectManager.GetObjectByKey(objectParameter?.Value)?.Workspace;
+            }
 
             if (workspace is null)
             {
@@ -178,17 +227,23 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
         /// <param name="childrenByParent">The parent-id to children lookup built from the fetched set.</param>
         /// <param name="visited">The set of already-rendered object ids, guarding against cycles.</param>
         /// <param name="depth">The current nesting depth; the root level is expanded by default.</param>
+        /// <param name="currentKey">The key of the currently displayed document, or <c>null</c>.</param>
+        /// <param name="activePath">The ids to force-expand so the current document is visible.</param>
         /// <returns>The link entry representing <paramref name="document"/> and its subtree.</returns>
-        private static IControlSidebarItem BuildEntry(Model.Entities.Object document, IReadOnlyDictionary<Guid, IReadOnlyList<Model.Entities.Object>> childrenByParent, ISet<Guid> visited, int depth)
+        private static IControlSidebarItem BuildEntry(Model.Entities.Object document, IReadOnlyDictionary<Guid, IReadOnlyList<Model.Entities.Object>> childrenByParent, ISet<Guid> visited, int depth, string currentKey, IReadOnlySet<Guid> activePath)
         {
             var entry = new ControlSidebarItemLink("doc-" + document.Id.ToString("N"))
             {
                 Text = _ => document.Summary,
                 Tooltip = _ => document.Key,
-                Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Index>()
-                    .BindParameters(new ObjectKeyParameter(document.Key)),
+                // frozen so the sidebar's request re-bind cannot repoint every entry at the
+                // currently displayed document (see ResolveDetailUriFrozen)
+                Uri = _ => ObjectKindCatalog.ResolveDetailUriFrozen(document),
                 Icon = _ => (IIcon)document.Icon ?? new IconFileLines(),
-                Expanded = _ => depth == 0
+                Active = _ => string.Equals(document.Key, currentKey, StringComparison.OrdinalIgnoreCase)
+                    ? TypeActive.Active
+                    : TypeActive.None,
+                Expanded = _ => depth == 0 || activePath.Contains(document.Id)
             };
 
             if (childrenByParent.TryGetValue(document.Id, out var list))
@@ -197,7 +252,7 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
                 {
                     if (visited.Add(child.Id))
                     {
-                        entry.Add(BuildEntry(child, childrenByParent, visited, depth + 1));
+                        entry.Add(BuildEntry(child, childrenByParent, visited, depth + 1, currentKey, activePath));
                     }
                 }
             }

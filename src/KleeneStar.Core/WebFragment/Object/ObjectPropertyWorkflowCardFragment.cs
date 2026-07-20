@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System.Linq;
@@ -24,7 +24,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <summary>
     /// Object-scoped property card that renders, for every workflow-backed field of the
     /// current object's class, a split button reflecting the field's current status on
-    /// <see cref="WWW.Object._objectkey_.Index"/>.
+    /// <see cref="WWW.Issue._objectkey_.Index"/>.
     /// </summary>
     /// <remarks>
     /// A field qualifies when it is active, not deprecated, of type
@@ -38,7 +38,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <see cref="ObjectItemDetailFragment"/> so the status lives only in this card.
     /// </remarks>
     [Section<SectionPropertyPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(1)]
     [Cache]
     public sealed class ObjectPropertyWorkflowCardFragment : FragmentControlPanel

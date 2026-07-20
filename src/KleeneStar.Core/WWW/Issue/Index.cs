@@ -1,24 +1,25 @@
 ﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
-using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Object._objectkey_
+namespace KleeneStar.Core.WWW.Issue
 {
     /// <summary>
-    /// Represents a page that provides a form for edit a object within the application.
+    /// Provides functionality for managing the current workspace page.
     /// </summary>
-    [WebIcon<IconPen>]
-    [Title("kleenestar.core:object.edit.label")]
+    [WebIcon<IconObject>]
+    [SegmentHidden]
     [Scope<IScopeGeneral>]
-    public sealed class Edit : IPage<VisualTreeWebApp>, IScope
+    [Cache]
+    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Edit()
+        public Index()
         {
         }
 
@@ -29,6 +30,10 @@ namespace KleeneStar.Core.WWW.Object._objectkey_
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
+            throw new RedirectException
+            (
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Index>()
+            );
         }
     }
 }

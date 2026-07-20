@@ -78,8 +78,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
                     Image = x.Icon?.Uri?.ToString(),
                     PrimaryAction = new ActionFrame(ListDetailControl.FrameId)
                     {
-                        Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Index>()
-                            .BindParameters(new ObjectKeyParameter(x.Key))
+                        Uri = global::KleeneStar.Core.WebFragment.Object.ObjectKindCatalog
+                            .ResolveDetailUri(x)
                             .BindParameters(request)
                     }.ToJson()
                 });

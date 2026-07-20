@@ -146,8 +146,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
             {
                 Text = _ => "kleenestar.core:object.kind.blogs.open.label",
                 Icon = _ => (IIcon)post.Icon ?? new IconBlog(),
-                Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Object._objectkey_.Index>()
-                    .BindParameters(new ObjectKeyParameter(post.Key))
+                Uri = _ => ObjectKindCatalog.ResolveDetailUri(post)
             });
 
             return card.Render(renderContext, visualTree);

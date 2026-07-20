@@ -1,3 +1,4 @@
+using KleeneStar.Core.WebParameter;
 using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
@@ -34,5 +35,25 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
         /// Gets the unbound route of the blog overview page (the blog timeline).
         /// </summary>
         public IUri OverviewUri => CoreHub.GetUri<global::KleeneStar.Core.WWW.Blogs._workspacekey_.Index>();
+
+        /// <summary>
+        /// Returns the blog reading view bound to the supplied object key
+        /// (<c>/blog/{objectkey}</c>).
+        /// </summary>
+        /// <param name="objectKey">The key of the post to address.</param>
+        /// <returns>The bound reading-view route.</returns>
+        public IUri DetailUri(string objectKey) => CoreHub
+            .GetUri<global::KleeneStar.Core.WWW.Blog._objectkey_.Index>()?
+            .BindParameters(new ObjectKeyParameter(objectKey));
+
+        /// <summary>
+        /// Returns the blog editing view bound to the supplied object key
+        /// (<c>/blog/{objectkey}/edit</c>).
+        /// </summary>
+        /// <param name="objectKey">The key of the post to address.</param>
+        /// <returns>The bound editing-view route.</returns>
+        public IUri EditUri(string objectKey) => CoreHub
+            .GetUri<global::KleeneStar.Core.WWW.Blog._objectkey_.Edit>()?
+            .BindParameters(new ObjectKeyParameter(objectKey));
     }
 }

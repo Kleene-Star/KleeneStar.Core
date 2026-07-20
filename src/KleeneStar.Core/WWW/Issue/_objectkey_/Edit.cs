@@ -1,26 +1,24 @@
-using WebExpress.WebApp.WebPage;
+﻿using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Object._objectkey_
+namespace KleeneStar.Core.WWW.Issue._objectkey_
 {
     /// <summary>
-    /// Represents a page that handles the object export functionality within the
-    /// web application.
+    /// Represents a page that provides a form for edit a object within the application.
     /// </summary>
-    [WebIcon<IconFileExport>]
-    [Title("kleenestar.core:object.export.title")]
+    [WebIcon<IconPen>]
+    [Title("kleenestar.core:object.edit.label")]
     [Scope<IScopeGeneral>]
-    [Cache]
-    public sealed class Export : IPage<VisualTreeWebApp>, IScope
+    public sealed class Edit : IPage<VisualTreeWebApp>, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Export()
+        public Edit()
         {
         }
 
