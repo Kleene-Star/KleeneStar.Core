@@ -52,7 +52,7 @@ namespace KleeneStar.Core.WWW.Templates._workspacekey_
                 .Concat(new WorkspaceKeyUriPathSegmentVariable<WorkspaceKeyParameter>()
                 {
                     Value = workspace?.Key,
-                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()
+                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>()
                         .BindParameters(renderContext.Request)
                 })
                 .Concat(new UriPathSegmentConstant("templates")

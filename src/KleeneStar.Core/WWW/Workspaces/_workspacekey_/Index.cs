@@ -42,7 +42,7 @@ namespace KleeneStar.Core.WWW.Workspaces._workspacekey_
         {
             throw new RedirectException
             (
-                CoreHub.GetUri<Objects._workspacekey_.Index>()
+                CoreHub.GetUri<Issues._workspacekey_.Index>()
                     .BindParameters(renderContext.Request)
             );
         }

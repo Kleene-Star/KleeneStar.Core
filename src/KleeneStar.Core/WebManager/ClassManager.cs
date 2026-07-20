@@ -135,6 +135,8 @@ namespace KleeneStar.Core.WebManager
         {
             ArgumentNullException.ThrowIfNull(classEntity);
 
+            classEntity.Kind = Model.Entities.ObjectKind.Normalize(classEntity.Kind);
+
             ModelHub.Add(classEntity);
 
             ClassAdded?.Invoke(this, classEntity);
@@ -154,7 +156,14 @@ namespace KleeneStar.Core.WebManager
         {
             ArgumentNullException.ThrowIfNull(classEntity);
 
+            classEntity.Kind = Model.Entities.ObjectKind.Normalize(classEntity.Kind);
+
             ModelHub.Update(classEntity);
+
+            // the class is the single source of the object kind: stamp the (possibly
+            // changed) kind onto every object of the class so the kind overviews
+            // immediately reflect the change
+            ModelHub.AlignObjectKinds(classEntity.Id, classEntity.Kind);
 
             ClassUpdated?.Invoke(this, classEntity);
 

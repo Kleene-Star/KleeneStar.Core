@@ -12,42 +12,53 @@ using WebExpress.WebUI.WebSection;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Represents a fragment that renders objects in a tile/card view with search, 
-    /// filtering, and pagination support.
+    /// Represents a fragment that renders objects in a tile/card view with search,
+    /// filtering, and pagination support. Rendered as a view item inside the
+    /// <see cref="ObjectTabViewFragment"/> tab template.
     /// </summary>
     [Section<SectionViewItemPrimary>]
-    [Scope<ObjectViewFragment>]
+    [Scope<ObjectTabViewFragment>]
     [Order(1)]
     [Cache]
-    public sealed class ObjectViewTileFragment : FragmentControlViewItem
+    public sealed class ObjectTabViewTileFragment : FragmentControlViewItem
     {
         /// <summary>
         /// Gets the tile control rendering the objects as cards.
         /// </summary>
         public ControlDataTile Tile { get; } = new ControlDataTile()
         {
-            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Tile>().ToString())};
+            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Tile>().ToString())
+        };
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ObjectViewTileFragment(IFragmentContext fragmentContext)
+        public ObjectTabViewTileFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Icon = _ => new IconTile();
             Title = _ => "kleenestar.core:view.tile.title";
             Tile.Bind = _ => new Binding()
-                .Add(new BindSearch() { Source = ObjectViewSearchFragment.ContentId })
+                .Add(new BindSearch() { Source = ObjectTabViewSearchFragment.ContentId })
                 .Add(new BindFilter())
-                .Add(new BindPaging() { Source = ObjectViewPaginationFragment.ContentId });
+                .Add(new BindPaging() { Source = ObjectTabViewPaginationFragment.ContentId });
 
             Add(Tile);
         }
 
         /// <summary>
-        /// Convert the fragment to HTML.
+        /// Renders the control as an HTML node.
         /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);

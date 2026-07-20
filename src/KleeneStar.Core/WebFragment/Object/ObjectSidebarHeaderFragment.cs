@@ -16,7 +16,9 @@ namespace KleeneStar.Core.WebFragment.Object
     /// workspace name.
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Documents._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Blogs._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
     [Cache]
     public sealed class ObjectSidebarHeaderFragment : FragmentControlSidebarItemHeader
@@ -46,11 +48,17 @@ namespace KleeneStar.Core.WebFragment.Object
         }
 
         /// <summary>
-        /// Convert the fragment to HTML.
+        /// Renders the control as an HTML node.
         /// </summary>
-        /// <param name="renderContext">The context in which the fragment is rendered.</param>
-        /// <param name="visualTree">The visual tree used for rendering the fragment.</param>
-        /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             var objectKey = renderContext.Request.GetParameter<ObjectKeyParameter>();

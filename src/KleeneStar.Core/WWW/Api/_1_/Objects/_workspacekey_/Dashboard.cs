@@ -40,8 +40,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
             }
 
             using var context = ModelHub.CreateDbContext();
+
+            // the tab views live on the issue overview, so they present the issue kind only
             var query = new Query<Model.Entities.Object>()
-                .WhereEquals(x => x.WorkspaceId, workspace.Id);
+                .WhereEquals(x => x.WorkspaceId, workspace.Id)
+                .WhereEquals(x => x.Kind, Model.Entities.ObjectKind.Issue);
 
             var objects = CoreHub.ObjectManager.GetObjects(query, context).ToList();
             var active = objects.Count(x => x.State == WorkspaceState.Active);

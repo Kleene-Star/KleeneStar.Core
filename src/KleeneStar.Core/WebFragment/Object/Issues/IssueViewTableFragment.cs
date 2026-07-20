@@ -10,45 +10,55 @@ using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 using WebExpress.WebUI.WebSection;
 
-namespace KleeneStar.Core.WebFragment.Object
+namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
-    /// Represents a fragment that displays objects in a REST-enabled table with 
-    /// search, filtering, and pagination capabilities.
+    /// Table of the issue overview: a REST-backed table showing the workspace's issues,
+    /// most recently updated first, bound to the search, quickfilter, and pagination
+    /// controls of the view.
     /// </summary>
     [Section<SectionViewItemPrimary>]
-    [Scope<ObjectViewFragment>]
-    [Order(0)]
+    [Scope<IssueViewFragment>]
     [Cache]
-    public sealed class ObjectViewTableFragment : FragmentControlViewItem
+    public sealed class IssueViewTableFragment : FragmentControlViewItem
     {
         /// <summary>
-        /// Gets the rest table that displays the object rows.
+        /// Gets the rest table that displays the issue rows.
         /// </summary>
         public ControlDataTable Table { get; } = new ControlDataTable()
         {
-            ServiceFactory = _ => DataServiceDescriptor.TableData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Table>().ToString())};
+            ServiceFactory = _ => DataServiceDescriptor.TableData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Table>().ToString())
+        };
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ObjectViewTableFragment(IFragmentContext fragmentContext)
+        public IssueViewTableFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Icon = _ => new IconTable(TypeIconTheme.Light);
             Title = _ => "kleenestar.core:view.table.title";
             Table.Bind = _ => new Binding()
-                .Add(new BindSearch() { Source = ObjectViewSearchFragment.ContentId })
+                .Add(new BindSearch() { Source = IssueViewSearchFragment.ContentId })
                 .Add(new BindFilter())
-                .Add(new BindPaging() { Source = ObjectViewPaginationFragment.ContentId });
+                .Add(new BindPaging() { Source = IssueViewPaginationFragment.ContentId });
 
             Add(Table);
         }
 
         /// <summary>
-        /// Convert the fragment to HTML.
+        /// Renders the control as an HTML node.
         /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);

@@ -5,7 +5,7 @@ using WebExpress.WebCore.WebPage;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Objects._workspacekey_
+namespace KleeneStar.Core.WWW.Issues._workspacekey_
 {
     /// <summary>
     /// Modal page that hosts the workspace object tree in which objects can be re-parented via

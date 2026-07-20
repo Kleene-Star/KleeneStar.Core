@@ -1,7 +1,7 @@
 using KleeneStar.Core.WebParameter;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
-using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -31,16 +31,17 @@ namespace KleeneStar.Core.WebFragment.Form
         }
 
         /// <summary>
-        /// Convert the fragment to HTML.
+        /// Renders the control as an HTML node.
         /// </summary>
-        /// <remarks>
-        /// The three predefined views (create, edit, view) are only rendered for standard forms.
-        /// Additional forms do not display these tabs as they serve as flexible UI masks with
-        /// their own layouts.
-        /// </remarks>
-        /// <param name="renderContext">The context in which the fragment is rendered.</param>
-        /// <param name="visualTree">The visual tree used for rendering the fragment.</param>
-        /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);

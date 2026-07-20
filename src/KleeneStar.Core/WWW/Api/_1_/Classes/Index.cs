@@ -101,7 +101,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes
                 Sealed = data.Sealed,
                 InheritedId = data.InheritedId,
                 ParentId = data.ParentId,
-                AccessModifier = data.AccessModifier
+                AccessModifier = data.AccessModifier,
+                Kind = data.Kind
             };
 
             return RetrieveForClone(request, newItem);

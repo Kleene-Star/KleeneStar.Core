@@ -43,6 +43,7 @@ namespace KleeneStar.Core.Test
             ("_objectLinkManager",typeof(ObjectLinkManager)),
             ("_sessionManager",   typeof(SessionManager)),
             ("_savedSearchManager",typeof(SavedSearchManager)),
+            ("_sprintManager",    typeof(SprintManager)),
         ];
 
         /// <summary>

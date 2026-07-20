@@ -45,6 +45,7 @@ namespace KleeneStar.Core
         private static ObjectLinkManager _objectLinkManager;
         private static SessionManager _sessionManager;
         private static SavedSearchManager _savedSearchManager;
+        private static SprintManager _sprintManager;
 
         /// <summary>
         /// Gets the shared instance of the component hub used for managing and coordinating application components.
@@ -195,6 +196,12 @@ namespace KleeneStar.Core
         /// that back the global search dropdown and the search-page sidebar.
         /// </summary>
         public static ISavedSearchManager SavedSearchManager => _savedSearchManager ??= ComponentHub.GetComponentManager<SavedSearchManager>();
+
+        /// <summary>
+        /// Gets the sprint manager responsible for the Scrum iterations of the
+        /// workspaces and the sprint assignment of their objects.
+        /// </summary>
+        public static ISprintManager SprintManager => _sprintManager ??= ComponentHub.GetComponentManager<SprintManager>();
 
         /// <summary>
         /// Constructs a URI for the specified endpoint type using the provided parameters.

@@ -1,6 +1,8 @@
 ﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using System.Collections.Generic;
+using KleeneStar.Core.WebFragment.Object;
+using System.Linq;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
@@ -97,6 +99,19 @@ namespace KleeneStar.Core.WebFragment.Class
         };
 
         /// <summary>
+        /// Gets the input selection control for the object kind. The class is the
+        /// single source of the kind: every object of the class is presented in the
+        /// matching kind overview (documents, blogs, issues, …), and changing the kind
+        /// re-stamps the existing objects of the class.
+        /// </summary>
+        public ControlFormItemInputSelection KindSelection { get; } = new()
+        {
+            Name = _ => nameof(Model.Entities.Class.Kind),
+            Label = _ => "kleenestar.core:class.kind.label",
+            Help = _ => "kleenestar.core:class.kind.help"
+        };
+
+        /// <summary>
         /// Gets the input selection control for the access modifier.
         /// </summary>
         public ControlDataFormItemInputSelection AccessModifierSelection { get; } = new()
@@ -140,6 +155,7 @@ namespace KleeneStar.Core.WebFragment.Class
         {
             Add(ClassName);
             Add(Description);
+            Add(KindSelection);
             Add(InheritedSelection);
             Add(ClassIsAbstract);
             Add(ParentSelection);
@@ -147,6 +163,14 @@ namespace KleeneStar.Core.WebFragment.Class
             Add(AccessModifierSelection);
             Add(ClassSealed);
             Add(ClassState);
+
+            // the kind options come from the extensible object-kind catalog, so add-on
+            // kinds automatically become selectable
+            KindSelection.Add(ObjectKindCatalog.Kinds
+                .Select(kind => new ControlFormItemInputSelectionItem(kind.Key)
+                {
+                    Text = _ => kind.Label
+                }));
 
             // The form's REST service is declared by the endpoint type so the
             // client loads and submits the class through the emitted

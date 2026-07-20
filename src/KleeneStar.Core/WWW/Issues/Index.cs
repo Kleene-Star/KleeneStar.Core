@@ -1,15 +1,18 @@
-﻿using WebExpress.WebApp.WebPage;
+using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Objects
+namespace KleeneStar.Core.WWW.Issues
 {
     /// <summary>
-    /// Provides functionality for managing the current workspace page.
+    /// Anchors the <c>/issues</c> route segment as the parent of the per-workspace
+    /// issue overview, so the overview inherits the breadcrumb chain of the sitemap
+    /// (mirroring the retired objects route). The segment itself is hidden and renders
+    /// no content of its own.
     /// </summary>
-    [WebIcon<IconObject>]
+    [WebIcon<IconListCheck>]
     [SegmentHidden]
     [Scope<IScopeGeneral>]
     [Cache]

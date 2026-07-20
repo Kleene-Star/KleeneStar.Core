@@ -12,14 +12,16 @@ using WebExpress.WebUI.WebSection;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Provides a list view fragment for displaying objects with integrated search, 
-    /// filtering, and pagination capabilities.
+    /// Provides a list view fragment for displaying objects with integrated search,
+    /// filtering, and pagination capabilities. Rendered as a view item inside the
+    /// <see cref="ObjectTabViewFragment"/> tab template and as the content of the
+    /// standalone tab template.
     /// </summary>
     [Section<SectionViewItemPrimary>]
-    [Scope<ObjectViewFragment>]
+    [Scope<ObjectTabViewFragment>]
     [Order(2)]
     [Cache]
-    public sealed class ObjectViewListFragment : FragmentControlViewItem
+    public sealed class ObjectTabViewListFragment : FragmentControlViewItem
     {
         /// <summary>
         /// Gets the list control rendering the objects as a vertical frame list. 
@@ -33,22 +35,31 @@ namespace KleeneStar.Core.WebFragment.Object
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ObjectViewListFragment(IFragmentContext fragmentContext)
+        public ObjectTabViewListFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Icon = _ => new IconList();
             Title = _ => "kleenestar.core:view.list.title";
             List.Bind = _ => new Binding()
-                .Add(new BindSearch() { Source = ObjectViewSearchFragment.ContentId })
+                .Add(new BindSearch() { Source = ObjectTabViewSearchFragment.ContentId })
                 .Add(new BindFilter())
-                .Add(new BindPaging() { Source = ObjectViewPaginationFragment.ContentId });
+                .Add(new BindPaging() { Source = ObjectTabViewPaginationFragment.ContentId });
 
             Add(List);
         }
 
         /// <summary>
-        /// Convert the fragment to HTML.
+        /// Renders the control as an HTML node.
         /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);

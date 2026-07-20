@@ -85,6 +85,41 @@ To improve traceability and documentation, objects can be enriched with addition
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
+## Object Kinds (Subtypes)
+
+Beyond its class, every object carries a **kind** — a coarse subtype that decides how the object is presented and navigated. The kind partitions the objects of a workspace into content families with distinct overview experiences:
+
+- **Document** (`document`) — structured content pages. The document overview shows the workspace's documents as a page tree in its **sidebar**, mirroring the parent/child containment of the objects, while the main panel opens with the workspace's **home document** (the first root of the tree). (The kind is named *document* rather than *page* because the term page is already taken by the WebExpress page concept.)
+- **Blog** (`blog`) — chronological posts. The blog overview shows a year/month timeline of the posts in its **sidebar**, newest first, while the main panel presents the **stream of the latest posts**.
+- **Issue** (`issue`) — work items such as incidents, problems, or tasks. The issue overview hosts the workspace's **tabbed views**: the leading issues tab lists the most recently updated issues with search, pagination, and quickfilters for starred issues, issues assigned to the caller, issues created by the caller, and the archived history; further user-defined views (table, list, dashboard, Kanban, Scrum sprint and backlog — all scoped to the issue kind) can be added, reordered, and removed via the template picker. Issues are the **default kind**: objects created without an explicit kind, and all objects predating the kind partition, behave like work items.
+
+### Persistence
+
+The **class is the single source of the kind**: `Class.Kind` is chosen in the class add/edit/clone forms ("Object type"), and every object of the class carries that kind. The `ObjectManager` stamps the class kind onto `Object.Kind` on every add and update, and changing a class's kind re-stamps the existing objects of the class, so the kind overviews immediately reflect the change. The object-side copy exists purely for efficient querying (the kind overviews filter on the indexed `Object.Kind` column).
+
+Both kinds are persisted as plain, lower-case string keys (defaulting to `issue`) rather than enums. This keeps the set of kinds **open**: add-ons may introduce further keys without touching the data layer, without a schema change, and without the ordinal-shift hazards of persisted enums. Unknown keys survive in the database, so content of an add-on kind outlives the add-on itself. The `ObjectKind` class in the model defines the well-known keys and the normalization rule (trim, lower-case, empty → `issue`).
+
+### Extensibility (add-ons)
+
+The UI-side counterpart of the persisted key is the `IObjectKind` descriptor (key, i18n label, icon, order, overview route) registered in the `ObjectKindCatalog`. The core registers its three built-in kinds; an add-on introduces a new kind by:
+
+1. implementing `IObjectKind` and calling `ObjectKindCatalog.Register(...)` from its plugin initialization,
+2. contributing an overview page for the kind (a workspace-scoped page like `WWW/Documents/{workspacekey}`),
+3. deriving a sidebar link from `ObjectKindSidebarLinkFragment` and scoping it to the kind overviews and the object detail page, and
+4. contributing the kind's view fragments scoped to its overview page.
+
+Because the sidebar links and views compose declaratively via Section/Scope attributes, no core code changes are needed. The catalog does not gate persistence — it is the lookup UI components use to resolve a key to its presentation. Registered kinds automatically appear as options in the "Object type" selection of the class forms.
+
+### Navigation and starring
+
+Every kind overview and the object detail page carry the kind links (Documents, Blogs, Issues) in their sidebar, so the kinds stay switchable from everywhere. The issue overview is the workspace's content landing page; the former objects overview has been removed entirely (its `/objects/{workspacekey}` route no longer exists), and the organize dialog now lives under `/issues/{workspacekey}/organize`. Only the add-object wizard keeps its `/objects/add` route. Every identity can additionally **star** objects: the star toggle lives in the object headline's more menu and in the issue overview's row menu, and starred issues surface under the issue overview's "Starred" quickfilter. The star is stored per identity on the object visit row (`ObjectVisit.Favorite`), mirroring the combined favorite/recency design of the workspace bookmark.
+
+### Known limitations
+
+- The kind is class-wide by design: an object cannot override the kind of its class. To move a single object into another kind overview, move it to a class of that kind.
+- The document tree and blog timeline in the sidebars render the first 200 objects of their kind ("top 200") to keep the pages responsive; there is no paging within the trees yet. The home document is simply the first root of the tree — a designated home page is not modeled yet.
+- The issue overview filters and pages in memory (the starred scope is a per-identity projection a WebIndex query cannot express); the advanced-search box only feeds the plain-text `q` filter — full WQL is not wired to this projection.
+
 ## Software Architecture
 
 The architecture of object management follows a modular and decoupled principle. The central control element is the `ObjectManager`, which is responsible for the entire lifecycle and access to all objects within a workspace. It manages object instances, provides a controlled interface for all interactions, and is closely integrated with the `ClassManager`, `FieldManager`, and `WorkflowManager`.

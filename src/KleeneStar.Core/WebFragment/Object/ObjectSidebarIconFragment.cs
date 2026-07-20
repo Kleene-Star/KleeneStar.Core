@@ -18,7 +18,9 @@ namespace KleeneStar.Core.WebFragment.Object
     /// editing capabilities within the object sidebar.
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Documents._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Blogs._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
     [Cache]
     public sealed class ObjectSidebarIconFragment : FragmentControlSidebarItemIcon
@@ -40,17 +42,40 @@ namespace KleeneStar.Core.WebFragment.Object
         {
             _objectManager = objectManager;
 
-            IconEdit = _ => true;
+            // the icon is only editable on the object detail page; on the kind
+            // overviews (documents, blogs, issues) it is a read-only workspace icon
+            IconEdit = renderContext => IsObjectContext(renderContext);
             Icon = renderContext => GetIcon(renderContext);
-            PrimaryAction = renderContext => new ActionModal("modal-form", GetUri(renderContext));
+            PrimaryAction = renderContext => IsObjectContext(renderContext)
+                ? new ActionModal("modal-form", GetUri(renderContext))
+                : null;
         }
 
         /// <summary>
-        /// Convert the fragment to HTML.
+        /// Determines whether the current request addresses an object detail page (as
+        /// opposed to a workspace-scoped kind overview).
         /// </summary>
-        /// <param name="renderContext">The context in which the fragment is rendered.</param>
-        /// <param name="visualTree">The visual tree used for rendering the fragment.</param>
-        /// <returns>An HTML node representing the rendered fragments. Can be null if no nodes are present.</returns>
+        /// <param name="renderContext">
+        /// The rendering context that provides information about the current HTTP request.
+        /// </param>
+        /// <returns><see langword="true"/> when an object key is present in the request.</returns>
+        private static bool IsObjectContext(IRenderControlContext renderContext)
+        {
+            return !string.IsNullOrEmpty(renderContext?.Request?.GetParameter<ObjectKeyParameter>()?.Value);
+        }
+
+        /// <summary>
+        /// Renders the control as an HTML node.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);

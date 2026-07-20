@@ -108,7 +108,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
             var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value);
             var id = workspace?.Id ?? System.Guid.Empty;
 
-            query = query.WhereEquals(x => x.WorkspaceId, id);
+            // the tab views live on the issue overview, so they present the issue kind only
+            query = query
+                .WhereEquals(x => x.WorkspaceId, id)
+                .WhereEquals(x => x.Kind, Model.Entities.ObjectKind.Issue);
 
             return CoreHub.ObjectManager.GetObjects(query, context)
                 .Select(x => new RestApiTableRow

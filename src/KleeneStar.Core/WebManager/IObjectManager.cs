@@ -105,6 +105,33 @@ namespace KleeneStar.Core.WebManager
         ObjectVisit RecordVisit(System.Guid ownerId, System.Guid objectId);
 
         /// <summary>
+        /// Returns the active objects the supplied identity has starred, ordered by key.
+        /// Backs the "starred" quickfilter of the issues overview.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <returns>The starred objects. The collection may be empty.</returns>
+        IReadOnlyList<Object> GetFavoriteObjects(System.Guid ownerId);
+
+        /// <summary>
+        /// Returns whether the supplied identity has starred the supplied object.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <returns><see langword="true"/> when the object is starred by the identity.</returns>
+        bool IsFavorite(System.Guid ownerId, System.Guid objectId);
+
+        /// <summary>
+        /// Sets the starred state of the supplied object for the supplied identity, inserting
+        /// or updating the backing visit row. Returns <see langword="null"/> when the owner or
+        /// object does not exist.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <param name="favorite">The new starred state.</param>
+        /// <returns>The persisted visit row, or <see langword="null"/>.</returns>
+        ObjectVisit SetFavorite(System.Guid ownerId, System.Guid objectId, bool favorite);
+
+        /// <summary>
         /// Adds a object to the manager.
         /// </summary>
         /// <param name="objectEntity">The object to add. Cannot be null.</param>

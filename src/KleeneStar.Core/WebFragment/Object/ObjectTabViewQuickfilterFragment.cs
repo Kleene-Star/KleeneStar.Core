@@ -10,13 +10,15 @@ using WebExpress.WebUI.WebSection;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Represents a fragment control that provides REST-driven quickfilter 
-    /// functionality in the object view header.
+    /// Represents a fragment control that provides REST-driven quickfilter
+    /// functionality in the object view header. Rendered as a view header inside the
+    /// <see cref="ObjectTabViewFragment"/> tab template and the standalone
+    /// tab template.
     /// </summary>
     [Section<SectionViewHeaderSecondary>]
-    [Scope<ObjectViewFragment>]
+    [Scope<ObjectTabViewFragment>]
     [Cache]
-    public sealed class ObjectViewQuickfilterFragment : FragmentControlViewHeader
+    public sealed class ObjectTabViewQuickfilterFragment : FragmentControlViewHeader
     {
         /// <summary>
         /// Unique id for the quickfilter control.
@@ -28,21 +30,31 @@ namespace KleeneStar.Core.WebFragment.Object
         /// </summary>
         public ControlDataQuickfilter Quickfilter { get; } = new ControlDataQuickfilter(ContentId)
         {
-            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Quickfilter>().ToString())};
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Quickfilter>().ToString())
+        };
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ObjectViewQuickfilterFragment(IFragmentContext fragmentContext)
+        public ObjectTabViewQuickfilterFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Add(Quickfilter);
         }
 
         /// <summary>
-        /// Convert the fragment to HTML.
+        /// Renders the control as an HTML node.
         /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);

@@ -19,7 +19,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
     /// <remarks>
     /// Each <see cref="RestApiTabView"/> returned by <see cref="RetrieveViews"/> binds an
     /// <see cref="ObjectView"/> to one of the tab template fragments registered on the
-    /// objects tab (Table, List, Dashboard, Kanban, Scrum Sprint, Scrum Backlog).
+    /// objects tab via its <c>TemplateId</c> — the fragment id of the template (full type
+    /// name, lower-cased, dots replaced by dashes). Table and List share the composite
+    /// object view template; Dashboard, Kanban, Scrum Sprint and Scrum Backlog each have
+    /// their own.
     /// </remarks>
     [Title("kleenestar.core:object.tab.header")]
     [Cache]
@@ -177,6 +180,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
                 ObjectViewType.Kanban => CoreHub.GetUri<Kanban>(),
                 ObjectViewType.ScrumSprint => CoreHub.GetUri<ScrumSprint>(),
                 ObjectViewType.ScrumBacklog => CoreHub.GetUri<ScrumBacklog>(),
+                ObjectViewType.Issues => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Table>(),
                 _ => null
             };
 

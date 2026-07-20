@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WWW.Workflow._workflowid_
                 .Concat(new WorkspaceKeyUriPathSegmentVariable<WorkspaceKeyParameter>()
                 {
                     Value = workspace?.Key,
-                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()
+                    Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>()
                         .BindParameters(new WorkspaceKeyParameter(workspace?.Key))
                         .BindParameters(renderContext.Request)
                 })

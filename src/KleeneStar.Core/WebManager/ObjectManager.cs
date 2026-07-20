@@ -171,7 +171,64 @@ namespace KleeneStar.Core.WebManager
         /// <returns>The persisted visit, or <see langword="null"/>.</returns>
         public Model.Entities.ObjectVisit RecordVisit(Guid ownerId, Guid objectId)
         {
-            return ModelHub.UpsertObjectVisit(ownerId, objectId);
+            return ModelHub.UpsertObjectVisit(ownerId, objectId, favorite: null, recordVisit: true);
+        }
+
+        /// <summary>
+        /// Returns the active objects the supplied identity has starred, ordered by key.
+        /// Backs the "starred" quickfilter of the issues overview.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <returns>The starred objects. The collection may be empty.</returns>
+        public IReadOnlyList<Model.Entities.Object> GetFavoriteObjects(Guid ownerId)
+        {
+            return [.. ModelHub.GetObjectVisits(new Query<Model.Entities.ObjectVisit>())
+                .Where(x => x.OwnerId == ownerId
+                    && x.Favorite
+                    && x.Object is not null
+                    && x.Object.State == Model.Entities.WorkspaceState.Active)
+                .OrderBy(x => x.Object.Key, StringComparer.OrdinalIgnoreCase)
+                .Select(x => x.Object)];
+        }
+
+        /// <summary>
+        /// Returns whether the supplied identity has starred the supplied object.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <returns><see langword="true"/> when the object is starred by the identity.</returns>
+        public bool IsFavorite(Guid ownerId, Guid objectId)
+        {
+            return ModelHub.GetObjectVisit(ownerId, objectId)?.Favorite ?? false;
+        }
+
+        /// <summary>
+        /// Sets the starred state of the supplied object for the supplied identity, inserting
+        /// or updating the backing visit row. Returns <see langword="null"/> when the owner or
+        /// object does not exist.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <param name="favorite">The new starred state.</param>
+        /// <returns>The persisted visit row, or <see langword="null"/>.</returns>
+        public Model.Entities.ObjectVisit SetFavorite(Guid ownerId, Guid objectId, bool favorite)
+        {
+            var visit = ModelHub.UpsertObjectVisit(ownerId, objectId, favorite, recordVisit: false);
+
+            if (visit is not null)
+            {
+                ObjectUpdated?.Invoke(this, GetObject(objectId));
+
+                // confirmation toast (pushed over the message queue; harmless when the host is not wired)
+                CoreHub.AddNotification
+                (
+                    favorite ? "kleenestar.core:notification.title.favorited" : "kleenestar.core:notification.title.unfavorited",
+                    favorite ? "kleenestar.core:notification.object.favorited" : "kleenestar.core:notification.object.unfavorited",
+                    5000
+                );
+            }
+
+            return visit;
         }
 
         /// <summary>
@@ -182,6 +239,8 @@ namespace KleeneStar.Core.WebManager
         public IObjectManager Add(Model.Entities.Object objectEntity)
         {
             ArgumentNullException.ThrowIfNull(objectEntity);
+
+            objectEntity.Kind = DeriveKind(objectEntity);
 
             ModelHub.Add(objectEntity);
 
@@ -201,6 +260,8 @@ namespace KleeneStar.Core.WebManager
         public IObjectManager Update(Model.Entities.Object objectEntity)
         {
             ArgumentNullException.ThrowIfNull(objectEntity);
+
+            objectEntity.Kind = DeriveKind(objectEntity);
 
             ModelHub.Update(objectEntity);
 
@@ -230,6 +291,20 @@ namespace KleeneStar.Core.WebManager
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// Derives the kind of the supplied object from its class — the class is the
+        /// single source of the kind. When the class cannot be resolved (e.g. in
+        /// isolated tests), the object's own kind is kept, normalized.
+        /// </summary>
+        /// <param name="objectEntity">The object whose kind is derived. Cannot be null.</param>
+        /// <returns>The normalized kind key. Never null or empty.</returns>
+        private static string DeriveKind(Model.Entities.Object objectEntity)
+        {
+            var classEntity = CoreHub.ClassManager.GetClass(objectEntity.ClassId);
+
+            return Model.Entities.ObjectKind.Normalize(classEntity?.Kind ?? objectEntity.Kind);
         }
 
         /// <summary>

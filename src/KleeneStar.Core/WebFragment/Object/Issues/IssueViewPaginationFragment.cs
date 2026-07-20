@@ -6,23 +6,23 @@ using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 using WebExpress.WebUI.WebSection;
 
-namespace KleeneStar.Core.WebFragment.Object
+namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
-    /// Provides pagination functionality as a footer fragment for object views.
+    /// Footer of the issue overview: the pagination control the issue table binds to.
     /// </summary>
     [Section<SectionViewFooterPrimary>]
-    [Scope<ObjectViewFragment>]
+    [Scope<IssueViewFragment>]
     [Cache]
-    public sealed class ObjectViewPaginationFragment : FragmentControlViewFooter
+    public sealed class IssueViewPaginationFragment : FragmentControlViewFooter
     {
         /// <summary>
-        /// Unique id that <see cref="ObjectViewTableFragment"/> binds its paging source to.
+        /// Represents the unique identifier for the content used in this context.
         /// </summary>
-        public static readonly string ContentId = "id_401A8BF9454D4448B735B80C99EB1C9E";
+        public static readonly string ContentId = "id_E2B7A6C09D854FD0BB4E2C7F13A9D5F8";
 
         /// <summary>
-        /// Gets the pagination control.
+        /// Gets the pagination settings for controlling how data is divided into pages.
         /// </summary>
         public ControlPagination Pagination { get; } = new ControlPagination(ContentId)
         {
@@ -32,15 +32,24 @@ namespace KleeneStar.Core.WebFragment.Object
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ObjectViewPaginationFragment(IFragmentContext fragmentContext)
+        public IssueViewPaginationFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Add(Pagination);
         }
 
         /// <summary>
-        /// Convert the fragment to HTML.
+        /// Renders the control as an HTML node.
         /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);

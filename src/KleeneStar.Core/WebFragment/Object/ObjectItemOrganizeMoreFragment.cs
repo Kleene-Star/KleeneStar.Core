@@ -16,7 +16,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// tree and can be re-parented by drag and drop.
     /// </summary>
     /// <remarks>
-    /// The dialog is a workspace-scoped page (<c>Objects/${workspacekey}/organize</c>); the
+    /// The dialog is a workspace-scoped page (<c>Issues/${workspacekey}/organize</c>); the
     /// workspace is resolved from the current object. The dialog content is fetched into the modal
     /// on demand and its inline scripts would not run there, so this fragment loads the persistence
     /// controller (<c>assets/js/objectmovetree.js</c>) onto the parent page during render.
@@ -49,13 +49,17 @@ namespace KleeneStar.Core.WebFragment.Object
         }
 
         /// <summary>
-        /// Convert the fragment to HTML. Loads the object-move-tree client controller onto the
-        /// current (parent) page before emitting the dropdown item, and suppresses the item when
-        /// the object (and thus its workspace) cannot be resolved.
+        /// Renders the control as an HTML node.
         /// </summary>
-        /// <param name="renderContext">The context in which the fragment is rendered.</param>
-        /// <param name="visualTree">The visual tree used for rendering the fragment.</param>
-        /// <returns>An HTML node representing the rendered fragment, or <c>null</c> when suppressed.</returns>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             if (ResolveOrganizeUri(renderContext) is null)
@@ -85,7 +89,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Organize>()?
+            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Issues._workspacekey_.Organize>()?
                 .BindParameters(new WorkspaceKeyParameter(workspace.Key));
         }
     }

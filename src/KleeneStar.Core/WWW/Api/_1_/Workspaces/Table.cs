@@ -372,7 +372,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
         /// </returns>
         private static IUri GetUri(Workspace row, IRequest request)
         {
-            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()?
+            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>()?
                 .BindParameters(new WorkspaceKeyParameter(row.Key));
         }
 

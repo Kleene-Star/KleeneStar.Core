@@ -1,0 +1,35 @@
+using KleeneStar.Core.WebPolicies;
+using WebExpress.WebApp.WebSection;
+using WebExpress.WebCore.WebAttribute;
+using WebExpress.WebCore.WebFragment;
+
+namespace KleeneStar.Core.WebFragment.Object.Issues
+{
+    /// <summary>
+    /// Sidebar link that leads to the issue overview (the recent/starred issue list and
+    /// the user-defined views) of the current workspace. Rendered on every kind overview
+    /// and on the object detail page so the kinds stay switchable from everywhere.
+    /// </summary>
+    [Section<SectionSidebarPrimary>]
+    [Scope<global::KleeneStar.Core.WWW.Documents._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Blogs._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Object._objectkey_.Index>]
+    [Policy<WorkspaceViewPolicy>]
+    [Order(3)]
+    [Cache]
+    public sealed class IssueSidebarLinkFragment : ObjectKindSidebarLinkFragment
+    {
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        /// <param name="fragmentContext">
+        /// The context associated with the fragment, providing necessary data and services
+        /// for its operation. Cannot be null.
+        /// </param>
+        public IssueSidebarLinkFragment(IFragmentContext fragmentContext)
+            : base(fragmentContext, new Issue())
+        {
+        }
+    }
+}

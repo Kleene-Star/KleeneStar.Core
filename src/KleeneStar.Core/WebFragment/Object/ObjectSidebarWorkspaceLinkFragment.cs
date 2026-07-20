@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -56,7 +56,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects._workspacekey_.Index>()
+            return CoreHub.GetUri<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>()
                 .BindParameters(new WorkspaceKeyParameter(@object.Workspace.Key));
         }
     }
