@@ -9,17 +9,17 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebControl
 {
     /// <summary>
-    /// Represents the object dropdown for the application header. Its built-in search box queries
-    /// all objects, and its dynamic items are the calling identity's most recently opened objects
-    /// (supplied by the REST endpoint). Below those — separated by the framework's automatic
-    /// dynamic/static divider — sits a titled "Search" section that opens the global search page;
-    /// this section replaces the former standalone search dropdown.
+    /// Represents the global search dropdown for the application header. Its built-in
+    /// search box queries all objects (regardless of kind) and its dynamic items are the
+    /// calling identity's most recently opened objects; a titled static entry below opens
+    /// the global search page. This is the dedicated search entry that was split out of
+    /// the former single object dropdown when it was replaced by the per-kind dropdowns.
     /// </summary>
-    public class ObjectDropdownControl : ControlDataDropdown
+    public class SearchDropdownControl : ControlDataDropdown
     {
         /// <summary>
-        /// Gets the static link that opens the global search page (the former
-        /// "search over all workspaces" entry).
+        /// Gets the static link that opens the global search page (search over all
+        /// workspaces).
         /// </summary>
         public ControlDropdownItemLink Search { get; } = new()
         {
@@ -32,13 +32,16 @@ namespace KleeneStar.Core.WebControl
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="id">The unique identifier for the dropdown control.</param>
-        public ObjectDropdownControl(string id)
+        public SearchDropdownControl(string id)
             : base(id)
         {
+            Text = _ => "kleenestar.core:search.dropdown.label";
+            Icon = _ => new IconMagnifyingGlass(TypeIconTheme.Light);
             ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Dropdown>().ToString());
 
-            // the recent objects (dynamic) render at the top; the framework inserts a divider
-            // before the static items below. Title that section and add the global-search entry.
+            // the recent objects (dynamic) render at the top; the framework inserts a
+            // divider before the static items below. Title that section and add the
+            // global-search entry.
             AddHeader("kleenestar.core:object.dropdown.search.label");
             Add(Search);
         }

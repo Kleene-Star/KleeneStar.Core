@@ -123,11 +123,13 @@ namespace KleeneStar.Core.Test.WebFragment
             var document = keys.IndexOf(ObjectKind.Document);
             var blog = keys.IndexOf(ObjectKind.Blog);
             var issue = keys.IndexOf(ObjectKind.Issue);
+            var asset = keys.IndexOf(ObjectKind.Asset);
 
             Assert.True(document >= 0, "expected the document kind to be registered");
             Assert.True(blog >= 0, "expected the blog kind to be registered");
             Assert.True(issue >= 0, "expected the issue kind to be registered");
-            Assert.True(document < blog && blog < issue, "expected the built-in order documents, blogs, issues");
+            Assert.True(asset >= 0, "expected the asset kind to be registered");
+            Assert.True(document < blog && blog < issue && issue < asset, "expected the built-in order documents, blogs, issues, assets");
         }
 
         /// <summary>

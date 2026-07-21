@@ -17,8 +17,8 @@ namespace KleeneStar.Core.WebFragment.Search
     /// <remarks>
     /// This is the page-local search element that drives the results table. The application
     /// header no longer carries a standalone search field — global search is reached from the
-    /// search entry below the recently opened objects in the header object dropdown
-    /// (<c>ObjectDropdownControl</c>).
+    /// dedicated search dropdown in the header (<c>SearchDropdownControl</c>), which sits
+    /// after the per-kind object dropdowns.
     /// </remarks>
     [Section<SectionViewHeaderPrimary>]
     [Scope<SearchViewFragment>]

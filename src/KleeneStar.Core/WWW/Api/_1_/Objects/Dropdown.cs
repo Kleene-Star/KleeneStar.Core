@@ -11,9 +11,12 @@ using WebExpress.WebIndex.Queries;
 namespace KleeneStar.Core.WWW.Api._1_.Objects
 {
     /// <summary>
-    /// Provides the items for the object dropdown in the application header: with no search term
-    /// the calling identity's most recently opened objects (newest first); with a search term a
-    /// full-text search across every object by summary.
+    /// Provides the items for the global search dropdown in the application header: with no
+    /// search term the calling identity's most recently opened objects across every kind
+    /// (newest first); with a search term a full-text search across every object by summary.
+    /// The per-kind header dropdowns are backed by the kind-specific dropdown endpoints
+    /// (<see cref="Documents.Dropdown"/>, <see cref="Blogs.Dropdown"/>,
+    /// <see cref="Issues.Dropdown"/>, <see cref="Assets.Dropdown"/>).
     /// </summary>
     [Title("kleenestar.core:object.dropdown.label")]
     [Cache]

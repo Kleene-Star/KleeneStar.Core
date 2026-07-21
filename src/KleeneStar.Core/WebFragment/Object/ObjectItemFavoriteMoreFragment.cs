@@ -19,6 +19,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </summary>
     [Section<SectionHeadlineMorePrimary>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Asset._objectkey_.Index>]
     [Cache]
     public sealed class ObjectItemFavoriteMoreFragment : FragmentControlDropdownItemLink
     {

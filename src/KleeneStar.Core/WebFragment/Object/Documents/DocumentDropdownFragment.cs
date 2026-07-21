@@ -8,20 +8,21 @@ using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Object
+namespace KleeneStar.Core.WebFragment.Object.Documents
 {
     /// <summary>
-    /// Contributes the object dropdown to the application header. The dropdown lists the calling
-    /// identity's most recently opened objects (analogous to the workspace dropdown); below a
-    /// divider, a search entry opens the global search page. It replaces the former standalone
-    /// header search field.
+    /// Contributes the documents dropdown to the application header. The dropdown lists the
+    /// calling identity's most recently opened documents (analogous to the workspace
+    /// dropdown) and offers a search box scoped to the document kind. It is one of the
+    /// per-kind dropdowns that replaced the former single object dropdown.
     /// </summary>
     [Section<SectionAppNavigationPreferences>]
     [Scope<IScopeGeneral>]
     [Scope<IScopeAdmin>]
     [Scope<IScopeStatusPage>]
+    [Order(1)]
     [Cache]
-    public sealed class ObjectDropdownFragment : ObjectDropdownControl, IFragmentControl<ObjectDropdownControl>, IFragmentControlNavigationItem
+    public sealed class DocumentDropdownFragment : ObjectKindDropdownControl, IFragmentControl<ObjectKindDropdownControl>, IFragmentControlNavigationItem
     {
         /// <summary>
         /// Gets the context of the fragment.
@@ -35,11 +36,15 @@ namespace KleeneStar.Core.WebFragment.Object
         /// The context associated with the fragment, providing necessary data and services for its
         /// operation. Cannot be null.
         /// </param>
-        public ObjectDropdownFragment(IFragmentContext fragmentContext)
-            : base(fragmentContext?.FragmentId?.ToString())
+        public DocumentDropdownFragment(IFragmentContext fragmentContext)
+            : base
+            (
+                fragmentContext?.FragmentId?.ToString(),
+                new Document(),
+                _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Documents.Dropdown>().ToString()
+            )
         {
             FragmentContext = fragmentContext;
-            Text = _ => "kleenestar.core:object.dropdown.label";
         }
 
         /// <summary>

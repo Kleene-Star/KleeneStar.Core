@@ -58,7 +58,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
             }
 
             var views = CoreHub.ObjectViewManager
-                .GetViewsForWorkspace(workspace.Id)
+                .GetViewsForWorkspace(workspace.Id, Model.Entities.ObjectKind.Issue)
                 .Where(x => x.State == ObjectViewState.Active);
 
             foreach (var view in views)
@@ -91,13 +91,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
             }
 
             var viewType = ResolveViewType(templateId);
-            var existing = CoreHub.ObjectViewManager.GetViewsForWorkspace(workspace.Id).ToList();
+            var existing = CoreHub.ObjectViewManager.GetViewsForWorkspace(workspace.Id, Model.Entities.ObjectKind.Issue).ToList();
             var name = BuildUniqueName(existing, viewType.ToString());
 
             var view = new ObjectView
             {
                 Id = Guid.NewGuid(),
                 Name = name,
+                Kind = Model.Entities.ObjectKind.Issue,
                 ViewType = viewType,
                 Order = existing.Count == 0 ? 0 : existing.Max(x => x.Order) + 1,
                 State = ObjectViewState.Active,

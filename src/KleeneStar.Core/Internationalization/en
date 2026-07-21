@@ -390,7 +390,7 @@ object.permission.label=Permissions
 object.favorite.add.label=Add star
 object.favorite.remove.label=Remove star
 
-# object kinds (documents / blogs / issues)
+# object kinds (documents / blogs / issues / assets)
 object.kind.documents.label=Documents
 object.kind.documents.empty=This workspace has no documents yet. Documents are objects of the document kind and appear here as a page tree.
 object.kind.documents.open.label=Open document
@@ -407,6 +407,19 @@ object.kind.issues.filter.archived=Archived
 object.kind.issues.column.key=Key
 object.kind.issues.column.summary=Summary
 object.kind.issues.column.updated=Updated
+object.kind.assets.label=Assets
+object.kind.assets.empty=This workspace has no assets yet. Assets are objects of the asset kind and appear here as a filterable list.
+object.kind.assets.open.label=Open asset
+object.kind.assets.none.label=No assets yet
+object.kind.assets.filter.starred=Starred
+object.kind.assets.filter.mine=Assigned to me
+object.kind.assets.filter.created=Created by me
+object.kind.assets.filter.archived=Archived
+object.kind.assets.column.key=Key
+object.kind.assets.column.summary=Summary
+object.kind.assets.column.updated=Updated
+object.recent.label=Recently opened
+object.recent.none.label=No recently opened objects
 
 # object kind detail views (document / blog reading + editing)
 object.prose.edit.label=Edit
@@ -431,6 +444,8 @@ object.view.scrum.backlog.label=Backlog
 object.view.scrum.backlog.description=Scrum product backlog.
 object.view.issues.label=Issues
 object.view.issues.description=Most recently updated issues with personal filters.
+object.view.assets.label=Assets
+object.view.assets.description=Most recently updated assets with personal filters.
 object.summary.label=Summary
 object.summary.placeholder=Enter a brief summary of the object.
 object.summary.help=The summary provides a quick overview of the object's content.

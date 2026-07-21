@@ -18,7 +18,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
     /// </summary>
     [Title("kleenestar.core:object.tile.header")]
     [Cache]
-    public sealed class Tile : RestApiTile<Model.Entities.Object>
+    public class Tile : RestApiTile<Model.Entities.Object>
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -26,6 +26,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         public Tile()
         {
         }
+
+        /// <summary>
+        /// Gets the object kind the tile view is scoped to. Defaults to
+        /// <see cref="Model.Entities.ObjectKind.Issue"/>; a per-kind subclass (e.g. the
+        /// asset tile view) overrides it so the same logic serves every kind's overview.
+        /// </summary>
+        protected virtual string Kind => Model.Entities.ObjectKind.Issue;
 
         /// <summary>
         /// Creates a new instance of an object that implements the IQueryContext interface.
@@ -65,10 +72,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
             var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value);
             var id = workspace?.Id ?? Guid.Empty;
 
-            // the tab views live on the issue overview, so they present the issue kind only
+            // the tab views present a single object kind (issues by default, assets in the
+            // asset subclass)
             query = query
                 .WhereEquals(x => x.WorkspaceId, id)
-                .WhereEquals(x => x.Kind, Model.Entities.ObjectKind.Issue);
+                .WhereEquals(x => x.Kind, Kind);
 
             return CoreHub.ObjectManager.GetObjects(query, context)
                 .Select(x => new RestApiTileItem()

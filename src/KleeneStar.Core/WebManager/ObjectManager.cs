@@ -150,11 +150,34 @@ namespace KleeneStar.Core.WebManager
         /// <returns>The recently opened objects, newest first. The collection may be empty.</returns>
         public IReadOnlyList<Model.Entities.Object> GetRecentObjects(Guid ownerId, int count)
         {
+            return GetRecentObjects(ownerId, count, null);
+        }
+
+        /// <summary>
+        /// Returns the active objects of the supplied kind the supplied identity has most
+        /// recently opened, newest first, capped at <paramref name="count"/>. Backs the
+        /// "recently used" section of a per-kind dropdown in the application header.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="count">The maximum number of objects to return.</param>
+        /// <param name="kind">
+        /// The kind key to filter by. Null, empty, or whitespace returns objects of every
+        /// kind. The key is normalized (trimmed, lower-cased) before the comparison so it
+        /// matches the persisted <see cref="Model.Entities.Object.Kind"/>.
+        /// </param>
+        /// <returns>The recently opened objects of the kind, newest first. The collection may be empty.</returns>
+        public IReadOnlyList<Model.Entities.Object> GetRecentObjects(Guid ownerId, int count, string kind)
+        {
+            var normalized = string.IsNullOrWhiteSpace(kind)
+                ? null
+                : Model.Entities.ObjectKind.Normalize(kind);
+
             return [.. ModelHub.GetObjectVisits(new Query<Model.Entities.ObjectVisit>())
                 .Where(x => x.OwnerId == ownerId
                     && x.LastVisited != default
                     && x.Object is not null
-                    && x.Object.State == Model.Entities.WorkspaceState.Active)
+                    && x.Object.State == Model.Entities.WorkspaceState.Active
+                    && (normalized == null || x.Object.Kind == normalized))
                 .OrderByDescending(x => x.LastVisited)
                 .Take(Math.Max(0, count))
                 .Select(x => x.Object)];

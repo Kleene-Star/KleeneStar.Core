@@ -54,6 +54,16 @@ namespace KleeneStar.Core.WebManager
         IEnumerable<ObjectView> GetViewsForWorkspace(Guid workspaceId);
 
         /// <summary>
+        /// Returns the active object views attached to the workspace identified by
+        /// <paramref name="workspaceId"/> that belong to the supplied object
+        /// <paramref name="kind"/> (each kind keeps its own tab set), ordered by
+        /// <see cref="ObjectView.Order"/>.
+        /// </summary>
+        /// <param name="workspaceId">The owning workspace id.</param>
+        /// <param name="kind">The object kind key whose tab set is requested.</param>
+        IEnumerable<ObjectView> GetViewsForWorkspace(Guid workspaceId, string kind);
+
+        /// <summary>
         /// Persists a new object view.
         /// </summary>
         /// <param name="viewEntry">The view to add. Cannot be null.</param>

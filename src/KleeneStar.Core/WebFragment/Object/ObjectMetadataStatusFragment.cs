@@ -34,6 +34,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </remarks>
     [Section<SectionHeadlineMetadata>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Asset._objectkey_.Index>]
     [Order(0)]
     [Cache]
     public sealed class ObjectMetadataStatusFragment : FragmentControlPanel

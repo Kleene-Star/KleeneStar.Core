@@ -36,6 +36,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </remarks>
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Asset._objectkey_.Index>]
     [Cache]
     public sealed class ObjectItemDetailFragment : FragmentControlPanel
     {

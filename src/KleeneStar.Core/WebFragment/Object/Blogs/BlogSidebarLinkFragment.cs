@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebPolicies;
+﻿using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -16,7 +16,9 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
     [Scope<global::KleeneStar.Core.WWW.Documents._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Blogs._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Assets._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Asset._objectkey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Document._objectkey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Document._objectkey_.Edit>]
     [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Index>]

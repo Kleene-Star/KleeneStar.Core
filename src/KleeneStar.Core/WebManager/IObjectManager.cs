@@ -94,6 +94,20 @@ namespace KleeneStar.Core.WebManager
         IReadOnlyList<Object> GetRecentObjects(System.Guid ownerId, int count);
 
         /// <summary>
+        /// Returns the active objects of the supplied kind the supplied identity has most
+        /// recently opened, newest first, capped at <paramref name="count"/>. Backs the
+        /// "recently used" section of a per-kind dropdown in the application header.
+        /// </summary>
+        /// <param name="ownerId">The id of the owning identity.</param>
+        /// <param name="count">The maximum number of objects to return.</param>
+        /// <param name="kind">
+        /// The kind key to filter by. Null, empty, or whitespace returns objects of every
+        /// kind (equivalent to <see cref="GetRecentObjects(System.Guid, int)"/>).
+        /// </param>
+        /// <returns>The recently opened objects of the kind, newest first. The collection may be empty.</returns>
+        IReadOnlyList<Object> GetRecentObjects(System.Guid ownerId, int count, string kind);
+
+        /// <summary>
         /// Records that the supplied identity has just opened the supplied object by advancing the
         /// visit's last-visited timestamp (inserting the visit when needed). The mutation is
         /// deliberately quiet because it fires on every object detail page load. Returns

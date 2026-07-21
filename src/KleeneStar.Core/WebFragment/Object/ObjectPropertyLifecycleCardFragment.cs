@@ -21,6 +21,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </summary>
     [Section<SectionPropertyPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Asset._objectkey_.Index>]
     [Order(9)]
     [Cache]
     public sealed class ObjectPropertyLifecycleCardFragment : FragmentControlPanel

@@ -30,6 +30,7 @@ namespace KleeneStar.Core.WebFragment.Object
             Register(new Documents.Document());
             Register(new Blogs.Blog());
             Register(new Issues.Issue());
+            Register(new Assets.Asset());
         }
 
         /// <summary>

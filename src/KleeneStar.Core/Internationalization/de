@@ -390,7 +390,7 @@ object.permission.label=Berechtigungen
 object.favorite.add.label=Stern hinzufügen
 object.favorite.remove.label=Stern entfernen
 
-# object kinds (documents / blogs / issues)
+# object kinds (documents / blogs / issues / assets)
 object.kind.documents.label=Dokumente
 object.kind.documents.empty=Dieser Arbeitsbereich enthält noch keine Dokumente. Dokumente sind Objekte der Art "Dokument" und erscheinen hier als Seitenbaum.
 object.kind.documents.open.label=Dokument öffnen
@@ -407,6 +407,19 @@ object.kind.issues.filter.archived=Archiviert
 object.kind.issues.column.key=Schlüssel
 object.kind.issues.column.summary=Zusammenfassung
 object.kind.issues.column.updated=Aktualisiert
+object.kind.assets.label=Assets
+object.kind.assets.empty=Dieser Arbeitsbereich enthält noch keine Assets. Assets sind Objekte der Art "Asset" und erscheinen hier als filterbare Liste.
+object.kind.assets.open.label=Asset öffnen
+object.kind.assets.none.label=Noch keine Assets
+object.kind.assets.filter.starred=Gesternt
+object.kind.assets.filter.mine=Mir zugewiesen
+object.kind.assets.filter.created=Von mir erstellt
+object.kind.assets.filter.archived=Archiviert
+object.kind.assets.column.key=Schlüssel
+object.kind.assets.column.summary=Zusammenfassung
+object.kind.assets.column.updated=Aktualisiert
+object.recent.label=Zuletzt geöffnet
+object.recent.none.label=Keine zuletzt geöffneten Objekte
 
 # object kind detail views (document / blog reading + editing)
 object.prose.edit.label=Bearbeiten
@@ -431,6 +444,8 @@ object.view.scrum.backlog.label=Backlog
 object.view.scrum.backlog.description=Scrum-Produkt-Backlog.
 object.view.issues.label=Vorgänge
 object.view.issues.description=Zuletzt aktualisierte Vorgänge mit persönlichen Filtern.
+object.view.assets.label=Assets
+object.view.assets.description=Zuletzt aktualisierte Assets mit persönlichen Filtern.
 object.summary.label=Zusammenfassung
 object.summary.placeholder=Geben Sie eine kurze Zusammenfassung des Objekts ein.
 object.summary.help=Die Zusammenfassung hilft Ihnen, dieses Objekt schnell zu identifizieren.

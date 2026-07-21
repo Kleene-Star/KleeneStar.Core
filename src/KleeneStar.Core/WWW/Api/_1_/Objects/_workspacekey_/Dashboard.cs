@@ -16,7 +16,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
     /// </summary>
     [Title("kleenestar.core:object.view.dashboard.title")]
     [Cache]
-    public sealed class Dashboard : RestApiDashboard
+    public class Dashboard : RestApiDashboard
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -24,6 +24,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         public Dashboard()
         {
         }
+
+        /// <summary>
+        /// Gets the object kind the dashboard aggregates. Defaults to
+        /// <see cref="Model.Entities.ObjectKind.Issue"/>; a per-kind subclass (e.g. the
+        /// asset dashboard) overrides it so the same logic serves every kind's overview.
+        /// </summary>
+        protected virtual string Kind => Model.Entities.ObjectKind.Issue;
 
         /// <summary>
         /// Returns one KPI column for the total number of objects in the workspace and one
@@ -41,10 +48,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
 
             using var context = ModelHub.CreateDbContext();
 
-            // the tab views live on the issue overview, so they present the issue kind only
+            // the tab views present a single object kind (issues by default, assets in the
+            // asset subclass)
             var query = new Query<Model.Entities.Object>()
                 .WhereEquals(x => x.WorkspaceId, workspace.Id)
-                .WhereEquals(x => x.Kind, Model.Entities.ObjectKind.Issue);
+                .WhereEquals(x => x.Kind, Kind);
 
             var objects = CoreHub.ObjectManager.GetObjects(query, context).ToList();
             var active = objects.Count(x => x.State == WorkspaceState.Active);

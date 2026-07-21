@@ -24,8 +24,15 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
     /// </summary>
     [Title("kleenestar.core:object.view.kanban.title")]
     [Cache]
-    public sealed class Kanban : RestApiKanban<Model.Entities.Object>
+    public class Kanban : RestApiKanban<Model.Entities.Object>
     {
+        /// <summary>
+        /// Gets the object kind the board is scoped to. Defaults to
+        /// <see cref="Model.Entities.ObjectKind.Issue"/>; a per-kind subclass (e.g. the
+        /// asset board) overrides it so the same logic serves every kind's overview.
+        /// </summary>
+        protected virtual string Kind => Model.Entities.ObjectKind.Issue;
+
         /// <summary>
         /// Returns a <see cref="KleeneStarDbContext"/> so <see cref="CoreHub.ObjectManager"/>
         /// can run its queries; the base class' default query context would cast to null
@@ -104,10 +111,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
             var contextByClass = new Dictionary<Guid, ObjectBoardClassContext>();
             var identityById = new Dictionary<Guid, Identity>();
 
-            // the tab views live on the issue overview, so they present the issue kind only
+            // the tab views present a single object kind (issues by default, assets in the
+            // asset subclass)
             query = query
                 .WhereEquals(x => x.WorkspaceId, workspace.Id)
-                .WhereEquals(x => x.Kind, Model.Entities.ObjectKind.Issue);
+                .WhereEquals(x => x.Kind, Kind);
 
             foreach (var entity in CoreHub.ObjectManager.GetObjects(query, context)
                 .Where(x => x.State == WorkspaceState.Active))
@@ -230,12 +238,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         /// </summary>
         /// <param name="workspaceId">The workspace id.</param>
         /// <returns>The active objects.</returns>
-        private static IEnumerable<Model.Entities.Object> GetActiveObjects(Guid workspaceId)
+        private IEnumerable<Model.Entities.Object> GetActiveObjects(Guid workspaceId)
         {
-            // the tab views live on the issue overview, so they present the issue kind only
+            // the tab views present a single object kind (issues by default, assets in the
+            // asset subclass)
             var query = new Query<Model.Entities.Object>()
                 .WhereEquals(x => x.WorkspaceId, workspaceId)
-                .WhereEquals(x => x.Kind, Model.Entities.ObjectKind.Issue);
+                .WhereEquals(x => x.Kind, Kind);
 
             return CoreHub.ObjectManager.GetObjects(query)
                 .Where(x => x.State == WorkspaceState.Active);
