@@ -9,7 +9,8 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <summary>
     /// Provides the Scrum sprint overview content of the objects index — the active
     /// iteration with progress and burn-down — rendered inside the
-    /// <see cref="ObjectTabScrumSprintTemplateFragment"/> tab template. The fragment IS
+    /// <see cref="ObjectTabScrumSprintTemplateFragment"/> tab template below the scrum team
+    /// workload (<see cref="ObjectTabScrumSprintTeamFragment"/>, order 0). The fragment IS
     /// the sprint control — it derives from the fragment-aware
     /// <see cref="FragmentControlDataScrumSprint"/> base and registers in
     /// <see cref="SectionTabTemplatePrimary"/>, the section the tab template collects
@@ -17,7 +18,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </summary>
     [Section<SectionTabTemplatePrimary>]
     [Scope<ObjectTabScrumSprintTemplateFragment>]
-    [Order(0)]
+    [Order(1)]
     [Cache]
     public sealed class ObjectTabScrumSprintFragment : FragmentControlDataScrumSprint
     {

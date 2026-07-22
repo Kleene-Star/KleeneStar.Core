@@ -64,7 +64,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_
                     Name = view.Name,
                     Title = view.Name,
                     Icon = (view.ViewType.Icon() as WebExpress.WebUI.WebIcon.Icon)?.Class,
-                    TemplateId = view.ViewType.TemplateId(),
+                    TemplateId = ResolveTemplateId(view.ViewType),
                     Uri = ResolveContentUri(view.ViewType, request)?.ToString()
                 };
             }
@@ -110,8 +110,30 @@ namespace KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_
                 Name = view.Name,
                 Title = view.Name,
                 Icon = (viewType.Icon() as WebExpress.WebUI.WebIcon.Icon)?.Class,
-                TemplateId = viewType.TemplateId(),
+                TemplateId = ResolveTemplateId(viewType),
                 Uri = ResolveContentUri(viewType, request)?.ToString()
+            };
+        }
+
+        /// <summary>
+        /// Maps a view type to the id of the <em>asset</em> tab-template fragment that
+        /// renders it. The shared <see cref="ObjectViewTypeExtensions.TemplateId"/> returns
+        /// the issue templates (which are not embedded on the asset page), so the asset
+        /// overview needs its own mapping. The ids are the asset template fragments' ids
+        /// (full type name, lower-cased, dots replaced by dashes).
+        /// </summary>
+        /// <param name="type">The view type.</param>
+        /// <returns>The asset tab-template fragment id.</returns>
+        private static string ResolveTemplateId(ObjectViewType type)
+        {
+            return type switch
+            {
+                ObjectViewType.Assets => "kleenestar-core-webfragment-object-assets-assetviewtemplatefragment",
+                ObjectViewType.Table => "kleenestar-core-webfragment-object-assets-assettabviewtemplatefragment",
+                ObjectViewType.List => "kleenestar-core-webfragment-object-assets-assettabviewtemplatefragment",
+                ObjectViewType.Dashboard => "kleenestar-core-webfragment-object-assets-assettabdashboardtemplatefragment",
+                ObjectViewType.Kanban => "kleenestar-core-webfragment-object-assets-assettabkanbantemplatefragment",
+                _ => type.TemplateId()
             };
         }
 

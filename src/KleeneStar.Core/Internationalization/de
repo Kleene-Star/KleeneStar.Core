@@ -479,6 +479,7 @@ object.view.kanban.title=Kanban-Board
 object.view.scrum.sprint.label=Sprint
 object.view.scrum.sprint.description=Scrum-Sprint-Board für die aktuelle Iteration.
 object.view.scrum.sprint.title=Scrum-Sprint
+object.view.scrum.sprint.team.title=Team-Auslastung
 object.view.scrum.backlog.label=Backlog
 object.view.scrum.backlog.description=Produkt-Backlog für die Scrum-Planung.
 object.view.scrum.backlog.title=Scrum-Backlog

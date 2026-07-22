@@ -3,13 +3,15 @@ using WebExpress.WebCore.WebAttribute;
 namespace KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_
 {
     /// <summary>
-    /// List endpoint of the asset overview's classic view. Reuses the object list logic
-    /// of <see cref="global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.List"/>
-    /// but scopes it to the asset kind.
+    /// List endpoint of the asset overview's classic view: the workspace's assets as a
+    /// vertical frame list. The list logic lives in
+    /// <see cref="global::KleeneStar.Core.WebRestApi.RestApiObjectKindList"/>; this
+    /// endpoint only scopes it to the asset kind. It is an independent sibling of the
+    /// issue list endpoint (not a subclass), so both keep their own route.
     /// </summary>
     [Title("kleenestar.core:object.list.header")]
     [Cache]
-    public sealed class List : global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.List
+    public sealed class List : global::KleeneStar.Core.WebRestApi.RestApiObjectKindList
     {
         /// <summary>
         /// Initializes a new instance of the class.
