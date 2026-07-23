@@ -97,5 +97,43 @@ namespace KleeneStar.Core.WebManager
         /// <param name="dashboardId">The dashboard id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
         IDashboardManager Remove(Guid dashboardId);
+
+        /// <summary>
+        /// Applies a column-only layout change (add, rename, resize, recolor, reorder, delete) to a
+        /// dashboard while preserving the widgets of the surviving columns.
+        /// </summary>
+        /// <remarks>
+        /// This persists the change silently (without raising a user notification) because it backs
+        /// the dashboard's live autosave, and raises <see cref="DashboardUpdated"/> when the dashboard
+        /// exists. The list order defines the persisted column order; columns carrying
+        /// <see cref="Guid.Empty"/> (or an unknown id) are created, and existing columns absent from
+        /// the set are removed together with their widgets.
+        /// </remarks>
+        /// <param name="dashboardId">The id of the dashboard to update.</param>
+        /// <param name="columns">
+        /// The desired columns in their target order. Widgets on these instances are ignored. Must not
+        /// be null.
+        /// </param>
+        /// <returns>The current instance to allow for method chaining.</returns>
+        IDashboardManager SetColumns(Guid dashboardId, IReadOnlyList<DashboardColumn> columns);
+
+        /// <summary>
+        /// Applies a full board update (a widget being added, deleted, reconfigured or moved) to a
+        /// dashboard, rebuilding the widgets of every column from the desired state.
+        /// </summary>
+        /// <remarks>
+        /// This persists the change silently (without raising a user notification) because it backs
+        /// the dashboard's live autosave, and raises <see cref="DashboardUpdated"/> when the dashboard
+        /// exists. Columns are reconciled as in <see cref="SetColumns"/>; in addition the widgets of
+        /// every surviving or created column are recreated from the desired widgets, with the list
+        /// order defining their position.
+        /// </remarks>
+        /// <param name="dashboardId">The id of the dashboard to update.</param>
+        /// <param name="columns">
+        /// The desired columns, each carrying the widgets it should hold, in their target order. Must
+        /// not be null.
+        /// </param>
+        /// <returns>The current instance to allow for method chaining.</returns>
+        IDashboardManager SetBoard(Guid dashboardId, IReadOnlyList<DashboardColumn> columns);
     }
 }

@@ -181,6 +181,58 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Applies a column-only layout change (add, rename, resize, recolor, reorder, delete) to a
+        /// dashboard while preserving the widgets of the surviving columns.
+        /// </summary>
+        /// <param name="dashboardId">The id of the dashboard to update.</param>
+        /// <param name="columns">
+        /// The desired columns in their target order. Widgets on these instances are ignored. Must not
+        /// be null.
+        /// </param>
+        /// <returns>The current instance to allow for method chaining.</returns>
+        public IDashboardManager SetColumns(Guid dashboardId, IReadOnlyList<DashboardColumn> columns)
+        {
+            ArgumentNullException.ThrowIfNull(columns);
+
+            ModelHub.SetDashboardColumns(dashboardId, columns);
+
+            var dashboard = GetDashboard(dashboardId);
+
+            if (dashboard is not null)
+            {
+                DashboardUpdated?.Invoke(this, dashboard);
+            }
+
+            return this;
+        }
+
+        /// <summary>
+        /// Applies a full board update (a widget being added, deleted, reconfigured or moved) to a
+        /// dashboard, rebuilding the widgets of every column from the desired state.
+        /// </summary>
+        /// <param name="dashboardId">The id of the dashboard to update.</param>
+        /// <param name="columns">
+        /// The desired columns, each carrying the widgets it should hold, in their target order. Must
+        /// not be null.
+        /// </param>
+        /// <returns>The current instance to allow for method chaining.</returns>
+        public IDashboardManager SetBoard(Guid dashboardId, IReadOnlyList<DashboardColumn> columns)
+        {
+            ArgumentNullException.ThrowIfNull(columns);
+
+            ModelHub.SetDashboardBoard(dashboardId, columns);
+
+            var dashboard = GetDashboard(dashboardId);
+
+            if (dashboard is not null)
+            {
+                DashboardUpdated?.Invoke(this, dashboard);
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// Release of unmanaged resources reserved during use.
         /// </summary>
         public void Dispose()
