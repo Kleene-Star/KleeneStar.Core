@@ -44,7 +44,8 @@ namespace KleeneStar.Core.WebManager
         IKanbanBoardManager SetColumns(Guid boardId, IReadOnlyList<KanbanBoardColumn> columns);
 
         /// <summary>
-        /// Applies a swimlane layout change (add / rename / reorder / delete) to a Kanban board.
+        /// Applies a swimlane layout change (add / rename / recolor / reorder / delete) to a
+        /// Kanban board.
         /// </summary>
         /// <param name="boardId">The id of the board to update.</param>
         /// <param name="swimlanes">The desired swimlanes in their target order. Must not be null.</param>

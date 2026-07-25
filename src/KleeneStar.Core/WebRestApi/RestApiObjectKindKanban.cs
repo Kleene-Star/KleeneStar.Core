@@ -138,6 +138,7 @@ namespace KleeneStar.Core.WebRestApi
                     {
                         Id = swimlane.Id.ToString(),
                         Label = swimlane.Name,
+                        Color = swimlane.Color,
                         Filter = swimlane.Filter,
                         Expanded = true
                     };
@@ -312,8 +313,8 @@ namespace KleeneStar.Core.WebRestApi
         }
 
         /// <summary>
-        /// Applies a swimlane layout change (add / rename / reorder / delete) submitted through
-        /// the board "…" menu. A swimlane carrying an existing id keeps the class it already
+        /// Applies a swimlane layout change (add / rename / recolor / reorder / delete) submitted
+        /// through the board "…" menu. A swimlane carrying an existing id keeps the class it already
         /// places cards by; a genuinely new swimlane claims the next class of the workspace not
         /// yet represented on the board (regardless of whether it currently has active
         /// objects), or none when every class is already in use.
@@ -366,6 +367,7 @@ namespace KleeneStar.Core.WebRestApi
                     BoardId = board.Id,
                     Key = key,
                     Name = FallbackName(swimlane.Title, "Swimlane"),
+                    Color = swimlane.Color,
                     Filter = swimlane.Filter,
                     ClassId = classId
                 };

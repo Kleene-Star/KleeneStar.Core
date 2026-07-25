@@ -126,13 +126,14 @@ namespace KleeneStar.Core.Test.WebManager
 
             CoreHub.KanbanBoardManager.SetSwimlanes(board.Id,
             [
-                new KanbanBoardSwimlane(Guid.Empty) { Name = "Bugs", ClassId = classId }
+                new KanbanBoardSwimlane(Guid.Empty) { Name = "Bugs", Color = "#3273A3", ClassId = classId }
             ]);
 
             var loaded = CoreHub.KanbanBoardManager.GetBoard(board.WorkspaceId, board.Kind);
             var swimlane = Assert.Single(loaded.Swimlanes);
 
             Assert.Equal("Bugs", swimlane.Name);
+            Assert.Equal("#3273A3", swimlane.Color);
             Assert.Equal(classId, swimlane.ClassId);
         }
 
