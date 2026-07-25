@@ -27,6 +27,8 @@ namespace KleeneStar.Core.Test
             ("_statusManager",    typeof(StatusManager)),
             ("_objectManager",    typeof(ObjectManager)),
             ("_dashboardManager", typeof(DashboardManager)),
+            ("_kanbanBoardManager", typeof(KanbanBoardManager)),
+            ("_kindDashboardManager", typeof(KindDashboardManager)),
             ("_tenantManager",    typeof(TenantManager)),
             ("_identityManager",  typeof(IdentityManager)),
             ("_groupManager",     typeof(GroupManager)),

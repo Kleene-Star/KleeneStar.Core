@@ -29,6 +29,8 @@ namespace KleeneStar.Core
         private static StatusManager _statusManager;
         private static ObjectManager _objectManager;
         private static DashboardManager _dashboardManager;
+        private static KanbanBoardManager _kanbanBoardManager;
+        private static KindDashboardManager _kindDashboardManager;
         private static TenantManager _tenantManager;
         private static IdentityManager _identityManager;
         private static GroupManager _groupManager;
@@ -106,6 +108,18 @@ namespace KleeneStar.Core
         /// Gets the dashboard manager responsible for managing dashboards within the application.
         /// </summary>
         public static IDashboardManager DashboardManager => _dashboardManager ??= ComponentHub.GetComponentManager<DashboardManager>();
+
+        /// <summary>
+        /// Gets the Kanban board manager responsible for the persisted board layout (columns,
+        /// swimlanes, board filter) of the workspace object Kanban boards.
+        /// </summary>
+        public static IKanbanBoardManager KanbanBoardManager => _kanbanBoardManager ??= ComponentHub.GetComponentManager<KanbanBoardManager>();
+
+        /// <summary>
+        /// Gets the object-kind dashboard manager responsible for the persisted KPI board
+        /// layout (columns, widgets) of the workspace object Dashboard tabs.
+        /// </summary>
+        public static IKindDashboardManager KindDashboardManager => _kindDashboardManager ??= ComponentHub.GetComponentManager<KindDashboardManager>();
 
         /// <summary>
         /// Gets the tenant manager used to manage tenant-related operations within the application.

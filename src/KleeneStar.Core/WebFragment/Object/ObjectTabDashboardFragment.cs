@@ -1,18 +1,22 @@
+using KleeneStar.Core.WebFragment.Dashboard;
 using WebExpress.WebApp.WebData;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
+using WebExpress.WebCore.WebHtml;
+using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
     /// Provides the dashboard content of the objects index, rendered inside the
     /// <see cref="ObjectTabDashboardTemplateFragment"/> tab template. The fragment IS
-    /// the dashboard control — it derives from the fragment-aware
-    /// <see cref="FragmentControlDataDashboard"/> base and registers in
-    /// <see cref="SectionTabTemplatePrimary"/>, the section the tab template collects
-    /// its content from.
+    /// the dashboard control — it derives from <see cref="FragmentControlDataDashboard"/> and
+    /// registers in <see cref="SectionTabTemplatePrimary"/>, the section the tab template
+    /// collects its content from. Its data comes from the object dashboard endpoint. The board
+    /// is fully editable: columns and widgets can be added, renamed, resized, recolored,
+    /// reordered, reconfigured and removed, all persisted through the endpoint.
     /// </summary>
     [Section<SectionTabTemplatePrimary>]
     [Scope<ObjectTabDashboardTemplateFragment>]
@@ -28,6 +32,38 @@ namespace KleeneStar.Core.WebFragment.Object
             : base(fragmentContext)
         {
             ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Dashboard>().ToString());
+
+            // enable the full board editing surface; the endpoint persists every change and
+            // reports which widget types the add menu may offer
+            EditableColumn = _ => true;
+            MovableColumn = _ => true;
+            DeletableColumn = _ => true;
+            AddableColumn = _ => true;
+            AddableWidget = _ => true;
+            ConfigurableWidget = _ => true;
+        }
+
+        /// <summary>
+        /// Renders the control as an HTML node, first injecting the app widget registration
+        /// script into the page head (see <see cref="DashboardWidgetScript"/>).
+        /// </summary>
+        /// <param name="renderContext">The context in which the control is rendered.</param>
+        /// <param name="visualTree">The visual tree representing the control's structure.</param>
+        /// <returns>An HTML node representing the rendered control.</returns>
+        public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
+        {
+            if (!FragmentContext.Conditions.Check(renderContext?.Request))
+            {
+                return null;
+            }
+
+            var script = DashboardWidgetScript.Value;
+            if (!string.IsNullOrEmpty(script))
+            {
+                visualTree.AddHeaderScript(script);
+            }
+
+            return base.Render(renderContext, visualTree);
         }
     }
 }

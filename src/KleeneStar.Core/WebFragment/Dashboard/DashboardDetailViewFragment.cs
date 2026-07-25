@@ -1,8 +1,5 @@
 using KleeneStar.Core.WebParameter;
-using System;
-using System.IO;
 using System.Linq;
-using System.Text;
 using WebExpress.WebApp.WebData;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -37,24 +34,6 @@ namespace KleeneStar.Core.WebFragment.Dashboard
     [Cache]
     public sealed class DashboardDetailViewFragment : FragmentControlDataDashboard
     {
-        /// <summary>
-        /// The embedded script resources emitted inline, resolved by suffix and concatenated in this
-        /// order: the i18n registrations first (so the widget titles and settings labels resolve),
-        /// then the widget registration.
-        /// </summary>
-        private static readonly string[] ScriptResourceSuffixes =
-        [
-            "js/i18n/en.js",
-            "js/i18n/de.js",
-            "js/widgets/kleenestar.js"
-        ];
-
-        /// <summary>
-        /// The combined inline widget script, built once on first use from the embedded resources. It
-        /// is language-independent because it registers every shipped language.
-        /// </summary>
-        private static readonly Lazy<string> WidgetScript = new(BuildWidgetScript);
-
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -94,7 +73,7 @@ namespace KleeneStar.Core.WebFragment.Dashboard
             // inline the widget registration; a head script runs after the framework script links
             // (the base widget registry and the client i18n) but before the board controller reads
             // the registry, so the app widgets are available by the time the add menu is built.
-            var script = WidgetScript.Value;
+            var script = DashboardWidgetScript.Value;
             if (!string.IsNullOrEmpty(script))
             {
                 visualTree.AddHeaderScript(script);
@@ -127,41 +106,6 @@ namespace KleeneStar.Core.WebFragment.Dashboard
             return string.IsNullOrEmpty(dashboardId)
                 ? uri
                 : uri?.BindParameters(new DashboardIdParameter { Value = dashboardId });
-        }
-
-        /// <summary>
-        /// Builds the combined inline widget script by reading and concatenating the embedded script
-        /// resources in <see cref="ScriptResourceSuffixes"/> order.
-        /// </summary>
-        /// <returns>The combined script, or an empty string when no resource could be read.</returns>
-        private static string BuildWidgetScript()
-        {
-            var assembly = typeof(DashboardDetailViewFragment).Assembly;
-            var resourceNames = assembly.GetManifestResourceNames();
-            var builder = new StringBuilder();
-
-            foreach (var suffix in ScriptResourceSuffixes)
-            {
-                var resourceName = resourceNames.FirstOrDefault(name => name.Replace('\\', '/')
-                    .EndsWith(suffix, StringComparison.OrdinalIgnoreCase));
-
-                if (resourceName is null)
-                {
-                    continue;
-                }
-
-                using var stream = assembly.GetManifestResourceStream(resourceName);
-
-                if (stream is null)
-                {
-                    continue;
-                }
-
-                using var reader = new StreamReader(stream, Encoding.UTF8);
-                builder.Append(reader.ReadToEnd()).Append('\n');
-            }
-
-            return builder.ToString();
         }
     }
 }

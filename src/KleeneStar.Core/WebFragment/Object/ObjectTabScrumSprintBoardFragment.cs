@@ -56,8 +56,22 @@ namespace KleeneStar.Core.WebFragment.Object
             quickfilter.Resource<SprintBoardResource>().Model("filter");
 
             // the board renders the resource and re-renders whenever the quickfilter
-            // re-queries it
-            var board = new ControlDataKanban(id + "-board");
+            // re-queries it; it shares the same workspace+kind (issue) board configuration as
+            // the main Kanban tab, so enabling the full editing surface here edits that same
+            // persisted board
+            var board = new ControlDataKanban(id + "-board")
+            {
+                EditableColumn = _ => true,
+                MovableColumn = _ => true,
+                DeletableColumn = _ => true,
+                AddableColumn = _ => true,
+                AddableSwimlane = _ => true,
+                EditableSwimlane = _ => true,
+                DeletableSwimlane = _ => true,
+                MovableSwimlane = _ => true,
+                ConfigurableBoard = _ => true,
+                ConfigurableSwimlane = _ => true
+            };
             board.Resource<SprintBoardResource>();
 
             Add(viewState, quickfilter, board);

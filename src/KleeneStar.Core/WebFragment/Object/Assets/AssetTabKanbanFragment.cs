@@ -27,6 +27,19 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
             : base(fragmentContext)
         {
             ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.Kanban>().ToString());
+
+            // enable the full board editing surface; the endpoint persists every column and
+            // swimlane change to the workspace's asset Kanban board configuration
+            EditableColumn = _ => true;
+            MovableColumn = _ => true;
+            DeletableColumn = _ => true;
+            AddableColumn = _ => true;
+            AddableSwimlane = _ => true;
+            EditableSwimlane = _ => true;
+            DeletableSwimlane = _ => true;
+            MovableSwimlane = _ => true;
+            ConfigurableBoard = _ => true;
+            ConfigurableSwimlane = _ => true;
         }
     }
 }
