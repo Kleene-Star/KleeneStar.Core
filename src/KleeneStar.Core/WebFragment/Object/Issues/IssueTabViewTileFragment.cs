@@ -1,9 +1,11 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -13,38 +15,39 @@ using WebExpress.WebUI.WebSection;
 namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
-    /// Table of the issue overview: a REST-backed table showing the workspace's issues,
-    /// most recently updated first, bound to the search, quickfilter, and pagination
-    /// controls of the view.
+    /// Represents a fragment that renders objects in a tile/card view with search,
+    /// filtering, and pagination support. Rendered as a view item inside the
+    /// <see cref="IssueTabViewFragment"/> tab template.
     /// </summary>
     [Section<SectionViewItemPrimary>]
-    [Scope<IssueViewFragment>]
+    [Scope<IssueTabViewFragment>]
+    [Order(1)]
     [Cache]
-    public sealed class IssueViewTableFragment : FragmentControlViewItem
+    public sealed class AssetViewTileFragment : FragmentControlViewItem
     {
         /// <summary>
-        /// Gets the rest table that displays the issue rows.
+        /// Gets the tile control rendering the objects as cards.
         /// </summary>
-        public ControlDataTable Table { get; } = new ControlDataTable()
+        public ControlDataTile Tile { get; } = new ControlDataTile()
         {
-            ServiceFactory = _ => DataServiceDescriptor.TableData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Table>().ToString())
+            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Tile>().ToString())
         };
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public IssueViewTableFragment(IFragmentContext fragmentContext)
+        public AssetViewTileFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconTable(TypeIconTheme.Light);
-            Title = _ => "kleenestar.core:view.table.title";
-            Table.Bind = _ => new Binding()
-                .Add(new BindSearch() { Source = IssueViewSearchFragment.ContentId })
+            Icon = _ => new IconTile();
+            Title = _ => "kleenestar.core:view.tile.title";
+            Tile.Bind = _ => new Binding()
+                .Add(new BindSearch() { Source = IssueTabViewSearchFragment.ContentId })
                 .Add(new BindFilter())
-                .Add(new BindPaging() { Source = IssueViewPaginationFragment.ContentId });
+                .Add(new BindPaging() { Source = IssueTabViewPaginationFragment.ContentId });
 
-            Add(Table);
+            Add(Tile);
         }
 
         /// <summary>

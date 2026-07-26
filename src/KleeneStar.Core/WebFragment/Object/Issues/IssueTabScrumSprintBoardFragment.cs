@@ -1,40 +1,39 @@
 using System.Net.Http;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebData;
-using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebUI.WebFragment;
 
-namespace KleeneStar.Core.WebFragment.Object
+namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
     /// Provides the active-sprint board section of the Scrum sprint tab: a personal-scope
     /// quickfilter above the active-sprint Kanban board, rendered inside the
-    /// <see cref="ObjectTabScrumSprintTemplateFragment"/> tab template below the scrum team
+    /// <see cref="IssueTabScrumSprintTemplateFragment"/> tab template below the scrum team
     /// workload (order 0) and the sprint burn-down (order 1).
     /// </summary>
     /// <remarks>
     /// The Kanban control has no <c>BindFilter</c>, so the quickfilter drives it through a
     /// <see cref="ControlViewState"/>: the ViewState declares the
-    /// <see cref="SprintBoardResource"/> backed by the sprint Kanban endpoint, the
+    /// <see cref="IssueSprintBoardResource"/> backed by the sprint Kanban endpoint, the
     /// quickfilter writes the active chip set into the shared state (the <c>filter</c> path,
     /// mapped to the endpoint's <c>f</c> parameter), and the Kanban renders the resource — so
     /// a chip selection re-queries the board without a bind wire. The quickfilter and the
     /// board resolve the ViewState by resource type, so they may sit beside it in the panel.
     /// </remarks>
     [Section<SectionTabTemplatePrimary>]
-    [Scope<ObjectTabScrumSprintTemplateFragment>]
+    [Scope<IssueTabScrumSprintTemplateFragment>]
     [Order(2)]
     [Cache]
-    public sealed class ObjectTabScrumSprintBoardFragment : FragmentControlPanel
+    public sealed class IssueTabScrumSprintBoardFragment : FragmentControlPanel
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ObjectTabScrumSprintBoardFragment(IFragmentContext fragmentContext)
+        public IssueTabScrumSprintBoardFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             var id = fragmentContext?.FragmentId?.ToString()?.Replace(".", "-");
@@ -44,16 +43,16 @@ namespace KleeneStar.Core.WebFragment.Object
             // query parameter
             var viewState = new ControlViewState<DataQueryState>(id + "-viewstate")
                 .State(_ => { })
-                .Service<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.ScrumSprintKanban>(service => service.Method(HttpMethod.Get))
-                .Resource<SprintBoardResource>(resource => resource
-                    .Service<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.ScrumSprintKanban>()
+                .Service<WWW.Api._1_.Objects._workspacekey_.ScrumSprintKanban>(service => service.Method(HttpMethod.Get))
+                .Resource<IssueSprintBoardResource>(resource => resource
+                    .Service<WWW.Api._1_.Objects._workspacekey_.ScrumSprintKanban>()
                     .Param("f", "filter"));
 
             // the quickfilter loads its chips from its own service and, bound to the board
             // resource, writes the active filter into the shared state and re-queries it
             var quickfilter = new ControlDataQuickfilter(id + "-quickfilter")
-                .DataService<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.ScrumSprintQuickfilter>();
-            quickfilter.Resource<SprintBoardResource>().Model("filter");
+                .DataService<WWW.Api._1_.Objects._workspacekey_.ScrumSprintQuickfilter>();
+            quickfilter.Resource<IssueSprintBoardResource>().Model("filter");
 
             // the board renders the resource and re-renders whenever the quickfilter
             // re-queries it; it shares the same workspace+kind (issue) board configuration as
@@ -72,7 +71,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 ConfigurableBoard = _ => true,
                 ConfigurableSwimlane = _ => true
             };
-            board.Resource<SprintBoardResource>();
+            board.Resource<IssueSprintBoardResource>();
 
             Add(viewState, quickfilter, board);
         }

@@ -10,39 +10,39 @@ using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 using WebExpress.WebUI.WebSection;
 
-namespace KleeneStar.Core.WebFragment.Object.Assets
+namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
-    /// Table of the asset overview: a REST-backed table showing the workspace's assets,
+    /// Table of the issue overview: a REST-backed table showing the workspace's issues,
     /// most recently updated first, bound to the search, quickfilter, and pagination
     /// controls of the view.
     /// </summary>
     [Section<SectionViewItemPrimary>]
-    [Scope<AssetViewFragment>]
+    [Scope<IssueTabViewFragment>]
     [Cache]
-    public sealed class AssetViewTableFragment : FragmentControlViewItem
+    public sealed class IssueTabViewTableFragment : FragmentControlViewItem
     {
         /// <summary>
-        /// Gets the rest table that displays the asset rows.
+        /// Gets the rest table that displays the issue rows.
         /// </summary>
         public ControlDataTable Table { get; } = new ControlDataTable()
         {
-            ServiceFactory = _ => DataServiceDescriptor.TableData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.Table>().ToString())
+            ServiceFactory = _ => DataServiceDescriptor.TableData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Table>().ToString())
         };
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public AssetViewTableFragment(IFragmentContext fragmentContext)
+        public IssueTabViewTableFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Icon = _ => new IconTable(TypeIconTheme.Light);
             Title = _ => "kleenestar.core:view.table.title";
             Table.Bind = _ => new Binding()
-                .Add(new BindSearch() { Source = AssetViewSearchFragment.ContentId })
+                .Add(new BindSearch() { Source = IssueTabViewSearchFragment.ContentId })
                 .Add(new BindFilter())
-                .Add(new BindPaging() { Source = AssetViewPaginationFragment.ContentId });
+                .Add(new BindPaging() { Source = IssueTabViewPaginationFragment.ContentId });
 
             Add(Table);
         }

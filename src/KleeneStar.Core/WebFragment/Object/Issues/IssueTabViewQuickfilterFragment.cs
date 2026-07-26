@@ -1,7 +1,8 @@
+using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
-using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 using WebExpress.WebUI.WebSection;
@@ -9,33 +10,36 @@ using WebExpress.WebUI.WebSection;
 namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
-    /// Footer of the issue overview: the pagination control the issue table binds to.
+    /// Quickfilter header of the issue overview: offers the personal scope chips
+    /// (starred, assigned to me, created by me, archived) served by the issue
+    /// quickfilter endpoint.
     /// </summary>
-    [Section<SectionViewFooterPrimary>]
-    [Scope<IssueViewFragment>]
+    [Section<SectionViewHeaderSecondary>]
+    [Scope<IssueTabViewFragment>]
     [Cache]
-    public sealed class IssueViewPaginationFragment : FragmentControlViewFooter
+    public sealed class IssueTabViewQuickfilterFragment : FragmentControlViewHeader
     {
         /// <summary>
-        /// Represents the unique identifier for the content used in this context.
+        /// Represents the unique identifier for the content.
         /// </summary>
-        public static readonly string ContentId = "id_E2B7A6C09D854FD0BB4E2C7F13A9D5F8";
+        public static readonly string ContentId = "id_9D4F1C22A31E4E3E8B7B54E11F0C6B42";
 
         /// <summary>
-        /// Gets the pagination settings for controlling how data is divided into pages.
+        /// Gets the quick filter control for the REST-based issue queries.
         /// </summary>
-        public ControlPagination Pagination { get; } = new ControlPagination(ContentId)
+        public ControlDataQuickfilter Quickfilter { get; } = new ControlDataQuickfilter(ContentId)
         {
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Quickfilter>().ToString())
         };
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public IssueViewPaginationFragment(IFragmentContext fragmentContext)
+        public IssueTabViewQuickfilterFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Add(Pagination);
+            Add(Quickfilter);
         }
 
         /// <summary>

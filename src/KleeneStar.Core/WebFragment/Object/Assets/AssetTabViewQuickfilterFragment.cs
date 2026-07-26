@@ -10,9 +10,9 @@ using WebExpress.WebUI.WebSection;
 namespace KleeneStar.Core.WebFragment.Object.Assets
 {
     /// <summary>
-    /// Quickfilter header of the classic asset view: offers the personal scope chips
-    /// (starred, assigned to me, created by me, archived) served by the asset quickfilter
-    /// endpoint.
+    /// Quickfilter header of the asset overview: offers the personal scope chips
+    /// (starred, assigned to me, created by me, archived) served by the asset
+    /// quickfilter endpoint.
     /// </summary>
     [Section<SectionViewHeaderSecondary>]
     [Scope<AssetTabViewFragment>]
@@ -22,7 +22,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         /// <summary>
         /// Represents the unique identifier for the content.
         /// </summary>
-        public static readonly string ContentId = "id_29EEF259A17F4F389FCA60F361576836";
+        public static readonly string ContentId = "id_A5B6ED48E05A4B27860F4A75DF5FF06D";
 
         /// <summary>
         /// Gets the quick filter control for the REST-based asset queries.
@@ -45,9 +45,15 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         /// <summary>
         /// Renders the control as an HTML node.
         /// </summary>
-        /// <param name="renderContext">The context in which the control is rendered.</param>
-        /// <param name="visualTree">The visual tree representing the control's structure.</param>
-        /// <returns>An HTML node representing the rendered control.</returns>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);

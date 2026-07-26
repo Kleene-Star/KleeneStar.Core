@@ -9,13 +9,14 @@ using WebExpress.WebUI.WebSection;
 namespace KleeneStar.Core.WebFragment.Object.Assets
 {
     /// <summary>
-    /// Tab template for the classic asset view of the workspace asset tab control: the
-    /// switchable table / list / tile object view. Its content is composed automatically
-    /// from the fragments scoped to the <see cref="AssetTabViewFragment"/>.
+    /// Tab template of the curated asset view inside the workspace asset tab control: the
+    /// most recently updated assets with search, personal quickfilters (starred, assigned
+    /// to me, created by me, archived), and pagination. The content is contributed by the
+    /// <see cref="AssetTabViewFragment"/> scoped to this template.
     /// </summary>
     [Section<SectionTabViewPrimary>]
     [Scope<AssetTabFragment>]
-    [Order(1)]
+    [Order(0)]
     [Cache]
     public sealed class AssetTabViewTemplateFragment : FragmentControlDataTabTemplate, IScope
     {
@@ -28,9 +29,9 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         {
             // icon, name and description feed the template picker of the tab control;
             // the control emits the raw values, so the i18n keys are translated here
-            Icon = _ => ObjectViewType.Table.Icon();
-            Name = renderContext => I18N.Translate(renderContext, ObjectViewType.Table.Text());
-            Description = renderContext => I18N.Translate(renderContext, ObjectViewType.Table.Description());
+            Icon = _ => ObjectViewType.Assets.Icon();
+            Name = renderContext => I18N.Translate(renderContext, ObjectViewType.Assets.Text());
+            Description = renderContext => I18N.Translate(renderContext, ObjectViewType.Assets.Description());
         }
     }
 }

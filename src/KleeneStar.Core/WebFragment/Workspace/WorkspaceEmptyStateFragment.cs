@@ -8,14 +8,18 @@ using WebExpress.WebUI.WebIcon;
 namespace KleeneStar.Core.WebFragment.Workspace
 {
     /// <summary>
-    /// Empty-state placeholder rendered when a workspace has no associated
-    /// content yet (no classes, no objects, no forms). Uses the standard
-    /// <see cref="ControlEmptyState"/> pattern from the WebExpress.WebUI
-    /// framework so the page still communicates what is available.
+    /// Empty-state placeholder rendered on the workspace overview when no workspace exists yet.
+    /// Uses the standard <see cref="ControlEmptyState"/> pattern from the WebExpress.WebUI
+    /// framework so the page still communicates the available next step.
     /// </summary>
+    /// <remarks>
+    /// <see cref="WorkspaceEmptyStateCondition"/> gates this fragment and its complement gates
+    /// <see cref="WorkspaceViewFragment"/>, so the page shows exactly one of the two.
+    /// </remarks>
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces.Index>]
     [Cache]
+    [Condition<WorkspaceEmptyStateCondition>]
     public sealed class WorkspaceEmptyStateFragment : FragmentControlEmptyState
     {
         /// <summary>

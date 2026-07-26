@@ -6,28 +6,28 @@ using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Object.Assets
+namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
-    /// Curated composite view inside the <see cref="AssetViewTemplateFragment"/> tab
-    /// template. The view itself is empty — the search, quickfilter, table, and pagination
-    /// child fragments attach themselves via <c>[Scope&lt;AssetViewFragment&gt;]</c> and
-    /// compose the curated asset list declaratively (mirroring the issue overview's
-    /// leading curated tab).
+    /// Composite view inside the <see cref="IssueTabViewTemplateFragment"/> tab template.
+    /// The view itself is empty — the search, quickfilter, table, and pagination child
+    /// fragments attach themselves via <c>[Scope&lt;IssueViewFragment&gt;]</c> and
+    /// compose the recent/starred issue list declaratively.
     /// </summary>
     [Section<SectionTabTemplatePrimary>]
-    [Scope<AssetViewTemplateFragment>]
+    [Scope<IssueTabViewTemplateFragment>]
     [Order(0)]
     [Cache]
-    public sealed class AssetViewFragment : FragmentControlView, IScope
+    public sealed class IssueTabViewFragment : FragmentControlView, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public AssetViewFragment(IFragmentContext fragmentContext)
+        public IssueTabViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            Layout = _ => WebExpress.WebUI.WebControl.TypeLayoutView.ToggleGroup;
         }
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
     /// views of the workspace appear as movable, closable tabs and new views can be added
     /// from the template picker. The tab templates attach themselves via
     /// <c>[Scope&lt;AssetTabFragment&gt;]</c>; the leading one is the
-    /// <see cref="AssetViewTemplateFragment"/> with the curated asset list, followed by the
+    /// <see cref="AssetTabViewTemplateFragment"/> with the curated asset list, followed by the
     /// classic table/list/tile view, the dashboard, and the Kanban board. Scrum boards are
     /// deliberately not offered for assets.
     /// </summary>

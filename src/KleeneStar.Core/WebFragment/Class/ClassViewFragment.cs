@@ -14,6 +14,7 @@ namespace KleeneStar.Core.WebFragment.Class
     /// </summary>
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>]
+    [Condition<ClassNotEmptyStateCondition>]
     [Cache]
     public sealed class ClassViewFragment : FragmentControlView
     {

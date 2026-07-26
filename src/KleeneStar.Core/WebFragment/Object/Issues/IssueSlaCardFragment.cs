@@ -11,7 +11,7 @@ using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Object
+namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
     /// Object-scoped fragment that renders a card displaying every SLA policy attached
@@ -29,7 +29,7 @@ namespace KleeneStar.Core.WebFragment.Object
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Order(0)]
     [Cache]
-    public sealed class ObjectSlaCardFragment : FragmentControlPanel
+    public sealed class IssueSlaCardFragment : FragmentControlPanel
     {
         private readonly IObjectManager _objectManager;
         private readonly ISlaManager _slaManager;
@@ -42,7 +42,7 @@ namespace KleeneStar.Core.WebFragment.Object
         /// object from the URL-bound object key.</param>
         /// <param name="slaManager">The SLA manager used to load the policies attached
         /// to the resolved object's class.</param>
-        public ObjectSlaCardFragment(IFragmentContext fragmentContext, IObjectManager objectManager, ISlaManager slaManager)
+        public IssueSlaCardFragment(IFragmentContext fragmentContext, IObjectManager objectManager, ISlaManager slaManager)
             : base(fragmentContext)
         {
             _objectManager = objectManager;

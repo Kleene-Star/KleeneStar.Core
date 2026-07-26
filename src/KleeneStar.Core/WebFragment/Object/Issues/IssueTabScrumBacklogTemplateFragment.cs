@@ -9,29 +9,28 @@ using WebExpress.WebUI.WebSection;
 namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
-    /// Tab template of the issues view inside the workspace tab control: the curated
-    /// list of the most recently updated issues with search, personal quickfilters
-    /// (starred, assigned to me, created by me, archived), and pagination. The content
-    /// is contributed by the <see cref="IssueViewFragment"/> scoped to this template.
+    /// Tab template for the <see cref="ObjectViewType.ScrumBacklog"/> view of the workspace
+    /// objects index. The backlog content is contributed by the
+    /// <see cref="IssueTabScrumBacklogFragment"/> scoped to this template.
     /// </summary>
     [Section<SectionTabViewPrimary>]
-    [Scope<ObjectTabFragment>]
-    [Order(0)]
+    [Scope<IssueTabFragment>]
+    [Order(5)]
     [Cache]
-    public sealed class IssueViewTemplateFragment : FragmentControlDataTabTemplate, IScope
+    public sealed class IssueTabScrumBacklogTemplateFragment : FragmentControlDataTabTemplate, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public IssueViewTemplateFragment(IFragmentContext fragmentContext)
+        public IssueTabScrumBacklogTemplateFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             // icon, name and description feed the template picker of the tab control;
             // the control emits the raw values, so the i18n keys are translated here
-            Icon = _ => ObjectViewType.Issues.Icon();
-            Name = renderContext => I18N.Translate(renderContext, ObjectViewType.Issues.Text());
-            Description = renderContext => I18N.Translate(renderContext, ObjectViewType.Issues.Description());
+            Icon = _ => ObjectViewType.ScrumBacklog.Icon();
+            Name = renderContext => I18N.Translate(renderContext, ObjectViewType.ScrumBacklog.Text());
+            Description = renderContext => I18N.Translate(renderContext, ObjectViewType.ScrumBacklog.Description());
         }
     }
 }

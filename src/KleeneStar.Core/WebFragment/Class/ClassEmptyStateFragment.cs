@@ -8,14 +8,18 @@ using WebExpress.WebUI.WebIcon;
 namespace KleeneStar.Core.WebFragment.Class
 {
     /// <summary>
-    /// Empty-state placeholder rendered when a class has no fields, forms or
-    /// objects yet. Uses the standard <see cref="ControlEmptyState"/> pattern
-    /// from the WebExpress.WebUI framework so the page still communicates
-    /// the available next step.
+    /// Empty-state placeholder rendered on the class overview when the workspace addressed by the
+    /// route has no class yet. Uses the standard <see cref="ControlEmptyState"/> pattern from the
+    /// WebExpress.WebUI framework so the page still communicates the available next step.
     /// </summary>
+    /// <remarks>
+    /// <see cref="ClassEmptyStateCondition"/> gates this fragment and its complement gates
+    /// <see cref="ClassViewFragment"/>, so the page shows exactly one of the two.
+    /// </remarks>
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>]
     [Cache]
+    [Condition<ClassEmptyStateCondition>]
     public sealed class ClassEmptyStateFragment : FragmentControlEmptyState
     {
         /// <summary>

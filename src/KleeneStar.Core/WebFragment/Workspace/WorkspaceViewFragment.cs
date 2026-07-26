@@ -15,6 +15,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
     [Section<SectionContentPrimary>]
     //[Policy<WorkspaceViewPolicy>]
     [Scope<global::KleeneStar.Core.WWW.Workspaces.Index>]
+    [Condition<WorkspaceNotEmptyStateCondition>]
     [Cache]
     public sealed class WorkspaceViewFragment : FragmentControlView
     {

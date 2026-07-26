@@ -7,11 +7,11 @@ using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Object
+namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
     /// Provides the dashboard content of the objects index, rendered inside the
-    /// <see cref="ObjectTabDashboardTemplateFragment"/> tab template. The fragment IS
+    /// <see cref="IssueTabDashboardTemplateFragment"/> tab template. The fragment IS
     /// the dashboard control — it derives from <see cref="FragmentControlDataDashboard"/> and
     /// registers in <see cref="SectionTabTemplatePrimary"/>, the section the tab template
     /// collects its content from. Its data comes from the object dashboard endpoint. The board
@@ -19,19 +19,19 @@ namespace KleeneStar.Core.WebFragment.Object
     /// reordered, reconfigured and removed, all persisted through the endpoint.
     /// </summary>
     [Section<SectionTabTemplatePrimary>]
-    [Scope<ObjectTabDashboardTemplateFragment>]
+    [Scope<IssueTabDashboardTemplateFragment>]
     [Order(0)]
     [Cache]
-    public sealed class ObjectTabDashboardFragment : FragmentControlDataDashboard
+    public sealed class IssueTabDashboardFragment : FragmentControlDataDashboard
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ObjectTabDashboardFragment(IFragmentContext fragmentContext)
+        public IssueTabDashboardFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Dashboard>().ToString());
+            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<WWW.Api._1_.Objects._workspacekey_.Dashboard>().ToString());
 
             // enable the full board editing surface; the endpoint persists every change and
             // reports which widget types the add menu may offer

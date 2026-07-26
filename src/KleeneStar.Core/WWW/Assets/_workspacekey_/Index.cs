@@ -15,7 +15,7 @@ namespace KleeneStar.Core.WWW.Assets._workspacekey_
     /// The asset overview of a workspace: a curated, filterable list of the objects of
     /// the asset kind, most recently updated first, with search, personal quickfilters
     /// (starred, assigned to me, created by me, archived), and pagination — contributed
-    /// by the standalone <see cref="WebFragment.Object.Assets.AssetViewFragment"/>. The
+    /// by the standalone <see cref="WebFragment.Object.Assets.AssetTabViewFragment"/>. The
     /// sidebar carries the kind links shared with the other kind overviews.
     /// </summary>
     [WebIcon<IconCubes>]

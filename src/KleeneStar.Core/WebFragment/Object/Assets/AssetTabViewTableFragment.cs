@@ -13,12 +13,12 @@ using WebExpress.WebUI.WebSection;
 namespace KleeneStar.Core.WebFragment.Object.Assets
 {
     /// <summary>
-    /// Table item of the classic asset view: a REST-backed table of the workspace's
-    /// assets, bound to the search, quickfilter, and pagination controls of the view.
+    /// Table of the asset overview: a REST-backed table showing the workspace's assets,
+    /// most recently updated first, bound to the search, quickfilter, and pagination
+    /// controls of the view.
     /// </summary>
     [Section<SectionViewItemPrimary>]
     [Scope<AssetTabViewFragment>]
-    [Order(0)]
     [Cache]
     public sealed class AssetTabViewTableFragment : FragmentControlViewItem
     {
@@ -50,9 +50,15 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         /// <summary>
         /// Renders the control as an HTML node.
         /// </summary>
-        /// <param name="renderContext">The context in which the control is rendered.</param>
-        /// <param name="visualTree">The visual tree representing the control's structure.</param>
-        /// <returns>An HTML node representing the rendered control.</returns>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);

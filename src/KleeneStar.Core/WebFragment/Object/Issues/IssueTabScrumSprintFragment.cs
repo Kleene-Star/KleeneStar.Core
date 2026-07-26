@@ -4,32 +4,32 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 
-namespace KleeneStar.Core.WebFragment.Object
+namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
     /// Provides the Scrum sprint overview content of the objects index — the active
     /// iteration with progress and burn-down — rendered inside the
-    /// <see cref="ObjectTabScrumSprintTemplateFragment"/> tab template below the scrum team
-    /// workload (<see cref="ObjectTabScrumSprintTeamFragment"/>, order 0). The fragment IS
+    /// <see cref="IssueTabScrumSprintTemplateFragment"/> tab template below the scrum team
+    /// workload (<see cref="IssueTabScrumSprintTeamFragment"/>, order 0). The fragment IS
     /// the sprint control — it derives from the fragment-aware
     /// <see cref="FragmentControlDataScrumSprint"/> base and registers in
     /// <see cref="SectionTabTemplatePrimary"/>, the section the tab template collects
     /// its content from.
     /// </summary>
     [Section<SectionTabTemplatePrimary>]
-    [Scope<ObjectTabScrumSprintTemplateFragment>]
+    [Scope<IssueTabScrumSprintTemplateFragment>]
     [Order(1)]
     [Cache]
-    public sealed class ObjectTabScrumSprintFragment : FragmentControlDataScrumSprint
+    public sealed class IssueTabScrumSprintFragment : FragmentControlDataScrumSprint
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ObjectTabScrumSprintFragment(IFragmentContext fragmentContext)
+        public IssueTabScrumSprintFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.ScrumSprint>().ToString());
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<WWW.Api._1_.Objects._workspacekey_.ScrumSprint>().ToString());
         }
     }
 }

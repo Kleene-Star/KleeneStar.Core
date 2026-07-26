@@ -13,7 +13,7 @@ namespace KleeneStar.Core.WWW.Issues._workspacekey_
 {
     /// <summary>
     /// The issue overview of a workspace: a tab control
-    /// (<see cref="WebFragment.Object.ObjectTabFragment"/>) hosting the workspace's
+    /// (<see cref="WebFragment.Object.Issues.IssueTabFragment"/>) hosting the workspace's
     /// persisted views. The leading issues tab lists the objects of the issue kind,
     /// most recently updated first, with search, quickfilters (starred, assigned to
     /// me, created by me, archived), and pagination; further user-defined views

@@ -6,20 +6,20 @@ using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 using WebExpress.WebUI.WebSection;
 
-namespace KleeneStar.Core.WebFragment.Object.Assets
+namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
-    /// Footer of the asset overview: the pagination control the asset table binds to.
+    /// Footer of the issue overview: the pagination control the issue table binds to.
     /// </summary>
     [Section<SectionViewFooterPrimary>]
-    [Scope<AssetViewFragment>]
+    [Scope<IssueTabViewFragment>]
     [Cache]
-    public sealed class AssetViewPaginationFragment : FragmentControlViewFooter
+    public sealed class IssueTabViewPaginationFragment : FragmentControlViewFooter
     {
         /// <summary>
         /// Represents the unique identifier for the content used in this context.
         /// </summary>
-        public static readonly string ContentId = "id_4AB41452F5F64EAF9932490931DE9E81";
+        public static readonly string ContentId = "id_E2B7A6C09D854FD0BB4E2C7F13A9D5F8";
 
         /// <summary>
         /// Gets the pagination settings for controlling how data is divided into pages.
@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public AssetViewPaginationFragment(IFragmentContext fragmentContext)
+        public IssueTabViewPaginationFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Add(Pagination);

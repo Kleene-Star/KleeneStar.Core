@@ -1,17 +1,19 @@
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
+using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebScope;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment.Object.Assets
 {
     /// <summary>
-    /// Classic asset view hosted by the <see cref="AssetTabViewTemplateFragment"/> tab
-    /// template. Its content is composed automatically from the switchable table, tile and
-    /// list items (<see cref="AssetTabViewTableFragment"/>,
-    /// <see cref="AssetTabViewTileFragment"/>, <see cref="AssetTabViewListFragment"/>)
-    /// together with the search, quickfilter and pagination chrome scoped to this fragment.
+    /// Curated composite view inside the <see cref="AssetTabViewTemplateFragment"/> tab
+    /// template. The view itself is empty — the search, quickfilter, table, and pagination
+    /// child fragments attach themselves via <c>[Scope&lt;AssetViewFragment&gt;]</c> and
+    /// compose the curated asset list declaratively (mirroring the issue overview's
+    /// leading curated tab).
     /// </summary>
     [Section<SectionTabTemplatePrimary>]
     [Scope<AssetTabViewTemplateFragment>]
@@ -27,6 +29,23 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
             : base(fragmentContext)
         {
             Layout = _ => WebExpress.WebUI.WebControl.TypeLayoutView.ToggleGroup;
+        }
+
+        /// <summary>
+        /// Renders the control as an HTML node.
+        /// </summary>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
+        public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
+        {
+            return base.Render(renderContext, visualTree);
         }
     }
 }

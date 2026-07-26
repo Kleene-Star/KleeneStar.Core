@@ -1,6 +1,6 @@
 using WebExpress.WebApp.WebData;
 
-namespace KleeneStar.Core.WebFragment.Object
+namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
     /// The type-safe identity of the active-sprint Kanban board resource shared inside the
@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// board (which renders the resource) bind to it by type — so a chip selection re-queries
     /// the board without a <c>BindFilter</c> wire (the Kanban control has no filter binding).
     /// </summary>
-    public sealed class SprintBoardResource : IDataResource
+    public sealed class IssueSprintBoardResource : IDataResource
     {
     }
 }

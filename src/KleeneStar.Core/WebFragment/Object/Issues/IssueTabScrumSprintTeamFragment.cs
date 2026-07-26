@@ -4,14 +4,14 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 
-namespace KleeneStar.Core.WebFragment.Object
+namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
     /// Provides the scrum team workload of the active sprint — the people working in the
     /// sprint with the story points committed to each and the share already completed —
-    /// rendered inside the <see cref="ObjectTabScrumSprintTemplateFragment"/> tab template
-    /// above the sprint burn-down (<see cref="ObjectTabScrumSprintFragment"/>, order 1) and
-    /// the active-sprint board section (<see cref="ObjectTabScrumSprintBoardFragment"/>,
+    /// rendered inside the <see cref="IssueTabScrumSprintTemplateFragment"/> tab template
+    /// above the sprint burn-down (<see cref="IssueTabScrumSprintFragment"/>, order 1) and
+    /// the active-sprint board section (<see cref="IssueTabScrumSprintBoardFragment"/>,
     /// order 2). The fragment IS the scrum team control — it derives from
     /// <see cref="FragmentControlDataScrumTeam"/> and registers in
     /// <see cref="SectionTabTemplatePrimary"/>, the section the tab template collects its
@@ -19,19 +19,19 @@ namespace KleeneStar.Core.WebFragment.Object
     /// (order 0), above the sprint burn-down and the active-sprint Kanban board.
     /// </summary>
     [Section<SectionTabTemplatePrimary>]
-    [Scope<ObjectTabScrumSprintTemplateFragment>]
+    [Scope<IssueTabScrumSprintTemplateFragment>]
     [Order(0)]
     [Cache]
-    public sealed class ObjectTabScrumSprintTeamFragment : FragmentControlDataScrumTeam
+    public sealed class IssueTabScrumSprintTeamFragment : FragmentControlDataScrumTeam
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public ObjectTabScrumSprintTeamFragment(IFragmentContext fragmentContext)
+        public IssueTabScrumSprintTeamFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.ScrumSprintTeam>().ToString());
+            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<WWW.Api._1_.Objects._workspacekey_.ScrumSprintTeam>().ToString());
         }
     }
 }

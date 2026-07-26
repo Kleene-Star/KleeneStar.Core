@@ -9,8 +9,7 @@ using WebExpress.WebUI.WebSection;
 namespace KleeneStar.Core.WebFragment.Object.Assets
 {
     /// <summary>
-    /// Footer of the classic asset view: the pagination control the classic view's table,
-    /// list, and tile items bind to.
+    /// Footer of the asset overview: the pagination control the asset table binds to.
     /// </summary>
     [Section<SectionViewFooterPrimary>]
     [Scope<AssetTabViewFragment>]
@@ -20,7 +19,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         /// <summary>
         /// Represents the unique identifier for the content used in this context.
         /// </summary>
-        public static readonly string ContentId = "id_3A469AEE68654A19A1E1AD4112AC67AF";
+        public static readonly string ContentId = "id_4AB41452F5F64EAF9932490931DE9E81";
 
         /// <summary>
         /// Gets the pagination settings for controlling how data is divided into pages.
@@ -42,9 +41,15 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         /// <summary>
         /// Renders the control as an HTML node.
         /// </summary>
-        /// <param name="renderContext">The context in which the control is rendered.</param>
-        /// <param name="visualTree">The visual tree representing the control's structure.</param>
-        /// <returns>An HTML node representing the rendered control.</returns>
+        /// <param name="renderContext">
+        /// The context in which the control is rendered.
+        /// </param>
+        /// <param name="visualTree">
+        /// The visual tree representing the control's structure.
+        /// </param>
+        /// <returns>
+        /// An HTML node representing the rendered control.
+        /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
             return base.Render(renderContext, visualTree);
