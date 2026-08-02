@@ -1,12 +1,14 @@
-﻿using KleeneStar.Core.WebManager;
+using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
+using System.Globalization;
 using System.Linq;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebIcon;
+using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -24,18 +26,24 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <summary>
     /// Object-scoped property card that renders, for every workflow-backed field of the
     /// current object's class, a split button reflecting the field's current status on
-    /// <see cref="WWW.Issue._objectkey_.Index"/>.
+    /// <see cref="WWW.Issue._objectkey_.Index"/> and offering the states the object may be
+    /// moved to next.
     /// </summary>
     /// <remarks>
     /// A field qualifies when it is active, not deprecated, of type
     /// <see cref="FieldType.Workflow"/>, and carries a <see cref="Field.WorkflowId"/>.
     /// For each such field the card hosts a <see cref="ControlSplitButton"/> whose main
     /// button shows the field's current status (resolved from the persisted
-    /// <see cref="Model.Entities.Value"/> against the workflow's statuses), whose dropdown
-    /// lists every status of the attached workflow, and whose final item opens the
-    /// workflow itself in a modal (<see cref="WWW.Workflow._workflowid_.Index"/>). These
-    /// fields are intentionally omitted from the form-driven detail view rendered by
-    /// <see cref="ObjectItemDetailFragment"/> so the status lives only in this card.
+    /// <see cref="Model.Entities.Value"/> against the workflow's states) in the color and with
+    /// the glyph of the status category, and whose dropdown lists the states reachable from it
+    /// through the workflow's active transitions. Choosing one drives
+    /// <see cref="WWW.Api._1_.Transitions._objectkey_.Index"/>, which asks
+    /// <see cref="IWorkflowManager.ExecuteTransition"/> to run the state change - guard,
+    /// validators, value write, post functions - and redirects back here. The last dropdown
+    /// item opens the workflow itself in a modal
+    /// (<see cref="WWW.Workflow._workflowid_.Flow"/>). These fields are intentionally omitted
+    /// from the form-driven detail view rendered by <see cref="ObjectItemDetailFragment"/> so
+    /// the status lives only in this card.
     /// </remarks>
     [Section<SectionPropertyPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
@@ -57,7 +65,7 @@ namespace KleeneStar.Core.WebFragment.Object
         /// object from the URL-bound object key.</param>
         /// <param name="fieldManager">The field manager used to enumerate the class fields.</param>
         /// <param name="workflowManager">The workflow manager used to load the workflow
-        /// attached to a workflow-type field.</param>
+        /// attached to a workflow-type field and to walk its state machine.</param>
         /// <param name="valueManager">The value manager used to read the object's current
         /// field values.</param>
         public ObjectPropertyWorkflowCardFragment
@@ -142,7 +150,9 @@ namespace KleeneStar.Core.WebFragment.Object
         /// <returns>The control hosting the field label and split button, or <c>null</c>.</returns>
         private IControl BuildFieldBlock(Model.Entities.Object @object, Field field)
         {
-            var workflow = _workflowManager.GetWorkflow(field.WorkflowId.Value);
+            // the state machine is needed in full here - the states to offer come from the
+            // transitions - so the structural load is used rather than the shallow header read
+            var workflow = _workflowManager.GetWorkflowWithStructure(field.WorkflowId.Value);
 
             if (workflow is null)
             {
@@ -150,7 +160,7 @@ namespace KleeneStar.Core.WebFragment.Object
             }
 
             var value = _valueManager.GetValue(@object.Id, field.Id);
-            var current = ResolveStatus(workflow, value?.Data);
+            var current = _workflowManager.ResolveStatus(workflow, value?.Data);
             var currentLabel = current?.Name
                 ?? (string.IsNullOrWhiteSpace(value?.Data) ? null : value.Data);
 
@@ -158,21 +168,11 @@ namespace KleeneStar.Core.WebFragment.Object
             {
                 Text = ctx => currentLabel
                     ?? WebExpress.WebCore.Internationalization.I18N.Translate(ctx, "kleenestar.core:object.property.workflow.notset.label"),
-                Icon = _ => new IconStatus(TypeIconTheme.Light),
-                BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary)
+                Icon = _ => ResolveIcon(current)
             };
 
-            foreach (var status in workflow.Statuses ?? [])
-            {
-                split.Add(new ControlSplitButtonItemLink("object-workflow-status-" + status.Id.ToString("N"))
-                {
-                    Text = _ => status.Name,
-                    Icon = _ => new IconStatus(TypeIconTheme.Light),
-                    Uri = ctx => CoreHub.GetUri<global::KleeneStar.Core.WWW.Status._statusid_.Index>()?
-                        .BindParameters(new WorkflowStateIdParameter(status.Id))
-                        .BindParameters(ctx.Request)
-                });
-            }
+            ApplyCategoryColor(split, current);
+            AddTargetItems(split, @object, field, workflow, current);
 
             split.AddDivider();
 
@@ -183,7 +183,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 PrimaryAction = ctx => new ActionModal
                 (
                     "modal-form",
-                    CoreHub.GetUri<global::KleeneStar.Core.WWW.Workflow._workflowid_.Index>()?
+                    CoreHub.GetUri<global::KleeneStar.Core.WWW.Workflow._workflowid_.Flow>()?
                         .BindParameters(new WorkflowIdParameter(workflow.Id))
                         .BindParameters(ctx.Request),
                     TypeModalSize.ExtraLarge
@@ -206,37 +206,143 @@ namespace KleeneStar.Core.WebFragment.Object
         }
 
         /// <summary>
-        /// Resolves the persisted field value to a <see cref="Status"/> of the supplied
-        /// workflow. The match is attempted first by normalised name (case-, space- and
-        /// punctuation-insensitive, so <c>in_progress</c> matches <c>In Progress</c>) and
-        /// then by status id. Returns <c>null</c> when the value is empty or no status
-        /// matches, in which case the raw value is shown verbatim.
+        /// Adds one dropdown entry per state the object may be moved to, each pointing at the
+        /// transition endpoint. When the state machine offers no way out of the current state
+        /// - a terminal state, or a workflow without transitions - a single disabled entry
+        /// says so rather than leaving the dropdown looking broken.
         /// </summary>
-        /// <param name="workflow">The workflow whose statuses are searched.</param>
-        /// <param name="data">The persisted value payload of the workflow field.</param>
-        /// <returns>The matching status, or <c>null</c>.</returns>
-        private static Status ResolveStatus(Workflow workflow, string data)
+        /// <param name="split">The split button being filled.</param>
+        /// <param name="object">The object whose state would change.</param>
+        /// <param name="field">The workflow-backed field carrying the state.</param>
+        /// <param name="workflow">The workflow, loaded with its structure.</param>
+        /// <param name="current">The state the object is in, or <c>null</c>.</param>
+        private void AddTargetItems(ControlSplitButton split, Model.Entities.Object @object, Field field, Workflow workflow, Status current)
         {
-            if (string.IsNullOrWhiteSpace(data) || workflow.Statuses is null)
+            var targets = _workflowManager.GetTargetStatuses(workflow, current).ToList();
+
+            if (targets.Count == 0)
             {
-                return null;
+                split.Add(new ControlSplitButtonItemLink("object-workflow-notarget-" + field.Id.ToString("N"))
+                {
+                    Text = _ => "kleenestar.core:object.property.workflow.target.none",
+                    Active = _ => TypeActive.Disabled
+                });
+
+                return;
             }
 
-            var normalized = Normalize(data);
+            foreach (var status in targets)
+            {
+                // the transition is only looked up for its label; the endpoint resolves the
+                // state change itself, so a target reachable through several transitions still
+                // appears once
+                var transition = (workflow.Transitions ?? [])
+                    .FirstOrDefault(t => t.State == TransitionState.Active
+                        && current is not null
+                        && t.SourceId == current.Id
+                        && t.TargetId == status.Id);
 
-            return workflow.Statuses.FirstOrDefault(s => Normalize(s.Name) == normalized)
-                ?? workflow.Statuses.FirstOrDefault(s => string.Equals(s.Id.ToString(), data, System.StringComparison.OrdinalIgnoreCase));
+                split.Add(new ControlSplitButtonItemLink("object-workflow-status-" + status.Id.ToString("N"))
+                {
+                    Text = _ => status.Name,
+                    Icon = _ => ResolveIcon(status),
+                    Tooltip = _ => transition?.Name,
+                    TextColor = _ => new PropertyColorText(status.Category?.Color),
+                    Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Transitions._objectkey_.Index>()?
+                        .BindParameters(new ObjectKeyParameter(@object.Key))
+                        .Add(new UriQuery(FieldIdParameter.Key, field.Id.ToString()))
+                        .Add(new UriQuery(WorkflowStateIdParameter.Key, status.Id.ToString()))
+                });
+            }
         }
 
         /// <summary>
-        /// Reduces a string to its lower-cased alphanumeric characters so loosely-formatted
-        /// status slugs can be compared against status names.
+        /// Paints the split button in the color of the current state's category, so the card
+        /// reads at a glance the same way the workflow designer canvas and the board columns
+        /// do. Falls back to the system primary color when the state is unknown or its
+        /// category carries no color.
         /// </summary>
-        /// <param name="value">The value to normalise.</param>
-        /// <returns>The normalised string.</returns>
+        /// <param name="split">The split button to color.</param>
+        /// <param name="current">The state the object is in, or <c>null</c>.</param>
+        private static void ApplyCategoryColor(ControlSplitButton split, Status current)
+        {
+            var color = current?.Category?.Color;
+
+            if (string.IsNullOrWhiteSpace(color))
+            {
+                split.BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
+
+                return;
+            }
+
+            split.BackgroundColor = _ => new PropertyColorButton(color);
+            split.TextColor = _ => new PropertyColorText(Contrast(color));
+        }
+
+        /// <summary>
+        /// Returns the glyph standing for a state, chosen from the category the state belongs
+        /// to, so the card still separates "not started" from "running", "waiting" and
+        /// "finished" for a reader who does not go by color alone.
+        /// </summary>
+        /// <remarks>
+        /// The state's own <see cref="Status.Icon"/> is deliberately not used here. It is an
+        /// image icon, and an image icon carries its own colors — a full-bleed tile inside a
+        /// button that is already painted in the category color reads as a colored square
+        /// rather than as a symbol. A light-theme glyph is a CSS mask instead, so it takes the
+        /// surrounding text color and scales with the font, which is what this control needs.
+        /// The state images stay in use where they have room to read on their own, such as the
+        /// nodes of the workflow graph.
+        /// </remarks>
+        /// <param name="status">The state, or <c>null</c> when the object carries none.</param>
+        /// <returns>The icon to render.</returns>
+        private static IIcon ResolveIcon(Status status)
+        {
+            return Normalize(status?.Category?.Name) switch
+            {
+                "inprogress" => new IconPlay(TypeIconTheme.Light),
+                "waiting" => new IconPause(TypeIconTheme.Light),
+                "done" => new IconCircleCheck(TypeIconTheme.Light),
+                _ => new IconStatus(TypeIconTheme.Light)
+            };
+        }
+
+        /// <summary>
+        /// Reduces a string to its lower-cased alphanumeric characters so a category name can
+        /// be compared regardless of how it is spaced or cased.
+        /// </summary>
+        /// <param name="value">The value to normalize.</param>
+        /// <returns>The normalized string.</returns>
         private static string Normalize(string value)
         {
             return new string((value ?? string.Empty).Where(char.IsLetterOrDigit).ToArray()).ToLowerInvariant();
+        }
+
+        /// <summary>
+        /// Picks the foreground color that stays readable on the supplied background: white on
+        /// a dark category color, near-black on a light one. The decision follows the
+        /// perceived brightness of the color rather than its raw average, so the mid-range
+        /// category colors (amber, cyan) land on the dark foreground they need.
+        /// </summary>
+        /// <param name="color">The background color as a <c>#rgb</c> or <c>#rrggbb</c> literal.</param>
+        /// <returns>The foreground color literal.</returns>
+        private static string Contrast(string color)
+        {
+            var hex = (color ?? string.Empty).TrimStart('#');
+
+            if (hex.Length == 3)
+            {
+                hex = new string([hex[0], hex[0], hex[1], hex[1], hex[2], hex[2]]);
+            }
+
+            if (hex.Length != 6 || !int.TryParse(hex, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var rgb))
+            {
+                // an unparsable color is left to the browser's own contrast handling
+                return "#ffffff";
+            }
+
+            var brightness = (((rgb >> 16) & 0xFF) * 299 + ((rgb >> 8) & 0xFF) * 587 + (rgb & 0xFF) * 114) / 1000;
+
+            return brightness > 150 ? "#212529" : "#ffffff";
         }
     }
 }

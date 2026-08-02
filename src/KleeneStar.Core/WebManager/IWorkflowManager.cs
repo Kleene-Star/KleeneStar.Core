@@ -34,11 +34,89 @@ namespace KleeneStar.Core.WebManager
         event EventHandler<Workflow> WorkflowRemoved;
 
         /// <summary>
+        /// An event that fires after a state change has been applied to an object, so auditing,
+        /// notifications and integrations can react to it without being coupled to the manager.
+        /// </summary>
+        event EventHandler<WorkflowTransitionResult> TransitionExecuted;
+
+        /// <summary>
         /// Returns a workflow based on its id.
         /// </summary>
         /// <param name="workflowId">The id of the workflow.</param>
         /// <returns>The workflow.</returns>
         Workflow GetWorkflow(Guid workflowId);
+
+        /// <summary>
+        /// Returns a workflow together with the structure its state machine is made of: its
+        /// participating states (including their category) and its transitions with both
+        /// endpoints resolved.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="GetWorkflow(Guid)"/> reads the header only, which is all the list and
+        /// detail views need. Callers that have to reason about the state machine — which states
+        /// exist, which transition leads where — have to use this overload instead.
+        /// </remarks>
+        /// <param name="workflowId">The id of the workflow.</param>
+        /// <returns>The workflow including states and transitions, or <c>null</c>.</returns>
+        Workflow GetWorkflowWithStructure(Guid workflowId);
+
+        /// <summary>
+        /// Resolves the persisted payload of a workflow-backed field to one of the workflow's
+        /// states.
+        /// </summary>
+        /// <remarks>
+        /// The match is attempted first by normalized name (case-, space- and
+        /// punctuation-insensitive, so <c>in_progress</c> matches <c>In Progress</c>) and then by
+        /// status id, because the payload is written as a plain string by the generic value
+        /// binder and by the seeder alike.
+        /// </remarks>
+        /// <param name="workflow">
+        /// The workflow whose states are searched. Must have been loaded through
+        /// <see cref="GetWorkflowWithStructure(Guid)"/>.
+        /// </param>
+        /// <param name="data">The persisted payload of the workflow field.</param>
+        /// <returns>The matching state, or <c>null</c> when the payload matches none.</returns>
+        Status ResolveStatus(Workflow workflow, string data);
+
+        /// <summary>
+        /// Returns the states an object in the supplied state may be moved to.
+        /// </summary>
+        /// <remarks>
+        /// These are the targets of the workflow's active transitions that leave
+        /// <paramref name="currentStatus"/>. An object that carries no resolvable state has not
+        /// entered the state machine yet, so passing <c>null</c> returns the workflow's entry
+        /// states instead (all participating states when the workflow declares no entry).
+        /// </remarks>
+        /// <param name="workflow">
+        /// The workflow to walk. Must have been loaded through
+        /// <see cref="GetWorkflowWithStructure(Guid)"/>.
+        /// </param>
+        /// <param name="currentStatus">The state to leave, or <c>null</c>.</param>
+        /// <returns>The reachable states, in workflow order and without duplicates.</returns>
+        IEnumerable<Status> GetTargetStatuses(Workflow workflow, Status currentStatus);
+
+        /// <summary>
+        /// Moves a workflow-backed field of an object to the requested state, enforcing the
+        /// workflow server-side.
+        /// </summary>
+        /// <remarks>
+        /// The call runs the stages the workflow concept prescribes: the guard stage checks that
+        /// an active transition connects the current state to the requested one (or, for an
+        /// object that has not entered the state machine yet, that the requested state is an
+        /// entry state), the validator stage checks the rules configured on that transition, the
+        /// value is written, and finally the transition's post functions run. Guards, validators
+        /// and post functions beyond the built-in reachability check have no counterpart in the
+        /// data model yet, so those stages currently find nothing to run.
+        /// </remarks>
+        /// <param name="objectId">The id of the object whose state changes.</param>
+        /// <param name="fieldId">The id of the workflow-backed field carrying the state.</param>
+        /// <param name="targetStatusId">The id of the requested state.</param>
+        /// <param name="identityId">
+        /// The identity performing the change, stamped on the object. Pass
+        /// <see cref="Guid.Empty"/> to leave the previous updater in place.
+        /// </param>
+        /// <returns>The outcome of the state change.</returns>
+        WorkflowTransitionResult ExecuteTransition(Guid objectId, Guid fieldId, Guid targetStatusId, Guid identityId);
 
         /// <summary>
         /// Returns a workflow based on its id.
