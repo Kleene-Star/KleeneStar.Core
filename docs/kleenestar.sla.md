@@ -272,6 +272,26 @@ Cloning a policy reuses targets, scope rules, and escalations of an existing ent
 
 Deleting a policy is irreversible. The modal warns that the policy and all its children (`SlaTarget`, `SlaScopeRule`, `SlaEscalationLevel`) will be removed in a single cascade.
 
+### SLA Display on the Ticket (Card)
+
+The ticket detail page (`/issue/{objectKey}`) carries an "Service Level Agreement" card rendered by the `IssueSlaCardFragment`. Every active policy of the ticket's class becomes one agreement group carrying its name, its severity bucket and the summary of how its targets are doing; every `SlaTarget` inside it becomes one `ControlDataSla` tile — a coloured status, a meter of the consumed budget and the time left until the deadline.
+
+The tiles are rendered complete: the clock is derived and evaluated server-side and seeded into the markup, so the card is correct in the first paint and stays readable without JavaScript. The client then counts on its own and re-reads the state from `/api/1/slaclocks/{objectKey}` once a minute, which keeps a tile in step with a colleague who moved the ticket in another tab.
+
+**The clock is derived, not stored.** KleeneStar persists policies, not per-object timers, so `SlaClock` reads the state off the ticket itself:
+
+|Aspect      |Derivation
+|------------|-----------------------------------------------------------------------------
+|Start       |`Object.Created`.
+|Budget      |`SlaTarget.TargetValue` in its `Unit`, as wall-clock time. A `BusinessDays` target counts as 8 hours per day.
+|Paused      |The ticket's current workflow status is named in the policy's `PauseOn` list. The stop is dated at `Object.Updated`, because the transition into that status is what stamped the ticket.
+|Settled     |The ticket's current workflow status belongs to the `Done` category. The settlement is dated at `Object.Updated`.
+|Pause total |Always zero — there is no status history to reconstruct earlier pauses from.
+
+Two consequences follow and are deliberate: pause time accrued *before* the current status is not credited, and an unrelated edit while the ticket is paused moves the stop forward. The working-hours `Calendar` referenced by the policy is not evaluated either, so a policy bound to a business calendar counts nights and holidays against its target. All three resolve themselves the moment a real per-object clock is persisted — `SlaClock` is then the only place that has to change.
+
+For the same reason the tiles carry no pause / resume / settle actions: a manual transition would have to be written somewhere. The way to stop an agreement is to move the ticket into one of the policy's pause statuses.
+
 ## Sitemap SLA Management
 
 |Path                                                                       |Page              |Description
@@ -301,6 +321,7 @@ For programmatic interaction, automation, and form rendering, SLA policies are e
 |`/api/1/slas/{classKey}/calendar`                     |GET         |Class-scoped REST selection of the active `Calendar` entries belonging to the class. Used by the SLA Add/Edit/Clone calendar dropdown.
 |`/api/1/slas/{classKey}/table`                        |GET         |Table-row backing for the SLA view (class-scoped).
 |`/api/1/slas/{classKey}/quickfilter`                  |GET         |Quick-filter chips ("Active", "Draft", "Inactive", "Critical").
+|`/api/1/slaclocks/{objectKey}?slatargetid={targetId}` |GET         |Returns the running clock of one target on one ticket — `status`, `target`, `elapsed`, `remaining`, `period`, `cycle`, `cycles`, `paused`, `settled` — in the shape the `ControlDataSla` tile adopts. The target must belong to an active policy of the ticket's class.
 
 Standard HTTP status codes apply: `200`/`201`/`204` for success, `400` for validation errors (e.g. duplicate name), `401` for unauthenticated, `403` for forbidden, `404` for unknown policy/class.
 

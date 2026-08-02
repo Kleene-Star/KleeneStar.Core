@@ -65,14 +65,17 @@ namespace KleeneStar.Core.WebFragment.Class
             {
                 Icon = _ => new IconCalendarPlus(),
                 Key = _ => "kleenestar.core:class.created.label",
-                Value = _ => @class.Created.ToString("g", CultureInfo.InvariantCulture)
+                // the card is read in the visitor's language, so the timestamp is written in
+                // the visitor's culture as well - an invariant 07/25/2026 on a German page
+                // reads as a different date than the one that is meant
+                Value = ctx => @class.Created.ToString("g", Culture(ctx))
             });
 
             card.Add(new ControlAttribute("class-property-updated")
             {
                 Icon = _ => new IconClockRotateLeft(),
                 Key = _ => "kleenestar.core:class.updated.label",
-                Value = _ => @class.Updated.ToString("g", CultureInfo.InvariantCulture)
+                Value = ctx => @class.Updated.ToString("g", Culture(ctx))
             });
 
             card.Add(new ControlAttribute("class-property-state")
@@ -83,6 +86,17 @@ namespace KleeneStar.Core.WebFragment.Class
             });
 
             return card.Render(renderContext, visualTree);
+        }
+
+        /// <summary>
+        /// Returns the culture the request is rendered in, falling back to the invariant
+        /// culture when the request carries none.
+        /// </summary>
+        /// <param name="renderContext">The render context.</param>
+        /// <returns>The culture.</returns>
+        private static CultureInfo Culture(IRenderControlContext renderContext)
+        {
+            return renderContext?.Request?.Culture ?? CultureInfo.InvariantCulture;
         }
     }
 }

@@ -61,8 +61,8 @@ workspace.overview.label=Übersicht
 workspace.organize.title=Objekte organisieren
 workspace.organize.header=Objekthierarchie
 workspace.organize.help=Halten Sie Strg gedrückt und ziehen Sie ein Objekt auf ein anderes, um es zum untergeordneten Objekt zu machen, oder zwischen Objekte (bzw. auf die oberste Ebene), um sein übergeordnetes Objekt zu ändern. Es werden nur die obersten 200 Objekte angezeigt.
-workspace.organize.empty=Dieser Workspace enthält noch keine Objekte.
-workspace.quickfilter.all.label=Alle Workspaces
+workspace.organize.empty=Dieser Arbeitsbereich enthält noch keine Objekte.
+workspace.quickfilter.all.label=Alle Arbeitsbereiche
 workspace.table.header=Meine Arbeitsbereiche
 workspace.inherited.label=Vererbung
 workspace.inherited.placeholder=Wählen Sie den übergeordneten Arbeitsbereich, von dem geerbt werden soll.
@@ -487,6 +487,8 @@ object.view.scrum.backlog.description=Produkt-Backlog für die Scrum-Planung.
 object.view.scrum.backlog.title=Scrum-Backlog
 object.sla.card.header=Service Level Agreement
 object.sla.card.none=Für diese Klasse sind keine SLA-Richtlinien konfiguriert.
+object.sla.card.notargets=Für diese Klasse sind SLA-Richtlinien konfiguriert, aber keine Fristen hinterlegt.
+object.sla.api.title=SLA-Uhr
 object.property.lifecycle.header=Lebenszyklus
 object.property.watcher.header=Beobachter
 object.property.workflow.header=Status
@@ -934,19 +936,19 @@ notification.tag.deleted=Das Tag wurde entfernt.
 notification.attachment.created=Der Anhang wurde hochgeladen.
 notification.attachment.deleted=Der Anhang wurde entfernt.
 
-# Globale Suche (Suche über alle Workspaces)
+# Globale Suche (Suche über alle Arbeitsbereiche)
 search.title=Suche
-search.headline=Suche über alle Workspaces
+search.headline=Suche über alle Arbeitsbereiche
 search.nav.label=Suche
 search.dropdown.label=Suche
-search.dropdown.all.label=Über alle Workspaces suchen
-search.header.placeholder=Über alle Workspaces suchen …
+search.dropdown.all.label=Über alle Arbeitsbereiche suchen
+search.header.placeholder=Über alle Arbeitsbereiche suchen …
 
 # Tabelle der globalen Suchergebnisse
 search.results.table.header=Ergebnisse
 search.results.column.key=Schlüssel
 search.results.column.summary=Zusammenfassung
-search.results.column.workspace=Workspace
+search.results.column.workspace=Arbeitsbereich
 search.results.column.description=Beschreibung
 
 # Seitenleiste der Suchseite (gespeicherte Suchanfragen)

@@ -1,7 +1,9 @@
-﻿using KleeneStar.Core.WebManager;
+using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
+using System;
 using System.Linq;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
@@ -13,17 +15,36 @@ using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment.Object.Issues
 {
+    // The entity type names collide with the KleeneStar.Core.WWW.* namespace segments of
+    // the same name; alias them inside the namespace block so Status resolves to the model
+    // entity here (see also the Calendar namespace-collision note).
+    using Status = KleeneStar.Model.Entities.Status;
+
     /// <summary>
-    /// Object-scoped fragment that renders a card displaying every SLA policy attached
-    /// to the current object's class on <see cref="WWW.Issue._objectkey_.Index"/>.
+    /// Object-scoped fragment that renders a card showing every SLA policy attached to the
+    /// current object's class as running agreements on
+    /// <see cref="WWW.Issue._objectkey_.Index"/>.
     /// </summary>
     /// <remarks>
-    /// The fragment resolves the object addressed by the request, looks up all active
-    /// <see cref="SlaPolicy"/> entries on the object's class, and renders them inside
-    /// a <see cref="ControlPanelCard"/>. Each policy shows its name, severity bucket,
-    /// and configured targets (response/resolution/...) with their numeric value and
-    /// unit. When no policies are configured for the class the card shows a localized
-    /// empty-state message.
+    /// Each active <see cref="SlaPolicy"/> of the class becomes one <see cref="ControlSla"/>
+    /// group carrying its name, its severity bucket and the summary of how its targets are
+    /// doing; each <see cref="SlaTarget"/> inside it becomes one
+    /// <see cref="ControlDataSla"/> tile - a coloured status, a meter of the consumed budget
+    /// and the time left until the deadline.
+    /// <para>
+    /// The tiles are rendered complete: the clock <see cref="SlaClock.Derive"/> builds from
+    /// the object is evaluated server side and seeded into the markup, so the card is correct
+    /// in the first paint and stays readable without JavaScript. The client then counts on
+    /// its own and re-reads the state from
+    /// <see cref="WWW.Api._1_.SlaClocks._objectkey_.Index"/> once a minute, which is what
+    /// keeps a tile in step with a colleague who moved the ticket in another tab.
+    /// </para>
+    /// <para>
+    /// The tiles carry no actions. Pausing or settling an agreement by hand would have to be
+    /// written somewhere, and the clock is derived from the object's workflow status rather
+    /// than stored - so the way to stop it is to move the ticket into one of the policy's
+    /// <see cref="SlaPolicy.PauseOn"/> statuses.
+    /// </para>
     /// </remarks>
     [Section<SectionPropertyPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
@@ -31,8 +52,18 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
     [Cache]
     public sealed class IssueSlaCardFragment : FragmentControlPanel
     {
+        /// <summary>
+        /// The interval in seconds at which a tile re-reads its state from the endpoint. The
+        /// countdown itself runs in the client, so the poll only has to notice the changes the
+        /// client cannot know about - a status change that paused or settled the agreement.
+        /// </summary>
+        private const int RefreshIntervalSeconds = 60;
+
         private readonly IObjectManager _objectManager;
         private readonly ISlaManager _slaManager;
+        private readonly IFieldManager _fieldManager;
+        private readonly IValueManager _valueManager;
+        private readonly IWorkflowManager _workflowManager;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -42,11 +73,27 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         /// object from the URL-bound object key.</param>
         /// <param name="slaManager">The SLA manager used to load the policies attached
         /// to the resolved object's class.</param>
-        public IssueSlaCardFragment(IFragmentContext fragmentContext, IObjectManager objectManager, ISlaManager slaManager)
+        /// <param name="fieldManager">The field manager used to find the workflow-backed
+        /// fields the object's status is read from.</param>
+        /// <param name="valueManager">The value manager used to read those field values.</param>
+        /// <param name="workflowManager">The workflow manager used to resolve a value against
+        /// the states of its workflow.</param>
+        public IssueSlaCardFragment
+        (
+            IFragmentContext fragmentContext,
+            IObjectManager objectManager,
+            ISlaManager slaManager,
+            IFieldManager fieldManager,
+            IValueManager valueManager,
+            IWorkflowManager workflowManager
+        )
             : base(fragmentContext)
         {
             _objectManager = objectManager;
             _slaManager = slaManager;
+            _fieldManager = fieldManager;
+            _valueManager = valueManager;
+            _workflowManager = workflowManager;
         }
 
         /// <summary>
@@ -86,75 +133,132 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
 
             if (policies.Count == 0)
             {
-                card.Add(new ControlText("object-sla-empty")
-                {
-                    Text = _ => "kleenestar.core:object.sla.card.none",
-                    Format = _ => TypeFormatText.Italic
-                });
+                card.Add(EmptyState("object-sla-empty", "kleenestar.core:object.sla.card.none"));
 
                 return card.Render(renderContext, visualTree);
             }
 
+            // the status is what decides whether a clock runs, is stopped or is settled, so it
+            // is resolved once for the whole card rather than per target
+            var status = SlaClock.ResolveStatus(@object, _fieldManager, _valueManager, _workflowManager);
+            var moment = DateTime.Now;
+            var rendered = false;
+
             foreach (var policy in policies)
             {
-                card.Add(BuildPolicyBlock(policy));
+                var group = BuildPolicyGroup(@object, policy, status, moment);
+
+                if (group is not null)
+                {
+                    card.Add(group);
+                    rendered = true;
+                }
+            }
+
+            if (!rendered)
+            {
+                card.Add(EmptyState("object-sla-notargets", "kleenestar.core:object.sla.card.notargets"));
             }
 
             return card.Render(renderContext, visualTree);
         }
 
         /// <summary>
-        /// Builds a panel containing the policy name, its severity bucket, and the
-        /// configured targets formatted as "Kind: value unit".
+        /// Builds the group framing the agreements of one policy, or <c>null</c> when the
+        /// policy defines no target - a policy without a target promises nothing, so there is
+        /// no clock to show for it.
         /// </summary>
-        private static IControl BuildPolicyBlock(SlaPolicy policy)
+        /// <param name="object">The object the agreements are measured against.</param>
+        /// <param name="policy">The policy being rendered.</param>
+        /// <param name="status">The workflow status the object carries, or <c>null</c>.</param>
+        /// <param name="moment">The moment the clocks are read at.</param>
+        /// <returns>The group, or <c>null</c>.</returns>
+        private static IControl BuildPolicyGroup(Model.Entities.Object @object, SlaPolicy policy, Status status, DateTime moment)
         {
-            var panel = new ControlPanel("object-sla-policy-" + policy.Id.ToString("N"));
+            var targets = (policy.Targets ?? []).OrderBy(t => t.Kind).ThenBy(t => t.Name).ToList();
 
-            panel.Add(new ControlText
-            {
-                Text = _ => policy.Name,
-                Format = _ => TypeFormatText.Strong
-            });
-
-            panel.Add(new ControlText
-            {
-                Text = _ => policy.Priority.TranslationKey(),
-                Format = _ => TypeFormatText.Small
-            });
-
-            var targets = policy.Targets?.OrderBy(t => t.Kind).ToList() ?? [];
             if (targets.Count == 0)
             {
-                return panel;
+                return null;
             }
 
-            var list = new ControlList("object-sla-targets-" + policy.Id.ToString("N"));
-            foreach (var target in targets)
+            var group = new ControlSla("object-sla-policy-" + policy.Id.ToString("N"))
             {
-                list.Add(new ControlListItem
-                {
-                    Text = renderContext => FormatTarget(renderContext, target)
-                });
-            }
+                Label = _ => policy.Name,
+                Description = ctx => I18N.Translate(ctx, policy.Priority.TranslationKey())
+            };
 
-            panel.Add(list);
+            group.Add(targets.Select(t => BuildTargetTile(@object, policy, t, status, moment)).ToArray());
 
-            return panel;
+            return group;
         }
 
         /// <summary>
-        /// Returns the textual rendering of a target row, e.g. "First response: 30 Minutes".
+        /// Builds the tile of a single target: seeded with the clock derived on the server and
+        /// wired to the endpoint it re-reads that clock from.
         /// </summary>
-        private static string FormatTarget(IRenderControlContext renderContext, SlaTarget target)
+        /// <param name="object">The object the agreement is measured against.</param>
+        /// <param name="policy">The policy the target belongs to.</param>
+        /// <param name="target">The target being rendered.</param>
+        /// <param name="status">The workflow status the object carries, or <c>null</c>.</param>
+        /// <param name="moment">The moment the clock is read at.</param>
+        /// <returns>The tile.</returns>
+        private static ControlDataSla BuildTargetTile(Model.Entities.Object @object, SlaPolicy policy, SlaTarget target, Status status, DateTime moment)
         {
-            var culture = renderContext?.Request?.Culture;
+            var tile = new ControlDataSla("object-sla-target-" + target.Id.ToString("N"))
+            {
+                Label = ctx => string.IsNullOrWhiteSpace(target.Name)
+                    ? I18N.Translate(ctx, target.Kind.TranslationKey())
+                    : target.Name,
+                Description = ctx => $"{target.TargetValue} {I18N.Translate(ctx, target.Unit.TranslationKey())}",
+                // there is no per-object clock to write a pause or a settlement to, so the
+                // tile reports the agreement instead of offering to change it
+                ShowActions = _ => false,
+                RefreshInterval = _ => RefreshIntervalSeconds
+            };
 
-            var kind = I18N.Translate(culture, target.Kind.TranslationKey());
-            var unit = I18N.Translate(culture, target.Unit.TranslationKey());
-            var name = string.IsNullOrWhiteSpace(target.Name) ? kind : target.Name;
+            tile.Bind(SlaClock.Derive(@object, policy, target, status, moment));
+            tile.DataService<global::KleeneStar.Core.WWW.Api._1_.SlaClocks._objectkey_.Index>
+            (
+                descriptor => descriptor.WithBaseUri(AddTarget(descriptor.BaseUri, target.Id))
+            );
 
-            return $"{name}: {target.TargetValue} {unit}";
+            return tile;
+        }
+
+        /// <summary>
+        /// Adds the target id to the endpoint address, which is what makes the tiles of one
+        /// object address one agreement each. The endpoint itself is resolved through the
+        /// sitemap by the data service, so only the query is spelled here.
+        /// </summary>
+        /// <param name="baseUri">The resolved endpoint address.</param>
+        /// <param name="targetId">The id of the target the tile shows.</param>
+        /// <returns>The address carrying the target id.</returns>
+        private static string AddTarget(string baseUri, Guid targetId)
+        {
+            if (string.IsNullOrEmpty(baseUri))
+            {
+                return baseUri;
+            }
+
+            var separator = baseUri.Contains('?') ? '&' : '?';
+
+            return $"{baseUri}{separator}{SlaTargetIdParameter.Key}={targetId}";
+        }
+
+        /// <summary>
+        /// Builds the line the card shows in place of the agreements when there are none.
+        /// </summary>
+        /// <param name="id">The id of the control.</param>
+        /// <param name="key">The i18n key of the message.</param>
+        /// <returns>The control.</returns>
+        private static IControl EmptyState(string id, string key)
+        {
+            return new ControlText(id)
+            {
+                Text = _ => key,
+                Format = _ => TypeFormatText.Italic
+            };
         }
     }
 
