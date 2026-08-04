@@ -1,6 +1,4 @@
-using KleeneStar.Core.Test;
 using KleeneStar.Model.Entities;
-using System.Linq;
 
 namespace KleeneStar.Core.Test.WebManager
 {
@@ -62,7 +60,7 @@ namespace KleeneStar.Core.Test.WebManager
 
             var board = CoreHub.KindDashboardManager.EnsureBoard(Guid.NewGuid(), "issue");
 
-            KindDashboard? raised = null;
+            KindDashboard raised = null;
             CoreHub.KindDashboardManager.BoardUpdated += (_, b) => raised = b;
 
             CoreHub.KindDashboardManager.SetBoard(board.Id,

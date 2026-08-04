@@ -115,7 +115,7 @@ namespace KleeneStar.Core.Test.WebManager
         [InlineData("On hold", false)]
         [InlineData("", false)]
         [InlineData(null, false)]
-        public void IsPaused_MatchesStatusName(string? pauseOn, bool expected)
+        public void IsPaused_MatchesStatusName(string pauseOn, bool expected)
         {
             Assert.Equal(expected, SlaClock.IsPaused(Policy(pauseOn!), Status("Waiting for customer")));
         }
@@ -148,7 +148,7 @@ namespace KleeneStar.Core.Test.WebManager
         [InlineData(" done ", true)]
         [InlineData("In progress", false)]
         [InlineData(null, false)]
-        public void IsSettled_ReadsCategory(string? category, bool expected)
+        public void IsSettled_ReadsCategory(string category, bool expected)
         {
             Assert.Equal(expected, SlaClock.IsSettled(Status("Closed", category!)));
         }
@@ -193,7 +193,7 @@ namespace KleeneStar.Core.Test.WebManager
         /// </summary>
         /// <param name="pauseOn">The comma-separated pause statuses.</param>
         /// <returns>The policy.</returns>
-        private static SlaPolicy Policy(string? pauseOn = null)
+        private static SlaPolicy Policy(string pauseOn = null)
         {
             return new SlaPolicy { Name = "Incident", State = SlaPolicyState.Active, PauseOn = pauseOn };
         }
@@ -214,7 +214,7 @@ namespace KleeneStar.Core.Test.WebManager
         /// <param name="name">The status name.</param>
         /// <param name="category">The category name, or null for a status without one.</param>
         /// <returns>The status.</returns>
-        private static Status Status(string name, string? category = null)
+        private static Status Status(string name, string category = null)
         {
             return new Status
             {

@@ -12,6 +12,7 @@ using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Api._1_.Tenants
 {
@@ -26,6 +27,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
         private readonly IUri _deleteFormUri;
+        private readonly IUri _avatarFormUri;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -35,6 +37,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
             _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Settings.Tenant._tenantid_.Edit>();
             _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Settings.Tenant._tenantid_.Clone>();
             _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Settings.Tenant._tenantid_.Delete>();
+            _avatarFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Settings.Tenant._tenantid_.Avatar>();
         }
 
         /// <summary>
@@ -225,6 +228,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
             var deleteUri = _deleteFormUri?
                 .BindParameters(request)
                 .BindParameters(new TenantIdParameter(row.Id));
+            var avatarUri = _avatarFormUri?
+                .BindParameters(request)
+                .BindParameters(new TenantIdParameter(row.Id));
 
             yield return new RestApiOptionHeader(request)
             {
@@ -239,6 +245,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
             yield return new RestApiOptionClone(request)
             {
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
+            };
+
+            yield return new RestApiOptionCustom(request)
+            {
+                Text = I18N.Translate(request, "kleenestar.core:setting.tenant.avatar.label"),
+                Icon = new IconImage(),
+                PrimaryAction = new ActionModal("modal-form", avatarUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionSeparator(request);

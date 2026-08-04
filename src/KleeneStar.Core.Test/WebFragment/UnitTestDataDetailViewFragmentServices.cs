@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using WebExpress.WebApp.WebData;
 
 namespace KleeneStar.Core.Test.WebFragment
@@ -31,12 +29,16 @@ namespace KleeneStar.Core.Test.WebFragment
 
             foreach (var fragmentType in fragments)
             {
-                var fragment = Assert.IsAssignableFrom<IDataIsland>(
-                    Activator.CreateInstance(fragmentType, new object?[] { null }));
+                var fragment = Assert.IsAssignableFrom<IDataIsland>
+                (
+                    Activator.CreateInstance(fragmentType, new object[] { null })
+                );
 
-                Assert.True(
+                Assert.True
+                (
                     fragment.ServiceFactory is not null,
-                    $"{fragmentType.FullName} does not declare a data service.");
+                    $"{fragmentType.FullName} does not declare a data service."
+                );
             }
         }
 

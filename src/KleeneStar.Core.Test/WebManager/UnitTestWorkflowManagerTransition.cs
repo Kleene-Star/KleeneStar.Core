@@ -1,4 +1,3 @@
-using KleeneStar.Core.Test;
 using KleeneStar.Core.WebManager;
 using KleeneStar.Model.Entities;
 
@@ -279,7 +278,7 @@ namespace KleeneStar.Core.Test.WebManager
 
             CoreHub.ValueManager.Add(new Value { ObjectId = ObjectId, FieldId = FieldId, Data = "New" });
 
-            WorkflowTransitionResult? raised = null;
+            WorkflowTransitionResult raised = null;
             CoreHub.WorkflowManager.TransitionExecuted += (_, r) => raised = r;
 
             CoreHub.WorkflowManager.ExecuteTransition(ObjectId, FieldId, ProgressId, Guid.Empty);

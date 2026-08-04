@@ -1,5 +1,6 @@
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebData;
+using WebExpress.WebApp.WebMessageQueue;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -25,10 +26,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         /// <summary>
         /// Gets the rest table that displays the asset rows.
         /// </summary>
-        public ControlDataTable Table { get; } = new ControlDataTable()
-        {
-            ServiceFactory = _ => DataServiceDescriptor.TableData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.Table>().ToString())
-        };
+        public ControlDataTable Table { get; } = new ControlDataTable();
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -39,6 +37,13 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         {
             Icon = _ => new IconTable(TypeIconTheme.Light);
             Title = _ => "kleenestar.core:view.table.title";
+
+            // the endpoint is free-form and carries no generic argument, so the domain of the
+            // objects this table lists is declared explicitly to get the same refresh behavior.
+            Table.DataService<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.Table>
+            (
+                descriptor => descriptor.WithDomain(DataChangedNotifier.DomainName(typeof(Model.Entities.Object)))
+            );
             Table.Bind = _ => new Binding()
                 .Add(new BindSearch() { Source = AssetTabViewSearchFragment.ContentId })
                 .Add(new BindFilter())

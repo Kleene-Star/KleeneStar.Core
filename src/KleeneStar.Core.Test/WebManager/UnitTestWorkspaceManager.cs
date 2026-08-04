@@ -1,4 +1,3 @@
-using KleeneStar.Core.Test;
 using KleeneStar.Model.Entities;
 
 namespace KleeneStar.Core.Test.WebManager
@@ -83,7 +82,7 @@ namespace KleeneStar.Core.Test.WebManager
             var workspace = Sample("delete-me");
             CoreHub.WorkspaceManager.Add(workspace);
 
-            Workspace? raised = null;
+            Workspace raised = null;
             CoreHub.WorkspaceManager.WorkspaceRemoved += (_, w) => raised = w;
 
             CoreHub.WorkspaceManager.Remove(workspace.Id);
@@ -111,9 +110,9 @@ namespace KleeneStar.Core.Test.WebManager
         [Fact]
         public void ReservedWorkspaceKeys_BlocksRouterSegments()
         {
-            Assert.Contains("default",    KleeneStar.Core.WebManager.WorkspaceManager.ReservedWorkspaceKeys);
-            Assert.Contains("admin",      KleeneStar.Core.WebManager.WorkspaceManager.ReservedWorkspaceKeys);
-            Assert.Contains("api",        KleeneStar.Core.WebManager.WorkspaceManager.ReservedWorkspaceKeys);
+            Assert.Contains("default", KleeneStar.Core.WebManager.WorkspaceManager.ReservedWorkspaceKeys);
+            Assert.Contains("admin", KleeneStar.Core.WebManager.WorkspaceManager.ReservedWorkspaceKeys);
+            Assert.Contains("api", KleeneStar.Core.WebManager.WorkspaceManager.ReservedWorkspaceKeys);
             Assert.Contains("workspaces", KleeneStar.Core.WebManager.WorkspaceManager.ReservedWorkspaceKeys);
         }
 

@@ -1,4 +1,3 @@
-using KleeneStar.Core.Test;
 using KleeneStar.Model.Entities;
 using ObjectEntity = KleeneStar.Model.Entities.Object;
 
@@ -15,6 +14,7 @@ namespace KleeneStar.Core.Test.WebManager
         private static readonly Guid WorkspaceId = Guid.Parse("7A1B7C4D-91E2-4F5A-8B3C-D4E5F6A7B8C9");
         private static readonly Guid OtherWorkspaceId = Guid.Parse("8B2C8D5E-A2F3-405B-9C4D-E5F6A7B8C9D0");
         private static readonly Guid ClassId = Guid.Parse("9C3D9E6F-B304-416C-AD5E-F6A7B8C9D0E1");
+        private static readonly int[] expected = [1, 2, 3];
 
         /// <summary>
         /// Seeds the in-memory database with two workspaces and a class the sprint
@@ -196,7 +196,7 @@ namespace KleeneStar.Core.Test.WebManager
             Assert.Equal(third.Id, committed[0].Id);
             Assert.Equal(first.Id, committed[1].Id);
             Assert.Equal(second.Id, committed[2].Id);
-            Assert.Equal(new[] { 1, 2, 3 }, committed.Select(x => x.SprintRank).ToArray());
+            Assert.Equal(expected, committed.Select(x => x.SprintRank).ToArray());
         }
 
         /// <summary>
@@ -236,7 +236,7 @@ namespace KleeneStar.Core.Test.WebManager
             CoreHub.ObjectManager.Add(waiting);
             CoreHub.SprintManager.MoveObjectToSprint(committed.Id, sprint.Id);
 
-            Sprint? raised = null;
+            Sprint raised = null;
             CoreHub.SprintManager.SprintRemoved += (_, s) => raised = s;
 
             CoreHub.SprintManager.RemoveSprint(sprint);

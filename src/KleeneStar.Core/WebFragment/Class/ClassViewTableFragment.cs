@@ -26,10 +26,7 @@ namespace KleeneStar.Core.WebFragment.Class
         /// Gets the table of control view items used to display 
         /// workspace data.
         /// </summary>
-        public ControlDataTable Table { get; } = new ControlDataTable()
-        {
-            ServiceFactory = _ => DataServiceDescriptor.TableData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Table>().ToString())
-        };
+        public ControlDataTable Table { get; } = new ControlDataTable();
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -40,6 +37,11 @@ namespace KleeneStar.Core.WebFragment.Class
         {
             Icon = _ => new IconTable(TypeIconTheme.Light);
             Title = _ => "kleenestar.core:view.table.title";
+
+            // declares the endpoint and, derived from its generic argument, the domain the
+            // table serves, so the client subscribes to the change notification the CRUD
+            // endpoint emits and the table refreshes after a create, update or delete.
+            Table.DataService<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Table>();
             Table.Bind = _ => new Binding()
                 .Add(new BindSearch() { Source = ClassViewSearchFragment.ContentId })
                 .Add(new BindFilter())

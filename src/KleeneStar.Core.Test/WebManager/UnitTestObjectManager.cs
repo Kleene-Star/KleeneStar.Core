@@ -1,4 +1,3 @@
-using KleeneStar.Core.Test;
 using KleeneStar.Model.Entities;
 using ObjectEntity = KleeneStar.Model.Entities.Object;
 
@@ -100,7 +99,7 @@ namespace KleeneStar.Core.Test.WebManager
             var obj = Sample("INC-99", "DeleteMe");
             CoreHub.ObjectManager.Add(obj);
 
-            ObjectEntity? raised = null;
+            ObjectEntity raised = null;
             CoreHub.ObjectManager.ObjectRemoved += (_, o) => raised = o;
 
             CoreHub.ObjectManager.Remove(obj.Id);

@@ -32,6 +32,7 @@ namespace KleeneStar.Core
         private static KanbanBoardManager _kanbanBoardManager;
         private static KindDashboardManager _kindDashboardManager;
         private static TenantManager _tenantManager;
+        private static NavigatorLinkManager _navigatorLinkManager;
         private static IdentityManager _identityManager;
         private static GroupManager _groupManager;
         private static TemplateManager _templateManager;
@@ -125,6 +126,11 @@ namespace KleeneStar.Core
         /// Gets the tenant manager used to manage tenant-related operations within the application.
         /// </summary>
         public static ITenantManager TenantManager => _tenantManager ??= ComponentHub.GetComponentManager<TenantManager>();
+
+        /// <summary>
+        /// Gets the navigator link manager used to manage the additional links shown in the app navigator.
+        /// </summary>
+        public static INavigatorLinkManager NavigatorLinkManager => _navigatorLinkManager ??= ComponentHub.GetComponentManager<NavigatorLinkManager>();
 
         /// <summary>
         /// Gets the identity manager used to manage identity-related operations within the application.

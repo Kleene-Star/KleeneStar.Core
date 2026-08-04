@@ -28,8 +28,6 @@ namespace KleeneStar.Core.WebFragment.Priority
         /// </summary>
         public ControlDataTable Table { get; } = new ControlDataTable()
         {
-            ServiceFactory = _ => DataServiceDescriptor.TableData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Priorities._classid_.Table>().ToString()),
-            //MovableRow = _ => true
         };
 
         /// <summary>
@@ -41,6 +39,14 @@ namespace KleeneStar.Core.WebFragment.Priority
         {
             Icon = _ => new IconTable(TypeIconTheme.Light);
             Title = _ => "kleenestar.core:view.table.title";
+
+            // declares the endpoint and, derived from its generic argument, the domain the
+            // table serves, so the client subscribes to the change notification the CRUD
+            // endpoint emits and the table refreshes after a create, update or delete.
+            Table.DataService<global::KleeneStar.Core.WWW.Api._1_.Priorities._classid_.Table>();
+
+            // the order of the priorities is meaningful, so it is arranged by dragging a row
+            Table.MovableRow = _ => true;
             Table.Bind = _ => new Binding()
                 .Add(new BindSearch() { Source = PriorityViewSearchFragment.ContentId })
                 .Add(new BindFilter())

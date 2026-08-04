@@ -156,7 +156,7 @@ namespace KleeneStar.Core.Test.WWW.Api.Workflows
         /// </summary>
         /// <param name="workflowId">The addressed workflow, or null for a request without an id.</param>
         /// <returns>The request.</returns>
-        private static IRequest CreateRequest(string? workflowId)
+        private static IRequest CreateRequest(string workflowId)
         {
             var features = new FeatureCollection();
             features.Set<IHttpRequestFeature>(new HttpRequestFeature

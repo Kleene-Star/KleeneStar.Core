@@ -1,4 +1,3 @@
-using KleeneStar.Core.Test;
 using KleeneStar.Model.Entities;
 using WebExpress.WebIndex.Queries;
 
@@ -84,7 +83,7 @@ namespace KleeneStar.Core.Test.WebManager
             var template = Sample("DeleteMe");
             CoreHub.TemplateManager.AddTemplate(template);
 
-            Template? raised = null;
+            Template raised = null;
             CoreHub.TemplateManager.TemplateRemoved += (_, t) => raised = t;
 
             CoreHub.TemplateManager.RemoveTemplate(template);

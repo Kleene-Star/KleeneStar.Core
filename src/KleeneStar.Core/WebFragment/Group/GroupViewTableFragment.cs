@@ -25,10 +25,7 @@ namespace KleeneStar.Core.WebFragment.Group
         /// Gets the table of control view items used to display
         /// group data.
         /// </summary>
-        public ControlDataTable Table { get; } = new ControlDataTable()
-        {
-            ServiceFactory = _ => DataServiceDescriptor.TableData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Groups.Table>().ToString())
-        };
+        public ControlDataTable Table { get; } = new ControlDataTable();
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -39,6 +36,11 @@ namespace KleeneStar.Core.WebFragment.Group
         {
             Icon = _ => new IconTable(TypeIconTheme.Light);
             Title = _ => "kleenestar.core:view.table.title";
+
+            // declares the endpoint and, derived from its generic argument, the domain the
+            // table serves, so the client subscribes to the change notification the CRUD
+            // endpoint emits and the table refreshes after a create, update or delete.
+            Table.DataService<global::KleeneStar.Core.WWW.Api._1_.Groups.Table>();
             Table.Bind = _ => new Binding()
                 .Add(new BindSearch() { Source = GroupViewSearchFragment.ContentId })
                 .Add(new BindFilter())

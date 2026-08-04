@@ -1,7 +1,4 @@
-using KleeneStar.Core.Test;
 using KleeneStar.Model.Entities;
-using System.Collections.Generic;
-using System.Linq;
 using WebExpress.WebIndex.Queries;
 
 namespace KleeneStar.Core.Test.WebManager
@@ -70,7 +67,7 @@ namespace KleeneStar.Core.Test.WebManager
             var dashboard = Sample("DeleteMe");
             CoreHub.DashboardManager.Add(dashboard);
 
-            Dashboard? raised = null;
+            Dashboard raised = null;
             CoreHub.DashboardManager.DashboardRemoved += (_, d) => raised = d;
 
             CoreHub.DashboardManager.Remove(dashboard.Id);

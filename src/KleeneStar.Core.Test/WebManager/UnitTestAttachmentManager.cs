@@ -1,4 +1,3 @@
-using KleeneStar.Core.Test;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 
@@ -95,7 +94,7 @@ namespace KleeneStar.Core.Test.WebManager
         [InlineData(null)]
         [InlineData("")]
         [InlineData("   ")]
-        public void Add_EmptyFileName_ReturnsNull(string? fileName)
+        public void Add_EmptyFileName_ReturnsNull(string fileName)
         {
             Seed(nameof(Add_EmptyFileName_ReturnsNull));
 
@@ -126,7 +125,7 @@ namespace KleeneStar.Core.Test.WebManager
         {
             Seed(nameof(Add_RaisesAttachmentAddedEvent));
 
-            Attachment? raised = null;
+            Attachment raised = null;
             CoreHub.AttachmentManager.AttachmentAdded += (_, a) => raised = a;
 
             var added = CoreHub.AttachmentManager.Add(ObjectId, "evented.txt", "text/plain", SampleContent(), null, null);
@@ -225,7 +224,7 @@ namespace KleeneStar.Core.Test.WebManager
 
             var added = CoreHub.AttachmentManager.Add(ObjectId, "to-remove.txt", "text/plain", SampleContent(), null, null);
 
-            Attachment? raised = null;
+            Attachment raised = null;
             CoreHub.AttachmentManager.AttachmentRemoved += (_, a) => raised = a;
 
             var removed = CoreHub.AttachmentManager.Remove(added.Id);

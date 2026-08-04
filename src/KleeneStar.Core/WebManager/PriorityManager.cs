@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using WebExpress.WebApp.WebMessageQueue;
 using WebExpress.WebCore;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebIndex.Queries;
@@ -193,6 +194,11 @@ namespace KleeneStar.Core.WebManager
 
             ModelHub.ReorderPriorities(orderedIds);
 
+            // neither the table endpoint that receives a dragged order nor a move announces the
+            // change, so without this the other clients keep showing the previous order until the
+            // page is loaded again
+            _ = DataChangedNotifier.NotifyAsync<Priority>(DataChangeOperation.Updated);
+
             // raise the per-entity updated events in the requested order. The reordered
             // priorities are reloaded with a single query (filtered in memory) rather than
             // one GetPriority(id) round-trip per id; skipped entirely when nobody listens.
@@ -214,6 +220,49 @@ namespace KleeneStar.Core.WebManager
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// Moves the specified priority one position towards the start or the end of the order of
+        /// its class.
+        /// </summary>
+        /// <remarks>
+        /// The move is confined to the priorities of the same class, because the order is a property
+        /// of that class rather than a global one.
+        /// </remarks>
+        /// <param name="priorityId">The id of the priority to move.</param>
+        /// <param name="up">
+        /// <c>true</c> to move the priority towards the start; otherwise towards the end.
+        /// </param>
+        /// <returns>The current instance to allow for method chaining.</returns>
+        public IPriorityManager Move(Guid priorityId, bool up)
+        {
+            var priority = GetPriority(priorityId);
+
+            if (priority is null)
+            {
+                return this;
+            }
+
+            var ordered = GetPriorities(new Query<Priority>()
+                .WhereEquals(x => x.ClassId, priority.ClassId))
+                .OrderBy(x => x.Order)
+                .ThenBy(x => x.Name)
+                .ToList();
+
+            var index = ordered.FindIndex(x => x.Id == priorityId);
+            var target = up ? index - 1 : index + 1;
+
+            // already at the end it is asked to move towards: a repeated click must not wrap the
+            // entry around to the other end
+            if (index < 0 || target < 0 || target >= ordered.Count)
+            {
+                return this;
+            }
+
+            (ordered[index], ordered[target]) = (ordered[target], ordered[index]);
+
+            return Reorder([.. ordered.Select(x => x.Id)]);
         }
 
         /// <summary>

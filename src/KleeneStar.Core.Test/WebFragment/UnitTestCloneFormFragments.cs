@@ -1,7 +1,4 @@
-using System;
-using System.Linq;
 using WebExpress.WebApp.WebControl;
-using WebExpress.WebCore.WebFragment;
 
 namespace KleeneStar.Core.Test.WebFragment
 {
@@ -33,15 +30,21 @@ namespace KleeneStar.Core.Test.WebFragment
 
             foreach (var cloneType in cloneTypes)
             {
-                var fragment = Assert.IsAssignableFrom<ControlDataFormClone>(
-                    Activator.CreateInstance(cloneType, new object?[] { null }));
+                var fragment = Assert.IsAssignableFrom<ControlDataFormClone>
+                (
+                    Activator.CreateInstance(cloneType, new object[] { null })
+                );
 
-                Assert.True(
+                Assert.True
+                (
                     fragment.ServiceFactory is not null,
-                    $"{cloneType.FullName} does not declare a data service.");
-                Assert.True(
+                    $"{cloneType.FullName} does not declare a data service."
+                );
+                Assert.True
+                (
                     fragment.ItemId is not null,
-                    $"{cloneType.FullName} does not resolve the source item id.");
+                    $"{cloneType.FullName} does not resolve the source item id."
+                );
             }
         }
     }

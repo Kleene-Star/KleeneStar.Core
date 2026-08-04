@@ -1,4 +1,3 @@
-using KleeneStar.Core.Test;
 using KleeneStar.Model.Entities;
 using ObjectEntity = KleeneStar.Model.Entities.Object;
 
@@ -78,7 +77,7 @@ namespace KleeneStar.Core.Test.WebManager
             var link = Sample(ObjectLinkRelationType.RelatesTo);
             CoreHub.ObjectLinkManager.Add(link);
 
-            ObjectLink? raised = null;
+            ObjectLink raised = null;
             CoreHub.ObjectLinkManager.LinkRemoved += (_, l) => raised = l;
 
             CoreHub.ObjectLinkManager.Remove(link);

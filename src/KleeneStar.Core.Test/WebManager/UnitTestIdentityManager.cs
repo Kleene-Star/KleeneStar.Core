@@ -1,4 +1,3 @@
-using KleeneStar.Core.Test;
 using KleeneStar.Model.Entities;
 using WebExpress.WebIndex.Queries;
 
@@ -69,7 +68,7 @@ namespace KleeneStar.Core.Test.WebManager
             var identity = Sample("DeleteMe", "del@kleenestar.test");
             CoreHub.IdentityManager.Add(identity);
 
-            Identity? raised = null;
+            Identity raised = null;
             CoreHub.IdentityManager.IdentityRemoved += (_, i) => raised = i;
 
             CoreHub.IdentityManager.Remove(identity.Id);
@@ -104,9 +103,9 @@ namespace KleeneStar.Core.Test.WebManager
         [Fact]
         public void ReservedIdentityNames_BlocksRouterSegments()
         {
-            Assert.Contains("admin",  KleeneStar.Core.WebManager.IdentityManager.ReservedIdentityNames);
+            Assert.Contains("admin", KleeneStar.Core.WebManager.IdentityManager.ReservedIdentityNames);
             Assert.Contains("system", KleeneStar.Core.WebManager.IdentityManager.ReservedIdentityNames);
-            Assert.Contains("api",    KleeneStar.Core.WebManager.IdentityManager.ReservedIdentityNames);
+            Assert.Contains("api", KleeneStar.Core.WebManager.IdentityManager.ReservedIdentityNames);
         }
 
         /// <summary>
