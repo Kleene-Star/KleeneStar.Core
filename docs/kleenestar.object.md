@@ -85,14 +85,6 @@ To improve traceability and documentation, objects can be enriched with addition
 ╚══════════════════════════════════════════════════════════════════════════════════════╝
 ```
 
-## Object Kinds (Subtypes)
-
-Beyond its class, every object carries a **kind** — a coarse subtype that decides how the object is presented and navigated. The kind partitions the objects of a workspace into content families with distinct overview experiences:
-
-- **Document** (`document`) — structured content pages. The document overview shows the workspace's documents as a page tree in its **sidebar**, mirroring the parent/child containment of the objects, while the main panel opens with the workspace's **home document** (the first root of the tree). (The kind is named *document* rather than *page* because the term page is already taken by the WebExpress page concept.)
-- **Blog** (`blog`) — chronological posts. The blog overview shows a year/month timeline of the posts in its **sidebar**, newest first, while the main panel presents the **stream of the latest posts**.
-- **Issue** (`issue`) — work items such as incidents, problems, or tasks. The issue overview hosts the workspace's **tabbed views**: the leading issues tab lists the most recently updated issues with search, pagination, and quickfilters for starred issues, issues assigned to the caller, issues created by the caller, and the archived history; further user-defined views (table, list, dashboard, Kanban, Scrum sprint and backlog — all scoped to the issue kind) can be added, reordered, and removed via the template picker. Issues are the **default kind**: objects created without an explicit kind, and all objects predating the kind partition, behave like work items.
-
 ### Persistence
 
 The **class is the single source of the kind**: `Class.Kind` is chosen in the class add/edit/clone forms ("Object type"), and every object of the class carries that kind. The `ObjectManager` stamps the class kind onto `Object.Kind` on every add and update, and changing a class's kind re-stamps the existing objects of the class, so the kind overviews immediately reflect the change. The object-side copy exists purely for efficient querying (the kind overviews filter on the indexed `Object.Kind` column).
@@ -220,6 +212,14 @@ At the center is the `IComponentManager` interface, which serves as the overarch
 Objects themselves are described by the `IObject` interface. In addition to a unique key, they contain metadata such as class, workspace, and current state. The content data of an object is organized as `IValue` instances, each representing a field and its value. Additionally, objects can be equipped with permission profiles (`IPermissionsProfile`) to define granular access rights.
 
 The architecture also foresees a clear separation between interfaces and implementations. `IObject` is implemented by the concrete object class, which provides all defined properties and methods. This separation enables high flexibility and extensibility of the system.
+
+Beyond its class, every object carries a kind, a coarse subtype that decides how the object is presented and navigated. The kind partitions the objects of a workspace into content families with distinct overview experiences:
+
+- **Document:** This kind is designed for structured knowledge organization and permanent documentation. Content is arranged in a hierarchical parent-child page tree, which is mirrored in the sidebar navigation, while the main panel opens with the designated home document. Typical use cases include internal wikis, standard operating procedures, manuals, and meeting notes.
+- **Blog:** This kind handles time-sensitive updates, corporate communication, and chronological announcements. The sidebar displays a timeline sorted by year and month with the newest entries listed first, while the main panel serves a stream of the latest articles. Common examples are company news, product launch logs, and team updates.
+- **Issue:** This kind manages active work items, task lifecycles, and operational workflows. It serves as the default behavior for unclassified objects and features dynamic, tabbed views including Kanban boards, Scrum backlogs, and lists that users can customize via templates. It is heavily used for tracking software bugs, customer incidents, and project tasks.
+- **Asset:** This category represents digital files and binary resources uploaded from external sources, strictly distinguishing them from physical capital assets or financial asset management. Digital assets do not possess their own navigation structure but are instead attached to or embedded within documents, blogs, or issues to support them as reference materials. Examples include images, PDF documents, spreadsheets, and video clips.
+
 
 ## UI Concepts and Pages
 

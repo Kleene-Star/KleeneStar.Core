@@ -85,7 +85,7 @@ The data model of Managed Workflows in **KleeneStar** is anchored locally at the
 
 The application follows a modular, decoupled architectural principle. At its center is the `WorkflowManager`, exclusively responsible for the life cycle and management of all workflows. It manages a collection of versioned workflow instances and provides a controlled interface for all interactions.
 
-Each workflow instance contains central characteristics such as name, associated class, versioning status, and access modifiers. New workflows are created exclusively through the `WorkflowManager` to ensure data integrity and consistent access rules.
+Each workflow instance contains central characteristics such as name, associated class, versioning status and access modifiers. New workflows are created exclusively through the `WorkflowManager` to ensure data integrity and consistent access rules.
 
 The `WorkflowManager` performs server-side tasks such as persistent storage of all workflows. At system startup, stored workflows are loaded, state machines initialized, and event subscriptions activated. For every request, the `WorkflowManager` enforces an authorization check for the user. Access is governed by policies that may include context-sensitive filters, time-limited permissions, or audit requirements. This creates a flexible and fine-grained implementation of differentiated read and write rights.
 
@@ -209,9 +209,9 @@ The mockups serve as visual templates for the final UI design. They show how nav
 
 ### Class Management (Page)
 
-The Class Management page forms the central administrative interface for all class types within a workspace and is closely integrated with **KleeneStar**’s Workflow Manager. In addition to structured class maintenance, including functions such as create, edit, clone, archive, and delete, it serves as the starting point for assigning and controlling versioned workflows.
+The Class Management page forms the central administrative interface for all class types within a workspace and is closely integrated with **KleeneStar**'s Workflow Manager. In addition to structured class maintenance, including functions such as create, edit, clone, archive and delete, it serves as the starting point for assigning and controlling versioned workflows.
 
-The tabular overview displays important attributes per class such as name, description, and status. Additionally, there is direct access to each class’s associated workflows: via the options menu, the Manage Workflows function is available to create, version, activate, or archive workflows.
+The tabular overview displays important attributes per class such as name, description and status. Additionally, there is direct access to each class’s associated workflows: via the options menu, the Manage Workflows function is available to create, version, activate or archive workflows.
 
 ```
 ╔WebAppPage════════════════════════════════════════════════════════════════════════════╗
