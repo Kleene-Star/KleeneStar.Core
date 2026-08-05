@@ -1,3 +1,5 @@
+using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebQuickfilter;
 using System.Collections.Generic;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.Internationalization;
@@ -20,6 +22,16 @@ namespace KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_
     [Cache]
     public sealed class Quickfilter : RestApiQuickfilter<ObjectEntity>
     {
+        /// <summary>
+        /// The key under which the quickfilters a user defined for this view are stored.
+        /// </summary>
+        /// <remarks>
+        /// The bar and the table have to agree on it, so it is named once here and read from both.
+        /// The filters are additionally narrowed by the workspace, so one workspace's own chips do
+        /// not turn up in every other one.
+        /// </remarks>
+        public const string ViewKey = "issues";
+
         /// <summary>
         /// The quickfilter id prefix shared by every issue chip.
         /// </summary>
@@ -75,6 +87,15 @@ namespace KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_
                 Id = ArchivedId,
                 Name = I18N.Translate(request, "kleenestar.core:object.kind.issues.filter.archived")
             };
+
+            // the filters the users defined follow the ones the view ships with, so the familiar
+            // chips keep their position as the personal ones come and go
+            var workspaceKey = request?.GetParameter<WorkspaceKeyParameter>()?.Value;
+
+            foreach (var item in CustomQuickfilterSupport.Items(ViewKey, workspaceKey, request))
+            {
+                yield return item;
+            }
         }
     }
 }

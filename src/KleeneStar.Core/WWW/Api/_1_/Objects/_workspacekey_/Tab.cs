@@ -1,3 +1,4 @@
+using KleeneStar.Core.WebFragment.Object;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
@@ -69,7 +70,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
                     Name = view.Name,
                     Title = view.Name,
                     Icon = (view.ViewType.Icon() as WebExpress.WebUI.WebIcon.Icon)?.Class,
-                    TemplateId = view.ViewType.TemplateId(),
+                    TemplateId = ObjectViewTemplate.ResolveTemplateId(view.ViewType, Model.Entities.ObjectKind.Issue),
                     Uri = ResolveContentUri(view.ViewType, request)?.ToString()
                 };
             }
@@ -115,7 +116,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
                 Name = view.Name,
                 Title = view.Name,
                 Icon = (viewType.Icon() as WebExpress.WebUI.WebIcon.Icon)?.Class,
-                TemplateId = viewType.TemplateId(),
+                TemplateId = ObjectViewTemplate.ResolveTemplateId(viewType, Model.Entities.ObjectKind.Issue),
                 Uri = ResolveContentUri(viewType, request)?.ToString()
             };
         }
@@ -148,20 +149,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         /// </summary>
         private static ObjectViewType ResolveViewType(string templateId)
         {
-            if (string.IsNullOrWhiteSpace(templateId))
-            {
-                return ObjectViewType.Table;
-            }
-
-            foreach (ObjectViewType candidate in Enum.GetValues<ObjectViewType>())
-            {
-                if (string.Equals(candidate.TemplateId(), templateId, StringComparison.OrdinalIgnoreCase))
-                {
-                    return candidate;
-                }
-            }
-
-            return ObjectViewType.Table;
+            return ObjectViewTemplate.ResolveViewType(templateId, Model.Entities.ObjectKind.Issue)
+                ?? ObjectViewType.Table;
         }
 
         /// <summary>

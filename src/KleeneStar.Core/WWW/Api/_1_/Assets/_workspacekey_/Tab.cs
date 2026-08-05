@@ -1,3 +1,4 @@
+using KleeneStar.Core.WebFragment.Object;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
@@ -117,24 +118,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_
 
         /// <summary>
         /// Maps a view type to the id of the <em>asset</em> tab-template fragment that
-        /// renders it. The shared <see cref="ObjectViewTypeExtensions.TemplateId"/> returns
-        /// the issue templates (which are not embedded on the asset page), so the asset
-        /// overview needs its own mapping. The ids are the asset template fragments' ids
-        /// (full type name, lower-cased, dots replaced by dashes).
+        /// renders it. The asset overview embeds its own templates, so the mapping is asked
+        /// for the asset kind rather than for the issue one.
         /// </summary>
         /// <param name="type">The view type.</param>
         /// <returns>The asset tab-template fragment id.</returns>
         private static string ResolveTemplateId(ObjectViewType type)
         {
-            return type switch
-            {
-                ObjectViewType.Assets => "kleenestar-core-webfragment-object-assets-assetviewtemplatefragment",
-                ObjectViewType.Table => "kleenestar-core-webfragment-object-assets-assettabviewtemplatefragment",
-                ObjectViewType.List => "kleenestar-core-webfragment-object-assets-assettabviewtemplatefragment",
-                ObjectViewType.Dashboard => "kleenestar-core-webfragment-object-assets-assettabdashboardtemplatefragment",
-                ObjectViewType.Kanban => "kleenestar-core-webfragment-object-assets-assettabkanbantemplatefragment",
-                _ => type.TemplateId()
-            };
+            return ObjectViewTemplate.ResolveTemplateId(type, Model.Entities.ObjectKind.Asset);
         }
 
         /// <summary>
@@ -166,20 +157,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_
         /// </summary>
         private static ObjectViewType ResolveViewType(string templateId)
         {
-            if (string.IsNullOrWhiteSpace(templateId))
-            {
-                return ObjectViewType.Table;
-            }
-
-            foreach (ObjectViewType candidate in Enum.GetValues<ObjectViewType>())
-            {
-                if (string.Equals(candidate.TemplateId(), templateId, StringComparison.OrdinalIgnoreCase))
-                {
-                    return candidate;
-                }
-            }
-
-            return ObjectViewType.Table;
+            return ObjectViewTemplate.ResolveViewType(templateId, Model.Entities.ObjectKind.Asset)
+                ?? ObjectViewType.Table;
         }
 
         /// <summary>

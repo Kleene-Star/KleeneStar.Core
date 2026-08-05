@@ -1,4 +1,5 @@
 using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebQuickfilter;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
@@ -205,7 +206,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
                 }
             }
 
-            return query;
+            // the filters the user defined are resolved from storage rather than from a case above,
+            // and compose onto the query so they combine with the chips handled here
+            return CustomQuickfilterSupport.Apply(filters, query, Quickfilter.ViewKey);
         }
 
         /// <summary>

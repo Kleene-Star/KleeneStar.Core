@@ -699,6 +699,15 @@ setting.group.database.label=Datenbank
 setting.database.provider.label=Datenbankanbieter
 setting.database.datasource.label=Datenquelle
 
+setting.maintenance.title=Wartung
+setting.maintenance.header=Wartungshinweis
+setting.maintenance.description=Der Anweisungstext wird allen angemeldeten Benutzern als Hinweis am oberen Seitenrand angezeigt, solange er aktiviert ist.
+setting.maintenance.enabled.label=Hinweis anzeigen
+setting.maintenance.enabled.help=Blendet den Anweisungstext auf allen Seiten ein. Ohne Text bleibt der Hinweis auch dann verborgen.
+setting.maintenance.message.label=Anweisungstext
+setting.maintenance.message.placeholder=Geben Sie den Anweisungstext für die Benutzer ein.
+setting.maintenance.message.help=Beschreiben Sie kurz, was ansteht und was die Benutzer beachten sollen, z. B. Zeitraum und erwartete Einschränkungen.
+
 setting.tenant.title=Mandanten
 setting.tenant.header=Mandantenzuordnungen
 setting.tenant.description=Übersicht aller Arbeitsbereich-Mandanten-Zuordnungen. Mandanten werden pro Arbeitsbereich über das Bearbeitungsformular verwaltet.
@@ -1009,6 +1018,20 @@ setting.navigatorlink.state.help=Nur aktive Links werden im App-Navigator eingeb
 state.hidden.label=Ausgeblendet
 notification.navigatorlink.created=Der Link wurde erfolgreich erstellt.
 notification.navigatorlink.updated=Der Link wurde erfolgreich aktualisiert.
+notification.maintenance.updated=Der Wartungshinweis wurde erfolgreich aktualisiert.
+notification.quickfilter.created=Der Schnellfilter wurde erfolgreich erstellt.
+notification.quickfilter.updated=Der Schnellfilter wurde erfolgreich aktualisiert.
+
+quickfilter.add.title=Schnellfilter anlegen
+quickfilter.add.label=Eigenen Schnellfilter anlegen
+quickfilter.name.label=Bezeichnung
+quickfilter.name.placeholder=Geben Sie die Beschriftung des Filters ein.
+quickfilter.name.help=Die Bezeichnung erscheint als Chip in der Filterleiste.
+quickfilter.query.label=Filterausdruck
+quickfilter.query.placeholder=z. B. State = Active
+quickfilter.query.help=Derselbe WQL-Ausdruck, den auch die erweiterte Suche der Ansicht versteht. Sie können ihn dort ausprobieren, bevor Sie ihn hier speichern.
+quickfilter.shared.label=Für alle sichtbar
+quickfilter.shared.help=Ohne diese Option sehen nur Sie den Filter. Eingeschaltet erscheint er in der Filterleiste aller Benutzer dieser Ansicht.
 
 order.move.up.label=Nach oben
 order.move.down.label=Nach unten

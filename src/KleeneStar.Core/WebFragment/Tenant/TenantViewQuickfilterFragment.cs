@@ -3,9 +3,14 @@ using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 using WebExpress.WebUI.WebSection;
+
+// the fragment exposes a Quickfilter property of its own, so the endpoint of the same name is
+// reached through an alias rather than through a qualified name inside every reference
+using TenantQuickfilterApi = KleeneStar.Core.WWW.Api._1_.Tenants.Quickfilter;
 
 namespace KleeneStar.Core.WebFragment.Tenant
 {
@@ -32,12 +37,35 @@ namespace KleeneStar.Core.WebFragment.Tenant
         };
 
         /// <summary>
+        /// Gets the chip that opens the dialog in which a new quickfilter is defined.
+        /// </summary>
+        /// <remarks>
+        /// The chip carries no filter and never shows active; the client keeps it at the trailing
+        /// edge of the bar. Which bar the new filter belongs to travels on the dialog address,
+        /// because the dialog itself serves every view.
+        /// </remarks>
+        public ControlQuickfilterItemAdd AddFilter { get; } = new()
+        {
+            Tooltip = _ => "kleenestar.core:quickfilter.add.label",
+            PrimaryAction = renderContext => new ActionModal
+            (
+                "modal-form",
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Quickfilters.Add>()
+                    .BindParameters(renderContext.Request)
+                    .Concat($"?view={TenantQuickfilterApi.ViewKey}"),
+                TypeModalSize.Large
+            )
+        };
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
         public TenantViewQuickfilterFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            Quickfilter.Add(AddFilter);
+
             Add(Quickfilter);
         }
 

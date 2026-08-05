@@ -700,6 +700,15 @@ setting.group.database.label=Database
 setting.database.provider.label=Database Provider
 setting.database.datasource.label=Data Source
 
+setting.maintenance.title=Maintenance
+setting.maintenance.header=Maintenance Notice
+setting.maintenance.description=The instruction text is shown to all signed-in users as a notice at the top of the page for as long as it is enabled.
+setting.maintenance.enabled.label=Show notice
+setting.maintenance.enabled.help=Displays the instruction text on every page. Without a text the notice stays hidden regardless.
+setting.maintenance.message.label=Instruction text
+setting.maintenance.message.placeholder=Enter the instruction text for the users.
+setting.maintenance.message.help=Briefly describe what is coming up and what users should be aware of, for example the time frame and the expected limitations.
+
 setting.tenant.title=Tenants
 setting.tenant.header=Tenant Assignments
 setting.tenant.description=Overview of all workspace-tenant assignments. Tenants are managed per workspace through the workspace edit form.
@@ -1009,6 +1018,20 @@ setting.navigatorlink.state.help=Only active links are shown in the app navigato
 state.hidden.label=Hidden
 notification.navigatorlink.created=The link has been created successfully.
 notification.navigatorlink.updated=The link has been updated successfully.
+notification.maintenance.updated=The maintenance notice has been updated successfully.
+notification.quickfilter.created=The quick filter has been created successfully.
+notification.quickfilter.updated=The quick filter has been updated successfully.
+
+quickfilter.add.title=Create quick filter
+quickfilter.add.label=Create your own quick filter
+quickfilter.name.label=Label
+quickfilter.name.placeholder=Enter the label of the filter.
+quickfilter.name.help=The label appears as a chip in the filter bar.
+quickfilter.query.label=Filter expression
+quickfilter.query.placeholder=e.g. State = Active
+quickfilter.query.help=The same WQL expression the view's advanced search accepts. You can try it out there before storing it here.
+quickfilter.shared.label=Visible to everyone
+quickfilter.shared.help=Without this option only you see the filter. Enabled, it appears in the filter bar of every user of this view.
 
 order.move.up.label=Move up
 order.move.down.label=Move down

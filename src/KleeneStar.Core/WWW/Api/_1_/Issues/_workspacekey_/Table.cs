@@ -1,4 +1,5 @@
 ﻿using KleeneStar.Core.WebParameter;
+using KleeneStar.Core.WebQuickfilter;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,6 +110,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_
                     (x.Summary ?? string.Empty).Contains(search, StringComparison.OrdinalIgnoreCase) ||
                     (x.Description ?? string.Empty).Contains(search, StringComparison.OrdinalIgnoreCase));
             }
+
+            // the filters the user defined are resolved from storage rather than from a chip id
+            // handled above, and narrow further so they combine with the scopes and the search
+            issues = CustomQuickfilterSupport.Apply(filters, issues, Quickfilter.ViewKey);
 
             var filtered = issues
                 .OrderByDescending(x => x.Updated)

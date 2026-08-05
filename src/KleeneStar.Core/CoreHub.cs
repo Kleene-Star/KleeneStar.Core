@@ -33,6 +33,8 @@ namespace KleeneStar.Core
         private static KindDashboardManager _kindDashboardManager;
         private static TenantManager _tenantManager;
         private static NavigatorLinkManager _navigatorLinkManager;
+        private static MaintenanceManager _maintenanceManager;
+        private static CustomQuickfilterManager _customQuickfilterManager;
         private static IdentityManager _identityManager;
         private static GroupManager _groupManager;
         private static TemplateManager _templateManager;
@@ -131,6 +133,16 @@ namespace KleeneStar.Core
         /// Gets the navigator link manager used to manage the additional links shown in the app navigator.
         /// </summary>
         public static INavigatorLinkManager NavigatorLinkManager => _navigatorLinkManager ??= ComponentHub.GetComponentManager<NavigatorLinkManager>();
+
+        /// <summary>
+        /// Gets the maintenance manager used to manage the maintenance notice of the installation.
+        /// </summary>
+        public static IMaintenanceManager MaintenanceManager => _maintenanceManager ??= ComponentHub.GetComponentManager<MaintenanceManager>();
+
+        /// <summary>
+        /// Gets the manager of the quickfilters the users defined themselves.
+        /// </summary>
+        public static ICustomQuickfilterManager CustomQuickfilterManager => _customQuickfilterManager ??= ComponentHub.GetComponentManager<CustomQuickfilterManager>();
 
         /// <summary>
         /// Gets the identity manager used to manage identity-related operations within the application.
