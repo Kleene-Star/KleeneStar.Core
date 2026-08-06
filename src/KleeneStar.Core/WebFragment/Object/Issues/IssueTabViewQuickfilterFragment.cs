@@ -35,7 +35,18 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         /// </summary>
         public ControlDataQuickfilter Quickfilter { get; } = new ControlDataQuickfilter(ContentId)
         {
-            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Quickfilter>().ToString())
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Quickfilter>().ToString()),
+
+            // the chips a user defined offer this from their own menu; the bar appends the filter
+            // they stand for, so one dialog serves them all
+            EditAction = renderContext => new ActionModal
+            (
+                "modal-form",
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Quickfilters.Edit>()
+                    .BindParameters(renderContext.Request)
+                    .Concat($"?view={IssueQuickfilterApi.ViewKey}&context={renderContext.Request?.GetParameter<WorkspaceKeyParameter>()?.Value}"),
+                TypeModalSize.Large
+            )
         };
 
         /// <summary>
@@ -43,8 +54,9 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         /// </summary>
         /// <remarks>
         /// The chip carries no filter and never shows active; the client keeps it at the trailing
-        /// edge of the bar. The workspace travels along on the dialog address, so a filter defined
-        /// here belongs to this workspace's issue list rather than to every workspace's.
+        /// edge of the bar. It opens the bar's own editor, which writes through the quickfilter
+        /// endpoint — that endpoint is served under the workspace route and takes the workspace
+        /// from there, so nothing has to be carried along.
         /// </remarks>
         public ControlQuickfilterItemAdd AddFilter { get; } = new()
         {

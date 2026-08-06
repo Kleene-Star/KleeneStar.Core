@@ -35,6 +35,7 @@ namespace KleeneStar.Core
         private static NavigatorLinkManager _navigatorLinkManager;
         private static MaintenanceManager _maintenanceManager;
         private static CustomQuickfilterManager _customQuickfilterManager;
+        private static PermissionManager _permissionManager;
         private static IdentityManager _identityManager;
         private static GroupManager _groupManager;
         private static TemplateManager _templateManager;
@@ -143,6 +144,11 @@ namespace KleeneStar.Core
         /// Gets the manager of the quickfilters the users defined themselves.
         /// </summary>
         public static ICustomQuickfilterManager CustomQuickfilterManager => _customQuickfilterManager ??= ComponentHub.GetComponentManager<CustomQuickfilterManager>();
+
+        /// <summary>
+        /// Gets the permission manager, which administers the group-to-policy grants on a resource.
+        /// </summary>
+        public static IPermissionManager PermissionManager => _permissionManager ??= ComponentHub.GetComponentManager<PermissionManager>();
 
         /// <summary>
         /// Gets the identity manager used to manage identity-related operations within the application.

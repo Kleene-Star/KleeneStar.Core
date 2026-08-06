@@ -27,6 +27,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
         private readonly IUri _deleteFormUri;
+        private readonly IUri _permissionFormUri;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -36,6 +37,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
             _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Edit>();
             _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Clone>();
             _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Delete>();
+            _permissionFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Permission>();
         }
 
         /// <summary>
@@ -223,6 +225,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
             var deleteUri = _deleteFormUri?
                 .BindParameters(request)
                 .BindParameters(new ClassIdParameter(row.Id));
+            var permissionUri = _permissionFormUri?
+                .BindParameters(request)
+                .BindParameters(new ClassIdParameter(row.Id));
 
             var iconTheme = request?.ApplicationContext?.DefaultTheme?.IconTheme ?? TypeIconTheme.Light;
 
@@ -241,6 +246,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
             {
                 Icon = new IconClone(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
+            };
+
+            yield return new RestApiOptionCustom(request)
+            {
+                Text = "kleenestar.core:class.permission.label",
+                Icon = new IconUserShield(iconTheme),
+                PrimaryAction = new ActionModal("modal-form", permissionUri, TypeModalSize.ExtraLarge)
             };
 
             // extended options

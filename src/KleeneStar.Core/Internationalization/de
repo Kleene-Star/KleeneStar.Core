@@ -389,6 +389,12 @@ object.export.title=Objekt exportieren
 object.export.label=Exportieren
 object.permission.title=Objektberechtigungen
 object.permission.label=Berechtigungen
+class.permission.title=Klassenberechtigungen
+class.permission.label=Berechtigungen
+dashboard.permission.title=Dashboardberechtigungen
+dashboard.permission.label=Berechtigungen
+calendar.permission.title=Kalenderberechtigungen
+calendar.permission.label=Berechtigungen
 object.favorite.add.label=Stern hinzufügen
 object.favorite.remove.label=Stern entfernen
 
@@ -1023,6 +1029,7 @@ notification.quickfilter.created=Der Schnellfilter wurde erfolgreich erstellt.
 notification.quickfilter.updated=Der Schnellfilter wurde erfolgreich aktualisiert.
 
 quickfilter.add.title=Schnellfilter anlegen
+quickfilter.edit.title=Schnellfilter bearbeiten
 quickfilter.add.label=Eigenen Schnellfilter anlegen
 quickfilter.name.label=Bezeichnung
 quickfilter.name.placeholder=Geben Sie die Beschriftung des Filters ein.

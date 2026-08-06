@@ -1,5 +1,3 @@
-using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WebQuickfilter;
 using WebExpress.WebApp.WebData;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -12,20 +10,18 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Quickfilter
 {
     /// <summary>
-    /// Represents the editor in which a user defines a new quickfilter for the bar the dialog was
-    /// opened from.
+    /// Represents the editor in which a quickfilter the user defined is changed.
     /// </summary>
     /// <remarks>
-    /// The form writes through the quickfilter endpoint of the bar itself, which is what the
-    /// framework's create verb expects — the bar adopts the answer and shows the new chip without
-    /// a reload. Which endpoint that is follows from the view the chip named, rather than from an
-    /// address handed in, so this dialog cannot be pointed at something else.
+    /// The form reads and writes through the quickfilter endpoint of the bar itself: asked with an
+    /// id it answers in the record shape a form binds to, so the dialog loads exactly the values it
+    /// will send back. Which endpoint that is follows from the view the chip named.
     /// </remarks>
-    [Title("kleenestar.core:quickfilter.add.title")]
+    [Title("kleenestar.core:quickfilter.edit.title")]
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Quickfilters.Add>]
+    [Scope<global::KleeneStar.Core.WWW.Quickfilters.Edit>]
     [Cache]
-    public sealed class QuickfilterAddFormFragment : FragmentControlDataFormAdd
+    public sealed class QuickfilterEditFormFragment : FragmentControlDataFormEdit
     {
         /// <summary>
         /// Gets the input control for the chip label.
@@ -43,11 +39,6 @@ namespace KleeneStar.Core.WebFragment.Quickfilter
         /// <summary>
         /// Gets the input control for the filter expression.
         /// </summary>
-        /// <remarks>
-        /// The expression is the same WQL the view's advanced query accepts, so it can be tried out
-        /// in the search bar before it is stored here. The framework passes it through untouched —
-        /// what a filter selects is left to the application.
-        /// </remarks>
         public ControlFormItemInputText Criteria { get; } = new()
         {
             Name = _ => "criteria",
@@ -60,10 +51,6 @@ namespace KleeneStar.Core.WebFragment.Quickfilter
         /// <summary>
         /// Gets the toggle that offers the filter to everyone rather than to its owner alone.
         /// </summary>
-        /// <remarks>
-        /// The framework's filter payload has no field for this, so it rides along in the same body
-        /// and is read from there; see <see cref="CustomQuickfilterSupport.Create"/>.
-        /// </remarks>
         public ControlFormItemInputCheck Shared { get; } = new()
         {
             Name = _ => "shared",
@@ -76,7 +63,7 @@ namespace KleeneStar.Core.WebFragment.Quickfilter
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public QuickfilterAddFormFragment(IFragmentContext fragmentContext)
+        public QuickfilterEditFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Add(QuickfilterName);
@@ -84,6 +71,9 @@ namespace KleeneStar.Core.WebFragment.Quickfilter
             Add(Shared);
 
             ServiceFactory = renderContext => DataServiceDescriptor.FormData(QuickfilterService.Resolve(renderContext));
+
+            // the bar appends the filter it stands for to the address it was authored with
+            ItemId = renderContext => renderContext?.Request?.GetParameter("id")?.Value;
         }
 
         /// <summary>

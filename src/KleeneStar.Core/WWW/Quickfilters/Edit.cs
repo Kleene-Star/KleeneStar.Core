@@ -8,28 +8,22 @@ using WebExpress.WebUI.WebIcon;
 namespace KleeneStar.Core.WWW.Quickfilters
 {
     /// <summary>
-    /// Represents the dialog in which a user defines a new quickfilter for the bar it was opened
-    /// from.
+    /// Represents the dialog in which a quickfilter the user defined is changed.
     /// </summary>
     /// <remarks>
-    /// The framework raises an edit-filter event and leaves the editor to the application, because
-    /// what a filter selects is the application's business. This is that editor. It is opened by
-    /// the add chip's action rather than by a listener on the event, because a listener would have
-    /// to be shipped as a script of this plugin and such a script cannot currently be addressed
-    /// (see the include path defect noted with the maintenance work).
-    ///
-    /// Which bar the filter is destined for travels in the <c>view</c> and <c>context</c> query
-    /// parameters the chip puts on this address.
+    /// The bar offers this from the chip's own menu and appends the filter's id to the address, so
+    /// the dialog knows which filter it edits. The editor behind it is the application's, because
+    /// what a filter selects is the application's business.
     /// </remarks>
     [WebIcon<IconFilter>]
-    [Title("kleenestar.core:quickfilter.add.title")]
+    [Title("kleenestar.core:quickfilter.edit.title")]
     [Scope<IScopeGeneral>]
-    public sealed class Add : IPage<VisualTreeWebApp>, IScope
+    public sealed class Edit : IPage<VisualTreeWebApp>, IScope
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Add()
+        public Edit()
         {
         }
 

@@ -389,6 +389,12 @@ object.export.title=Export Object
 object.export.label=Export
 object.permission.title=Object Permissions
 object.permission.label=Permissions
+class.permission.title=Class Permissions
+class.permission.label=Permissions
+dashboard.permission.title=Dashboard Permissions
+dashboard.permission.label=Permissions
+calendar.permission.title=Calendar Permissions
+calendar.permission.label=Permissions
 object.favorite.add.label=Add star
 object.favorite.remove.label=Remove star
 
@@ -1023,6 +1029,7 @@ notification.quickfilter.created=The quick filter has been created successfully.
 notification.quickfilter.updated=The quick filter has been updated successfully.
 
 quickfilter.add.title=Create quick filter
+quickfilter.edit.title=Edit quick filter
 quickfilter.add.label=Create your own quick filter
 quickfilter.name.label=Label
 quickfilter.name.placeholder=Enter the label of the filter.

@@ -11,6 +11,7 @@ using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebIcon;
 
 namespace KleeneStar.Core.WWW.Api._1_.Dashboards
 {
@@ -25,6 +26,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
         private readonly IUri _deleteFormUri;
+        private readonly IUri _permissionFormUri;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -34,6 +36,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
             _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboard._dashboardid_.Edit>();
             _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboard._dashboardid_.Clone>();
             _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboard._dashboardid_.Delete>();
+            _permissionFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboard._dashboardid_.Permission>();
         }
 
         /// <summary>
@@ -214,6 +217,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
                 .BindParameters(new DashboardIdParameter(row.Id));
             var deleteUri = _deleteFormUri?
                 .BindParameters(new DashboardIdParameter(row.Id));
+            var permissionUri = _permissionFormUri?
+                .BindParameters(new DashboardIdParameter(row.Id));
 
             yield return new RestApiOptionHeader(request)
             {
@@ -228,6 +233,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
             yield return new RestApiOptionClone(request)
             {
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
+            };
+
+            yield return new RestApiOptionCustom(request)
+            {
+                Text = "kleenestar.core:dashboard.permission.label",
+                Icon = new IconUserShield(),
+                PrimaryAction = new ActionModal("modal-form", permissionUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionSeparator(request);

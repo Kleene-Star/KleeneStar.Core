@@ -28,6 +28,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Calendars._classid_
         private readonly IUri _editFormUri;
         private readonly IUri _cloneFormUri;
         private readonly IUri _deleteFormUri;
+        private readonly IUri _permissionFormUri;
 
         /// <summary>
         /// Initializes a new instance of the class.
@@ -37,6 +38,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Calendars._classid_
             _editFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Calendar._calendarid_.Edit>();
             _cloneFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Calendar._calendarid_.Clone>();
             _deleteFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Calendar._calendarid_.Delete>();
+            _permissionFormUri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Calendar._calendarid_.Permission>();
         }
 
         /// <summary>
@@ -210,6 +212,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Calendars._classid_
             var deleteUri = _deleteFormUri?
                 .BindParameters(request)
                 .BindParameters(new CalendarIdParameter(row.Id));
+            var permissionUri = _permissionFormUri?
+                .BindParameters(request)
+                .BindParameters(new CalendarIdParameter(row.Id));
 
             var iconTheme = request?.ApplicationContext?.DefaultTheme?.IconTheme ?? TypeIconTheme.Light;
 
@@ -228,6 +233,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Calendars._classid_
             {
                 Icon = new IconClone(iconTheme),
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
+            };
+
+            yield return new RestApiOptionCustom(request)
+            {
+                Text = "kleenestar.core:calendar.permission.label",
+                Icon = new IconUserShield(iconTheme),
+                PrimaryAction = new ActionModal("modal-form", permissionUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionSeparator(request);

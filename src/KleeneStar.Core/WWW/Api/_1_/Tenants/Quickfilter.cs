@@ -57,5 +57,57 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
                 yield return item;
             }
         }
+
+        /// <summary>
+        /// Returns the record the edit dialog of a filter loads.
+        /// </summary>
+        /// <remarks>
+        /// Overridden so the record also carries whether the filter is shared, which the
+        /// framework's own record has no field for.
+        /// </remarks>
+        /// <param name="context">The context in which the query is executed.</param>
+        /// <param name="request">The request that provides the operational context.</param>
+        /// <param name="id">The id of the filter.</param>
+        /// <returns>The record, or null when the filter is not one of this view's.</returns>
+        protected override object RetrieveItem(IQueryContext context, IRequest request, string id)
+        {
+            return CustomQuickfilterSupport.Read(id, ViewKey);
+        }
+
+        /// <summary>
+        /// Stores a filter the user defined in the bar's editor.
+        /// </summary>
+        /// <param name="context">The context in which the query is executed.</param>
+        /// <param name="request">The request that provides the operational context.</param>
+        /// <param name="payload">The values the client supplied.</param>
+        /// <returns>The stored filter, or null when it carries no name or expression.</returns>
+        protected override RestApiQuickfilterItem CreateItem(IQueryContext context, IRequest request, RestApiQuickfilterPayload payload)
+        {
+            return CustomQuickfilterSupport.Create(payload, ViewKey, null, request);
+        }
+
+        /// <summary>
+        /// Changes a filter the user defined.
+        /// </summary>
+        /// <param name="context">The context in which the query is executed.</param>
+        /// <param name="request">The request that provides the operational context.</param>
+        /// <param name="payload">The values the client supplied.</param>
+        /// <returns>The changed filter, or null when the id denotes none of this view's.</returns>
+        protected override RestApiQuickfilterItem UpdateItem(IQueryContext context, IRequest request, RestApiQuickfilterPayload payload)
+        {
+            return CustomQuickfilterSupport.Update(payload, ViewKey, request);
+        }
+
+        /// <summary>
+        /// Removes a filter the user defined.
+        /// </summary>
+        /// <param name="context">The context in which the query is executed.</param>
+        /// <param name="request">The request that provides the operational context.</param>
+        /// <param name="id">The id of the filter to remove.</param>
+        /// <returns>True when the filter was removed.</returns>
+        protected override bool DeleteItem(IQueryContext context, IRequest request, string id)
+        {
+            return CustomQuickfilterSupport.Delete(id, ViewKey);
+        }
     }
 }
