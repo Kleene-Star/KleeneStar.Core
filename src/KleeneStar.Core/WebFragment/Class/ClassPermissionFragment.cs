@@ -1,5 +1,4 @@
 using WebExpress.WebApp.WebControl;
-using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -12,7 +11,7 @@ namespace KleeneStar.Core.WebFragment.Class
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Class._classid_.Permission>]
     [Cache]
-    public sealed class ClassPermissionFragment : FragmentControlDataPermission
+    public sealed class ClassPermissionFragment : PermissionFragment
     {
         /// <summary>
         /// Initializes a new instance of the class.

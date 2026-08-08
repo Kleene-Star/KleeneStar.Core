@@ -1,6 +1,5 @@
 using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebControl;
-using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -8,8 +7,8 @@ using WebExpress.WebCore.WebFragment;
 namespace KleeneStar.Core.WebFragment.Workspace
 {
     /// <summary>
-    /// The permission dialog of a workspace: the assignment list with its search and pager, and the
-    /// row that grants a group a policy.
+    /// The permission dialog of a workspace: the group rows with the policies each group holds, and
+    /// the row that adds a further group.
     /// </summary>
     /// <remarks>
     /// The surface is the framework's permission control rather than a pair of selects on a form.
@@ -22,7 +21,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
     [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Permissions>]
     [Policy<WorkspaceAdminPolicy>]
     [Cache]
-    public sealed class WorkspacePermissionFragment : FragmentControlDataPermission
+    public sealed class WorkspacePermissionFragment : PermissionFragment
     {
         /// <summary>
         /// Initializes a new instance of the class.

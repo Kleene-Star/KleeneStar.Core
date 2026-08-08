@@ -15,6 +15,10 @@ namespace KleeneStar.Core.WebRestApi
     /// Every resource administers the same thing — which group holds which policy on it — so the
     /// work is done once here and a resource contributes only its scope and how its id is read
     /// from the route.
+    ///
+    /// The store stays pair-based: a single grant is added and withdrawn here, while the dialog
+    /// edits a group's whole policy set at once. Turning that set into the pairs to add and the
+    /// pairs to withdraw is the base endpoint's job, so nothing of it appears in this class.
     /// </remarks>
     public abstract class RestApiPermissionScoped : RestApiPermission
     {
@@ -61,9 +65,9 @@ namespace KleeneStar.Core.WebRestApi
         /// <param name="policyId">The registered name of the policy.</param>
         /// <param name="request">The request that provides the operational context.</param>
         /// <returns>
-        /// The grant, or null when the resource, the group or the policy is not known — the base
-        /// endpoint answers that as a bad request rather than storing a grant that cannot take
-        /// effect.
+        /// The grant, or null when the resource, the group or the policy is not known — rather than
+        /// storing a grant that cannot take effect. A row whose every policy is refused this way
+        /// and that holds nothing already is reported as not found by the base endpoint.
         /// </returns>
         protected override RestApiPermissionItem AddAssignment(string groupId, string policyId, IRequest request)
         {
@@ -106,27 +110,30 @@ namespace KleeneStar.Core.WebRestApi
         }
 
         /// <summary>
-        /// Narrows the listed grants by the dialog's search term.
+        /// Narrows the listed rows by the dialog's search term.
         /// </summary>
         /// <remarks>
-        /// The term is matched against what the dialog shows — the group and the policy as
-        /// labelled — so searching for what is on screen finds it.
+        /// A row is a group with every policy it holds, so the term is matched against what that
+        /// row shows — the group and the chips as labelled — and searching for what is on screen
+        /// finds it. The registered policy name is matched as well, because it is what the grant is
+        /// stored under and what an administrator is likely to have at hand.
         /// </remarks>
         /// <param name="search">The search term.</param>
-        /// <param name="assignments">The grants to narrow.</param>
+        /// <param name="entries">The rows to narrow.</param>
         /// <param name="request">The request that provides the operational context.</param>
-        /// <returns>The matching grants.</returns>
-        protected override IEnumerable<RestApiPermissionItem> Filter(string search, IEnumerable<RestApiPermissionItem> assignments, IRequest request)
+        /// <returns>The matching rows.</returns>
+        protected override IEnumerable<RestApiPermissionEntry> Filter(string search, IEnumerable<RestApiPermissionEntry> entries, IRequest request)
         {
             if (string.IsNullOrWhiteSpace(search) || search == "null")
             {
-                return assignments;
+                return entries;
             }
 
-            return assignments.Where(x =>
+            return entries.Where(x =>
                 (x.GroupName ?? string.Empty).Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                (x.PolicyName ?? string.Empty).Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                (x.PolicyId ?? string.Empty).Contains(search, StringComparison.OrdinalIgnoreCase));
+                (x.PolicyIds ?? []).Any(policy =>
+                    (policy ?? string.Empty).Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    (PolicyCatalog.GetLabel(policy, Scope) ?? string.Empty).Contains(search, StringComparison.OrdinalIgnoreCase)));
         }
     }
 }

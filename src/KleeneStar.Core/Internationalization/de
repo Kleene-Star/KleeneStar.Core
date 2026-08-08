@@ -395,6 +395,7 @@ dashboard.permission.title=Dashboardberechtigungen
 dashboard.permission.label=Berechtigungen
 calendar.permission.title=Kalenderberechtigungen
 calendar.permission.label=Berechtigungen
+permission.search.placeholder=Gruppe oder Berechtigung suchen…
 object.favorite.add.label=Stern hinzufügen
 object.favorite.remove.label=Stern entfernen
 

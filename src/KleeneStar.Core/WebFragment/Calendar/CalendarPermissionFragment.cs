@@ -1,5 +1,4 @@
 using WebExpress.WebApp.WebControl;
-using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -12,7 +11,7 @@ namespace KleeneStar.Core.WebFragment.Calendar
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Calendar._calendarid_.Permission>]
     [Cache]
-    public sealed class CalendarPermissionFragment : FragmentControlDataPermission
+    public sealed class CalendarPermissionFragment : PermissionFragment
     {
         /// <summary>
         /// Initializes a new instance of the class.

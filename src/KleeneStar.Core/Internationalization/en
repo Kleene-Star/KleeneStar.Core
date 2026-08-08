@@ -395,6 +395,7 @@ dashboard.permission.title=Dashboard Permissions
 dashboard.permission.label=Permissions
 calendar.permission.title=Calendar Permissions
 calendar.permission.label=Permissions
+permission.search.placeholder=Search group or permission…
 object.favorite.add.label=Add star
 object.favorite.remove.label=Remove star
 

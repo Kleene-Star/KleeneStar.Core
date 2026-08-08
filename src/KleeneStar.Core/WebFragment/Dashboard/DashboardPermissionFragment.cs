@@ -1,5 +1,4 @@
 using WebExpress.WebApp.WebControl;
-using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -12,7 +11,7 @@ namespace KleeneStar.Core.WebFragment.Dashboard
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Dashboard._dashboardid_.Permission>]
     [Cache]
-    public sealed class DashboardPermissionFragment : FragmentControlDataPermission
+    public sealed class DashboardPermissionFragment : PermissionFragment
     {
         /// <summary>
         /// Initializes a new instance of the class.
