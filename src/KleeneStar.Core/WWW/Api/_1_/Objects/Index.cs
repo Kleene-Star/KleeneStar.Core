@@ -336,6 +336,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         {
             var res = base.Update(existingItem, payload, request);
 
+            BindSystemProperties(existingItem, payload);
+
             // stamp the identity that performed this update (best-effort; keep the prior
             // updater when the request is unauthenticated so the FK never points at an
             // empty identity).
@@ -350,6 +352,44 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             UpsertFieldValues(existingItem, payload);
 
             return res;
+        }
+
+        /// <summary>
+        /// Applies the payload entries that name a system property whose type the base
+        /// binder cannot convert a string into.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="RestApiCrudFormDataExtensions.BindTo"/> ends in
+        /// <c>Convert.ChangeType</c>, which has no conversion from a string to a
+        /// <see cref="Guid"/>, to a nullable value type or to an enum; those entries throw
+        /// inside the binder and are swallowed, so the property keeps its old value and
+        /// the caller is told the update succeeded. The inline cell editors of the object
+        /// overview table send exactly such payloads — an assignee is an identity id, a
+        /// story point count a nullable int — so the conversions the binder is missing are
+        /// done here.
+        /// </remarks>
+        /// <param name="object">The object being updated.</param>
+        /// <param name="payload">The incoming payload; keys arrive lower-cased.</param>
+        private static void BindSystemProperties(Model.Entities.Object @object, RestApiCrudFormData payload)
+        {
+            if (@object is null || payload is null)
+            {
+                return;
+            }
+
+            if (payload.TryGetValue(nameof(Model.Entities.Object.AssigneeId).ToLowerInvariant(), out var assignee))
+            {
+                var raw = assignee?.ToString();
+
+                @object.AssigneeId = Guid.TryParse(raw, out var assigneeId) ? assigneeId : null;
+            }
+
+            if (payload.TryGetValue(nameof(Model.Entities.Object.StoryPoints).ToLowerInvariant(), out var storyPoints))
+            {
+                var raw = storyPoints?.ToString();
+
+                @object.StoryPoints = int.TryParse(raw, out var points) ? points : null;
+            }
         }
 
         /// <summary>
@@ -406,7 +446,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
                     continue;
                 }
 
-                var raw = SerializePayloadValue(kv.Value);
+                var raw = Normalize(SerializePayloadValue(kv.Value), field.FieldType);
                 existingByField.TryGetValue(field.Id, out var existing);
 
                 if (existing is null)
@@ -432,6 +472,29 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
                     CoreHub.ValueManager.Update(existing);
                 }
             }
+        }
+
+        /// <summary>
+        /// Brings a serialized payload into the canonical storage form of its field type.
+        /// </summary>
+        /// <remarks>
+        /// Only tags need it. A tag list is stored comma-separated, which is what the
+        /// object detail page writes and reads, but the tag input control of the table
+        /// cells submits its tags semicolon-separated. Rewriting the separator here keeps
+        /// one shape in the value row no matter which surface wrote it.
+        /// </remarks>
+        /// <param name="raw">The serialized payload.</param>
+        /// <param name="fieldType">The type of the field being written.</param>
+        /// <returns>The payload in storage form.</returns>
+        private static string Normalize(string raw, FieldType fieldType)
+        {
+            if (fieldType != FieldType.Tag || string.IsNullOrEmpty(raw))
+            {
+                return raw;
+            }
+
+            return string.Join(",", raw
+                .Split([',', ';'], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
         }
 
         /// <summary>

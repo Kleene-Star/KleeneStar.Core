@@ -15,14 +15,30 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
 {
     /// <summary>
     /// Table of the issue overview: a REST-backed table showing the workspace's issues,
-    /// most recently updated first, bound to the search, quickfilter, and pagination
-    /// controls of the view.
+    /// bound to the search, quickfilter, and pagination controls of the view.
     /// </summary>
+    /// <remarks>
+    /// Which columns the table shows is the choice of the user looking at it, made in the
+    /// column manager behind the ≡ button of the header row and stored per identity and
+    /// per view by the endpoint. The endpoint tells the views apart by a <c>v</c>
+    /// parameter in its address, which the tab control writes into the data service of
+    /// this table when it instantiates the template for a view (see the
+    /// <see cref="BindTemplate"/> below and <c>Objects/${workspacekey}/Tab</c>): the
+    /// template is rendered once on the server and cloned into a pane per view, so the
+    /// address cannot carry the view already at render time.
+    /// </remarks>
     [Section<SectionViewItemPrimary>]
     [Scope<IssueTabViewFragment>]
     [Cache]
     public sealed class IssueTabViewTableFragment : FragmentControlViewItem
     {
+        /// <summary>
+        /// The selector the view-scoped endpoint address is written to: the data service
+        /// island of this table. A pane hosts the service islands of its list, tile and
+        /// pagination controls as well, so the selector names the table's own.
+        /// </summary>
+        private const string ServiceIslandSelector = ".wx-webapp-table > wx-service";
+
         /// <summary>
         /// Gets the rest table that displays the issue rows.
         /// </summary>
@@ -47,13 +63,22 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
             Table.Bind = _ => new Binding()
                 .Add(new BindSearch() { Source = IssueTabViewSearchFragment.ContentId })
                 .Add(new BindFilter())
-                .Add(new BindPaging() { Source = IssueTabViewPaginationFragment.ContentId });
+                .Add(new BindPaging() { Source = IssueTabViewPaginationFragment.ContentId })
+                .Add(new BindTemplate().Add
+                (
+                    "issuetable",
+                    TypeBindMode.Attr,
+                    target: ServiceIslandSelector,
+                    name: "base-uri"
+                ));
 
             Add(Table);
         }
 
         /// <summary>
-        /// Renders the control as an HTML node.
+        /// Renders the control as an HTML node, first injecting the cell renderer the
+        /// columns are drawn and edited with into the page head (see
+        /// <see cref="IssueTableInlineEditScript"/>).
         /// </summary>
         /// <param name="renderContext">
         /// The context in which the control is rendered.
@@ -66,6 +91,13 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
+            var script = IssueTableInlineEditScript.Value;
+
+            if (!string.IsNullOrEmpty(script))
+            {
+                visualTree.AddHeaderScript(script);
+            }
+
             return base.Render(renderContext, visualTree);
         }
     }

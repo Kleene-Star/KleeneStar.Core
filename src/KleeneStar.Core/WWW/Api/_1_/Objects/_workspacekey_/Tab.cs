@@ -71,9 +71,38 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
                     Title = view.Name,
                     Icon = (view.ViewType.Icon() as WebExpress.WebUI.WebIcon.Icon)?.Class,
                     TemplateId = ObjectViewTemplate.ResolveTemplateId(view.ViewType, Model.Entities.ObjectKind.Issue),
-                    Uri = ResolveContentUri(view.ViewType, request)?.ToString()
+                    Uri = ResolveContentUri(view.ViewType, request)?.ToString(),
+                    Binding = BuildBinding(view.Id, request)
                 };
             }
+        }
+
+        /// <summary>
+        /// Builds the binding payload of a tab: the values the tab template writes into
+        /// its content controls when the client instantiates it for this view.
+        /// </summary>
+        /// <remarks>
+        /// A tab template renders once on the server and is cloned into a pane per view,
+        /// so a control inside it cannot know at render time which view it ends up
+        /// serving. The issue table needs to know, because the column layout it shows is
+        /// stored per view; it therefore declares a template binding for
+        /// <c>issuetable</c> (see <c>IssueTabViewTableFragment</c>) that writes the value
+        /// below onto the base address of its data service, and every view's table talks
+        /// to its own address from then on.
+        /// </remarks>
+        /// <param name="viewId">The view the tab shows.</param>
+        /// <param name="request">The request, used to bind the route parameters.</param>
+        /// <returns>The binding payload.</returns>
+        private static IDictionary<string, object> BuildBinding(Guid viewId, IRequest request)
+        {
+            var uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Table>()?
+                .Add(new UriQuery("v", viewId.ToString()))
+                .BindParameters(request);
+
+            return new Dictionary<string, object>
+            {
+                ["issuetable"] = uri?.ToString()
+            };
         }
 
         /// <summary>
@@ -117,7 +146,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
                 Title = view.Name,
                 Icon = (viewType.Icon() as WebExpress.WebUI.WebIcon.Icon)?.Class,
                 TemplateId = ObjectViewTemplate.ResolveTemplateId(viewType, Model.Entities.ObjectKind.Issue),
-                Uri = ResolveContentUri(viewType, request)?.ToString()
+                Uri = ResolveContentUri(viewType, request)?.ToString(),
+                Binding = BuildBinding(view.Id, request)
             };
         }
 
