@@ -1,5 +1,5 @@
-using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebQuickfilter;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebData;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -41,21 +41,16 @@ namespace KleeneStar.Core.WebFragment.Quickfilter
         };
 
         /// <summary>
-        /// Gets the input control for the filter expression.
+        /// Gets the editor for the filter expression: the same WQL prompt the view's
+        /// advanced search offers, with its highlighting, its completion of attribute and
+        /// value names, and its syntax check against the entity the bar filters.
         /// </summary>
         /// <remarks>
         /// The expression is the same WQL the view's advanced query accepts, so it can be tried out
         /// in the search bar before it is stored here. The framework passes it through untouched —
         /// what a filter selects is left to the application.
         /// </remarks>
-        public ControlFormItemInputText Criteria { get; } = new()
-        {
-            Name = _ => "criteria",
-            Label = _ => "kleenestar.core:quickfilter.query.label",
-            Placeholder = _ => "kleenestar.core:quickfilter.query.placeholder",
-            Help = _ => "kleenestar.core:quickfilter.query.help",
-            Required = _ => true
-        };
+        public ControlDataWqlPrompt Criteria { get; } = QuickfilterCriteria.BuildPrompt();
 
         /// <summary>
         /// Gets the toggle that offers the filter to everyone rather than to its owner alone.
@@ -80,7 +75,7 @@ namespace KleeneStar.Core.WebFragment.Quickfilter
             : base(fragmentContext)
         {
             Add(QuickfilterName);
-            Add(Criteria);
+            Add(QuickfilterCriteria.BuildPanel(Criteria));
             Add(Shared);
 
             ServiceFactory = renderContext => DataServiceDescriptor.FormData(QuickfilterService.Resolve(renderContext));

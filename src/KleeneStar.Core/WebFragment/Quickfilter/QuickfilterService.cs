@@ -53,5 +53,49 @@ namespace KleeneStar.Core.WebFragment.Quickfilter
                     return null;
             }
         }
+
+        /// <summary>
+        /// Returns the address of the WQL prompt endpoint of the named bar, which is what
+        /// the filter expression editor of the dialog draws its suggestions, its syntax
+        /// check and its history from.
+        /// </summary>
+        /// <remarks>
+        /// A filter expression is written against the entity the bar filters, so the
+        /// prompt has to ask the endpoint of that entity: offering the attributes of an
+        /// issue while a tenant filter is being written would suggest names that never
+        /// match. The bar is named the same way as in <see cref="Resolve"/>, and a bar
+        /// that exists once per workspace needs that workspace bound into the address for
+        /// the same reason.
+        /// </remarks>
+        /// <param name="renderContext">The context the dialog is rendered in.</param>
+        /// <returns>
+        /// The address, or null when the view is not one that has a bar with user-defined
+        /// filters, or when a per-workspace bar was named without its workspace. A prompt
+        /// without an address stays a syntax-highlighting editor without suggestions.
+        /// </returns>
+        public static string ResolveWql(IRenderControlContext renderContext)
+        {
+            var view = renderContext?.Request?.GetParameter("view")?.Value;
+            var context = renderContext?.Request?.GetParameter("context")?.Value;
+
+            switch (view)
+            {
+                case global::KleeneStar.Core.WWW.Api._1_.Tenants.Quickfilter.ViewKey:
+                    return CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Tenants.Wql>()?.ToString();
+
+                case global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Quickfilter.ViewKey:
+                    if (string.IsNullOrWhiteSpace(context))
+                    {
+                        return null;
+                    }
+
+                    return CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Wql>()?
+                        .BindParameters(new WorkspaceKeyParameter(context))?
+                        .ToString();
+
+                default:
+                    return null;
+            }
+        }
     }
 }
