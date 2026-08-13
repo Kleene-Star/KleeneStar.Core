@@ -1,5 +1,6 @@
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebData;
+using WebExpress.WebApp.WebMessageQueue;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -36,10 +37,15 @@ namespace KleeneStar.Core.WebFragment.Template
             Icon = _ => new IconTable(TypeIconTheme.Light);
             Title = _ => "kleenestar.core:view.table.title";
 
-            // declares the endpoint and, derived from its generic argument, the domain the
-            // table serves, so the client subscribes to the change notification the CRUD
-            // endpoint emits and the table refreshes after a create, update or delete.
-            Table.DataService<global::KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Table>();
+            // declares the endpoint the table loads from. The domain it serves cannot be derived
+            // from that endpoint — it composes the table rather than deriving from it, so it
+            // carries no item type as a generic argument — and is therefore named here, so the
+            // client still subscribes to the change notification the CRUD endpoint emits and the
+            // table refreshes after a create, update or delete.
+            Table.DataService<global::KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Table>
+            (
+                descriptor => descriptor.WithDomain(DataChangedNotifier.DomainName(typeof(Model.Entities.Template)))
+            );
             Table.Bind = _ => new Binding()
                 .Add(new BindSearch() { Source = TemplateViewSearchFragment.ContentId })
                 .Add(new BindFilter())

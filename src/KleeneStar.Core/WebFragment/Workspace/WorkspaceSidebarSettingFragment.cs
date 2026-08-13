@@ -21,6 +21,8 @@ namespace KleeneStar.Core.WebFragment.Workspace
     [Scope<global::KleeneStar.Core.WWW.Blogs._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Assets._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Templates._workspacekey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Asset._objectkey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Document._objectkey_.Index>]

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Text.Json;
 using WebExpress.WebCore;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebIndex.Queries;
@@ -99,6 +100,120 @@ namespace KleeneStar.Core.WebManager
             }
 
             return [];
+        }
+
+        /// <summary>
+        /// Returns the child templates of a template, in their defined order.
+        /// </summary>
+        /// <param name="templateId">The id of the parent template.</param>
+        /// <returns>The active child templates. The collection may be empty.</returns>
+        public IEnumerable<Template> GetChildTemplates(Guid templateId)
+        {
+            if (templateId == Guid.Empty)
+            {
+                return [];
+            }
+
+            var query = new Query<Template>()
+                .Where(x => x.ParentId == templateId && x.State == TemplateState.Active)
+                .OrderByAsc(x => x.Order);
+
+            return ModelHub.GetTemplates(query);
+        }
+
+        /// <summary>
+        /// Returns the field presets a template applies.
+        /// </summary>
+        /// <param name="templateId">The id of the template whose presets are read.</param>
+        /// <returns>The presets, keyed by field name. The map may be empty.</returns>
+        public IReadOnlyDictionary<string, string> GetPresets(Guid templateId)
+        {
+            return ParsePresets(GetTemplate(templateId)?.Presets);
+        }
+
+        /// <summary>
+        /// Determines whether pointing a template's parent reference at a candidate would close a
+        /// cycle.
+        /// </summary>
+        /// <param name="templateId">The template that would carry the reference.</param>
+        /// <param name="candidateId">The template it would point at.</param>
+        /// <returns>True when the reference would be circular; otherwise false.</returns>
+        public bool WouldFormCycle(Guid templateId, Guid candidateId)
+        {
+            if (templateId == Guid.Empty || candidateId == Guid.Empty)
+            {
+                return false;
+            }
+
+            // pointing at itself is the shortest cycle there is
+            if (templateId == candidateId)
+            {
+                return true;
+            }
+
+            var visited = new HashSet<Guid> { candidateId };
+            var cursor = GetTemplate(candidateId);
+
+            // walking up from the candidate must not arrive back at the template
+            while (cursor is not null)
+            {
+                var next = cursor.ParentId;
+
+                if (!next.HasValue)
+                {
+                    return false;
+                }
+
+                if (next.Value == templateId)
+                {
+                    return true;
+                }
+
+                if (!visited.Add(next.Value))
+                {
+                    // the candidate already sits in a cycle of its own; it cannot be reached
+                    // from the template, so the new reference does not add one
+                    return false;
+                }
+
+                cursor = GetTemplate(next.Value);
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Reads a template's serialized presets into a field-name to value map. A payload that is
+        /// absent or not a JSON object yields an empty map, so malformed data disables the presets
+        /// of that template instead of failing object creation.
+        /// </summary>
+        /// <param name="presets">The serialized presets.</param>
+        /// <returns>The parsed presets. The map may be empty.</returns>
+        private static IReadOnlyDictionary<string, string> ParsePresets(string presets)
+        {
+            if (string.IsNullOrWhiteSpace(presets))
+            {
+                return new Dictionary<string, string>();
+            }
+
+            try
+            {
+                var parsed = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(presets);
+                var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (var entry in parsed ?? [])
+                {
+                    result[entry.Key] = entry.Value.ValueKind == JsonValueKind.String
+                        ? entry.Value.GetString()
+                        : entry.Value.ToString();
+                }
+
+                return result;
+            }
+            catch (JsonException)
+            {
+                return new Dictionary<string, string>();
+            }
         }
 
         /// <summary>

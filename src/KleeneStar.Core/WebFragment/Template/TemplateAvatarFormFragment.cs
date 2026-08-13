@@ -11,20 +11,36 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Template
 {
     /// <summary>
-    /// Represents a delete form fragment for a template.
+    /// Represents an avatar form fragment for a template, through which its icon is chosen.
     /// </summary>
+    /// <remarks>
+    /// The icon is edited on its own rather than as a field of the edit form, the way a workspace
+    /// and a class handle theirs: picking a picture is a different interaction from filling in a
+    /// form, and the overview shows the icon on the row it belongs to.
+    /// </remarks>
+    [Title("kleenestar.core:template.icon.title")]
     [Section<SectionContentPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Template._templateid_.Delete>]
+    [Scope<global::KleeneStar.Core.WWW.Template._templateid_.Avatar>]
     [Cache]
-    public sealed class TemplateDeleteFormFragment : FragmentControlDataFormDelete
+    public sealed class TemplateAvatarFormFragment : FragmentControlDataFormEdit
     {
+        /// <summary>
+        /// Gets the input control for choosing the icon of the template.
+        /// </summary>
+        public ControlFormItemInputAvatar Avatar { get; } = new()
+        {
+            Name = _ => nameof(Model.Entities.Template.Icon),
+        };
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public TemplateDeleteFormFragment(IFragmentContext fragmentContext)
+        public TemplateAvatarFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            Add(Avatar);
+
             this.DataService<global::KleeneStar.Core.WWW.Api._1_.Templates.Index>();
             ItemId = renderContext =>
             {
@@ -51,4 +67,3 @@ namespace KleeneStar.Core.WebFragment.Template
         }
     }
 }
-

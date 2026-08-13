@@ -1,36 +1,34 @@
-﻿using KleeneStar.Core.WebParameter;
-using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
-namespace KleeneStar.Core.WebFragment.Workspace
+namespace KleeneStar.Core.WebFragment.Template
 {
     /// <summary>
-    /// Represents a sidebar header fragment that displays workspace-related information within 
-    /// the user interface sidebar.
+    /// Represents a fragment control that displays the template description using Markdown
+    /// formatting within the template management interface.
     /// </summary>
-    [Section<SectionSidebarPreferences>]
-    [Scope<global::KleeneStar.Core.WWW.Workspaces._workspacekey_.Index>]
-    [Scope<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>]
+    [Section<SectionContentPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Templates._workspacekey_.Index>]
-    [Policy<WorkspaceViewPolicy>]
     [Cache]
-    public sealed class WorkspaceSidebarHeaderFragment : FragmentControlSidebarItemHeader
+    public sealed class TemplateDescriptionFragment : FragmentControlText
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">
-        /// The context associated with the fragment, providing necessary data and services for its operation. 
+        /// The context associated with the fragment, providing necessary data and services for its operation.
         /// Cannot be null.
         /// </param>
-        public WorkspaceSidebarHeaderFragment(IFragmentContext fragmentContext)
+        public TemplateDescriptionFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            Text = _ => "kleenestar.core:template.manage.description";
+            Format = _ => TypeFormatText.Markdown;
         }
 
         /// <summary>
@@ -47,10 +45,12 @@ namespace KleeneStar.Core.WebFragment.Workspace
         /// </returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
-            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(keyParameter?.Value);
+            if (!FragmentContext.Conditions.Check(renderContext?.Request))
+            {
+                return null;
+            }
 
-            return base.Render(renderContext, visualTree, workspace?.Name);
+            return base.Render(renderContext, visualTree);
         }
     }
 }

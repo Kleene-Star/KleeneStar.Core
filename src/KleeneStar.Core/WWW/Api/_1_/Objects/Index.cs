@@ -1,8 +1,11 @@
-﻿using KleeneStar.Model;
+﻿using KleeneStar.Core.WebRestApi;
+using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
@@ -270,15 +273,22 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
 
             fieldMap.BindTo(newItem);
 
+            // BindTo drops guid-typed properties, so the references an object cannot exist
+            // without are bound explicitly
+            BindReferences(fieldMap, newItem);
+            EnsureKey(newItem);
+
             CoreHub.ObjectManager.Add(newItem);
 
             UpsertFieldValues(newItem, fieldMap);
+
+            ApplyTemplate(newItem, fieldMap, request);
 
             return new RestApiCrudResultCreate();
         }
 
         /// <summary>
-        /// Creates a new instance by cloning data from the specified form fields and 
+        /// Creates a new instance by cloning data from the specified form fields and
         /// adds it to the class manager.
         /// </summary>
         /// <param name="existingItem">
@@ -312,6 +322,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             };
 
             fieldMap.BindTo(newItem);
+
+            newItem.ClassId = existingItem?.ClassId ?? newItem.ClassId;
+            newItem.WorkspaceId = existingItem?.WorkspaceId ?? newItem.WorkspaceId;
+            BindReferences(fieldMap, newItem);
+            EnsureKey(newItem);
 
             CoreHub.ObjectManager.Add(newItem);
 
@@ -393,6 +408,193 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         }
 
         /// <summary>
+        /// Binds the guid references of an object from the payload.
+        /// </summary>
+        /// <remarks>
+        /// <c>BindTo</c> converts through <c>Convert.ChangeType</c>, which cannot produce a guid,
+        /// so the class and workspace an object cannot exist without would silently stay empty and
+        /// the insert would fail on the foreign key. They are therefore bound here, together with
+        /// the optional parent reference.
+        /// </remarks>
+        /// <param name="fieldMap">The payload carrying the references.</param>
+        /// <param name="object">The object to bind them to.</param>
+        private static void BindReferences(RestApiCrudFormData fieldMap, Model.Entities.Object @object)
+        {
+            if (fieldMap.TryGetGuid(nameof(Model.Entities.Object.ClassId), out var classId))
+            {
+                @object.ClassId = classId;
+            }
+
+            if (fieldMap.TryGetGuid(nameof(Model.Entities.Object.WorkspaceId), out var workspaceId))
+            {
+                @object.WorkspaceId = workspaceId;
+            }
+
+            // an object created from a workspace overview inherits the workspace of its class when
+            // the payload names only the class
+            if (@object.WorkspaceId == Guid.Empty)
+            {
+                @object.WorkspaceId = CoreHub.ClassManager.GetClass(@object.ClassId)?.WorkspaceId ?? Guid.Empty;
+            }
+
+            if (fieldMap.TryGetGuidReference(nameof(Model.Entities.Object.ParentId), out var parentId))
+            {
+                @object.ParentId = parentId;
+            }
+        }
+
+        /// <summary>
+        /// Assigns the object a key when the payload carries none.
+        /// </summary>
+        /// <remarks>
+        /// The key is the human-readable handle an object is addressed by (<c>SD-17</c>), so it
+        /// has to exist before the record is written, and the create form does not ask for one.
+        /// The next free number is derived from the keys already issued in the workspace. Two
+        /// creates racing each other could derive the same number; the surrounding code is
+        /// likewise single-writer, so the sequence is not guarded any further here.
+        /// </remarks>
+        /// <param name="object">The object to assign a key to.</param>
+        private static void EnsureKey(Model.Entities.Object @object)
+        {
+            if (!string.IsNullOrWhiteSpace(@object.Key))
+            {
+                return;
+            }
+
+            var workspace = CoreHub.WorkspaceManager.GetWorkspace(@object.WorkspaceId);
+            var prefix = workspace?.Key;
+
+            if (string.IsNullOrWhiteSpace(prefix))
+            {
+                return;
+            }
+
+            var query = new Query<Model.Entities.Object>()
+                .WhereEquals(x => x.WorkspaceId, @object.WorkspaceId);
+            var pattern = new Regex($"^{Regex.Escape(prefix)}-(\\d+)$", RegexOptions.IgnoreCase);
+
+            var next = CoreHub.ObjectManager.GetObjects(query)
+                .Select(x => pattern.Match(x.Key ?? string.Empty))
+                .Where(m => m.Success)
+                .Select(m => int.TryParse(m.Groups[1].Value, out var number) ? number : 0)
+                .DefaultIfEmpty(0)
+                .Max() + 1;
+
+            @object.Key = $"{prefix}-{next.ToString(CultureInfo.InvariantCulture)}";
+        }
+
+        /// <summary>
+        /// Applies the template the payload names to a freshly created object: its presets become
+        /// field values, and each of its child templates becomes an object below the created one.
+        /// </summary>
+        /// <remarks>
+        /// A value the caller submitted wins over the preset that would otherwise fill the same
+        /// field — a template pre-fills a form, it does not overrule what the user typed into it.
+        /// </remarks>
+        /// <param name="object">The object that was created.</param>
+        /// <param name="fieldMap">The payload, which may name a template.</param>
+        /// <param name="request">The request, for resolving the acting identity.</param>
+        private static void ApplyTemplate(Model.Entities.Object @object, RestApiCrudFormData fieldMap, IRequest request)
+        {
+            if (!fieldMap.TryGetGuid("TemplateId", out var templateId))
+            {
+                return;
+            }
+
+            var template = CoreHub.TemplateManager.GetTemplate(templateId);
+
+            if (template is null || template.State != TemplateState.Active)
+            {
+                return;
+            }
+
+            ApplyPresets(@object, templateId, fieldMap);
+            CreateChildren(@object, templateId, request, new HashSet<Guid> { templateId });
+        }
+
+        /// <summary>
+        /// Writes the presets of a template as field values of an object, skipping the fields the
+        /// payload already set.
+        /// </summary>
+        /// <param name="object">The object to write the values to.</param>
+        /// <param name="templateId">The template whose presets are applied.</param>
+        /// <param name="payload">The payload whose own values take precedence, or null.</param>
+        private static void ApplyPresets(Model.Entities.Object @object, Guid templateId, RestApiCrudFormData payload)
+        {
+            var presets = new RestApiCrudFormData();
+
+            foreach (var preset in CoreHub.TemplateManager.GetPresets(templateId))
+            {
+                var key = preset.Key.ToLowerInvariant();
+
+                if (payload?.ContainsKey(key) == true)
+                {
+                    continue;
+                }
+
+                presets[key] = preset.Value;
+            }
+
+            UpsertFieldValues(@object, presets);
+        }
+
+        /// <summary>
+        /// Creates one object per active child template below the supplied object, depth first and
+        /// in the order the child templates define.
+        /// </summary>
+        /// <remarks>
+        /// A child whose class the parent's class does not allow is skipped rather than created,
+        /// so a composite template cannot build a hierarchy the object model would reject. The
+        /// visited set carries the templates already instantiated along this branch, which keeps a
+        /// cycle in the template hierarchy from creating objects without end.
+        /// </remarks>
+        /// <param name="parent">The object the created objects are placed below.</param>
+        /// <param name="templateId">The template whose children are instantiated.</param>
+        /// <param name="request">The request, for resolving the acting identity.</param>
+        /// <param name="visited">The templates already instantiated along this branch.</param>
+        private static void CreateChildren(Model.Entities.Object parent, Guid templateId, IRequest request, ISet<Guid> visited)
+        {
+            var parentClass = CoreHub.ClassManager.GetClass(parent.ClassId);
+            var currentUser = CoreHub.SessionManager.GetCurrentIdentityId(request);
+
+            foreach (var childTemplate in CoreHub.TemplateManager.GetChildTemplates(templateId))
+            {
+                if (!visited.Add(childTemplate.Id))
+                {
+                    continue;
+                }
+
+                if (parentClass?.AllowedChildren is { Count: > 0 }
+                    && parentClass.AllowedChildren.All(c => c.Id != childTemplate.ClassId))
+                {
+                    continue;
+                }
+
+                var id = Guid.NewGuid();
+                var child = new Model.Entities.Object(id)
+                {
+                    Summary = childTemplate.Name,
+                    Description = childTemplate.Description,
+                    Icon = childTemplate.Icon ?? CoreHub.GenerateIcon(id),
+                    State = WorkspaceState.Active,
+                    ClassId = childTemplate.ClassId,
+                    WorkspaceId = parent.WorkspaceId,
+                    ParentId = parent.Id,
+                    CreatorId = currentUser,
+                    UpdaterId = currentUser
+                };
+
+                EnsureKey(child);
+
+                CoreHub.ObjectManager.Add(child);
+
+                ApplyPresets(child, childTemplate.Id, null);
+
+                CreateChildren(child, childTemplate.Id, request, visited);
+            }
+        }
+
+        /// <summary>
         /// Persists every payload entry that maps to a configured <see cref="Field"/> of
         /// the object's class as a <see cref="Model.Entities.Value"/> row.
         /// </summary>
@@ -408,6 +610,8 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         /// <c>JsonExtensionsFieldMap.ToFieldMap</c>); the lookup honours that by
         /// lowering the field names before comparison.
         /// </remarks>
+        /// <param name="object">The object whose field values are written.</param>
+        /// <param name="payload">The payload carrying the values.</param>
         private static void UpsertFieldValues(Model.Entities.Object @object, RestApiCrudFormData payload)
         {
             if (@object is null || payload is null || payload.Count == 0)

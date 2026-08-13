@@ -1,59 +1,52 @@
-﻿using KleeneStar.Core.WebAttribute;
-using KleeneStar.Core.WebManager;
+using KleeneStar.Core.WebAttribute;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebUri;
 using WebExpress.WebApp.WebPage;
 using WebExpress.WebApp.WebScope;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebPage;
-using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Templates._workspacekey_
+namespace KleeneStar.Core.WWW.Template._templateid_
 {
     /// <summary>
-    /// Provides the template overview for a workspace.
+    /// Represents the main page for a template. Declaring the template-id segment here is what
+    /// turns the folder into a route variable, so the sibling pages (edit, clone, delete) are
+    /// addressable per template instead of behind a literal path segment.
     /// </summary>
     [WebIcon<IconTemplate>]
-    [Title("kleenestar.core:template.manage.title")]
-    [Description("kleenestar.core:template.manage.description")]
-    [WorkspaceKeySegment]
+    [Title("kleenestar.core:template.manage.label")]
+    [TemplateIdSegment]
     [Scope<IScopeGeneral>]
     [Domain<Model.Entities.Template>]
     [Cache]
     public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
-        private readonly IWorkspaceManager _workspaceManager;
-
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        /// <param name="workspaceManager">
-        /// The workspace manager used to resolve the route's workspace key.
-        /// </param>
-        public Index(IWorkspaceManager workspaceManager)
+        public Index()
         {
-            _workspaceManager = workspaceManager;
         }
 
         /// <summary>
-        /// Processes the workspace-scoped template overview.
+        /// Processing of the resource.
         /// </summary>
         /// <param name="renderContext">The context for rendering the page.</param>
         /// <param name="visualTree">The visual tree of the web application.</param>
         public void Process(IRenderContext renderContext, VisualTreeWebApp visualTree)
         {
             var keyParameter = renderContext.Request.GetParameter<WorkspaceKeyParameter>();
-            var workspace = _workspaceManager.GetWorkspaceByKey(keyParameter?.Value);
+            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(keyParameter?.Value);
 
             var uri = renderContext.PageContext.ApplicationContext.Route
                 .Concat(new WorkspaceKeyUriPathSegmentVariable<WorkspaceKeyParameter>()
                 {
                     Value = workspace?.Key,
                     Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Issues._workspacekey_.Index>()
-                        .BindParameters(renderContext.Request)
+                    .BindParameters(renderContext.Request)
                 })
-                .Concat(new UriPathSegmentConstant("templates")
+                .Concat(new TemplateIdUriPathSegmentVariable<TemplateIdParameter>()
                 {
                     Uri = renderContext.Request.Uri
                 })

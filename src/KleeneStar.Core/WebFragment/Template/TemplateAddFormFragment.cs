@@ -1,4 +1,4 @@
-using WebExpress.WebApp.WebApiControl;
+﻿using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
@@ -79,6 +79,20 @@ namespace KleeneStar.Core.WebFragment.Template
             StickySelection = _ => true,
             ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates.State>().ToString())};
 
+
+        /// <summary>
+        /// Gets the input selection configuration for the parent template.
+        /// </summary>
+        public ControlDataFormItemInputSelection ParentSelection { get; } = new()
+        {
+            Name = _ => nameof(Model.Entities.Template.ParentId),
+            Label = _ => "kleenestar.core:template.parent.label",
+            Placeholder = _ => "kleenestar.core:template.parent.placeholder",
+            Help = _ => "kleenestar.core:template.parent.help",
+            StickySelection = _ => true,
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Selection>().ToString())};
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -90,9 +104,10 @@ namespace KleeneStar.Core.WebFragment.Template
             Add(Description);
             Add(Category);
             Add(ClassSelection);
+            Add(ParentSelection);
             Add(TemplateState);
 
-            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Index>();
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Templates.Index>();
         }
 
         /// <summary>

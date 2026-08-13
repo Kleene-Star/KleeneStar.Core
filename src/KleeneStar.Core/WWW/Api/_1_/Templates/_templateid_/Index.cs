@@ -2,14 +2,14 @@ using KleeneStar.Core.WebAttribute;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebRestApi;
 
-namespace KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_
+namespace KleeneStar.Core.WWW.Api._1_.Templates._templateid_
 {
     /// <summary>
-    /// Provides a index for template items. Declaring the workspace-key segment here is what
-    /// turns the folder into a route variable, so the sibling endpoints (table, quickfilter)
-    /// receive the addressed workspace instead of a literal path segment.
+    /// Provides a index for a single template. Declaring the template-id segment here is what
+    /// turns the folder into a route variable, so the sibling endpoints receive the addressed
+    /// template instead of a literal path segment.
     /// </summary>
-    [WorkspaceKeySegment]
+    [TemplateIdSegment]
     [Cache]
     public sealed class Index : IRestApi
     {

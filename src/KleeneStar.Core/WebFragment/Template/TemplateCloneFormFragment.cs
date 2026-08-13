@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using WebExpress.WebApp.WebApiControl;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
@@ -56,18 +56,6 @@ namespace KleeneStar.Core.WebFragment.Template
         };
 
         /// <summary>
-        /// Gets the configuration for the class selection input used in the form.
-        /// </summary>
-        public ControlDataFormItemInputSelection ClassSelection { get; } = new()
-        {
-            Name = _ => nameof(Model.Entities.Template.ClassId),
-            Label = _ => "kleenestar.core:template.class.label",
-            Placeholder = _ => "kleenestar.core:template.class.placeholder",
-            Help = _ => "kleenestar.core:template.class.help",
-            StickySelection = _ => true,
-            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_.Index>().ToString())};
-
-        /// <summary>
         /// Gets the input selection configuration for the template state field.
         /// </summary>
         public ControlDataFormItemInputSelection TemplateState { get; } = new()
@@ -79,6 +67,20 @@ namespace KleeneStar.Core.WebFragment.Template
             StickySelection = _ => true,
             ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates.State>().ToString())};
 
+
+        /// <summary>
+        /// Gets the input selection configuration for the parent template of the copy.
+        /// </summary>
+        public ControlDataFormItemInputSelection ParentSelection { get; } = new()
+        {
+            Name = _ => nameof(Model.Entities.Template.ParentId),
+            Label = _ => "kleenestar.core:template.parent.label",
+            Placeholder = _ => "kleenestar.core:template.parent.placeholder",
+            Help = _ => "kleenestar.core:template.parent.help",
+            StickySelection = _ => true,
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Templates._templateid_.Candidates>().ToString())};
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -89,10 +91,12 @@ namespace KleeneStar.Core.WebFragment.Template
             Add(TemplateName);
             Add(Description);
             Add(Category);
-            Add(ClassSelection);
+            Add(ParentSelection);
             Add(TemplateState);
 
-            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Index>();
+            // a copy stays bound to the class of its source, which the create endpoint carries
+            // over, so the class is not offered here either
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Templates.Index>();
             ItemId = renderContext =>
             {
                 var templateId = renderContext.Request.GetParameter<TemplateIdParameter>();

@@ -285,13 +285,13 @@ namespace KleeneStar.Core.Test.WebFragment
 
         /// <summary>
         /// Verifies that <see cref="TemplateEditFormFragment"/> registers the
-        /// five template-edit controls and binds the workspace-scoped
-        /// <c>…/Api/_1_/Templates/_workspacekey_/Index</c> endpoint. The
-        /// workspace-scoped route means the rendered <c>base-uri</c> carries
-        /// a <c>${workspacekey}</c> placeholder until the request binding
-        /// pass substitutes it; the framework wiring test below catches the
-        /// case where the endpoint type was accidentally swapped for the
-        /// non-scoped variant.
+        /// four template-edit controls and binds the non-scoped
+        /// <c>…/Api/_1_/Templates/Index</c> endpoint. The edit page is
+        /// addressed by template id alone, so a workspace-scoped endpoint
+        /// would leave a <c>${workspacekey}</c> placeholder in the rendered
+        /// <c>base-uri</c> that the request binding pass cannot substitute —
+        /// which is why the CRUD endpoint sits at the collection root, as it
+        /// does for every other managed concept.
         /// </summary>
         [Fact]
         public void Template_Fragment_HasExpectedShape()
@@ -302,8 +302,8 @@ namespace KleeneStar.Core.Test.WebFragment
 
             AssertEditFragmentShape(
                 frag,
-                expectedControls: 5,
-                expectedDataServiceEndpoint: typeof(KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Index));
+                expectedControls: 4,
+                expectedDataServiceEndpoint: typeof(KleeneStar.Core.WWW.Api._1_.Templates.Index));
         }
 
         /// <summary>
