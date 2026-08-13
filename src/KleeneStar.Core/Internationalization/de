@@ -234,6 +234,7 @@ field.delete.title=Feld löschen
 
 form.manage.title=Formulare
 form.manage.label=Formular
+form.notfound.title=Formular nicht gefunden
 form.manage.description=Diese Ansicht dient als zentrale Verwaltungsstelle für alle im System definierten Formulare. Sie bietet einen umfassenden Überblick über die verfügbaren Formulartypen und stellt Funktionen für deren Erstellung, Bearbeitung und Organisation bereit.
 form.link.label=Formulare
 form.add.title=Formular hinzufügen
@@ -281,6 +282,7 @@ priority.delete.title=Priorität löschen
 
 workflow.manage.title=Workflows
 workflow.manage.label=Workflow
+workflow.notfound.title=Workflow nicht gefunden
 workflow.manage.description=Diese Ansicht dient als zentrale Verwaltungsstelle für alle im System definierten Workflows. Sie bietet einen umfassenden Überblick über die verfügbaren Workflowtypen und stellt Funktionen für deren Erstellung, Bearbeitung und Organisation bereit.
 workflow.link.label=Workflows
 workflow.add.title=Workflow hinzufügen
@@ -865,6 +867,12 @@ accessmodifier.protected.label=Geschützt
 accessmodifier.private.label=Privat
 accessmodifier.internal.label=Intern
 
+# validation of references a record cannot be stored without
+validation.class.missing=Es wurde keine Klasse angegeben. Der Eintrag kann ohne Klasse nicht gespeichert werden.
+validation.class.unknown=Die angegebene Klasse existiert nicht.
+validation.statuscategory.missing=Es wurde keine Statuskategorie angegeben.
+validation.statuscategory.unknown=Die angegebene Statuskategorie existiert nicht.
+
 fieldtype.text.label=Text
 fieldtype.number.label=Zahl
 fieldtype.date.label=Datum
@@ -876,6 +884,25 @@ fieldtype.attachment.label=Anhang
 fieldtype.user.label=Benutzer
 fieldtype.tag.label=Schlagwort
 fieldtype.priority.label=Priorität
+fieldtype.multiline.label=Mehrzeiliger Text
+fieldtype.richtext.label=Formatierter Text
+fieldtype.password.label=Passwort
+fieldtype.color.label=Farbe
+fieldtype.rating.label=Bewertung
+fieldtype.slider.label=Schieberegler
+fieldtype.range.label=Zahlenbereich
+fieldtype.estimate.label=Schätzung
+fieldtype.trafficlight.label=Ampel
+fieldtype.daterange.label=Zeitraum
+fieldtype.calendar.label=Kalender
+fieldtype.calendarrange.label=Kalenderzeitraum
+fieldtype.avatar.label=Avatar
+fieldtype.choice.label=Segmentierte Auswahl
+fieldtype.tile.label=Kachelauswahl
+fieldtype.move.label=Verschiebeliste
+fieldtype.cascading.label=Abhängige Auswahl
+fieldtype.radio.label=Optionsfelder
+fieldtype.multiselection.label=Mehrfachauswahl
 
 fieldcardinality.single.label=Einfach
 fieldcardinality.multiple.label=Mehrfach

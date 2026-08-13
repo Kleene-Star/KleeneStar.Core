@@ -1,4 +1,5 @@
-﻿using KleeneStar.Model;
+﻿using KleeneStar.Core.WebRestApi;
+using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
@@ -180,7 +181,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
         /// </returns>
         protected override IRestApiValidationResult Validate(Model.Entities.Field existingItem, RestApiCrudFormData payload, IRequest request)
         {
-            return base.Validate(existingItem, payload, request);
+            // the class is a reference the record cannot be stored without. Left to the
+            // database it surfaces as a foreign key violation the caller cannot act on, so
+            // it is named here instead.
+            return base.Validate(existingItem, payload, request)
+                .ValidateClass(payload, request, existingItem?.ClassId);
         }
 
         /// <summary>
@@ -250,6 +255,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Fields
             };
 
             fieldMap.BindTo(newItem);
+
+            // a clone stays in the class of its original when the payload names none
+            newItem.ClassId = newItem.ClassId == Guid.Empty
+                ? existingItem?.ClassId ?? Guid.Empty
+                : newItem.ClassId;
 
             CoreHub.FieldManager.Add(newItem);
 

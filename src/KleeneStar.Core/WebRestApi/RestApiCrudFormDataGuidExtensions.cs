@@ -7,13 +7,10 @@ namespace KleeneStar.Core.WebRestApi
     /// Reads guid-valued fields out of a CRUD payload.
     /// </summary>
     /// <remarks>
-    /// <see cref="RestApiCrudFormDataExtensions.BindTo"/> converts a payload value to the target
-    /// property type through <c>Convert.ChangeType</c>, which cannot produce a <see cref="Guid"/>
-    /// because <see cref="Guid"/> does not implement <c>IConvertible</c>; the resulting cast
-    /// exception is swallowed, so a guid property — typically a foreign key such as a class or
-    /// workspace reference — silently keeps its default value and the insert then fails on the
-    /// foreign-key constraint. Until the framework converts guids itself, an endpoint binds such
-    /// a property explicitly through this helper after calling <c>BindTo</c>.
+    /// <see cref="RestApiCrudFormDataExtensions.BindTo"/> binds guid properties itself, so this
+    /// helper is not needed to fill an entity. It is needed wherever a payload has to be read
+    /// without one: to validate a reference before the record is written, to resolve a value the
+    /// payload carries under a name no property has, and to derive one reference from another.
     /// </remarks>
     public static class RestApiCrudFormDataGuidExtensions
     {

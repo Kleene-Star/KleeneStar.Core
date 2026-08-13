@@ -80,7 +80,11 @@ namespace KleeneStar.Core.WebFragment.Workflow
             var workflowId = Guid.TryParse(workflowIdParameter?.Value, out var result) ? result : Guid.Empty;
             var workflow = CoreHub.WorkflowManager.GetWorkflow(workflowId);
 
-            return _uri.BindParameters(new ClassIdParameter(workflow.ClassId));
+            // the id comes from the url and may address a workflow that no longer exists;
+            // the link then points at the unbound target rather than aborting the render
+            return workflow is null
+                ? _uri
+                : _uri.BindParameters(new ClassIdParameter(workflow.ClassId));
         }
     }
 }

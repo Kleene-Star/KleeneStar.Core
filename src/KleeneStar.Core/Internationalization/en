@@ -234,6 +234,7 @@ field.delete.title=Delete Field
 
 form.manage.title=Forms
 form.manage.label=Form
+form.notfound.title=Form not found
 form.manage.description=This view serves as the central management hub for all forms defined in the system. It provides a comprehensive overview of the available forms and offers functions for creation, editing, and organization.
 form.link.label=Forms
 form.add.title=Add Form
@@ -281,6 +282,7 @@ priority.delete.title=Delete Priority
 
 workflow.manage.title=Workflows
 workflow.manage.label=Workflow
+workflow.notfound.title=Workflow not found
 workflow.manage.description=This view serves as the central management hub for all workflows defined in the system. It provides a comprehensive overview of the available workflows and offers functions for creation, editing, and organization.
 workflow.link.label=Workflows
 workflow.add.title=Add Workflow
@@ -865,6 +867,12 @@ accessmodifier.protected.label=Protected
 accessmodifier.private.label=Private
 accessmodifier.internal.label=Internal
 
+# validation of references a record cannot be stored without
+validation.class.missing=No class was supplied. The entry cannot be stored without one.
+validation.class.unknown=The supplied class does not exist.
+validation.statuscategory.missing=No status category was supplied.
+validation.statuscategory.unknown=The supplied status category does not exist.
+
 fieldtype.text.label=Text
 fieldtype.number.label=Number
 fieldtype.date.label=Date
@@ -876,6 +884,25 @@ fieldtype.attachment.label=Attachment
 fieldtype.user.label=User
 fieldtype.tag.label=Tag
 fieldtype.priority.label=Priority
+fieldtype.multiline.label=Multiline text
+fieldtype.richtext.label=Rich text
+fieldtype.password.label=Password
+fieldtype.color.label=Color
+fieldtype.rating.label=Rating
+fieldtype.slider.label=Slider
+fieldtype.range.label=Number range
+fieldtype.estimate.label=Estimate
+fieldtype.trafficlight.label=Traffic light
+fieldtype.daterange.label=Date range
+fieldtype.calendar.label=Calendar
+fieldtype.calendarrange.label=Calendar range
+fieldtype.avatar.label=Avatar
+fieldtype.choice.label=Segmented choice
+fieldtype.tile.label=Tile picker
+fieldtype.move.label=Transfer list
+fieldtype.cascading.label=Cascading selection
+fieldtype.radio.label=Radio buttons
+fieldtype.multiselection.label=Multiple selection
 
 fieldcardinality.single.label=Single
 fieldcardinality.multiple.label=Multiple

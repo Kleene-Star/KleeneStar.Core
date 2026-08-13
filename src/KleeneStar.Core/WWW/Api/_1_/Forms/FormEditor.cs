@@ -216,20 +216,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Forms
         /// <returns>The editor field-type discriminator.</returns>
         private static string MapFieldType(FieldType? type)
         {
-            return type switch
-            {
-                FieldType.Text => "string",
-                FieldType.Number => "number",
-                FieldType.Date => "timestamp",
-                FieldType.Boolean => "enum",
-                FieldType.Selection => "enum",
-                FieldType.Reference => "ref",
-                FieldType.Workflow => "enum",
-                FieldType.Attachment => "file",
-                FieldType.User => "ref",
-                FieldType.Tag => "tags",
-                _ => "string"
-            };
+            return type?.Editor() ?? "string";
         }
     }
 }

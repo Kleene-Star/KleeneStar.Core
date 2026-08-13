@@ -80,7 +80,11 @@ namespace KleeneStar.Core.WebFragment.Form
             var formId = Guid.TryParse(formIdParameter?.Value, out var result) ? result : Guid.Empty;
             var form = CoreHub.FormManager.GetForm(formId);
 
-            return _uri.BindParameters(new ClassIdParameter(form.ClassId));
+            // the id comes from the url and may address a form that no longer exists; the
+            // link then points at the unbound target rather than aborting the render
+            return form is null
+                ? _uri
+                : _uri.BindParameters(new ClassIdParameter(form.ClassId));
         }
     }
 }

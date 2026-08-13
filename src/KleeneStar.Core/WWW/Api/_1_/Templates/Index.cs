@@ -220,11 +220,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Templates
 
             fieldMap.BindTo(newItem);
 
-            // BindTo drops guid-typed properties, so the class reference is bound explicitly
+            // the class is taken from the payload only when it names one that exists, so an
+            // unknown id becomes an empty reference the validation reports rather than a
+            // dangling one the insert fails on
             TryResolveClass(fieldMap, out var classId);
             newItem.ClassId = classId;
-
-            BindHierarchy(fieldMap, newItem);
 
             CoreHub.TemplateManager.AddTemplate(newItem);
 
@@ -271,8 +271,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Templates
             newItem.ClassId = existingItem?.ClassId
                 ?? (TryResolveClass(fieldMap, out var classId) ? classId : Guid.Empty);
 
-            BindHierarchy(fieldMap, newItem);
-
             CoreHub.TemplateManager.AddTemplate(newItem);
 
             return new RestApiCrudResultCreate();
@@ -293,8 +291,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Templates
         protected override IRestApiCrudResultUpdate Update(Model.Entities.Template existingItem, RestApiCrudFormData payload, IRequest request)
         {
             var res = base.Update(existingItem, payload, request);
-
-            BindHierarchy(payload, existingItem);
 
             CoreHub.TemplateManager.UpdateTemplate(existingItem);
 
@@ -318,24 +314,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Templates
             CoreHub.TemplateManager.RemoveTemplate(existingItem);
 
             return base.Delete(existingItem, request);
-        }
-
-        /// <summary>
-        /// Applies the parent reference of a payload to a template.
-        /// </summary>
-        /// <remarks>
-        /// The reference is a guid, which <c>BindTo</c> drops, so it is bound here; a payload that
-        /// does not carry it leaves the template's reference untouched, which is what keeps a form
-        /// without the field from detaching a template from its hierarchy.
-        /// </remarks>
-        /// <param name="fieldMap">The payload carrying the reference.</param>
-        /// <param name="template">The template to apply it to.</param>
-        private static void BindHierarchy(RestApiCrudFormData fieldMap, Model.Entities.Template template)
-        {
-            if (fieldMap.TryGetGuidReference(nameof(Model.Entities.Template.ParentId), out var parent))
-            {
-                template.ParentId = parent;
-            }
         }
 
         /// <summary>

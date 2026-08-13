@@ -106,10 +106,9 @@ namespace KleeneStar.Core.WebFragment.Class
                     ? parsedForm
                     : Guid.Empty;
 
-                var form = CoreHub.FormManager.GetForm(formId)
-                    ?? throw new InvalidOperationException($"Form with ID '{formId}' not found.");
-
-                return form.ClassId;
+                // an id from the url may address a form that no longer exists; the class
+                // is then simply unresolved rather than the render being aborted
+                return CoreHub.FormManager.GetForm(formId)?.ClassId ?? Guid.Empty;
             }
             else if (workflowParameter != null)
             {
@@ -117,10 +116,7 @@ namespace KleeneStar.Core.WebFragment.Class
                     ? formGuid
                     : Guid.Empty;
 
-                var workflow = CoreHub.WorkflowManager.GetWorkflow(workflowId)
-                    ?? throw new InvalidOperationException($"Workflow with ID '{workflowId}' not found.");
-
-                return workflow.ClassId;
+                return CoreHub.WorkflowManager.GetWorkflow(workflowId)?.ClassId ?? Guid.Empty;
             }
 
             throw new InvalidOperationException("One of the parameters 'class','form' or 'workflow' must be set.");

@@ -3,6 +3,7 @@ using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebApp.WebData;
+using KleeneStar.Core.WebParameter;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
@@ -20,6 +21,19 @@ namespace KleeneStar.Core.WebFragment.Workflow
     [Cache]
     public sealed class WorkflowAddFormFragment : FragmentControlDataFormAdd
     {
+        /// <summary>
+        /// Gets the hidden input carrying the class the workflow is created in.
+        /// </summary>
+        /// <remarks>
+        /// The form posts to the collection endpoint, whose route names no class, so the
+        /// class of the page the form was opened from has to travel in the payload — a
+        /// workflow cannot be inserted without it.
+        /// </remarks>
+        public ControlFormItemInputHidden ClassId { get; } = new()
+        {
+            Name = _ => nameof(Model.Entities.Workflow.ClassId)
+        };
+
         /// <summary>
         /// Gets the input text control for specifying the name of the form.
         /// </summary>
@@ -63,6 +77,7 @@ namespace KleeneStar.Core.WebFragment.Workflow
         public WorkflowAddFormFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            Add(ClassId);
             Add(WorkflowName);
             Add(Description);
 
@@ -83,6 +98,15 @@ namespace KleeneStar.Core.WebFragment.Workflow
         /// </returns>
         public override IHtmlNode Render(IRenderControlFormContext renderContext, IVisualTreeControl visualTree)
         {
+            // the page the form is shown on is class scoped, so the class it creates the
+            // item in is taken from the request and carried in the hidden input
+            var classId = renderContext?.Request?.GetParameter<ClassIdParameter>()?.Value;
+
+            if (!string.IsNullOrWhiteSpace(classId))
+            {
+                renderContext.SetValue(ClassId, new ControlFormInputValueString(classId));
+            }
+
             return base.Render(renderContext, visualTree);
         }
     }

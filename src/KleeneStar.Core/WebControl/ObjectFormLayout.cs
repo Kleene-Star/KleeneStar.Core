@@ -328,6 +328,196 @@ namespace KleeneStar.Core.WebControl
                         Required = _ => field.Required
                     };
 
+                case FieldType.Multiline:
+                    return new ControlFormItemInputText()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Placeholder = _ => field.Placeholder,
+                        Help = _ => field.HelpText,
+                        Format = _ => TypeEditTextFormat.Multiline,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.RichText:
+                    return new ControlFormItemInputText()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Placeholder = _ => field.Placeholder,
+                        Help = _ => field.HelpText,
+                        Format = _ => TypeEditTextFormat.Wysiwyg,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.Password:
+                    return new ControlFormItemInputPassword()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Placeholder = _ => field.Placeholder,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.Color:
+                    return new ControlFormItemInputColor()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.Rating:
+                    return new ControlFormItemInputRating()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.Slider:
+                    return new ControlFormItemInputSlider()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.Range:
+                    return new ControlFormItemInputRange()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.Estimate:
+                    return new ControlFormItemInputEstimate()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.TrafficLight:
+                    return new ControlFormItemInputTrafficLight()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.DateRange:
+                    return new ControlFormItemInputDateRange()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Placeholder = _ => field.Placeholder,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.Calendar:
+                    return new ControlFormItemInputCalendar()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.CalendarRange:
+                    return new ControlFormItemInputCalendarRange()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.Avatar:
+                    return new ControlFormItemInputAvatar()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+
+                case FieldType.Choice:
+                case FieldType.Radio:
+                    // both offer one of a few options; the radio keeps the classic control,
+                    // the choice puts them side by side as a segmented row
+                    return CreateOptionInput(field, field.FieldType == FieldType.Radio);
+
+                case FieldType.Tile:
+                    var tile = new ControlFormItemInputTile()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Columns = _ => 2,
+                        Required = _ => field.Required
+                    };
+                    foreach (var option in field.Options ?? [])
+                    {
+                        var card = new ControlTileCard(option) { Header = _ => option };
+                        tile.Add(card);
+                    }
+                    return tile;
+
+                case FieldType.Move:
+                    var move = new ControlFormItemInputMove()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+                    foreach (var option in field.Options ?? [])
+                    {
+                        move.Add(new ControlFormItemInputMoveItem(option) { Text = _ => option });
+                    }
+                    return move;
+
+                case FieldType.Cascading:
+                    var cascading = new ControlFormItemInputCascading()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Placeholder = _ => field.Placeholder,
+                        Help = _ => field.HelpText,
+                        Required = _ => field.Required
+                    };
+                    foreach (var option in field.Options ?? [])
+                    {
+                        cascading.Add(new ControlFormItemInputCascadingItem(option) { Text = _ => option });
+                    }
+                    return cascading;
+
+                case FieldType.MultiSelection:
+                    var selection = new ControlFormItemInputSelection()
+                    {
+                        Name = _ => field.Name,
+                        Label = _ => field.Name,
+                        Placeholder = _ => field.Placeholder,
+                        Help = _ => field.HelpText,
+                        MultiSelect = _ => true,
+                        Required = _ => field.Required
+                    };
+                    foreach (var option in field.Options ?? [])
+                    {
+                        selection.Add(new ControlFormItemInputSelectionItem(option) { Text = _ => option });
+                    }
+                    return selection;
+
                 case FieldType.Number:
                 case FieldType.Reference:
                 case FieldType.Workflow:
@@ -342,6 +532,57 @@ namespace KleeneStar.Core.WebControl
                         Required = _ => field.Required
                     };
             }
+        }
+
+        /// <summary>
+        /// Creates the input of a field whose options are configured on the field itself,
+        /// offered either as radio buttons or as a segmented choice.
+        /// </summary>
+        /// <param name="field">The field.</param>
+        /// <param name="radio">Whether the options are offered as radio buttons.</param>
+        /// <returns>The input control.</returns>
+        private static IControlFormItem CreateOptionInput(FieldEntity field, bool radio)
+        {
+            var options = field.Options ?? [];
+
+            if (!radio)
+            {
+                var choice = new ControlFormItemInputChoice()
+                {
+                    Name = _ => field.Name,
+                    Label = _ => field.Name,
+                    Help = _ => field.HelpText,
+                    Required = _ => field.Required
+                };
+
+                foreach (var option in options)
+                {
+                    choice.Add(new ControlFormItemInputChoiceItem()
+                    {
+                        Text = _ => option,
+                        Value = _ => option
+                    });
+                }
+
+                return choice;
+            }
+
+            // a radio group is one control per option, so the options share a name and are
+            // wrapped in a group that carries the label of the field
+            var group = new ControlFormItemGroupVertical();
+
+            foreach (var option in options)
+            {
+                group.Add(new ControlFormItemInputRadio()
+                {
+                    Name = _ => field.Name,
+                    Option = _ => option,
+                    Description = _ => option,
+                    Inline = _ => true
+                });
+            }
+
+            return group;
         }
 
         /// <summary>

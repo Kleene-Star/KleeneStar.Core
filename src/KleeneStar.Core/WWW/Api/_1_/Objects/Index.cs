@@ -273,10 +273,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
 
             fieldMap.BindTo(newItem);
 
-            // BindTo drops guid-typed properties, so the references an object cannot exist
-            // without are bound explicitly
-            BindReferences(fieldMap, newItem);
-            BindSystemProperties(newItem, fieldMap);
+            DeriveReferences(fieldMap, newItem);
             EnsureKey(newItem);
 
             CoreHub.ObjectManager.Add(newItem);
@@ -326,7 +323,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
 
             newItem.ClassId = existingItem?.ClassId ?? newItem.ClassId;
             newItem.WorkspaceId = existingItem?.WorkspaceId ?? newItem.WorkspaceId;
-            BindReferences(fieldMap, newItem);
+            DeriveReferences(fieldMap, newItem);
             EnsureKey(newItem);
 
             CoreHub.ObjectManager.Add(newItem);
@@ -352,8 +349,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         {
             var res = base.Update(existingItem, payload, request);
 
-            BindSystemProperties(existingItem, payload);
-
             // stamp the identity that performed this update (best-effort; keep the prior
             // updater when the request is unauthenticated so the FK never points at an
             // empty identity).
@@ -371,66 +366,19 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         }
 
         /// <summary>
-        /// Applies the payload entries that name a system property whose type the base
-        /// binder cannot convert a string into.
+        /// Completes the references an object cannot be stored without from what the payload
+        /// does name.
         /// </summary>
         /// <remarks>
-        /// <see cref="RestApiCrudFormDataExtensions.BindTo"/> ends in
-        /// <c>Convert.ChangeType</c>, which has no conversion from a string to a
-        /// <see cref="Guid"/>, to a nullable value type or to an enum; those entries throw
-        /// inside the binder and are swallowed, so the property keeps its old value and
-        /// the caller is told the update succeeded. The inline cell editors of the object
-        /// overview table send exactly such payloads — an assignee is an identity id, a
-        /// story point count a nullable int — so the conversions the binder is missing are
-        /// done here.
-        /// </remarks>
-        /// <param name="object">The object being updated.</param>
-        /// <param name="payload">The incoming payload; keys arrive lower-cased.</param>
-        private static void BindSystemProperties(Model.Entities.Object @object, RestApiCrudFormData payload)
-        {
-            if (@object is null || payload is null)
-            {
-                return;
-            }
-
-            if (payload.TryGetValue(nameof(Model.Entities.Object.AssigneeId).ToLowerInvariant(), out var assignee))
-            {
-                var raw = assignee?.ToString();
-
-                @object.AssigneeId = Guid.TryParse(raw, out var assigneeId) ? assigneeId : null;
-            }
-
-            if (payload.TryGetValue(nameof(Model.Entities.Object.StoryPoints).ToLowerInvariant(), out var storyPoints))
-            {
-                var raw = storyPoints?.ToString();
-
-                @object.StoryPoints = int.TryParse(raw, out var points) ? points : null;
-            }
-        }
-
-        /// <summary>
-        /// Binds the guid references of an object from the payload.
-        /// </summary>
-        /// <remarks>
-        /// <c>BindTo</c> converts through <c>Convert.ChangeType</c>, which cannot produce a guid,
-        /// so the class and workspace an object cannot exist without would silently stay empty and
-        /// the insert would fail on the foreign key. They are therefore bound here, together with
-        /// the optional parent reference.
+        /// The references themselves are bound by <c>BindTo</c>. What it cannot do is derive
+        /// the ones the create form leaves out because they follow from another: a create
+        /// started from a template names only the template, one started from a workspace
+        /// overview only the class.
         /// </remarks>
         /// <param name="fieldMap">The payload carrying the references.</param>
-        /// <param name="object">The object to bind them to.</param>
-        private static void BindReferences(RestApiCrudFormData fieldMap, Model.Entities.Object @object)
+        /// <param name="object">The object to complete.</param>
+        private static void DeriveReferences(RestApiCrudFormData fieldMap, Model.Entities.Object @object)
         {
-            if (fieldMap.TryGetGuid(nameof(Model.Entities.Object.ClassId), out var classId))
-            {
-                @object.ClassId = classId;
-            }
-
-            if (fieldMap.TryGetGuid(nameof(Model.Entities.Object.WorkspaceId), out var workspaceId))
-            {
-                @object.WorkspaceId = workspaceId;
-            }
-
             // an object created from a template inherits the class the template instantiates
             // when the payload names only the template
             if (@object.ClassId == Guid.Empty && fieldMap.TryGetGuid("TemplateId", out var templateId))
@@ -443,11 +391,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             if (@object.WorkspaceId == Guid.Empty)
             {
                 @object.WorkspaceId = CoreHub.ClassManager.GetClass(@object.ClassId)?.WorkspaceId ?? Guid.Empty;
-            }
-
-            if (fieldMap.TryGetGuidReference(nameof(Model.Entities.Object.ParentId), out var parentId))
-            {
-                @object.ParentId = parentId;
             }
         }
 

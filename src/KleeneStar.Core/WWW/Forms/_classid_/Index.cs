@@ -73,7 +73,11 @@ namespace KleeneStar.Core.WWW.Forms._classid_
                 .BindParameters(new WorkspaceKeyParameter(workspace?.Key))
                 .BindParameters(renderContext.Request);
 
-            visualTree.Content.MainPanel.Headline.Title = $"{@class.Name} - {I18N.Translate(renderContext, renderContext.PageContext.PageTitle)}";
+            // the class id comes from the url and may address a class that no longer
+            // exists, so the headline falls back to the page title alone
+            var page = I18N.Translate(renderContext, renderContext.PageContext.PageTitle);
+
+            visualTree.Content.MainPanel.Headline.Title = @class is null ? page : $"{@class.Name} - {page}";
 
             visualTree.BreadcrumbUri = uri;
         }
