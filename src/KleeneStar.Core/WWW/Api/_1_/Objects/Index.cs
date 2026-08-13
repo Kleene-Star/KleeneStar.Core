@@ -276,6 +276,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             // BindTo drops guid-typed properties, so the references an object cannot exist
             // without are bound explicitly
             BindReferences(fieldMap, newItem);
+            BindSystemProperties(newItem, fieldMap);
             EnsureKey(newItem);
 
             CoreHub.ObjectManager.Add(newItem);
@@ -428,6 +429,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             if (fieldMap.TryGetGuid(nameof(Model.Entities.Object.WorkspaceId), out var workspaceId))
             {
                 @object.WorkspaceId = workspaceId;
+            }
+
+            // an object created from a template inherits the class the template instantiates
+            // when the payload names only the template
+            if (@object.ClassId == Guid.Empty && fieldMap.TryGetGuid("TemplateId", out var templateId))
+            {
+                @object.ClassId = CoreHub.TemplateManager.GetTemplate(templateId)?.ClassId ?? Guid.Empty;
             }
 
             // an object created from a workspace overview inherits the workspace of its class when

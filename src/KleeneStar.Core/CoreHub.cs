@@ -311,6 +311,42 @@ namespace KleeneStar.Core
         }
 
         /// <summary>
+        /// The palette the accent color of an entity is drawn from: 32 distinct,
+        /// contrast-rich colors.
+        /// </summary>
+        private static readonly string[] _accentColors =
+        [
+            "#ca1554", "#25509f", "#008237", "#b76f13", "#404b91", "#368b22", "#953599", "#ed381e",
+            "#167ca0", "#d4424f", "#513e21", "#0e6a73", "#8b2443", "#20723d", "#6c2122", "#3b7d8d",
+            "#1b6d44", "#903525", "#221f53", "#41775c", "#bd6b82", "#224f44", "#6a3ba1", "#387251",
+            "#c26f1b", "#38464a", "#752b5c", "#09897c", "#998f35", "#da4040", "#2a537d", "#146459"
+        ];
+
+        /// <summary>
+        /// Returns the accent color of an entity, derived from its identifier.
+        /// </summary>
+        /// <remarks>
+        /// The color is a deterministic function of the id, so the same entity is always
+        /// shown in the same color — in its generated icon as well as anywhere the id is
+        /// rendered as a colored marker, such as the kind swatch of a template card.
+        /// </remarks>
+        /// <param name="id">The identifier the color is derived from.</param>
+        /// <returns>The color as a hexadecimal css value.</returns>
+        public static string AccentColor(Guid id)
+        {
+            var bytes = id.ToByteArray();
+            var index = 0;
+
+            for (var i = 0; i < bytes.Length; i++)
+            {
+                index = (index * 31 + bytes[i]) % _accentColors.Length;
+                if (index < 0) { index += _accentColors.Length; } // safety for negatives
+            }
+
+            return _accentColors[index];
+        }
+
+        /// <summary>
         /// Generates a unique SVG icon for the specified identifier and saves it to the icons directory.
         /// </summary>
         /// <remarks>
@@ -345,25 +381,7 @@ namespace KleeneStar.Core
                 return icon;
             }
 
-            // color palette: 32 distinct, contrast-rich colors
-            var colors = new[]
-            {
-                "#ca1554", "#25509f", "#008237", "#b76f13", "#404b91", "#368b22", "#953599", "#ed381e",
-                "#167ca0", "#d4424f", "#513e21", "#0e6a73", "#8b2443", "#20723d", "#6c2122", "#3b7d8d",
-                "#1b6d44", "#903525", "#221f53", "#41775c", "#bd6b82", "#224f44", "#6a3ba1", "#387251",
-                "#c26f1b", "#38464a", "#752b5c", "#09897c", "#998f35", "#da4040", "#2a537d", "#146459"
-            };
-
-            // calculate color index based on GUID
-            var bytes = id.ToByteArray();
-            int colorIndex = 0;
-            for (int i = 0; i < bytes.Length; i++)
-            {
-                colorIndex = (colorIndex * 31 + bytes[i]) % colors.Length;
-                if (colorIndex < 0) { colorIndex += colors.Length; } // safety for negatives
-            }
-
-            var colorHex = colors[colorIndex];
+            var colorHex = AccentColor(id);
 
             // load the embedded kleenestar.svg resource from assembly. The manifest name is
             // produced from the csproj LogicalName template, whose %(RecursiveDir) token uses

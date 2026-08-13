@@ -47,8 +47,19 @@ namespace KleeneStar.Core.Test.WebFragment
                 AppContext.BaseDirectory,
                 "..", "..", "..", "..",
                 "KleeneStar.Core", "WebFragment"));
+
+            // only the files of the fragments collected above are scanned. The pattern
+            // stands for a redirect target that was mistaken for a service endpoint, which
+            // is a property of ControlForm; a file merely named "…FormFragment.cs" may hold
+            // something else entirely — a wizard, whose pages carry a Uri of their own to be
+            // loaded from — and must not be read as an offender.
+            var files = fragments
+                .Select(x => x.Name + ".cs")
+                .ToHashSet(StringComparer.Ordinal);
+
             var offenders = Directory
                 .EnumerateFiles(sourceRoot, "*FormFragment.cs", SearchOption.AllDirectories)
+                .Where(path => files.Contains(Path.GetFileName(path)))
                 .Where(path => File.ReadAllText(path).Contains(
                     "Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Api",
                     StringComparison.Ordinal))
