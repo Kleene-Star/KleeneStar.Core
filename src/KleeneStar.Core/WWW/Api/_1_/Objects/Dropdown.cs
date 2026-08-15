@@ -3,6 +3,7 @@ using KleeneStar.Model;
 using System.Collections.Generic;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
@@ -11,9 +12,11 @@ using WebExpress.WebIndex.Queries;
 namespace KleeneStar.Core.WWW.Api._1_.Objects
 {
     /// <summary>
-    /// Provides the items for the global search dropdown in the application header: with no
+    /// Provides the suggestions for the global search box in the application header: with no
     /// search term the calling identity's most recently opened objects across every kind
     /// (newest first); with a search term a full-text search across every object by summary.
+    /// Both are titled by a heading that rides in the same stream, so the user can tell the
+    /// offered entries from the found ones.
     /// The per-kind header dropdowns are backed by the kind-specific dropdown endpoints
     /// (<see cref="Documents.Dropdown"/>, <see cref="Blogs.Dropdown"/>,
     /// <see cref="Issues.Dropdown"/>, <see cref="Assets.Dropdown"/>).
@@ -58,15 +61,19 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             // when the user is searching, search across all objects
             if (!string.IsNullOrWhiteSpace(filter) && filter != "null")
             {
-                return CoreHub.ObjectManager?.GetObjects(query, context)
-                    .Select(x => ToItem(x, request));
+                var matches = CoreHub.ObjectManager?.GetObjects(query, context)
+                    .Select(x => ToItem(x, request)) ?? [];
+
+                return Titled("kleenestar.core:search.header.results", matches, request);
             }
 
             // otherwise surface the most recently opened objects, newest first
             var ownerId = CoreHub.SessionManager.GetCurrentIdentityId(request);
 
-            return CoreHub.ObjectManager.GetRecentObjects(ownerId, MaxRecent)
+            var recent = CoreHub.ObjectManager.GetRecentObjects(ownerId, MaxRecent)
                 .Select(x => ToItem(x, request));
+
+            return Titled("kleenestar.core:search.header.recent", recent, request);
         }
 
         /// <summary>
@@ -87,6 +94,31 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             (
                 x => x.Summary, filter
             );
+        }
+
+        /// <summary>
+        /// Prepends a heading to a set of items. An empty set stays empty, so an empty search
+        /// result shows the empty state of the search box rather than a lone caption.
+        /// </summary>
+        /// <param name="key">The internationalization key of the heading.</param>
+        /// <param name="items">The items to title.</param>
+        /// <param name="request">The request that provides the language.</param>
+        /// <returns>The titled items.</returns>
+        private static IEnumerable<RestApiDropdownItem> Titled(string key, IEnumerable<RestApiDropdownItem> items, IRequest request)
+        {
+            var titled = false;
+
+            foreach (var item in items)
+            {
+                if (!titled)
+                {
+                    titled = true;
+
+                    yield return new RestApiDropdownItemHeader(I18N.Translate(request, key));
+                }
+
+                yield return item;
+            }
         }
 
         /// <summary>

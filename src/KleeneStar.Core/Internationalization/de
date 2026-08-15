@@ -398,7 +398,6 @@ template.permissions.table.policy=Gültige Richtlinie
 template.permissions.done.label=Fertig
 
 object.dropdown.label=Objekt
-object.dropdown.search.label=Suche
 object.add.title=Neues Objekt
 object.add.label=Objekt hinzufügen
 object.edit.label=Objekt bearbeiten
@@ -1068,7 +1067,12 @@ search.headline=Suche über alle Arbeitsbereiche
 search.nav.label=Suche
 search.dropdown.label=Suche
 search.dropdown.all.label=Über alle Arbeitsbereiche suchen
+
+# Suchfeld in der Kopfzeile
 search.header.placeholder=Über alle Arbeitsbereiche suchen …
+search.header.recent=Zuletzt geöffnet
+search.header.results=Treffer
+search.header.empty=Keine Treffer gefunden.
 
 # Tabelle der globalen Suchergebnisse
 search.results.table.header=Ergebnisse

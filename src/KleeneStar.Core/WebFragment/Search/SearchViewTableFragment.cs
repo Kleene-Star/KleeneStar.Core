@@ -41,6 +41,17 @@ namespace KleeneStar.Core.WebFragment.Search
             // table serves, so the client subscribes to the change notification the CRUD
             // endpoint emits and the table refreshes after a create, update or delete.
             Table.DataService<global::KleeneStar.Core.WWW.Api._1_.Objects.Table>();
+
+            // a term carried over from the header search box seeds the first query, so the page
+            // opens on its results instead of on every object; from there the search field above
+            // drives the table through the binding below
+            Table.StateFactory = renderContext =>
+            {
+                var query = renderContext?.Request?.GetParameter(SearchViewSearchFragment.QueryParameter)?.Value;
+
+                return !string.IsNullOrWhiteSpace(query) ? DataState.Create().Search(query) : null;
+            };
+
             Table.Bind = _ => new Binding()
                 .Add(new BindSearch() { Source = SearchViewSearchFragment.ContentId })
                 .Add(new BindFilter())

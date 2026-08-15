@@ -5,24 +5,23 @@ using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebScope;
+using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment.Search
 {
     /// <summary>
-    /// Contributes the global search dropdown to the application header, positioned after
-    /// the per-kind dropdowns. It carries the global object search box and the entry that
-    /// opens the search page over all workspaces — the dedicated search entry split out of
-    /// the former single object dropdown.
+    /// Contributes the global search box to the search slot of the application header, so the
+    /// search is a field the user types into rather than a dropdown that has to be opened first.
+    /// The suggestions drop down underneath the box.
     /// </summary>
-    [Section<SectionAppNavigationPreferences>]
+    [Section<SectionAppSearch>]
     [Scope<IScopeGeneral>]
     [Scope<IScopeAdmin>]
     [Scope<IScopeStatusPage>]
-    [Order(5)]
     [Cache]
-    public sealed class SearchDropdownFragment : SearchDropdownControl, IFragmentControl<SearchDropdownControl>, IFragmentControlNavigationItem
+    public sealed class SearchBoxFragment : SearchBoxControl, IFragmentControl<ControlSearch>, IFragmentControlSearch
     {
         /// <summary>
         /// Gets the context of the fragment.
@@ -36,8 +35,8 @@ namespace KleeneStar.Core.WebFragment.Search
         /// The context associated with the fragment, providing necessary data and services for its
         /// operation. Cannot be null.
         /// </param>
-        public SearchDropdownFragment(IFragmentContext fragmentContext)
-            : base(fragmentContext?.FragmentId?.ToString())
+        public SearchBoxFragment(IFragmentContext fragmentContext)
+            : base(fragmentContext?.FragmentId?.ToString()?.Replace(".", "-"))
         {
             FragmentContext = fragmentContext;
         }

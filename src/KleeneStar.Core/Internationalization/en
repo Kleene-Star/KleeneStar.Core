@@ -398,7 +398,6 @@ template.permissions.table.policy=Effective Policy
 template.permissions.done.label=Done
 
 object.dropdown.label=Object
-object.dropdown.search.label=Search
 object.add.title=Add Object
 object.add.label=Add Object
 object.edit.label=Edit Object
@@ -1068,7 +1067,12 @@ search.headline=Search across all workspaces
 search.nav.label=Search
 search.dropdown.label=Search
 search.dropdown.all.label=Search all workspaces
+
+# Header search box
 search.header.placeholder=Search all workspaces …
+search.header.recent=Recently opened
+search.header.results=Matches
+search.header.empty=No matches found.
 
 # Global search results table
 search.results.table.header=Results

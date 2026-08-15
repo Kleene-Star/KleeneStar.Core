@@ -15,10 +15,10 @@ namespace KleeneStar.Core.WebFragment.Search
     /// and drives the results table through the table's <c>BindSearch</c> binding.
     /// </summary>
     /// <remarks>
-    /// This is the page-local search element that drives the results table. The application
-    /// header no longer carries a standalone search field — global search is reached from the
-    /// dedicated search dropdown in the header (<c>SearchDropdownControl</c>), which sits
-    /// after the per-kind object dropdowns.
+    /// This is the page-local search element that drives the results table. The header carries
+    /// the global search box (<c>SearchBoxControl</c>), whose suggestions open an object
+    /// directly; a term submitted there reaches this page as the <c>q</c> parameter, which the
+    /// field below opens with.
     /// </remarks>
     [Section<SectionViewHeaderPrimary>]
     [Scope<SearchViewFragment>]
@@ -32,11 +32,18 @@ namespace KleeneStar.Core.WebFragment.Search
         public static readonly string ContentId = "id_4B7E1C9A6D2F40538192A3B4C5D6E7F0";
 
         /// <summary>
+        /// The query parameter a search term arrives in when the page is opened from the header
+        /// search box. Read by the results table as well, which opens on the same term.
+        /// </summary>
+        public const string QueryParameter = "q";
+
+        /// <summary>
         /// Gets the search control used to query objects across all workspaces.
         /// </summary>
         public ControlAdvancedSearch Search { get; } = new ControlAdvancedSearch(ContentId)
         {
-            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Wql>().ToString())
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Wql>().ToString()),
+            Value = renderContext => renderContext?.Request?.GetParameter(QueryParameter)?.Value
         };
 
         /// <summary>
