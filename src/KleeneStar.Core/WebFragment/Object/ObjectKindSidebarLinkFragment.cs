@@ -1,3 +1,4 @@
+using KleeneStar.Core.WebControl;
 using KleeneStar.Core.WebParameter;
 using System;
 using WebExpress.WebCore.WebFragment;
@@ -46,6 +47,28 @@ namespace KleeneStar.Core.WebFragment.Object
             Active = renderContext => IsActive(renderContext)
                 ? TypeActive.Active
                 : TypeActive.None;
+            Badge = ResolveBadge;
+            BadgeColor = _ => new PropertyColorBackgroundBadge(TypeColorBackgroundBadge.Secondary);
+        }
+
+        /// <summary>
+        /// Resolves the badge: the number of active objects of the kind in the workspace.
+        /// </summary>
+        /// <remarks>
+        /// A kind without objects shows no badge rather than a zero. The link is only
+        /// rendered where a class of the kind exists, so an empty count means "configured
+        /// but nothing filed yet" — a neutral state the sidebar does not need to shout
+        /// about, and one a "0" would read as an error next to the populated kinds.
+        /// </remarks>
+        /// <param name="renderContext">
+        /// The rendering context that provides information about the current HTTP request.
+        /// </param>
+        /// <returns>The count, or null when the kind holds nothing.</returns>
+        private string ResolveBadge(IRenderControlContext renderContext)
+        {
+            var count = ObjectKindScope.Count(renderContext?.Request, _kind.Key);
+
+            return CountBadgeFormat.Format(count, renderContext?.Request?.Culture);
         }
 
         /// <summary>

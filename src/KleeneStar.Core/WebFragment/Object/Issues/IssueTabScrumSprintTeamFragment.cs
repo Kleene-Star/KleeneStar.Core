@@ -9,17 +9,17 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
     /// <summary>
     /// Provides the scrum team workload of the active sprint — the people working in the
     /// sprint with the story points committed to each and the share already completed —
-    /// rendered inside the <see cref="IssueTabScrumSprintTemplateFragment"/> tab template
-    /// above the sprint burn-down (<see cref="IssueTabScrumSprintFragment"/>, order 1) and
-    /// the active-sprint board section (<see cref="IssueTabScrumSprintBoardFragment"/>,
-    /// order 2). The fragment IS the scrum team control — it derives from
+    /// rendered inside the <see cref="IssueTabScrumTemplateFragment"/> tab template above
+    /// the sprint burn-down (<see cref="IssueTabScrumSprintFragment"/>, order 1) and the
+    /// board/backlog view control (<see cref="IssueTabScrumViewFragment"/>, order 2). The
+    /// fragment IS the scrum team control — it derives from
     /// <see cref="FragmentControlDataScrumTeam"/> and registers in
     /// <see cref="SectionTabTemplatePrimary"/>, the section the tab template collects its
     /// content from. Its data comes from the sprint team endpoint. It leads the tab
-    /// (order 0), above the sprint burn-down and the active-sprint Kanban board.
+    /// (order 0) and is shared by both panes of the switch.
     /// </summary>
     [Section<SectionTabTemplatePrimary>]
-    [Scope<IssueTabScrumSprintTemplateFragment>]
+    [Scope<IssueTabScrumTemplateFragment>]
     [Order(0)]
     [Cache]
     public sealed class IssueTabScrumSprintTeamFragment : FragmentControlDataScrumTeam

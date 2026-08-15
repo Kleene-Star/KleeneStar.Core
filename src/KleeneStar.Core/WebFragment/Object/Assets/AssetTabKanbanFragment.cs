@@ -1,24 +1,54 @@
+using System.Net.Http;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebData;
-using WebExpress.WebApp.WebFragment;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
+using WebExpress.WebUI.WebControl;
+using WebExpress.WebUI.WebFragment;
 
 namespace KleeneStar.Core.WebFragment.Object.Assets
 {
     /// <summary>
     /// Provides the Kanban board content of the asset overview, rendered inside the
-    /// <see cref="AssetTabKanbanTemplateFragment"/> tab template. The fragment IS the board
-    /// control — it derives from <see cref="FragmentControlDataKanban"/> and registers in
-    /// <see cref="SectionTabTemplatePrimary"/>, the section the tab template collects its
-    /// content from. Its data comes from the asset Kanban endpoint.
+    /// <see cref="AssetTabKanbanTemplateFragment"/> tab template. Its data comes from the
+    /// asset Kanban endpoint.
     /// </summary>
+    /// <remarks>
+    /// The board is the master side of a <see cref="ControlMasterDetail"/> whose frame shows
+    /// the selected object's reading view, mirroring the issue board. The detail endpoint
+    /// resolves the object by id and forwards to the route of its kind, so the asset board
+    /// needs no route knowledge of its own.
+    ///
+    /// The fragment also owns the <see cref="ControlViewState"/> carrying the tab's query
+    /// surface, which the search (<see cref="AssetTabKanbanSearchFragment"/>) and the
+    /// quickfilter (<see cref="AssetTabKanbanQuickfilterFragment"/>) write into.
+    /// </remarks>
     [Section<SectionTabTemplatePrimary>]
     [Scope<AssetTabKanbanTemplateFragment>]
-    [Order(0)]
+    [Order(2)]
     [Cache]
-    public sealed class AssetTabKanbanFragment : FragmentControlDataKanban
+    public sealed class AssetTabKanbanFragment : FragmentControlPanel
     {
+        /// <summary>
+        /// Gets the board control forming the master side of the view.
+        /// </summary>
+        public ControlDataKanban Board { get; } = new ControlDataKanban()
+        {
+            // enable the full board editing surface; the endpoint persists every column and
+            // swimlane change to the workspace's asset Kanban board configuration
+            EditableColumn = _ => true,
+            MovableColumn = _ => true,
+            DeletableColumn = _ => true,
+            AddableColumn = _ => true,
+            AddableSwimlane = _ => true,
+            EditableSwimlane = _ => true,
+            DeletableSwimlane = _ => true,
+            MovableSwimlane = _ => true,
+            ConfigurableBoard = _ => true,
+            ConfigurableSwimlane = _ => true
+        };
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -26,20 +56,42 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         public AssetTabKanbanFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.Kanban>().ToString());
+            var id = fragmentContext?.FragmentId?.ToString()?.Replace(".", "-");
 
-            // enable the full board editing surface; the endpoint persists every column and
-            // swimlane change to the workspace's asset Kanban board configuration
-            EditableColumn = _ => true;
-            MovableColumn = _ => true;
-            DeletableColumn = _ => true;
-            AddableColumn = _ => true;
-            AddableSwimlane = _ => true;
-            EditableSwimlane = _ => true;
-            DeletableSwimlane = _ => true;
-            MovableSwimlane = _ => true;
-            ConfigurableBoard = _ => true;
-            ConfigurableSwimlane = _ => true;
+            // the detail is addressed by object id, which is the card id the board reports
+            // in its selection event; "{id}" is substituted by the master-detail controller
+            // the ViewState declares the board resource and maps the shared state onto the
+            // query parameters the endpoint reads: "q" for the search, "f" for the chips
+            var viewState = new ControlViewState<DataQueryState>(id + "-viewstate")
+                .State(_ => { })
+                .Service<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.Kanban>(service => service.Method(HttpMethod.Get))
+                .Resource<AssetKanbanResource>(resource => resource
+                    .Service<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.Kanban>()
+                    .Param("f", "filter")
+                    .Param("q", "search"));
+
+            Board.Resource<AssetKanbanResource>();
+
+            var detailRoute = CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects.Detail>();
+            var detailUri = $"{detailRoute}?id={{id}}";
+
+            var masterDetail = new ControlMasterDetail(id + "-masterdetail", Board)
+            {
+                DetailUriTemplate = _ => detailUri,
+
+                // as on the issue board: the columns have a 280px minimum, so the view
+                // starts full width and a double click brings the detail in
+                DetailVisible = _ => false,
+                Reveal = _ => TypeMasterDetailReveal.DoubleClick,
+                MasterInitialSize = _ => 62,
+                Styles = ["--wx-master-detail-height: 100%;", "min-height: calc(100vh - 16rem);"],
+                Detail = new ControlFrame(id + "-frame")
+                {
+                    Selector = _ => "#wx-content-main"
+                }
+            };
+
+            Add(viewState, masterDetail);
         }
     }
 }

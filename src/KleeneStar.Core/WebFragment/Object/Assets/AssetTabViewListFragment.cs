@@ -28,7 +28,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         /// </summary>
         public ListDetailControl List { get; } = new ListDetailControl()
         {
-            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.List>().ToString())
+            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.List>().ToString())
         };
 
         /// <summary>

@@ -24,6 +24,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
     [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Edit>]
     [Policy<WorkspaceViewPolicy>]
+    [Condition<BlogKindConfiguredCondition>]
     [Order(2)]
     [Cache]
     public sealed class BlogSidebarLinkFragment : ObjectKindSidebarLinkFragment

@@ -81,11 +81,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
                     Id = x.Id.ToString(),
                     Text = x.Name,
                     Image = x.Icon?.Uri?.ToString(),
-                    PrimaryAction = new ActionFrame(ListDetailControl.FrameId)
+                    // the selection is handed to the master-detail composite rather than
+                    // written into the frame, so it stays the single owner of the selection
+                    PrimaryAction = new ActionMasterDetail(ListDetailControl.ControlId)
                     {
                         Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Class._classid_.Index>()
                             .BindParameters(new ClassIdParameter(x.Id))
-                            .BindParameters(request)
+                            .BindParameters(request),
+                        Item = x.Id.ToString()
                     }.ToJson()
                     //Options = GetOptions(x, request)
                 });

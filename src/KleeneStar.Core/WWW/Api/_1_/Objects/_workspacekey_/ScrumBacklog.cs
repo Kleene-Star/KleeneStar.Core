@@ -52,15 +52,29 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
 
         /// <summary>
         /// Returns the active objects of the workspace addressed by the request route,
-        /// ordered by their sprint rank.
+        /// ordered by their sprint rank and narrowed by the view's search term and
+        /// quickfilter chips.
         /// </summary>
+        /// <remarks>
+        /// The search and the chips are applied here rather than through the inherited
+        /// <c>Filter</c> hooks because <see cref="ScrumProjection.GetItems"/> already
+        /// resolves the set in memory and the base passes its <see cref="IQuery{T}"/> to a
+        /// retrieval that ignores it. Applying them in memory also matches
+        /// <see cref="ScrumSprintKanban.ApplyQuickfilter"/>, so the board and the backlog
+        /// read one filter the same way.
+        /// </remarks>
         /// <param name="query">The query criteria (unused; the route scopes the set).</param>
         /// <param name="context">The query context.</param>
         /// <param name="request">The request.</param>
-        /// <returns>The active objects of the workspace.</returns>
+        /// <returns>The matching active objects of the workspace.</returns>
         protected override IEnumerable<Model.Entities.Object> RetrieveItems(IQuery<Model.Entities.Object> query, IQueryContext context, IRequest request)
         {
-            return ScrumProjection.GetItems(request);
+            var items = ScrumProjection.GetItems(request);
+
+            items = ScrumProjection.ApplySearch(items, request);
+            items = ScrumProjection.ApplyQuickfilter(items, request);
+
+            return items;
         }
 
         /// <summary>
@@ -283,6 +297,67 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
                 .Where(x => x.State == WorkspaceState.Active)
                 .OrderBy(x => x.SprintRank)
                 .ThenBy(x => x.Key);
+        }
+
+        /// <summary>
+        /// Narrows the items to those whose key or summary contains the view's search term.
+        /// An absent or blank term leaves the set unchanged.
+        /// </summary>
+        /// <param name="items">The candidate objects.</param>
+        /// <param name="request">The request carrying the search term in <c>q</c>.</param>
+        /// <returns>The matching objects.</returns>
+        public static IEnumerable<Model.Entities.Object> ApplySearch(IEnumerable<Model.Entities.Object> items, IRequest request)
+        {
+            var search = request?.GetParameter("q")?.Value?.Trim();
+
+            if (string.IsNullOrWhiteSpace(search))
+            {
+                return items;
+            }
+
+            return items.Where
+            (
+                x => (x.Key?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false)
+                  || (x.Summary?.Contains(search, StringComparison.OrdinalIgnoreCase) ?? false)
+            );
+        }
+
+        /// <summary>
+        /// Applies the view's personal-scope quickfilter chips (assigned to me, starred)
+        /// selected in the <c>f</c> parameter. Both scopes are per-identity projections. With
+        /// no chip selected the set is unchanged.
+        /// </summary>
+        /// <param name="items">The candidate objects.</param>
+        /// <param name="request">The request carrying the selected chips and the caller.</param>
+        /// <returns>The matching objects.</returns>
+        public static IEnumerable<Model.Entities.Object> ApplyQuickfilter(IEnumerable<Model.Entities.Object> items, IRequest request)
+        {
+            var filters = request?.GetParameter("f")?.Value?
+                .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries) ?? [];
+            var selected = new HashSet<string>(filters, StringComparer.OrdinalIgnoreCase);
+
+            if (selected.Count == 0)
+            {
+                return items;
+            }
+
+            var ownerId = CoreHub.SessionManager.GetCurrentIdentityId(request);
+
+            if (selected.Contains(ScrumSprintQuickfilter.MineId))
+            {
+                items = items.Where(x => x.AssigneeId == ownerId);
+            }
+
+            if (selected.Contains(ScrumSprintQuickfilter.StarredId))
+            {
+                var starredIds = CoreHub.ObjectManager.GetFavoriteObjects(ownerId)
+                    .Select(x => x.Id)
+                    .ToHashSet();
+
+                items = items.Where(x => starredIds.Contains(x.Id));
+            }
+
+            return items;
         }
 
         /// <summary>

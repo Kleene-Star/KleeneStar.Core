@@ -27,7 +27,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         /// </summary>
         public ControlDataTile Tile { get; } = new ControlDataTile()
         {
-            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_.Tile>().ToString())
+            ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.Tile>().ToString())
         };
 
         /// <summary>

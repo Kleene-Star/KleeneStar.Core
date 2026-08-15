@@ -22,6 +22,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
     [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Edit>]
     [Policy<WorkspaceViewPolicy>]
+    [Condition<IssueKindConfiguredCondition>]
     [Order(3)]
     [Cache]
     public sealed class IssueSidebarLinkFragment : ObjectKindSidebarLinkFragment

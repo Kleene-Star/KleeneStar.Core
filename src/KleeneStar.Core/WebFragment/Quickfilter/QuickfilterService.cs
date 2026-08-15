@@ -49,6 +49,16 @@ namespace KleeneStar.Core.WebFragment.Quickfilter
                         .BindParameters(new WorkspaceKeyParameter(context))?
                         .ToString();
 
+                case global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.KanbanQuickfilter.ViewKey:
+                    if (string.IsNullOrWhiteSpace(context))
+                    {
+                        return null;
+                    }
+
+                    return CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.KanbanQuickfilter>()?
+                        .BindParameters(new WorkspaceKeyParameter(context))?
+                        .ToString();
+
                 default:
                     return null;
             }
@@ -90,6 +100,16 @@ namespace KleeneStar.Core.WebFragment.Quickfilter
                     }
 
                     return CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Wql>()?
+                        .BindParameters(new WorkspaceKeyParameter(context))?
+                        .ToString();
+
+                case global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.KanbanQuickfilter.ViewKey:
+                    if (string.IsNullOrWhiteSpace(context))
+                    {
+                        return null;
+                    }
+
+                    return CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.Wql>()?
                         .BindParameters(new WorkspaceKeyParameter(context))?
                         .ToString();
 

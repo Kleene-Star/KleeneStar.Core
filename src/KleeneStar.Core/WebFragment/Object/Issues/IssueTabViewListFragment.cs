@@ -21,7 +21,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
     [Scope<IssueTabViewFragment>]
     [Order(2)]
     [Cache]
-    public sealed class AssetViewListFragment : FragmentControlViewItem
+    public sealed class IssueTabViewListFragment : FragmentControlViewItem
     {
         /// <summary>
         /// Gets the list control rendering the objects as a vertical frame list. 
@@ -35,7 +35,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public AssetViewListFragment(IFragmentContext fragmentContext)
+        public IssueTabViewListFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Icon = _ => new IconList();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebUri;
@@ -8,11 +8,24 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebControl
 {
     /// <summary>
-    /// Represents a control that displays a split panel with a REST-backed list and a detail
-    /// frame for workspace data.
+    /// Represents a master-detail view with a REST-backed list on the master side and a
+    /// detail frame for workspace data.
     /// </summary>
-    public class ListDetailControl : ControlPanelSplit
+    /// <remarks>
+    /// The composite is the single owner of the selection: list items carry an
+    /// <see cref="ActionMasterDetail"/> targeting <see cref="ControlId"/> rather than writing
+    /// into the frame themselves, so the selected entry stays highlighted, the detail side can
+    /// be closed and reopened, and the view collapses into the sequential single-column mode on
+    /// narrow containers.
+    /// </remarks>
+    public class ListDetailControl : ControlMasterDetail
     {
+        /// <summary>
+        /// Represents the unique identifier of the master-detail control itself. It is the
+        /// target the list items address with their <see cref="ActionMasterDetail"/>.
+        /// </summary>
+        public static readonly string ControlId = "id_4F2C9E7A1B8D40A6B3E5C1D7F9A2B6C4";
+
         /// <summary>
         /// Represents the unique identifier for the frame used in this context.
         /// </summary>
@@ -60,47 +73,45 @@ namespace KleeneStar.Core.WebControl
         {
             Selectable = _ => true,
             Sortable = _ => true,
-            Title = _ => "List",
-            Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.Two, PropertySpacing.Space.None, PropertySpacing.Space.None)
+            Title = _ => "List"
         };
-
-        /// <summary>
-        /// Gets the configuration tile that provides REST access to
-        /// workspace data.
-        /// </summary>
-        public ControlFrame Frame { get; } = new ControlFrame(FrameId)
-        {
-            Selector = _ => "#wx-content-main",
-            Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
-        };
-
-        /// <summary>
-        /// Gets the dismissible panel that hosts the detail <see cref="Frame"/>. The
-        /// panel hides when the user clicks its dismiss button and is re-shown via
-        /// <see cref="BindShow"/> whenever a list entry is activated.
-        /// </summary>
-        public ControlPanelDismissible PanelDismissible { get; }
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="id">The unique identifier for the control.</param>
         public ListDetailControl(string id = null)
-            : base(id)
+            : base(id ?? ControlId)
         {
             List.ServiceFactory = renderContext => DataServiceDescriptor.QueryData(RestUri?.Invoke(renderContext)?.ToString());
             List.Bind = renderContext => Bind?.Invoke(renderContext);
 
-            PanelDismissible = new ControlPanelDismissible()
+            // the detail endpoints are regular pages of the application, so the frame embeds
+            // only their main content region instead of the whole document
+            Detail = new ControlFrame(FrameId)
             {
-                Bind = _ => new Binding().Add(new BindShow { Source = ListId })
+                Selector = _ => "#wx-content-main"
             };
-            PanelDismissible.Add(Frame);
 
-            AddSidePanel(List);
-            AddMainPanel(PanelDismissible);
+            AddMaster(List);
 
-            SidePanelInitialSize = _ => 250;
+            MasterInitialSize = _ => 250;
+            Unit = _ => TypeSizeUnit.Pixel;
+
+            // the two columns scroll independently, which needs a definite height. the
+            // control defaults to 70vh for a host that has none; here the view fills the
+            // content region, so it takes the height of its parent instead.
+            //
+            // the min-height is the net under that: the panels between #wx-content-main
+            // and this control are auto-height, and a percentage height against an
+            // auto-height parent does not resolve - the control would collapse onto the
+            // 12rem floor of its stylesheet. the inline value overrides that floor, so
+            // the view keeps a usable extent either way and the larger one wins.
+            Styles =
+            [
+                "--wx-master-detail-height: 100%;",
+                "min-height: calc(100vh - 12rem);"
+            ];
         }
     }
 }

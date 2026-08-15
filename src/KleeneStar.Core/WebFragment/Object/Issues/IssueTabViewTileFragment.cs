@@ -23,7 +23,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
     [Scope<IssueTabViewFragment>]
     [Order(1)]
     [Cache]
-    public sealed class AssetViewTileFragment : FragmentControlViewItem
+    public sealed class IssueTabViewTileFragment : FragmentControlViewItem
     {
         /// <summary>
         /// Gets the tile control rendering the objects as cards.
@@ -37,7 +37,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The context of the fragment.</param>
-        public AssetViewTileFragment(IFragmentContext fragmentContext)
+        public IssueTabViewTileFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
             Icon = _ => new IconTile();

@@ -3,6 +3,7 @@ using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebExpress.WebIndex.Queries;
 
 using ObjectEntity = KleeneStar.Model.Entities.Object;
 
@@ -107,14 +108,30 @@ namespace KleeneStar.Core.WebRestApi
                 }
             }
 
-            var values = new Dictionary<Guid, IReadOnlyDictionary<Guid, string>>();
+            // the values of every object are read in one query rather than one per object.
+            // The per-object call opens a database connection of its own, so a page of
+            // fifty rows opened fifty connections and a sort over the whole set one per
+            // object in scope — enough churn to collide with any concurrent write and fail
+            // the request with "database is locked".
+            var ids = objects.Select(x => x.Id).ToHashSet();
 
-            foreach (var @object in objects)
+            var values = ids.ToDictionary
+            (
+                id => id,
+                _ => (IReadOnlyDictionary<Guid, string>)new Dictionary<Guid, string>()
+            );
+
+            if (ids.Count > 0)
             {
-                values[@object.Id] = CoreHub.ValueManager
-                    .GetValues(@object.Id)
-                    .GroupBy(v => v.FieldId)
-                    .ToDictionary(g => g.Key, g => g.First().Data);
+                var query = new Query<Value>()
+                    .WhereEquals(x => ids.Contains(x.ObjectId));
+
+                foreach (var group in CoreHub.ValueManager.GetValues(query).GroupBy(x => x.ObjectId))
+                {
+                    values[group.Key] = group
+                        .GroupBy(v => v.FieldId)
+                        .ToDictionary(g => g.Key, g => g.First().Data);
+                }
             }
 
             return new ObjectTableProjection(classes, values);

@@ -47,39 +47,24 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         }
 
         /// <summary>
-        /// Applies the sprint board's personal-scope quickfilter chips (assigned to me,
-        /// starred) selected in the <c>f</c> parameter. Both scopes are per-identity
-        /// projections applied in memory. With no chip selected the board is unchanged.
+        /// Applies the scrum view's query surface: the search term of the <c>q</c> parameter
+        /// and the personal-scope quickfilter chips (assigned to me, starred) of the <c>f</c>
+        /// parameter. With neither set the board is unchanged.
         /// </summary>
+        /// <remarks>
+        /// The search rides along in this override because it is the only in-memory hook the
+        /// board base offers, and the board must honour the same header controls the backlog
+        /// does. Both narrowings are delegated to
+        /// <see cref="ScrumProjection"/>, so the board and the backlog cannot drift apart on
+        /// what a chip or a search term means.
+        /// </remarks>
         /// <param name="objects">The candidate objects.</param>
-        /// <param name="request">The request carrying the selected chips and the caller.</param>
+        /// <param name="request">The request carrying the query surface and the caller.</param>
         /// <returns>The filtered objects.</returns>
         protected override IEnumerable<Model.Entities.Object> ApplyQuickfilter(IEnumerable<Model.Entities.Object> objects, IRequest request)
         {
-            var filters = request?.GetParameter("f")?.Value?
-                .Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries) ?? [];
-            var selected = new HashSet<string>(filters, StringComparer.OrdinalIgnoreCase);
-
-            if (selected.Count == 0)
-            {
-                return objects;
-            }
-
-            var ownerId = CoreHub.SessionManager.GetCurrentIdentityId(request);
-
-            if (selected.Contains(ScrumSprintQuickfilter.MineId))
-            {
-                objects = objects.Where(x => x.AssigneeId == ownerId);
-            }
-
-            if (selected.Contains(ScrumSprintQuickfilter.StarredId))
-            {
-                var starredIds = CoreHub.ObjectManager.GetFavoriteObjects(ownerId)
-                    .Select(x => x.Id)
-                    .ToHashSet();
-
-                objects = objects.Where(x => starredIds.Contains(x.Id));
-            }
+            objects = ScrumProjection.ApplySearch(objects, request);
+            objects = ScrumProjection.ApplyQuickfilter(objects, request);
 
             return objects;
         }

@@ -58,11 +58,14 @@ namespace KleeneStar.Core.WebRestApi
                     Id = x.Id.ToString(),
                     Text = x.Summary,
                     Image = x.Icon?.Uri?.ToString(),
-                    PrimaryAction = new ActionFrame(ListDetailControl.FrameId)
+                    // the selection is handed to the master-detail composite rather than
+                    // written into the frame, so it stays the single owner of the selection
+                    PrimaryAction = new ActionMasterDetail(ListDetailControl.ControlId)
                     {
                         Uri = global::KleeneStar.Core.WebFragment.Object.ObjectKindCatalog
                             .ResolveDetailUri(x)
-                            .BindParameters(request)
+                            .BindParameters(request),
+                        Item = x.Id.ToString()
                     }.ToJson()
                 });
         }

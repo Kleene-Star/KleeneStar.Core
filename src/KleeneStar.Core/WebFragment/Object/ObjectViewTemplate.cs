@@ -34,8 +34,15 @@ namespace KleeneStar.Core.WebFragment.Object
                 (ObjectViewType.Issues, typeof(IssueTabViewTemplateFragment)),
                 (ObjectViewType.Dashboard, typeof(IssueTabDashboardTemplateFragment)),
                 (ObjectViewType.Kanban, typeof(IssueTabKanbanTemplateFragment)),
-                (ObjectViewType.ScrumSprint, typeof(IssueTabScrumSprintTemplateFragment)),
-                (ObjectViewType.ScrumBacklog, typeof(IssueTabScrumBacklogTemplateFragment))
+
+                // the sprint board and the backlog were merged into one scrum view, so both
+                // types render the same template. keeping both mapped means a tab persisted
+                // as either type still resolves — no view type had to be appended to the
+                // ordinal-persisted enum, and no stored tab had to be migrated. ScrumSprint
+                // is declared first, so that is the type a newly added scrum tab is created
+                // as.
+                (ObjectViewType.ScrumSprint, typeof(IssueTabScrumTemplateFragment)),
+                (ObjectViewType.ScrumBacklog, typeof(IssueTabScrumTemplateFragment))
             ],
             [ObjectKind.Asset] =
             [

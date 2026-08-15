@@ -447,6 +447,8 @@ namespace KleeneStar.Core.WebRestApi
 
             var card = new RestApiKanbanCard
             {
+                // the card id is the object id, which the board writes onto the card as
+                // data-card-id and a master-detail resolves from there
                 Id = entity.Id.ToString(),
                 Label = string.IsNullOrWhiteSpace(entity.Summary) ? entity.Key : entity.Summary,
                 Html = $"<strong>{WebUtility.HtmlEncode(entity.Key)}</strong><br/>{WebUtility.HtmlEncode(entity.Summary)}",

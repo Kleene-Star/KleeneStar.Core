@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebPolicies;
+﻿using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -22,6 +22,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
     [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Edit>]
     [Policy<WorkspaceViewPolicy>]
+    [Condition<AssetKindConfiguredCondition>]
     [Order(4)]
     [Cache]
     public sealed class AssetSidebarLinkFragment : ObjectKindSidebarLinkFragment

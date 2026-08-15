@@ -45,8 +45,10 @@ namespace KleeneStar.Core.Test.WebFragment
         [InlineData(ObjectViewType.Issues, typeof(IssueTabViewTemplateFragment))]
         [InlineData(ObjectViewType.Dashboard, typeof(IssueTabDashboardTemplateFragment))]
         [InlineData(ObjectViewType.Kanban, typeof(IssueTabKanbanTemplateFragment))]
-        [InlineData(ObjectViewType.ScrumSprint, typeof(IssueTabScrumSprintTemplateFragment))]
-        [InlineData(ObjectViewType.ScrumBacklog, typeof(IssueTabScrumBacklogTemplateFragment))]
+        // the sprint board and the backlog were merged into one scrum view, so both types
+        // resolve to the same template and a tab persisted as either one still renders
+        [InlineData(ObjectViewType.ScrumSprint, typeof(IssueTabScrumTemplateFragment))]
+        [InlineData(ObjectViewType.ScrumBacklog, typeof(IssueTabScrumTemplateFragment))]
         public void ResolveTemplateId_ForIssues_NamesTheIssueTemplate(ObjectViewType type, Type expected)
         {
             Assert.Equal
@@ -125,7 +127,6 @@ namespace KleeneStar.Core.Test.WebFragment
         [InlineData(ObjectViewType.Dashboard)]
         [InlineData(ObjectViewType.Kanban)]
         [InlineData(ObjectViewType.ScrumSprint)]
-        [InlineData(ObjectViewType.ScrumBacklog)]
         public void ResolveViewType_ForIssues_RoundTripsTheDistinctTemplates(ObjectViewType type)
         {
             var templateId = ObjectViewTemplate.ResolveTemplateId(type, ObjectKind.Issue);
@@ -143,6 +144,21 @@ namespace KleeneStar.Core.Test.WebFragment
             var templateId = ObjectViewTemplate.ResolveTemplateId(ObjectViewType.List, ObjectKind.Issue);
 
             Assert.Equal(ObjectViewType.Table, ObjectViewTemplate.ResolveViewType(templateId, ObjectKind.Issue));
+        }
+
+        /// <summary>
+        /// Verifies that a tab persisted as either scrum type still resolves to the merged scrum
+        /// template, and that the round trip settles on the first type declared for it — so an
+        /// existing backlog tab keeps rendering instead of falling back to a table.
+        /// </summary>
+        [Fact]
+        public void ResolveViewType_ForTheScrumTemplate_YieldsScrumSprint()
+        {
+            var sprintTemplate = ObjectViewTemplate.ResolveTemplateId(ObjectViewType.ScrumSprint, ObjectKind.Issue);
+            var backlogTemplate = ObjectViewTemplate.ResolveTemplateId(ObjectViewType.ScrumBacklog, ObjectKind.Issue);
+
+            Assert.Equal(sprintTemplate, backlogTemplate);
+            Assert.Equal(ObjectViewType.ScrumSprint, ObjectViewTemplate.ResolveViewType(backlogTemplate, ObjectKind.Issue));
         }
 
         /// <summary>
@@ -183,8 +199,7 @@ namespace KleeneStar.Core.Test.WebFragment
                 typeof(IssueTabViewTemplateFragment),
                 typeof(IssueTabDashboardTemplateFragment),
                 typeof(IssueTabKanbanTemplateFragment),
-                typeof(IssueTabScrumSprintTemplateFragment),
-                typeof(IssueTabScrumBacklogTemplateFragment)
+                typeof(IssueTabScrumTemplateFragment)
             }
                 .Select(ObjectViewTemplate.TemplateId)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
