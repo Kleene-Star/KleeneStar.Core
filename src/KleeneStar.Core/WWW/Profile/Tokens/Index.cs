@@ -6,20 +6,25 @@ using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Profile
+namespace KleeneStar.Core.WWW.Profile.Tokens
 {
     /// <summary>
-    /// Personal access tokens — tokens used for API access and integrations.
+    /// Personal access tokens — the credentials that authenticate API requests and integrations
+    /// in the name of this account.
     /// </summary>
+    /// <remarks>
+    /// The page carries the explanation; the token list and the buttons that create and revoke
+    /// them are contributed by <see cref="WebFragment.Profile.ProfileTokenListFragment"/>.
+    /// </remarks>
     [Title("kleenestar.core:profile.tokens.title")]
     [WebIcon<IconKey>]
     [Scope<IScopeGeneral>]
-    public sealed class Tokens : IPage<VisualTreeWebApp>, IScopeGeneral
+    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Tokens()
+        public Index()
         {
         }
 
@@ -34,28 +39,9 @@ namespace KleeneStar.Core.WWW.Profile
 
             visualTree.Content.MainPanel.AddPrimary(new ControlText()
             {
-                Text = _ => I18N.Translate(renderContext, "kleenestar.core:profile.tokens.header"),
-                TextColor = _ => new PropertyColorText(TypeColorText.Info),
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
-            });
-
-            visualTree.Content.MainPanel.AddPrimary(new ControlText()
-            {
                 Text = _ => I18N.Translate(renderContext, "kleenestar.core:profile.tokens.description"),
                 Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
-
-            var table = new ControlTable()
-            {
-                Striped = _ => TypeStripedTable.Row
-            }
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:profile.tokens.column.name"))
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:profile.tokens.column.prefix"))
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:profile.tokens.column.scopes"))
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:profile.tokens.column.expires"))
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:profile.tokens.column.status"));
-
-            visualTree.Content.MainPanel.AddPrimary(table);
         }
     }
 }

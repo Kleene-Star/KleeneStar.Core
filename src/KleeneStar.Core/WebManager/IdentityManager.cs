@@ -7,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using WebExpress.WebCore;
 using WebExpress.WebCore.WebComponent;
+using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
 
 namespace KleeneStar.Core.WebManager
@@ -80,6 +81,26 @@ namespace KleeneStar.Core.WebManager
             var guid = Guid.TryParse(identityId.Value, out Guid id) ? id : Guid.Empty;
 
             return GetIdentity(guid);
+        }
+
+        /// <summary>
+        /// Returns the identity the given request is served for — the account whose profile
+        /// settings the profile pages read and write.
+        /// </summary>
+        /// <remarks>
+        /// Which identity that is comes from <see cref="ISessionManager.GetCurrentIdentityId"/>,
+        /// so the profile pages follow the authenticated user as soon as WebExpress exposes it
+        /// on the request.
+        /// </remarks>
+        /// <param name="request">The current HTTP request.</param>
+        /// <returns>
+        /// The identity of the caller, or <see langword="null"/> when no identity can be resolved.
+        /// </returns>
+        public Identity GetCurrentIdentity(IRequest request)
+        {
+            var identityId = CoreHub.SessionManager.GetCurrentIdentityId(request);
+
+            return identityId == Guid.Empty ? null : GetIdentity(identityId);
         }
 
         /// <summary>

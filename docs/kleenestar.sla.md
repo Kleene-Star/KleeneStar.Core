@@ -176,8 +176,6 @@ Flags enum that combines the dispatch channels for SLA breach notifications.
 |--------|----------------------------------
 |`None`  |No channels enabled
 |`Email` |Send notifications by e-mail
-|`Slack` |Send notifications to Slack
-|`Sms`   |Send notifications by SMS
 |`InApp` |Show in-app notifications
 
 ## UI Concepts and Pages

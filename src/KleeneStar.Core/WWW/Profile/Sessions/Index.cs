@@ -6,20 +6,24 @@ using WebExpress.WebCore.WebPage;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
 
-namespace KleeneStar.Core.WWW.Profile
+namespace KleeneStar.Core.WWW.Profile.Sessions
 {
     /// <summary>
     /// Active sessions — devices and browsers currently signed in with this account.
     /// </summary>
+    /// <remarks>
+    /// The page carries the explanation; the list of devices and the buttons that end them are
+    /// contributed by <see cref="WebFragment.Profile.ProfileSessionListFragment"/>.
+    /// </remarks>
     [Title("kleenestar.core:profile.sessions.title")]
     [WebIcon<IconLaptop>]
     [Scope<IScopeGeneral>]
-    public sealed class Sessions : IPage<VisualTreeWebApp>, IScopeGeneral
+    public sealed class Index : IPage<VisualTreeWebApp>, IScopeGeneral
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Sessions()
+        public Index()
         {
         }
 
@@ -34,27 +38,9 @@ namespace KleeneStar.Core.WWW.Profile
 
             visualTree.Content.MainPanel.AddPrimary(new ControlText()
             {
-                Text = _ => I18N.Translate(renderContext, "kleenestar.core:profile.sessions.header"),
-                TextColor = _ => new PropertyColorText(TypeColorText.Info),
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
-            });
-
-            visualTree.Content.MainPanel.AddPrimary(new ControlText()
-            {
                 Text = _ => I18N.Translate(renderContext, "kleenestar.core:profile.sessions.description"),
                 Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two)
             });
-
-            var table = new ControlTable()
-            {
-                Striped = _ => TypeStripedTable.Row
-            }
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:profile.sessions.column.device"))
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:profile.sessions.column.browser"))
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:profile.sessions.column.location"))
-                .AddColumn(I18N.Translate(renderContext, "kleenestar.core:profile.sessions.column.lastactive"));
-
-            visualTree.Content.MainPanel.AddPrimary(table);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using KleeneStar.Core.WebManager;
+﻿using KleeneStar.Core.WebControl;
+using KleeneStar.Core.WebManager;
 using System;
 using System.IO;
 using System.Linq;
@@ -50,6 +51,8 @@ namespace KleeneStar.Core
         private static ValueManager _valueManager;
         private static ObjectLinkManager _objectLinkManager;
         private static SessionManager _sessionManager;
+        private static IdentitySessionManager _identitySessionManager;
+        private static AccessTokenManager _accessTokenManager;
         private static SavedSearchManager _savedSearchManager;
         private static SprintManager _sprintManager;
 
@@ -228,6 +231,18 @@ namespace KleeneStar.Core
         /// entries (e.g. persisted REST API table column layouts).
         /// </summary>
         public static ISessionManager SessionManager => _sessionManager ??= ComponentHub.GetComponentManager<SessionManager>();
+
+        /// <summary>
+        /// Gets the identity-session manager responsible for the devices and browsers that
+        /// are currently signed in with an identity.
+        /// </summary>
+        public static IIdentitySessionManager IdentitySessionManager => _identitySessionManager ??= ComponentHub.GetComponentManager<IdentitySessionManager>();
+
+        /// <summary>
+        /// Gets the access-token manager responsible for the personal access tokens an
+        /// identity created for API access and integrations.
+        /// </summary>
+        public static IAccessTokenManager AccessTokenManager => _accessTokenManager ??= ComponentHub.GetComponentManager<AccessTokenManager>();
 
         /// <summary>
         /// Gets the saved-search manager responsible for the per-identity saved searches
@@ -414,6 +429,91 @@ namespace KleeneStar.Core
             File.WriteAllText(outputPath, newContent);
 
             return icon;
+        }
+
+        /// <summary>
+        /// Stores an image an avatar control submitted and returns the icon that serves it.
+        /// </summary>
+        /// <remarks>
+        /// The avatar control posts its picture inline, as
+        /// <c>file:&lt;name&gt;;data:&lt;mime&gt;;base64,&lt;payload&gt;</c>. An
+        /// <see cref="ImageIcon"/> holds a URI and nothing else, so the payload has to be put
+        /// somewhere it can be served from before the entity can point at it. It is written
+        /// next to the generated initials icons, under the same <c>assets/icons</c> route that
+        /// already serves PNG, JPEG, GIF and WebP.
+        ///
+        /// The file name carries a short hash of the content, so replacing a picture yields a
+        /// new URI: the icon route answers with a one-year immutable cache, and a stable name
+        /// would leave every browser showing the old picture. Previous files of the same owner
+        /// are removed as the new one is written.
+        /// </remarks>
+        /// <param name="ownerId">
+        /// The entity the picture belongs to; names the file and scopes the cleanup.
+        /// </param>
+        /// <param name="payload">
+        /// The value submitted by the avatar control. An empty or unparsable payload yields
+        /// <see langword="null"/>, which the caller reads as "no picture given".
+        /// </param>
+        /// <returns>
+        /// The icon serving the stored picture, or <see langword="null"/> when the payload
+        /// carried no image.
+        /// </returns>
+        public static ImageIcon StoreIcon(Guid ownerId, string payload)
+        {
+            var image = ImagePayload.Parse(payload);
+
+            if (image is null)
+            {
+                return null;
+            }
+
+            var iconDirectory = Path.Combine(AppContext.BaseDirectory, HttpServerContext?.DataPath, "icons");
+            var fileName = $"{ownerId}-{image.Fingerprint}{image.Extension}";
+            var outputPath = Path.Combine(iconDirectory, fileName);
+
+            Directory.CreateDirectory(iconDirectory);
+            RemoveStoredIcons(ownerId, outputPath);
+
+            File.WriteAllBytes(outputPath, image.Content);
+
+            return new ImageIcon(ApplicationContext.Route.Concat($"/assets/icons/{fileName}").ToUri());
+        }
+
+        /// <summary>
+        /// Removes the pictures stored for the given owner by <see cref="StoreIcon"/>.
+        /// </summary>
+        /// <remarks>
+        /// Used when a user removes their picture, so the entity falls back to the generated
+        /// initials icon and the uploaded file does not stay on disk and reachable. The
+        /// generated icon itself is named after the bare id and is therefore left alone.
+        /// </remarks>
+        /// <param name="ownerId">The entity whose stored pictures are removed.</param>
+        /// <param name="keepPath">
+        /// A file to spare, used by <see cref="StoreIcon"/> to clear the previous pictures
+        /// while writing the new one. <see langword="null"/> removes all of them.
+        /// </param>
+        public static void RemoveStoredIcons(Guid ownerId, string keepPath = null)
+        {
+            var iconDirectory = Path.Combine(AppContext.BaseDirectory, HttpServerContext?.DataPath, "icons");
+
+            if (!Directory.Exists(iconDirectory))
+            {
+                return;
+            }
+
+            foreach (var stale in Directory.EnumerateFiles(iconDirectory, $"{ownerId}-*")
+                .Where(x => !string.Equals(x, keepPath, StringComparison.OrdinalIgnoreCase)))
+            {
+                try
+                {
+                    File.Delete(stale);
+                }
+                catch (IOException)
+                {
+                    // a file still held open elsewhere is left for the next write to clean up;
+                    // failing here would lose the picture the user just uploaded
+                }
+            }
         }
     }
 }

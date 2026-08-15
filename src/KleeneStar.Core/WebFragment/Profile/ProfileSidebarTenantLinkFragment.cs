@@ -12,10 +12,10 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Profile
 {
     /// <summary>
-    /// Sidebar link to the notification preferences page.
+    /// Sidebar link to the "tenant and role" page (active tenant, role, department, deputy).
     /// </summary>
     [Section<SectionSidebarPreferences>]
-    [Order(4)]
+    [Order(2)]
     [Scope<global::KleeneStar.Core.WWW.Profile.Index>]
     [Scope<global::KleeneStar.Core.WWW.Profile.Account>]
     [Scope<global::KleeneStar.Core.WWW.Profile.Tenant>]
@@ -28,22 +28,22 @@ namespace KleeneStar.Core.WebFragment.Profile
     [Scope<global::KleeneStar.Core.WWW.Profile.Data>]
     [Scope<global::KleeneStar.Core.WWW.Profile.Delete>]
     [Cache]
-    public sealed class ProfileSidebarNotificationsLinkFragment : FragmentControlSidebarItemLink
+    public sealed class ProfileSidebarTenantLinkFragment : FragmentControlSidebarItemLink
     {
-        private static readonly IUri _uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Profile.Notifications>();
+        private static readonly IUri _uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Profile.Tenant>();
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">
-        /// The context associated with the fragment, providing necessary data and services for 
+        /// The context associated with the fragment, providing necessary data and services for
         /// its operation. Cannot be null.
         /// </param>
-        public ProfileSidebarNotificationsLinkFragment(IFragmentContext fragmentContext)
+        public ProfileSidebarTenantLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconBell(TypeIconTheme.Light);
-            Text = _ => "kleenestar.core:profile.notifications.title";
+            Icon = _ => new IconBuilding(TypeIconTheme.Light);
+            Text = _ => "kleenestar.core:profile.tenant.title";
             Uri = _ => _uri;
             Active = renderContext => ProfileSidebarUriHelper.IsActive(renderContext, _uri)
                 ? TypeActive.Active

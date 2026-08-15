@@ -175,7 +175,7 @@ namespace KleeneStar.Core.Test.WebManager
             State = SlaPolicyState.Active,
             Priority = SlaPriority.Critical,
             CalendarId = null,
-            Notifications = SlaNotificationChannels.Email | SlaNotificationChannels.Slack,
+            Notifications = SlaNotificationChannels.Email | SlaNotificationChannels.InApp,
             Targets =
             {
                 new SlaTarget { Name = "First response", Kind = SlaTargetKind.Response,   TargetValue = 30, Unit = SlaTargetUnit.Minutes },

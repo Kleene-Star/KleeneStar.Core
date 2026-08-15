@@ -3,6 +3,7 @@ using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using WebExpress.WebCore.WebComponent;
+using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
 
 namespace KleeneStar.Core.WebManager
@@ -41,6 +42,16 @@ namespace KleeneStar.Core.WebManager
         /// <param name="identityId">The id parameter of the identity.</param>
         /// <returns>The identity.</returns>
         Identity GetIdentity(IdentityIdParameter identityId);
+
+        /// <summary>
+        /// Returns the identity the given request is served for — the account whose profile
+        /// settings the profile pages read and write.
+        /// </summary>
+        /// <param name="request">The current HTTP request.</param>
+        /// <returns>
+        /// The identity of the caller, or <see langword="null"/> when no identity can be resolved.
+        /// </returns>
+        Identity GetCurrentIdentity(IRequest request);
 
         /// <summary>
         /// Retrieves a collection of identities that satisfy the specified filter criteria.
