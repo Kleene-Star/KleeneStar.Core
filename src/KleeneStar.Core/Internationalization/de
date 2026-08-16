@@ -481,6 +481,13 @@ object.view.issues.label=Vorgänge
 object.view.issues.description=Zuletzt aktualisierte Vorgänge mit persönlichen Filtern.
 object.view.assets.label=Assets
 object.view.assets.description=Zuletzt aktualisierte Assets mit persönlichen Filtern.
+object.view.gantt.label=Zeitplan
+object.view.gantt.description=Gantt-Diagramm der Vorgänge, aufgetragen auf einer Zeitachse.
+object.view.gantt.title=Vorgangs-Zeitplan
+object.view.scheduler.label=Kalender
+object.view.scheduler.description=Kalenderansicht der Vorgänge nach Monat, Woche oder Agenda.
+object.view.scheduler.title=Vorgangs-Kalender
+object.view.plan.conflict=Verschieben nicht möglich: Für diese Klasse ist kein passendes Datumsfeld modelliert.
 object.summary.label=Zusammenfassung
 object.summary.placeholder=Geben Sie eine kurze Zusammenfassung des Objekts ein.
 object.summary.help=Die Zusammenfassung hilft Ihnen, dieses Objekt schnell zu identifizieren.
@@ -1055,6 +1062,8 @@ comment.state.active.label=Aktiv
 comment.state.edited.label=Bearbeitet
 comment.state.deleted.label=Gelöscht
 comment.state.hidden.label=Ausgeblendet
+comment.visibility.public.label=Öffentlich
+comment.visibility.internal-team.label=Nur Service-Team
 
 # notification titles (operation-level, shared)
 notification.center.title=Benachrichtigungen

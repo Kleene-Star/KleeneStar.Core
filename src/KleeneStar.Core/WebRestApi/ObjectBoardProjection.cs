@@ -2,6 +2,7 @@ using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using WebExpress.WebIndex.Queries;
@@ -23,6 +24,18 @@ namespace KleeneStar.Core.WebRestApi
 
         /// <summary>Gets the priority-typed field of the class, or <see langword="null"/>.</summary>
         public Field PriorityField { get; init; }
+
+        /// <summary>
+        /// Gets the date-typed field the timeline views read an object's start from, or
+        /// <see langword="null"/> when the class models no date at all.
+        /// </summary>
+        public Field StartDateField { get; init; }
+
+        /// <summary>
+        /// Gets the date-typed field the timeline views read an object's end from, or
+        /// <see langword="null"/> when the class models only one date.
+        /// </summary>
+        public Field EndDateField { get; init; }
 
         /// <summary>Gets the active statuses of the class.</summary>
         public IReadOnlyList<Status> Statuses { get; init; }
@@ -54,14 +67,177 @@ namespace KleeneStar.Core.WebRestApi
                 .Where(s => s.State == StatusState.Active)
                 .ToList();
 
+            var dateFields = ResolveDateFields(fields);
+
             return new ObjectBoardClassContext
             {
                 Class = cls,
                 WorkflowField = fields.FirstOrDefault(f => f.FieldType == FieldType.Workflow),
                 PriorityField = fields.FirstOrDefault(f => f.FieldType == FieldType.Priority),
+                StartDateField = dateFields.Start,
+                EndDateField = dateFields.End,
                 Statuses = statuses
             };
         }
+
+        /// <summary>
+        /// Picks the two date fields the Gantt and the calendar read an object's span from.
+        /// </summary>
+        /// <remarks>
+        /// A class does not declare which of its dates is the start and which the end, so
+        /// the fields are matched by name. The tokens are ranked, not merely tested, so a
+        /// class carrying both a "PlannedEnd" and a "DueDate" pairs the planned end with the
+        /// planned start instead of taking whichever happens to be declared first.
+        /// <para>
+        /// Only when neither side matched does declaration order decide, first field to
+        /// start and second to end. A side that stays unmatched stays null on purpose: an
+        /// unrelated date pressed into the empty slot would draw a bar nobody modelled.
+        /// </para>
+        /// <para>
+        /// Fields that merely alias the object's own lifecycle timestamps are skipped — those
+        /// are already the fallback span, and letting them win here would make every bar
+        /// identical.
+        /// </para>
+        /// </remarks>
+        /// <param name="fields">The active fields of the class.</param>
+        /// <returns>The start and end field, either of which may be <see langword="null"/>.</returns>
+        private static (Field Start, Field End) ResolveDateFields(IReadOnlyList<Field> fields)
+        {
+            var dates = fields
+                .Where(f => f.FieldType is FieldType.Date or FieldType.Calendar)
+                .Where(f => !IsSystemTimestampAlias(f.Name))
+                .OrderBy(f => f.Created)
+                .ToList();
+
+            if (dates.Count == 0)
+            {
+                return (null, null);
+            }
+
+            var start = BestMatch(dates, StartFieldNames, null);
+            var end = BestMatch(dates, EndFieldNames, start);
+
+            if (start is null && end is null && dates.Count > 1)
+            {
+                return (dates[0], dates[1]);
+            }
+
+            return (start, end);
+        }
+
+        /// <summary>
+        /// Returns the field whose name matches the earliest — that is, the most specific —
+        /// token of the supplied list.
+        /// </summary>
+        /// <param name="dates">The candidate date fields, in declaration order.</param>
+        /// <param name="tokens">The tokens, most specific first.</param>
+        /// <param name="taken">A field already claimed by the other side, or <see langword="null"/>.</param>
+        /// <returns>The best match, or <see langword="null"/> when no name matches.</returns>
+        private static Field BestMatch(IReadOnlyList<Field> dates, IReadOnlyList<string> tokens, Field taken)
+        {
+            foreach (var token in tokens)
+            {
+                var match = dates.FirstOrDefault(f => f != taken && Normalize(f.Name).Contains(token, StringComparison.Ordinal));
+
+                if (match is not null)
+                {
+                    return match;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Reads the planned span of an object from its class' date fields.
+        /// </summary>
+        /// <remarks>
+        /// A deadline on its own still describes a span: the work has run from the moment the
+        /// object was raised until the day it is due, so a stamped end without a stamped start
+        /// opens the bar at <see cref="Model.Entities.Object.Created"/> rather than collapsing
+        /// it. A start without an end, and an object whose class models no dates at all,
+        /// resolve to a milestone on the one day the model actually knows about — which keeps
+        /// every object on the timeline instead of dropping the undated ones.
+        /// </remarks>
+        /// <param name="entity">The object to place.</param>
+        /// <param name="context">The board context of the object's class.</param>
+        /// <returns>The start and end of the object's bar, start never after end.</returns>
+        public static (DateTime Start, DateTime End) ResolvePlan(Model.Entities.Object entity, ObjectBoardClassContext context)
+        {
+            var start = ReadDate(entity.Id, context?.StartDateField);
+            var end = ReadDate(entity.Id, context?.EndDateField);
+
+            if (start is null && end is not null)
+            {
+                start = entity.Created;
+            }
+
+            start ??= entity.Created;
+            end ??= start;
+
+            return end < start ? (start.Value, start.Value) : (start.Value, end.Value);
+        }
+
+        /// <summary>
+        /// Reads a date-field value of an object.
+        /// </summary>
+        /// <param name="objectId">The object id.</param>
+        /// <param name="field">The date field, or <see langword="null"/>.</param>
+        /// <returns>The stamped date, or <see langword="null"/> when unset or unparsable.</returns>
+        public static DateTime? ReadDate(Guid objectId, Field field)
+        {
+            if (field is null)
+            {
+                return null;
+            }
+
+            var data = CoreHub.ValueManager.GetValue(objectId, field.Id)?.Data;
+
+            return DateTime.TryParse(data, CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind, out var value)
+                ? value
+                : null;
+        }
+
+        /// <summary>
+        /// Returns the completion percentage a status category reports on the timeline.
+        /// </summary>
+        /// <param name="category">The resolved category, or <see langword="null"/>.</param>
+        /// <returns>The progress in the range 0..100.</returns>
+        public static int CategoryProgress(StatusCategory category)
+        {
+            return Normalize(category?.Name) switch
+            {
+                "inprogress" => 50,
+                "waiting" => 50,
+                "done" => 100,
+                _ => 0
+            };
+        }
+
+        /// <summary>
+        /// Determines whether a field name aliases one of the object's own lifecycle
+        /// timestamps, which the timeline views already have first-hand.
+        /// </summary>
+        /// <param name="fieldName">The field name.</param>
+        /// <returns><see langword="true"/> when the name is such an alias.</returns>
+        private static bool IsSystemTimestampAlias(string fieldName)
+        {
+            return Normalize(fieldName) is "created" or "createdat" or "createddate"
+                or "updated" or "updatedat" or "updateddate";
+        }
+
+        /// <summary>
+        /// The name tokens that mark a date field as the start of a span, most specific
+        /// first. They are matched against <see cref="Normalize"/>d names, which keep their
+        /// umlauts.
+        /// </summary>
+        private static readonly string[] StartFieldNames = ["start", "beginn", "begin", "from", "von"];
+
+        /// <summary>
+        /// The name tokens that mark a date field as the end of a span, most specific first —
+        /// a planned end beats a due date, which beats a vague "until".
+        /// </summary>
+        private static readonly string[] EndFieldNames = ["ende", "end", "due", "deadline", "fällig", "until", "bis", "ziel"];
 
         /// <summary>
         /// Returns all status categories ordered for board display: To Do, In Progress,

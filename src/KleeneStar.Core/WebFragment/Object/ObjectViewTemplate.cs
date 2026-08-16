@@ -42,7 +42,12 @@ namespace KleeneStar.Core.WebFragment.Object
                 // is declared first, so that is the type a newly added scrum tab is created
                 // as.
                 (ObjectViewType.ScrumSprint, typeof(IssueTabScrumTemplateFragment)),
-                (ObjectViewType.ScrumBacklog, typeof(IssueTabScrumTemplateFragment))
+                (ObjectViewType.ScrumBacklog, typeof(IssueTabScrumTemplateFragment)),
+
+                // the timeline and the calendar read the same date fields, but each renders
+                // its own control, so each has a template of its own
+                (ObjectViewType.Gantt, typeof(IssueTabGanttTemplateFragment)),
+                (ObjectViewType.Scheduler, typeof(IssueTabSchedulerTemplateFragment))
             ],
             [ObjectKind.Asset] =
             [
@@ -52,8 +57,9 @@ namespace KleeneStar.Core.WebFragment.Object
                 (ObjectViewType.Dashboard, typeof(AssetTabDashboardTemplateFragment)),
                 (ObjectViewType.Kanban, typeof(AssetTabKanbanTemplateFragment))
 
-                // the asset overview embeds no scrum templates, so those view types are absent
-                // here on purpose and are neither offered nor resolvable for assets
+                // the asset overview embeds no scrum, gantt or scheduler templates, so those
+                // view types are absent here on purpose and are neither offered nor
+                // resolvable for assets
             ]
         };
 

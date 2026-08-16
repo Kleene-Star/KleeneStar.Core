@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebIndex.Queries;
@@ -92,7 +93,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Comments._objectkey_
                 .Where(c => !c.ParentCommentId.HasValue)
                 .OrderByDescending(c => c.IsPinned)
                 .ThenBy(c => c.Created)
-                .Select(c => ToItem(c, byParent))
+                .Select(c => ToItem(c, byParent, request))
                 .ToList();
         }
 
@@ -122,13 +123,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Comments._objectkey_
                 AuthorId = ResolveAuthorId(request),
                 Content = payload.Body.Trim(),
                 State = CommentState.Active,
+                Visibility = ResolveVisibility(payload),
                 Created = DateTime.UtcNow,
                 Updated = DateTime.UtcNow
             };
 
             CoreHub.CommentManager.Add(comment);
 
-            return ToItem(LoadWithAuthor(comment.Id), parentReplies: null);
+            return ToItem(LoadWithAuthor(comment.Id), parentReplies: null, request);
         }
 
         /// <summary>
@@ -161,7 +163,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Comments._objectkey_
 
             CoreHub.CommentManager.Update(existing);
 
-            return ToItem(LoadWithAuthor(id), parentReplies: null);
+            return ToItem(LoadWithAuthor(id), parentReplies: null, request);
         }
 
         /// <summary>
@@ -219,6 +221,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Comments._objectkey_
                 AuthorId = ResolveAuthorId(request),
                 Content = reply.Trim(),
                 State = CommentState.Active,
+
+                // a reply never widens the audience of the thread it hangs under, otherwise
+                // answering a service-team note would publish its subject to the requester
+                Visibility = parent.Visibility,
                 ParentCommentId = parentId,
                 Created = DateTime.UtcNow,
                 Updated = DateTime.UtcNow
@@ -407,8 +413,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Comments._objectkey_
         /// <param name="parentReplies">A dictionary of parent-id → replies, used when
         /// rendering a top-level comment with its nested replies. Pass <c>null</c> when
         /// mapping a freshly created comment that has no replies yet.</param>
+        /// <param name="request">The HTTP request, used to localize the audience label.</param>
         /// <returns>The REST DTO.</returns>
-        private static RestApiCommentItem ToItem(Comment comment, IReadOnlyDictionary<Guid, List<Comment>> parentReplies)
+        private static RestApiCommentItem ToItem(Comment comment, IReadOnlyDictionary<Guid, List<Comment>> parentReplies, IRequest request)
         {
             if (comment is null)
             {
@@ -424,6 +431,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Comments._objectkey_
                 Body = isDeleted ? "" : comment.Content,
                 When = FormatTimestamp(comment.Created),
                 Category = comment.State.ToString(),
+
+                // the operator thread shows every comment, so the narrowed audience has to
+                // be legible on the entry itself — otherwise a service-team note is
+                // indistinguishable from one the requester can read. Public is the norm and
+                // stays unlabelled.
+                Labels = comment.Visibility == CommentVisibility.InternalTeam
+                    ? [I18N.Translate(request, CommentVisibility.InternalTeam.Text())]
+                    : null,
                 Pinned = comment.IsPinned,
                 Likes = comment.Likes?
                     .OrderBy(l => l.Created)
@@ -461,6 +476,21 @@ namespace KleeneStar.Core.WWW.Api._1_.Comments._objectkey_
             }
 
             return item;
+        }
+
+        /// <summary>
+        /// Resolves the audience of a newly composed comment from the payload. The
+        /// composer has no dedicated visibility field, so the audience travels in
+        /// <see cref="RestApiCommentPayload.Category"/> (the free-form slot the control
+        /// already round-trips); anything the model does not recognise reads as
+        /// <see cref="CommentVisibility.Public"/>, so an operator never narrows the
+        /// audience by typo.
+        /// </summary>
+        /// <param name="payload">The submitted payload.</param>
+        /// <returns>The resolved visibility.</returns>
+        private static CommentVisibility ResolveVisibility(RestApiCommentPayload payload)
+        {
+            return CommentVisibilityExtensions.Parse(payload?.Category);
         }
 
         /// <summary>

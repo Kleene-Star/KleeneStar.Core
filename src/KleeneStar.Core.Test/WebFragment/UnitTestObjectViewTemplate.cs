@@ -49,6 +49,8 @@ namespace KleeneStar.Core.Test.WebFragment
         // resolve to the same template and a tab persisted as either one still renders
         [InlineData(ObjectViewType.ScrumSprint, typeof(IssueTabScrumTemplateFragment))]
         [InlineData(ObjectViewType.ScrumBacklog, typeof(IssueTabScrumTemplateFragment))]
+        [InlineData(ObjectViewType.Gantt, typeof(IssueTabGanttTemplateFragment))]
+        [InlineData(ObjectViewType.Scheduler, typeof(IssueTabSchedulerTemplateFragment))]
         public void ResolveTemplateId_ForIssues_NamesTheIssueTemplate(ObjectViewType type, Type expected)
         {
             Assert.Equal
@@ -102,6 +104,8 @@ namespace KleeneStar.Core.Test.WebFragment
         [InlineData(ObjectViewType.ScrumSprint)]
         [InlineData(ObjectViewType.ScrumBacklog)]
         [InlineData(ObjectViewType.Issues)]
+        [InlineData(ObjectViewType.Gantt)]
+        [InlineData(ObjectViewType.Scheduler)]
         public void ResolveTemplateId_ForAssets_HasNoScrumOrIssueTemplates(ObjectViewType type)
         {
             Assert.Null(ObjectViewTemplate.ResolveTemplateId(type, ObjectKind.Asset));
@@ -199,7 +203,9 @@ namespace KleeneStar.Core.Test.WebFragment
                 typeof(IssueTabViewTemplateFragment),
                 typeof(IssueTabDashboardTemplateFragment),
                 typeof(IssueTabKanbanTemplateFragment),
-                typeof(IssueTabScrumTemplateFragment)
+                typeof(IssueTabScrumTemplateFragment),
+                typeof(IssueTabGanttTemplateFragment),
+                typeof(IssueTabSchedulerTemplateFragment)
             }
                 .Select(ObjectViewTemplate.TemplateId)
                 .ToHashSet(StringComparer.OrdinalIgnoreCase);
