@@ -1,4 +1,4 @@
-﻿using KleeneStar.Core.WebManager;
+using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebPolicies;
 using WebExpress.WebApp.WebSection;

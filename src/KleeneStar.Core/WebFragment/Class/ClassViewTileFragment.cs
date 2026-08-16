@@ -1,4 +1,4 @@
-﻿using WebExpress.WebApp.WebControl;
+using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
