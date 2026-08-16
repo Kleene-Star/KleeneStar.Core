@@ -1057,6 +1057,35 @@ comment.state.deleted.label=Deleted
 comment.state.hidden.label=Hidden
 
 # notification titles (operation-level, shared)
+notification.center.title=Notifications
+notification.center.description=Every in-app notification of your account, newest first.
+notification.center.count={0} notifications · {1} unread
+notification.center.empty=No notifications yet.
+notification.center.unread=New
+notification.center.readall=Mark all as read
+notification.center.clear=Clear all
+notification.center.age.now=just now
+notification.center.age.minutes={0} minutes ago
+notification.center.age.hours={0} hours ago
+notification.center.age.days={0} days ago
+notification.center.showall=Show all
+notification.center.settings=Settings
+notification.center.markread=Mark as read
+notification.center.column.event=Event
+notification.center.column.message=Message
+notification.center.column.subject=Subject
+notification.center.column.actor=Originator
+notification.center.column.state=Status
+notification.center.column.created=Time
+notification.center.state.read=Read
+notification.center.state.unread=Unread
+notification.center.actor.system=System
+notification.center.filter.unread=Unread
+notification.center.filter.read=Read
+notification.center.filter.created=Created
+notification.center.filter.updated=Updated
+notification.center.filter.deleted=Deleted
+
 notification.title.created=Created
 notification.title.updated=Updated
 notification.title.deleted=Deleted

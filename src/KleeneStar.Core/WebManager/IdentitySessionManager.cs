@@ -90,7 +90,7 @@ namespace KleeneStar.Core.WebManager
 
             IdentitySessionRemoved?.Invoke(this, session);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.session.revoked", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.session.revoked", session);
 
             return this;
         }
@@ -112,7 +112,16 @@ namespace KleeneStar.Core.WebManager
 
             IdentitySessionRemoved?.Invoke(this, null);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.session.revokedall", 5000);
+            // no single session left to name, so the entry points at the list the sessions were
+            // ended from rather than carrying no link at all
+            CoreHub.AddNotification
+            (
+                "kleenestar.core:notification.title.deleted",
+                "kleenestar.core:notification.session.revokedall",
+                5000,
+                null,
+                CoreHub.GetUri<global::KleeneStar.Core.WWW.Profile.Sessions.Index>()?.ToString()
+            );
 
             return this;
         }

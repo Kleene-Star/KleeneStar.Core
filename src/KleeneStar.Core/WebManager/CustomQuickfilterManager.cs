@@ -135,7 +135,7 @@ namespace KleeneStar.Core.WebManager
             CustomQuickfilterAdded?.Invoke(this, quickfilterEntity);
 
             // create notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.quickfilter.created", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.quickfilter.created", quickfilterEntity);
 
             return this;
         }
@@ -156,7 +156,7 @@ namespace KleeneStar.Core.WebManager
             CustomQuickfilterUpdated?.Invoke(this, quickfilterEntity);
 
             // update notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.quickfilter.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.quickfilter.updated", quickfilterEntity);
 
             return this;
         }

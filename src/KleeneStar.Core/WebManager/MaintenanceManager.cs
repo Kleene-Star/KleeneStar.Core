@@ -141,7 +141,7 @@ namespace KleeneStar.Core.WebManager
             MaintenanceUpdated?.Invoke(this, maintenanceEntity);
 
             // update notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.maintenance.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.maintenance.updated", maintenanceEntity);
 
             return this;
         }

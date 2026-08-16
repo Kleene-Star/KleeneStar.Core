@@ -27,7 +27,7 @@ namespace KleeneStar.Core.WebControl
         /// <summary>
         /// Gets or sets the icon shown in front of the text.
         /// </summary>
-        public Func<IRenderControlContext, IIcon> Icon { get; set; } = _ => new IconInfo();
+        public Func<IRenderControlContext, IIcon> Icon { get; set; } = _ => new IconInfo(TypeIconTheme.Light);
 
         /// <summary>
         /// Initializes a new instance of the class.

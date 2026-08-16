@@ -225,7 +225,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
             {
                 Text = _ => $"{obj.Key}  {obj.Summary}",
                 Tooltip = _ => obj.Summary,
-                Icon = _ => (IIcon)obj.Icon ?? new IconObject(),
+                Icon = _ => (IIcon)obj.Icon ?? new IconObject(TypeIconTheme.Light),
                 Expand = _ => depth == 0
             };
         }

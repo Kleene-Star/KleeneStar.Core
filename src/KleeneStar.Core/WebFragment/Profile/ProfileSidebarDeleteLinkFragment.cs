@@ -3,6 +3,7 @@ using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebUri;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -41,7 +42,7 @@ namespace KleeneStar.Core.WebFragment.Profile
         public ProfileSidebarDeleteLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconTrashCan();
+            Icon = _ => new IconTrashCan(TypeIconTheme.Light);
             Text = _ => "kleenestar.core:profile.delete.title";
             Uri = _ => _uri;
             Active = renderContext => ProfileSidebarUriHelper.IsActive(renderContext, _uri)

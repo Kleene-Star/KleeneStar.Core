@@ -193,35 +193,35 @@ namespace KleeneStar.Core.WebFragment.Object
 
             if (type.StartsWith("image/"))
             {
-                return new IconFileImage();
+                return new IconFileImage(TypeIconTheme.Light);
             }
 
             if (type == "application/pdf" || name.EndsWith(".pdf"))
             {
-                return new IconFilePdf();
+                return new IconFilePdf(TypeIconTheme.Light);
             }
 
             if (type.Contains("word") || name.EndsWith(".doc") || name.EndsWith(".docx"))
             {
-                return new IconFileWord();
+                return new IconFileWord(TypeIconTheme.Light);
             }
 
             if (type.Contains("spreadsheet") || type.Contains("excel") || name.EndsWith(".xls") || name.EndsWith(".xlsx") || name.EndsWith(".csv"))
             {
-                return new IconFileExcel();
+                return new IconFileExcel(TypeIconTheme.Light);
             }
 
             if (type.Contains("zip") || name.EndsWith(".zip") || name.EndsWith(".7z") || name.EndsWith(".rar"))
             {
-                return new IconFileZipper();
+                return new IconFileZipper(TypeIconTheme.Light);
             }
 
             if (type.StartsWith("text/") || name.EndsWith(".txt") || name.EndsWith(".log"))
             {
-                return new IconFileLines();
+                return new IconFileLines(TypeIconTheme.Light);
             }
 
-            return new IconFile();
+            return new IconFile(TypeIconTheme.Light);
         }
 
         /// <summary>

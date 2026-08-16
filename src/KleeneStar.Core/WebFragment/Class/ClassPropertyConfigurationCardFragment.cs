@@ -7,6 +7,7 @@ using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -63,14 +64,14 @@ namespace KleeneStar.Core.WebFragment.Class
 
             card.Add(new ControlAttribute("class-property-accessmodifier")
             {
-                Icon = _ => new IconLock(),
+                Icon = _ => new IconLock(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:class.accessmodifier.label",
                 Value = ctx => I18N.Translate(ctx, @class.AccessModifier.Text())
             });
 
             card.Add(new ControlAttribute("class-property-abstract")
             {
-                Icon = _ => new IconShapes(),
+                Icon = _ => new IconShapes(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:class.isabstract.label",
                 Value = ctx => I18N.Translate(ctx, @class.IsAbstract
                     ? "kleenestar.core:class.property.yes"
@@ -79,7 +80,7 @@ namespace KleeneStar.Core.WebFragment.Class
 
             card.Add(new ControlAttribute("class-property-sealed")
             {
-                Icon = _ => new IconLock(),
+                Icon = _ => new IconLock(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:class.sealed.label",
                 Value = ctx => I18N.Translate(ctx, @class.Sealed
                     ? "kleenestar.core:class.property.yes"
@@ -88,7 +89,7 @@ namespace KleeneStar.Core.WebFragment.Class
 
             card.Add(new ControlAttribute("class-property-inherited")
             {
-                Icon = _ => new IconCodeBranch(),
+                Icon = _ => new IconCodeBranch(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:class.inherited.label",
                 Value = ctx => ResolveInheritedName(ctx, @class)
             });

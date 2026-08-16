@@ -134,7 +134,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
             var month = new ControlSidebarItemLink($"blog-{now.Year}-{now.Month:D2}")
             {
                 Text = _ => culture.DateTimeFormat.GetMonthName(now.Month),
-                Icon = _ => new IconCalendar(),
+                Icon = _ => new IconCalendar(TypeIconTheme.Light),
                 Expanded = _ => true
             };
             month.Add(empty);
@@ -142,7 +142,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
             var year = new ControlSidebarItemLink($"blog-{now.Year}")
             {
                 Text = _ => now.Year.ToString(culture),
-                Icon = _ => new IconCalendarDays(),
+                Icon = _ => new IconCalendarDays(TypeIconTheme.Light),
                 Expanded = _ => true
             };
             year.Add(month);
@@ -176,7 +176,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
                 var year = new ControlSidebarItemLink($"blog-{yearGroup.Key}")
                 {
                     Text = _ => yearGroup.Key.ToString(culture),
-                    Icon = _ => new IconCalendarDays(),
+                    Icon = _ => new IconCalendarDays(TypeIconTheme.Light),
                     Expanded = _ => yearGroup.Key == newestYear || yearGroup.Key == currentYear
                 };
 
@@ -185,7 +185,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
                     var month = new ControlSidebarItemLink($"blog-{yearGroup.Key}-{monthGroup.Key:D2}")
                     {
                         Text = _ => culture.DateTimeFormat.GetMonthName(monthGroup.Key),
-                        Icon = _ => new IconCalendar(),
+                        Icon = _ => new IconCalendar(TypeIconTheme.Light),
                         Expanded = _ => yearGroup.Key == newestYear
                             || (yearGroup.Key == currentYear && monthGroup.Key == currentMonth)
                     };
@@ -252,7 +252,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
                 // frozen so the sidebar's request re-bind cannot repoint every entry at the
                 // currently displayed post (see ResolveDetailUriFrozen)
                 Uri = _ => ObjectKindCatalog.ResolveDetailUriFrozen(post),
-                Icon = _ => (IIcon)post.Icon ?? new IconBlog(),
+                Icon = _ => (IIcon)post.Icon ?? new IconBlog(TypeIconTheme.Light),
                 Active = _ => string.Equals(post.Key, currentKey, StringComparison.OrdinalIgnoreCase)
                     ? TypeActive.Active
                     : TypeActive.None

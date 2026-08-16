@@ -26,7 +26,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         /// <summary>
         /// Gets the icon representing assets.
         /// </summary>
-        public IIcon Icon => new IconCubes();
+        public IIcon Icon => new IconCubes(TypeIconTheme.Light);
 
         /// <summary>
         /// Gets the display order; assets close the built-in kind listings.

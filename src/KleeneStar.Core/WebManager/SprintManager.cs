@@ -133,7 +133,7 @@ namespace KleeneStar.Core.WebManager
             ModelHub.Add(sprintEntry);
             SprintAdded?.Invoke(this, sprintEntry);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.sprint.created", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.sprint.created", sprintEntry);
 
             return this;
         }
@@ -156,7 +156,7 @@ namespace KleeneStar.Core.WebManager
             ModelHub.Update(sprintEntry);
             SprintUpdated?.Invoke(this, sprintEntry);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.sprint.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.sprint.updated", sprintEntry);
 
             return this;
         }
@@ -174,7 +174,7 @@ namespace KleeneStar.Core.WebManager
             ModelHub.Remove(sprintEntry);
             SprintRemoved?.Invoke(this, sprintEntry);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.sprint.deleted", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.sprint.deleted", sprintEntry);
 
             return this;
         }

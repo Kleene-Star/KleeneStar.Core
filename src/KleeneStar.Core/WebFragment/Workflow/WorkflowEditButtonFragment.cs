@@ -5,6 +5,7 @@ using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebUri;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -33,7 +34,7 @@ namespace KleeneStar.Core.WebFragment.Workflow
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:workflow.edit.label";
-            Icon = _ => new IconPen();
+            Icon = _ => new IconPen(TypeIconTheme.Light);
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
             PrimaryAction = renderContext => new ActionModal

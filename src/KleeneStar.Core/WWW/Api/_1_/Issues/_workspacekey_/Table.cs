@@ -4,6 +4,7 @@ using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 
 // The entity type Object collides with System.Object; alias it so the signatures read

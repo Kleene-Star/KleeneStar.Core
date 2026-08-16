@@ -3,6 +3,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -36,7 +37,7 @@ namespace KleeneStar.Core.WebFragment.Object
             Text = renderContext => IsFavorite(renderContext)
                 ? "kleenestar.core:object.favorite.remove.label"
                 : "kleenestar.core:object.favorite.add.label";
-            Icon = _ => new IconStar();
+            Icon = _ => new IconStar(TypeIconTheme.Light);
             Uri = renderContext => CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Favorite>()?
                 .BindParameters(renderContext.Request);
         }

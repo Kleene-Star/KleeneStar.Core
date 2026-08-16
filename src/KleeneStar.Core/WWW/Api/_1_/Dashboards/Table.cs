@@ -9,6 +9,7 @@ using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
@@ -238,7 +239,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
             yield return new RestApiOptionCustom(request)
             {
                 Text = "kleenestar.core:dashboard.permission.label",
-                Icon = new IconUserShield(),
+                Icon = new IconUserShield(TypeIconTheme.Light),
                 PrimaryAction = new ActionModal("modal-form", permissionUri, TypeModalSize.ExtraLarge)
             };
 

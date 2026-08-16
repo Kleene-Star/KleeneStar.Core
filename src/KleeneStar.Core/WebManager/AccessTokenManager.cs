@@ -133,7 +133,7 @@ namespace KleeneStar.Core.WebManager
 
             AccessTokenAdded?.Invoke(this, token);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.token.created", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.token.created", token);
 
             return token;
         }
@@ -151,7 +151,7 @@ namespace KleeneStar.Core.WebManager
 
             AccessTokenUpdated?.Invoke(this, token);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.token.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.token.updated", token);
 
             return this;
         }
@@ -176,7 +176,7 @@ namespace KleeneStar.Core.WebManager
 
             AccessTokenUpdated?.Invoke(this, token);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.token.revoked", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.token.revoked", token);
 
             return this;
         }
@@ -199,7 +199,7 @@ namespace KleeneStar.Core.WebManager
 
             AccessTokenRemoved?.Invoke(this, token);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.token.deleted", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.token.deleted", token);
 
             return this;
         }

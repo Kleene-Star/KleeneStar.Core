@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebMessage;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
@@ -480,7 +481,7 @@ namespace KleeneStar.Core.WebRestApi
                 yield return new RestApiKanbanCardChip
                 {
                     Label = priority,
-                    Icon = new IconFlag(),
+                    Icon = new IconFlag(TypeIconTheme.Light),
                     Color = new PropertyColorBackgroundBadge(PriorityBadgeColor(priority)),
                     Title = "Priority"
                 };
@@ -491,7 +492,7 @@ namespace KleeneStar.Core.WebRestApi
                 yield return new RestApiKanbanCardChip
                 {
                     Label = points.ToString(),
-                    Icon = new IconScaleBalanced(),
+                    Icon = new IconScaleBalanced(TypeIconTheme.Light),
                     Color = new PropertyColorBackgroundBadge(TypeColorBackgroundBadge.Secondary),
                     Title = "Story points"
                 };

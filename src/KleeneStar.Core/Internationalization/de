@@ -1057,6 +1057,35 @@ comment.state.deleted.label=Gelöscht
 comment.state.hidden.label=Ausgeblendet
 
 # notification titles (operation-level, shared)
+notification.center.title=Benachrichtigungen
+notification.center.description=Alle In-App-Benachrichtigungen deines Kontos, neueste zuerst.
+notification.center.count={0} Benachrichtigungen · {1} ungelesen
+notification.center.empty=Keine Benachrichtigungen vorhanden.
+notification.center.unread=Neu
+notification.center.readall=Alle als gelesen markieren
+notification.center.clear=Alle löschen
+notification.center.age.now=gerade eben
+notification.center.age.minutes=vor {0} Minuten
+notification.center.age.hours=vor {0} Stunden
+notification.center.age.days=vor {0} Tagen
+notification.center.showall=Alle anzeigen
+notification.center.settings=Einstellungen
+notification.center.markread=Als gelesen markieren
+notification.center.column.event=Ereignis
+notification.center.column.message=Nachricht
+notification.center.column.subject=Betreff
+notification.center.column.actor=Verursacher
+notification.center.column.state=Status
+notification.center.column.created=Zeitpunkt
+notification.center.state.read=Gelesen
+notification.center.state.unread=Ungelesen
+notification.center.actor.system=System
+notification.center.filter.unread=Ungelesen
+notification.center.filter.read=Gelesen
+notification.center.filter.created=Erstellt
+notification.center.filter.updated=Aktualisiert
+notification.center.filter.deleted=Gelöscht
+
 notification.title.created=Erstellt
 notification.title.updated=Aktualisiert
 notification.title.deleted=Gelöscht

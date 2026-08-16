@@ -2,6 +2,7 @@
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -30,7 +31,7 @@ namespace KleeneStar.Core.WebFragment.Object
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:object.print.label";
-            Icon = _ => new IconPrint();
+            Icon = _ => new IconPrint(TypeIconTheme.Light);
             PrimaryAction = renderContext => new ActionModal
             (
                 "modal-form",

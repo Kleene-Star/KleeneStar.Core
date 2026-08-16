@@ -240,14 +240,16 @@ namespace KleeneStar.Core.WebManager
 
             if (visit is not null)
             {
-                ObjectUpdated?.Invoke(this, GetObject(objectId));
+                var @object = GetObject(objectId);
+
+                ObjectUpdated?.Invoke(this, @object);
 
                 // confirmation toast (pushed over the message queue; harmless when the host is not wired)
                 CoreHub.AddNotification
                 (
                     favorite ? "kleenestar.core:notification.title.favorited" : "kleenestar.core:notification.title.unfavorited",
                     favorite ? "kleenestar.core:notification.object.favorited" : "kleenestar.core:notification.object.unfavorited",
-                    5000
+                    @object
                 );
             }
 
@@ -269,8 +271,9 @@ namespace KleeneStar.Core.WebManager
 
             ObjectAdded?.Invoke(this, objectEntity);
 
-            // create notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.object.created", 5000);
+            // create notification. The key and the link are what turn the entry in the
+            // notification center from "an object was created" into one the user can act on.
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.object.created", objectEntity);
 
             return this;
         }
@@ -291,7 +294,7 @@ namespace KleeneStar.Core.WebManager
             ObjectUpdated?.Invoke(this, objectEntity);
 
             // create notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.object.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.object.updated", objectEntity);
 
             return this;
         }

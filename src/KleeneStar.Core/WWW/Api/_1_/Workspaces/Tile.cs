@@ -12,6 +12,7 @@ using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
@@ -204,7 +205,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             yield return new RestApiOptionCustom(request)
             {
                 Text = I18N.Translate(request, "kleenestar.core:workspace.permissions.label"),
-                Icon = new IconUserShield(),
+                Icon = new IconUserShield(TypeIconTheme.Light),
                 PrimaryAction = new ActionModal("modal-form", permissionsUri, TypeModalSize.ExtraLarge)
             };
 

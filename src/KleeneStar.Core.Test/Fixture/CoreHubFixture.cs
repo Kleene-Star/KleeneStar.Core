@@ -48,6 +48,7 @@ namespace KleeneStar.Core.Test
             ("_objectViewManager",typeof(ObjectViewManager)),
             ("_objectLinkManager",typeof(ObjectLinkManager)),
             ("_sessionManager",   typeof(SessionManager)),
+            ("_notificationCenterManager", typeof(NotificationCenterManager)),
             ("_identitySessionManager", typeof(IdentitySessionManager)),
             ("_accessTokenManager", typeof(AccessTokenManager)),
             ("_savedSearchManager",typeof(SavedSearchManager)),

@@ -158,7 +158,7 @@ namespace KleeneStar.Core.WebManager
             PriorityAdded?.Invoke(this, priorityEntity);
 
             // create notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.priority.created", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.priority.created", priorityEntity);
 
             return this;
         }
@@ -177,7 +177,7 @@ namespace KleeneStar.Core.WebManager
             PriorityUpdated?.Invoke(this, priorityEntity);
 
             // update notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.priority.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.priority.updated", priorityEntity);
 
             return this;
         }

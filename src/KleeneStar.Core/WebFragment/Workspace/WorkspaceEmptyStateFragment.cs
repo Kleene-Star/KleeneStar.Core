@@ -1,6 +1,7 @@
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -31,7 +32,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
         public WorkspaceEmptyStateFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconInbox();
+            Icon = _ => new IconInbox(TypeIconTheme.Light);
             Title = _ => "kleenestar.core:workspace.empty.title";
             Message = _ => "kleenestar.core:workspace.empty.message";
         }

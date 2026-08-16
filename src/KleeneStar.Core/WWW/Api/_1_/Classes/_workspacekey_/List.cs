@@ -8,6 +8,7 @@ using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
 
@@ -177,7 +178,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
             //            new KeyParameter(row.Key)
             //        ),
             //    Text = I18N.Translate(request, "kleenestar.core:class.manage.label"),
-            //    Icon = new IconBoxesStacked().Class
+            //    Icon = new IconBoxesStacked(TypeIconTheme.Light).Class
 
             //};
 

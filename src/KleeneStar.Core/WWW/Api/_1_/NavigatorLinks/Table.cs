@@ -10,6 +10,7 @@ using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebUI.WebControl;
@@ -300,14 +301,14 @@ namespace KleeneStar.Core.WWW.Api._1_.NavigatorLinks
             yield return new RestApiOptionCustom(request)
             {
                 Text = I18N.Translate(request, "kleenestar.core:order.move.up.label"),
-                Icon = new IconArrowUp(),
+                Icon = new IconArrowUp(TypeIconTheme.Light),
                 PrimaryAction = new ActionRequest(MoveUri(row, "up"), "PUT")
             };
 
             yield return new RestApiOptionCustom(request)
             {
                 Text = I18N.Translate(request, "kleenestar.core:order.move.down.label"),
-                Icon = new IconArrowDown(),
+                Icon = new IconArrowDown(TypeIconTheme.Light),
                 PrimaryAction = new ActionRequest(MoveUri(row, "down"), "PUT")
             };
 

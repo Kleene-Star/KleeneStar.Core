@@ -11,6 +11,7 @@ using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
@@ -253,7 +254,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
             yield return new RestApiOptionCustom(request)
             {
                 Text = I18N.Translate(request, "kleenestar.core:setting.tenant.avatar.label"),
-                Icon = new IconImage(),
+                Icon = new IconImage(TypeIconTheme.Light),
                 PrimaryAction = new ActionModal("modal-form", avatarUri, TypeModalSize.ExtraLarge)
             };
 

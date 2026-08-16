@@ -3,6 +3,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -38,7 +39,7 @@ namespace KleeneStar.Core.WebFragment.Object
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:workspace.organize.title";
-            Icon = _ => new IconSitemap();
+            Icon = _ => new IconSitemap(TypeIconTheme.Light);
             // target the body-level page-modal rendered by ObjectOrganizeModalFragment; a form modal
             // would inject only <form> children and leave the tree dialog empty.
             PrimaryAction = renderContext => new ActionModal

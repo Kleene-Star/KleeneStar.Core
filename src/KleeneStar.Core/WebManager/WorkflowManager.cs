@@ -463,7 +463,7 @@ namespace KleeneStar.Core.WebManager
             WorkflowAdded?.Invoke(this, workflowEntity);
 
             // create notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.workflow.created", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.workflow.created", workflowEntity);
 
             return this;
         }
@@ -482,7 +482,7 @@ namespace KleeneStar.Core.WebManager
             WorkflowUpdated?.Invoke(this, workflowEntity);
 
             // update notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.workflow.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.workflow.updated", workflowEntity);
 
             return this;
         }

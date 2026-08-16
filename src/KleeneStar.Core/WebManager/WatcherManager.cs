@@ -138,7 +138,7 @@ namespace KleeneStar.Core.WebManager
 
             ModelHub.Add(watcher);
             WatcherAdded?.Invoke(this, watcher);
-            TryAddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.watcher.created");
+            TryAddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.watcher.created", CoreHub.ObjectManager.GetObject(objectId));
 
             return watcher;
         }
@@ -163,7 +163,7 @@ namespace KleeneStar.Core.WebManager
 
             ModelHub.Remove(existing);
             WatcherRemoved?.Invoke(this, existing);
-            TryAddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.watcher.deleted");
+            TryAddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.watcher.deleted", CoreHub.ObjectManager.GetObject(objectId));
 
             return true;
         }
@@ -182,11 +182,11 @@ namespace KleeneStar.Core.WebManager
         /// </summary>
         /// <param name="titleKey">The i18n key of the notification title.</param>
         /// <param name="messageKey">The i18n key of the notification message.</param>
-        private static void TryAddNotification(string titleKey, string messageKey)
+        private static void TryAddNotification(string titleKey, string messageKey, object subject)
         {
             try
             {
-                CoreHub.AddNotification(titleKey, messageKey, 5000);
+                CoreHub.AddNotification(titleKey, messageKey, subject);
             }
             catch
             {

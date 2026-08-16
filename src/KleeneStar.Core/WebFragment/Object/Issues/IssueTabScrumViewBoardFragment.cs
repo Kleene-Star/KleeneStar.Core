@@ -3,6 +3,7 @@ using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -45,7 +46,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         {
             var id = fragmentContext?.FragmentId?.ToString()?.Replace(".", "-");
 
-            Icon = _ => new IconTableColumns();
+            Icon = _ => new IconTableColumns(TypeIconTheme.Light);
             Title = _ => "kleenestar.core:view.board.title";
 
             // it shares the same workspace+kind (issue) board configuration as the main

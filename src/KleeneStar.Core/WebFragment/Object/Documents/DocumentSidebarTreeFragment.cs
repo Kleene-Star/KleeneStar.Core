@@ -239,7 +239,7 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
                 // frozen so the sidebar's request re-bind cannot repoint every entry at the
                 // currently displayed document (see ResolveDetailUriFrozen)
                 Uri = _ => ObjectKindCatalog.ResolveDetailUriFrozen(document),
-                Icon = _ => (IIcon)document.Icon ?? new IconFileLines(),
+                Icon = _ => (IIcon)document.Icon ?? new IconFileLines(TypeIconTheme.Light),
                 Active = _ => string.Equals(document.Key, currentKey, StringComparison.OrdinalIgnoreCase)
                     ? TypeActive.Active
                     : TypeActive.None,

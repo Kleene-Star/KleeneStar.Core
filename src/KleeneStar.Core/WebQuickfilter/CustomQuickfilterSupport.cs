@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using WebExpress.WebApp.WebRestApi;
 using WebExpress.WebCore.WebMessage;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebIndex;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebIndex.Wql;
@@ -65,7 +66,7 @@ namespace KleeneStar.Core.WebQuickfilter
                 Name = filter.Name,
                 // a shared filter is marked, because the bar otherwise gives no clue why a chip
                 // the user never created is being offered
-                Icon = filter.Shared ? new IconUsers() : new IconFilter(),
+                Icon = filter.Shared ? new IconUsers(TypeIconTheme.Light) : new IconFilter(TypeIconTheme.Light),
                 Custom = true,
                 Criteria = filter.Query
             };

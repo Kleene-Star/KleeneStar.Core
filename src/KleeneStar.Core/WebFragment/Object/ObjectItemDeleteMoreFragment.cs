@@ -2,6 +2,7 @@
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -31,7 +32,7 @@ namespace KleeneStar.Core.WebFragment.Object
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:object.delete.title";
-            Icon = _ => new IconTrash();
+            Icon = _ => new IconTrash(TypeIconTheme.Light);
             Color = _ => TypeColorText.Danger;
             PrimaryAction = renderContext => new ActionModal
             (

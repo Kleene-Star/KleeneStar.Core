@@ -4,6 +4,7 @@ using WebExpress.WebApp.WebPage;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebPage;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebIcon;
 
@@ -54,7 +55,7 @@ namespace KleeneStar.Core.WWW.Objects
             // selection reads as a missing object instead of a broken link
             visualTree.Content.MainPanel.AddPrimary(new ControlEmptyState()
             {
-                Icon = _ => new IconMagnifyingGlass(),
+                Icon = _ => new IconMagnifyingGlass(TypeIconTheme.Light),
                 Title = _ => "kleenestar.core:object.scrum.detail.unknown.title",
                 Message = _ => "kleenestar.core:object.scrum.detail.unknown.message"
             });

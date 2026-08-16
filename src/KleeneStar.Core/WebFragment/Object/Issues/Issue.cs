@@ -26,7 +26,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         /// <summary>
         /// Gets the icon representing issues.
         /// </summary>
-        public IIcon Icon => new IconListCheck();
+        public IIcon Icon => new IconListCheck(TypeIconTheme.Light);
 
         /// <summary>
         /// Gets the display order; issues close the built-in kind listings.

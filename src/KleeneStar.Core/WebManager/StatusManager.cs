@@ -191,7 +191,7 @@ namespace KleeneStar.Core.WebManager
             StatusAdded?.Invoke(this, stateEntity);
 
             // create notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.status.created", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.status.created", stateEntity);
 
             return this;
         }
@@ -210,7 +210,7 @@ namespace KleeneStar.Core.WebManager
             StatusUpdated?.Invoke(this, stateEntity);
 
             // update notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.status.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.status.updated", stateEntity);
 
             return this;
         }

@@ -3,6 +3,7 @@ using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -38,7 +39,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         public AssetTabViewListFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconList();
+            Icon = _ => new IconList(TypeIconTheme.Light);
             Title = _ => "kleenestar.core:view.list.title";
             List.Bind = _ => new Binding()
                 .Add(new BindSearch() { Source = AssetTabViewSearchFragment.ContentId })

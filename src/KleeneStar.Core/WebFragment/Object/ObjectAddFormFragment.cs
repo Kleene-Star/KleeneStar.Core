@@ -163,8 +163,14 @@ namespace KleeneStar.Core.WebFragment.Object
 
             Mode = _ => TypeRestFormMode.Add;
             FinishLabel = _ => "kleenestar.core:object.add.submit.label";
-            FinishIcon = _ => new IconPlus();
-            ServiceFactory = _ => DataServiceDescriptor.QueryData(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Index>().ToString());
+            FinishIcon = _ => new IconPlus(TypeIconTheme.Light);
+
+            // the wizard shapes its own load and submit requests and picks the method per
+            // request, so it needs the endpoint and nothing else. Pinning a method here —
+            // QueryData pins GET — leaves the final step submitting a read, which is why the
+            // wizard used to walk through all four steps and create nothing. The extension
+            // also declares the domain, so the object lists refresh once the object exists.
+            this.DataService<global::KleeneStar.Core.WWW.Api._1_.Objects.Index>();
         }
 
         /// <summary>

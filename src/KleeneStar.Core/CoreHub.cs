@@ -51,6 +51,7 @@ namespace KleeneStar.Core
         private static ValueManager _valueManager;
         private static ObjectLinkManager _objectLinkManager;
         private static SessionManager _sessionManager;
+        private static NotificationCenterManager _notificationCenterManager;
         private static IdentitySessionManager _identitySessionManager;
         private static AccessTokenManager _accessTokenManager;
         private static SavedSearchManager _savedSearchManager;
@@ -233,6 +234,12 @@ namespace KleeneStar.Core
         public static ISessionManager SessionManager => _sessionManager ??= ComponentHub.GetComponentManager<SessionManager>();
 
         /// <summary>
+        /// Gets the notification-center manager responsible for the in-app notifications an
+        /// identity can come back to, as listed behind the bell in the header.
+        /// </summary>
+        public static INotificationCenterManager NotificationCenterManager => _notificationCenterManager ??= ComponentHub.GetComponentManager<NotificationCenterManager>();
+
+        /// <summary>
         /// Gets the identity-session manager responsible for the devices and browsers that
         /// are currently signed in with an identity.
         /// </summary>
@@ -295,10 +302,46 @@ namespace KleeneStar.Core
         /// The duration, in milliseconds, that the notification remains visible. Specify -1
         /// to use the default duration.
         /// </param>
+        /// <param name="subject">
+        /// What the notification is about — an object key, a name — appended to the entry in
+        /// the notification center so a list of otherwise identical messages stays readable.
+        /// Optional; the toast does not show it.
+        /// </param>
+        /// <param name="targetUri">
+        /// The path the notification center entry links to. Optional; the toast does not use it.
+        /// </param>
         /// <returns>
         /// An object representing the created notification.
         /// </returns>
-        public static INotification AddNotification(string header, string message, int durability = -1)
+        /// <summary>
+        /// Creates a notification about the supplied record.
+        /// </summary>
+        /// <remarks>
+        /// The name of the record and the page it lives on are derived centrally by
+        /// <see cref="NotificationSubject.Describe"/>, so a manager raising a notification does
+        /// not have to know where the pages of its own entity are routed. This is the overload
+        /// the managers use: a notification that names what it is about and links to it is the
+        /// only kind worth keeping in the center.
+        /// </remarks>
+        /// <param name="header">The i18n key of the title/heading. Cannot be null.</param>
+        /// <param name="message">The i18n key of the body text. Cannot be null.</param>
+        /// <param name="entity">
+        /// The record the notification is about. An unmapped or null record yields an entry
+        /// without a link rather than no entry at all.
+        /// </param>
+        /// <param name="durability">
+        /// The duration, in milliseconds, that the notification remains visible. Specify -1
+        /// to use the default duration.
+        /// </param>
+        /// <returns>An object representing the created notification.</returns>
+        public static INotification AddNotification(string header, string message, object entity, int durability = 5000)
+        {
+            var subject = NotificationSubject.Describe(entity);
+
+            return AddNotification(header, message, durability, subject?.Label, subject?.TargetUri, subject?.IconUri);
+        }
+
+        public static INotification AddNotification(string header, string message, int durability = -1, string subject = null, string targetUri = null, string subjectIcon = null)
         {
             // best-effort: callers (manager Add/Update/Remove) rely on this returning
             // null silently when the host is not fully initialized (e.g. in unit tests
@@ -308,6 +351,12 @@ namespace KleeneStar.Core
             {
                 return null;
             }
+
+            // the toast below is transient. Recording the same event in the notification center
+            // is what lets the user find it afterwards, addressed to them and naming what it
+            // was about.
+            _notificationCenterManager ??= ComponentHub.GetComponentManager<NotificationCenterManager>();
+            _notificationCenterManager?.Record(header, message, subject, targetUri, subjectIcon);
 
             var application = WebEx.ComponentHub?.ApplicationManager?.GetApplication<KleeneStarApplication>();
             if (application is null)
@@ -320,9 +369,30 @@ namespace KleeneStar.Core
                 applicationContext: application,
                 icon: ApplicationContext?.Icon?.ToUri()?.ToString(),
                 heading: I18N.Translate(header),
-                message: I18N.Translate(message),
+                // the toast names what it is about. It has to: the notification API this goes
+                // through has no per-session store reachable from here, so every toast is a
+                // global one that every connected client replays for as long as it lives. Two
+                // actions inside that window are both delivered to both clients, and a toast
+                // that says only "the object was updated" is then indistinguishable from
+                // somebody else's — which is exactly how a workspace edit came to be reported
+                // as an object edit. Naming the subject makes a stray toast recognizable as
+                // one; see the remedy note in the memory of this project for the real fix.
+                message: Compose(I18N.Translate(message), subject),
                 durability: durability
             );
+        }
+
+        /// <summary>
+        /// Appends the subject to a notification message, so the toast says what it is about.
+        /// </summary>
+        /// <param name="message">The translated message.</param>
+        /// <param name="subject">The name of the record, or <see langword="null"/>.</param>
+        /// <returns>The composed message.</returns>
+        private static string Compose(string message, string subject)
+        {
+            return string.IsNullOrWhiteSpace(subject)
+                ? message
+                : $"{message} ({subject})";
         }
 
         /// <summary>

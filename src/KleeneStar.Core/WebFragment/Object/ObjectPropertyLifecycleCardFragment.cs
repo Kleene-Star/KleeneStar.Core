@@ -7,6 +7,7 @@ using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -64,7 +65,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             card.Add(new ControlAttribute("object-property-created")
             {
-                Icon = _ => new IconCalendarPlus(),
+                Icon = _ => new IconCalendarPlus(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.created.label",
                 // the card is read in the visitor's language, so the timestamp is written in
                 // the visitor's culture as well - an invariant 07/25/2026 on a German page
@@ -74,7 +75,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             card.Add(new ControlAttribute("object-property-updated")
             {
-                Icon = _ => new IconClockRotateLeft(),
+                Icon = _ => new IconClockRotateLeft(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.updated.label",
                 Value = ctx => @object.Updated.ToString("g", Culture(ctx))
             });
@@ -84,7 +85,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 "object-property-state",
                 new ControlIcon
                 {
-                    Icon = _ => new IconTrafficLight(),
+                    Icon = _ => new IconTrafficLight(TypeIconTheme.Light),
                     Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.One, PropertySpacing.Space.None, PropertySpacing.Space.None)
                 },
                 new ControlText

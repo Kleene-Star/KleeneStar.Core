@@ -157,7 +157,7 @@ namespace KleeneStar.Core.WebManager
             FieldAdded?.Invoke(this, fieldEntity);
 
             // create notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.field.created", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.field.created", fieldEntity);
 
             return this;
         }
@@ -176,7 +176,7 @@ namespace KleeneStar.Core.WebManager
             FieldUpdated?.Invoke(this, fieldEntity);
 
             // update notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.field.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.field.updated", fieldEntity);
 
             return this;
         }

@@ -218,7 +218,7 @@ namespace KleeneStar.Core.WebManager
             NavigatorLinkAdded?.Invoke(this, navigatorLinkEntity);
 
             // create notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.navigatorlink.created", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.navigatorlink.created", navigatorLinkEntity);
 
             return this;
         }
@@ -237,7 +237,7 @@ namespace KleeneStar.Core.WebManager
             NavigatorLinkUpdated?.Invoke(this, navigatorLinkEntity);
 
             // update notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.navigatorlink.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.navigatorlink.updated", navigatorLinkEntity);
 
             return this;
         }

@@ -142,7 +142,7 @@ namespace KleeneStar.Core.WebManager
             ClassAdded?.Invoke(this, classEntity);
 
             // create notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.class.created", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.class.created", classEntity);
 
             return this;
         }
@@ -168,7 +168,7 @@ namespace KleeneStar.Core.WebManager
             ClassUpdated?.Invoke(this, classEntity);
 
             // update notification
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.class.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.class.updated", classEntity);
 
             return this;
         }

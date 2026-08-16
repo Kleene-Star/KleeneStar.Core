@@ -137,7 +137,7 @@ namespace KleeneStar.Core.WebManager
 
             IdentityAdded?.Invoke(this, identityEntity);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.identity.created", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.identity.created", identityEntity);
 
             return this;
         }
@@ -155,7 +155,7 @@ namespace KleeneStar.Core.WebManager
 
             IdentityUpdated?.Invoke(this, identityEntity);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.identity.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.identity.updated", identityEntity);
 
             return this;
         }

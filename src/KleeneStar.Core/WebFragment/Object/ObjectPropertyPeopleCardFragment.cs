@@ -8,6 +8,7 @@ using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
 using WebExpress.WebCore.WebUri;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
@@ -90,7 +91,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             card.Add(new ControlAttribute("object-property-creator")
             {
-                Icon = _ => new IconUserPen(),
+                Icon = _ => new IconUserPen(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.creator.label",
                 Value = _ => string.IsNullOrWhiteSpace(creatorName) ? "—" : creatorName
             });
@@ -101,7 +102,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             card.Add(new ControlAttribute("object-property-assignee")
             {
-                Icon = _ => new IconUserCheck(),
+                Icon = _ => new IconUserCheck(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.assignee.label",
                 Value = ctx => string.IsNullOrWhiteSpace(assigneeName)
                     ? I18N.Translate(ctx, "kleenestar.core:object.assignee.unassigned.label")
@@ -116,7 +117,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 Text = _ => assignedToMe
                     ? "kleenestar.core:object.assignee.unassign.label"
                     : "kleenestar.core:object.assignee.assignme.label",
-                Icon = _ => assignedToMe ? new IconUserXmark() : new IconUserPlus(),
+                Icon = _ => assignedToMe ? new IconUserXmark(TypeIconTheme.Light) : new IconUserPlus(TypeIconTheme.Light),
                 Uri = ctx =>
                 {
                     var uri = CoreHub

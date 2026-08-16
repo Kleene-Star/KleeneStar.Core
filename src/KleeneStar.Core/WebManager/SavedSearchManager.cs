@@ -104,7 +104,7 @@ namespace KleeneStar.Core.WebManager
 
             SavedSearchAdded?.Invoke(this, savedSearch);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.savedsearch.created", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.created", "kleenestar.core:notification.savedsearch.created", savedSearch);
 
             return this;
         }
@@ -119,7 +119,7 @@ namespace KleeneStar.Core.WebManager
 
             SavedSearchUpdated?.Invoke(this, savedSearch);
 
-            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.savedsearch.updated", 5000);
+            CoreHub.AddNotification("kleenestar.core:notification.title.updated", "kleenestar.core:notification.savedsearch.updated", savedSearch);
 
             return this;
         }
@@ -138,7 +138,7 @@ namespace KleeneStar.Core.WebManager
                 ModelHub.Update(savedSearch);
                 SavedSearchRemoved?.Invoke(this, savedSearch);
 
-                CoreHub.AddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.savedsearch.deleted", 5000);
+                CoreHub.AddNotification("kleenestar.core:notification.title.deleted", "kleenestar.core:notification.savedsearch.deleted", savedSearch);
             }
 
             return this;

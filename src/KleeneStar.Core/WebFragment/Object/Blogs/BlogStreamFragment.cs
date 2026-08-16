@@ -145,7 +145,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
             card.Add(new ControlLink("blog-post-open-" + id)
             {
                 Text = _ => "kleenestar.core:object.kind.blogs.open.label",
-                Icon = _ => (IIcon)post.Icon ?? new IconBlog(),
+                Icon = _ => (IIcon)post.Icon ?? new IconBlog(TypeIconTheme.Light),
                 Uri = _ => ObjectKindCatalog.ResolveDetailUri(post)
             });
 

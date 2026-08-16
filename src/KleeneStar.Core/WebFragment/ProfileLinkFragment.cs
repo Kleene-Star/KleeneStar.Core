@@ -5,6 +5,7 @@ using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
@@ -34,7 +35,7 @@ namespace KleeneStar.Core.WebFragment
         {
             _componentHub = componentHub;
             Text = _ => "kleenestar.core:profile.dropdown.label";
-            Icon = _ => new IconCircleUser();
+            Icon = _ => new IconCircleUser(TypeIconTheme.Light);
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Profile.Index>();
         }
 
