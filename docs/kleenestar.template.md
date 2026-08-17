@@ -1,3 +1,5 @@
+![KleeneStar](https://raw.githubusercontent.com/kleenestar-project/.github/main/docs/assets/img/banner.png)
+
 # KleeneStar Template Management Concept
 
 In **KleeneStar**, a "Template" is a predefined, reusable blueprint for creating objects of a specific class. While a **Class** defines the structural schema (the data types, validations, and allowed fields), a **Template** provides concrete preset data, default configurations, contextual help, and categorization for the actual instantiation of that class. Templates streamline the creation of common object types (e.g., "Hardware Request", "Bug Report", "New Employee Onboarding") by pre-filling fields, setting predefined statuses, or providing targeted placeholder texts. 
