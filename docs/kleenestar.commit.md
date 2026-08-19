@@ -254,26 +254,39 @@ The "Restore" button at the bottom of the modal creates a new commit that reappl
 
 The history routes extend the object sitemap. Since the history is presented in a modal, the routes serve as deep links that open the object detail view with the history modal already displayed. Deep links to individual commits remain stable and preselect the referenced commit within the modal.
 
-|Path                                              |Page/View         |Description
-|--------------------------------------------------|------------------|---------------------------------------------
-|`/objects/{objectKey}/history`                    |Object history    |Opens the history modal listing all commits of an object.
-|`/objects/{objectKey}/history/{commitId}`         |Commit detail     |Opens the history modal with the given commit preselected.
-|`/objects/{objectKey}/history/{from}/{to}`        |Commit comparison |Opens the history modal in comparison mode for two commits.
-|`/objects/{objectKey}/history/{commitId}/restore` |State restoration |Creates a new commit that reapplies the historical values.
+|Path                                            |Page/View         |Description
+|------------------------------------------------|------------------|---------------------------------------------
+|`/issue/{objectKey}/history`                    |Object history    |The history dialog listing all commits of an object. Opened from the actions menu as a modal; reachable directly as a full page.
+|`/issue/{objectKey}/historydetail?commit={n}`   |Commit detail     |One commit with its changed fields and the complete field set replayed at that commit. Loaded into the detail side of the dialog, and addressable on its own.
+|`/issue/{objectKey}/historyrestore?commit={n}`  |State restoration |Reapplies the historical values as a new commit and returns to the object.
+
+The object detail views are keyed by object key under the route of their kind (`/issue/…`,
+`/asset/…`, …), so the history routes hang below the same branch rather than below a separate
+`/objects/` one. They are not restricted to the issue kind: like the sibling `permission` route
+they address an object by key alone, and the actions menu of every kind opens them.
 
 ## API Interfaces (REST Endpoints)
 
 The versioning endpoints extend the object REST API. They are read-oriented; commits are created implicitly by the mutating object endpoints, which return the created commit reference in their response.
 
-|Endpoint                                                |HTTP Method |Description
-|--------------------------------------------------------|------------|-----------------------------------------------
-|`/api/1/objects/{objectKey}/history`                    |GET         |Lists all commits of an object, newest first. Supports pagination.
-|`/api/1/objects/{objectKey}/history/{commitId}`         |GET         |Returns a single commit including its changed fields.
-|`/api/1/objects/{objectKey}/history/{commitId}/state`   |GET         |Returns the complete replayed field state at the given commit.
-|`/api/1/objects/{objectKey}/history/{from}/{to}/diff`   |GET         |Returns the aggregated field difference between two commits.
-|`/api/1/objects/{objectKey}/history/{commitId}/restore` |POST        |Creates a new commit that reapplies the historical field values.
+|Endpoint                                       |HTTP Method |Description
+|-----------------------------------------------|------------|-----------------------------------------------
+|`/api/1/history/{objectKey}`                   |GET         |Lists all commits of an object, newest first. Paged with `?start=` and `?count=`.
+|`/api/1/history/{objectKey}/{commit}`          |GET         |Returns a single commit including its changed fields.
+|`/api/1/history/{objectKey}/{commit}/state`    |GET         |Returns the complete replayed field state at the given commit.
+|`/api/1/history/{objectKey}/{from}/{to}/diff`  |GET         |Returns the aggregated field difference between two commits.
+|`/api/1/history/{objectKey}/{commit}/restore`  |POST        |Creates a new commit that reapplies the historical field values.
 
-Standard error responses follow the object API conventions: `400 Bad Request` for invalid commit references, `401 Unauthorized` for missing authentication, `403 Forbidden` for insufficient permissions, and `404 Not Found` when the object or commit does not exist.
+A `{commit}` is addressed either by its revision number (`4`) or by its commit id, so a deep link
+into the dialog and a numbered reference reach the same resource.
+
+The endpoints are mounted below `/api/1/history/{objectKey}` rather than below
+`/api/1/objects/{objectKey}/`: the `objects` branch already owns a variable segment
+(`/api/1/objects/{workspaceKey}/…`), and a second variable sibling beside it cannot be routed
+unambiguously. It is also where every other per-object resource of this platform already lives —
+`/api/1/comments/{objectKey}`, `/api/1/hierarchy/{objectKey}`, `/api/1/assignee/{objectKey}`.
+
+Standard error responses follow the object API conventions: `400 Bad Request` for an invalid commit reference, `401 Unauthorized` for missing authentication, `403 Forbidden` for insufficient permissions, `404 Not Found` when the object or commit does not exist, and `409 Conflict` when a restore addresses the head, whose state is already the current one.
 
 ## Events
 

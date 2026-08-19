@@ -417,6 +417,45 @@ object.permission.label=Permissions
 object.permission.title=Object Permissions
 object.print.label=Print
 object.print.title=Print Object
+
+# object versioning (commit history)
+object.history.api.title=Object History API
+object.history.author.system=System
+object.history.changes.column.field=Field
+object.history.changes.column.new=New value
+object.history.changes.column.old=Old value
+object.history.changes.header=Changed fields
+object.history.changes.none=This commit changed no field.
+object.history.commit.missing=This commit does not exist any more, or does not belong to this object.
+object.history.commit.title=Commit
+object.history.label=History
+object.history.property.assignee=Assignee
+object.history.property.description=Description
+object.history.property.key=Key
+object.history.property.kind=Kind
+object.history.property.parent=Parent
+object.history.property.sprint=Sprint
+object.history.property.sprintrank=Rank
+object.history.property.state=State
+object.history.property.storypoints=Story points
+object.history.property.summary=Summary
+object.history.search.placeholder=Search the history…
+object.history.restore.head=This is the current state of the object, so there is nothing to restore.
+object.history.restore.hint=Restoring writes the values of this commit back and appends a new commit; nothing is removed from the history.
+object.history.restore.label=Restore
+object.history.restore.notification.message=The historical state has been restored as a new commit.
+object.history.restore.notification.title=Restored
+object.history.restore.title=Restore State
+object.history.state.header=All fields at this commit
+object.history.state.none=The object carried no field values at this commit.
+object.history.title=Version History
+object.history.type.archived=archived
+object.history.type.created=created
+object.history.type.deleted=deleted
+object.history.type.restored=restored
+object.history.type.transitioned=transitioned
+object.history.type.updated=updated
+object.history.value.empty=—
 permission.search.placeholder=Search group or permission…
 
 # object kinds (documents / blogs / issues / assets)

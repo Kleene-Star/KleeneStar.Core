@@ -65,18 +65,23 @@ namespace KleeneStar.Core.WebRestApi
 
             var now = DateTime.UtcNow;
 
-            if (movesStart)
+            // dragging a bar moves one or both ends of the plan in a single gesture, so the
+            // history records it as one edit
+            using (CoreHub.CommitManager.BeginCommit(entity.Id, CommitType.Updated, entity.UpdaterId ?? Guid.Empty))
             {
-                SetFieldValue(entity.Id, context.StartDateField.Id, Format(start.Value), now);
-            }
+                if (movesStart)
+                {
+                    SetFieldValue(entity.Id, context.StartDateField.Id, Format(start.Value), now);
+                }
 
-            if (movesEnd)
-            {
-                SetFieldValue(entity.Id, context.EndDateField.Id, Format(requestedEnd.Value), now);
-            }
+                if (movesEnd)
+                {
+                    SetFieldValue(entity.Id, context.EndDateField.Id, Format(requestedEnd.Value), now);
+                }
 
-            entity.Updated = now;
-            CoreHub.ObjectManager.Update(entity);
+                entity.Updated = now;
+                CoreHub.ObjectManager.Update(entity);
+            }
 
             return true;
         }

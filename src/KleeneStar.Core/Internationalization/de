@@ -417,6 +417,45 @@ object.permission.label=Berechtigungen
 object.permission.title=Objektberechtigungen
 object.print.label=Drucken
 object.print.title=Objekt drucken
+
+# Objektversionierung (Commit-Historie)
+object.history.api.title=Objekthistorie-API
+object.history.author.system=System
+object.history.changes.column.field=Feld
+object.history.changes.column.new=Neuer Wert
+object.history.changes.column.old=Alter Wert
+object.history.changes.header=Geänderte Felder
+object.history.changes.none=Dieser Commit hat kein Feld geändert.
+object.history.commit.missing=Dieser Commit existiert nicht mehr oder gehört nicht zu diesem Objekt.
+object.history.commit.title=Commit
+object.history.label=Historie
+object.history.property.assignee=Zugewiesen an
+object.history.property.description=Beschreibung
+object.history.property.key=Schlüssel
+object.history.property.kind=Art
+object.history.property.parent=Übergeordnet
+object.history.property.sprint=Sprint
+object.history.property.sprintrank=Rang
+object.history.property.state=Status
+object.history.property.storypoints=Story Points
+object.history.property.summary=Zusammenfassung
+object.history.search.placeholder=Historie durchsuchen…
+object.history.restore.head=Dies ist der aktuelle Stand des Objekts, es gibt nichts wiederherzustellen.
+object.history.restore.hint=Beim Wiederherstellen werden die Werte dieses Commits zurückgeschrieben und ein neuer Commit angehängt; aus der Historie wird nichts entfernt.
+object.history.restore.label=Wiederherstellen
+object.history.restore.notification.message=Der historische Stand wurde als neuer Commit wiederhergestellt.
+object.history.restore.notification.title=Wiederhergestellt
+object.history.restore.title=Stand wiederherstellen
+object.history.state.header=Alle Felder zu diesem Commit
+object.history.state.none=Das Objekt hatte zu diesem Commit keine Feldwerte.
+object.history.title=Versionshistorie
+object.history.type.archived=archiviert
+object.history.type.created=erstellt
+object.history.type.deleted=gelöscht
+object.history.type.restored=wiederhergestellt
+object.history.type.transitioned=überführt
+object.history.type.updated=aktualisiert
+object.history.value.empty=—
 permission.search.placeholder=Gruppe oder Berechtigung suchen…
 
 # object kinds (documents / blogs / issues / assets)

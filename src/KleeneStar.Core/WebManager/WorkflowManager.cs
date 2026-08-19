@@ -303,40 +303,47 @@ namespace KleeneStar.Core.WebManager
             }
 
             // apply - the state travels as the status name, which is what the generic value
-            // binder writes for a workflow field and what ResolveStatus reads back
-            if (value is null)
+            // binder writes for a workflow field and what ResolveStatus reads back.
+            //
+            // the state write and the stamp RunPostFunctions puts on the object belong to one
+            // action, so they are recorded as one commit; the scope also types it as a
+            // transition rather than as the generic update the object manager would report
+            using (CoreHub.CommitManager.BeginCommit(objectId, CommitType.Transitioned, identityId))
             {
-                CoreHub.ValueManager.Add(new Value
+                if (value is null)
                 {
+                    CoreHub.ValueManager.Add(new Value
+                    {
+                        ObjectId = objectId,
+                        FieldId = fieldId,
+                        Data = target.Name,
+                        Created = DateTime.UtcNow,
+                        Updated = DateTime.UtcNow
+                    });
+                }
+                else
+                {
+                    value.Data = target.Name;
+                    value.Updated = DateTime.UtcNow;
+
+                    CoreHub.ValueManager.Update(value);
+                }
+
+                var executed = new WorkflowTransitionResult
+                {
+                    Outcome = WorkflowTransitionOutcome.Executed,
+                    Message = "kleenestar.core:object.property.workflow.transition.executed",
                     ObjectId = objectId,
                     FieldId = fieldId,
-                    Data = target.Name,
-                    Created = DateTime.UtcNow,
-                    Updated = DateTime.UtcNow
-                });
+                    Source = source,
+                    Target = target,
+                    Transition = transition
+                };
+
+                RunPostFunctions(objectEntity, identityId, executed);
+
+                return executed;
             }
-            else
-            {
-                value.Data = target.Name;
-                value.Updated = DateTime.UtcNow;
-
-                CoreHub.ValueManager.Update(value);
-            }
-
-            var result = new WorkflowTransitionResult
-            {
-                Outcome = WorkflowTransitionOutcome.Executed,
-                Message = "kleenestar.core:object.property.workflow.transition.executed",
-                ObjectId = objectId,
-                FieldId = fieldId,
-                Source = source,
-                Target = target,
-                Transition = transition
-            };
-
-            RunPostFunctions(objectEntity, identityId, result);
-
-            return result;
         }
 
         /// <summary>

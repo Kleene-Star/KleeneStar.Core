@@ -49,6 +49,7 @@ namespace KleeneStar.Core
         private static ShareManager _shareManager;
         private static ObjectTagManager _objectTagManager;
         private static ValueManager _valueManager;
+        private static CommitManager _commitManager;
         private static ObjectLinkManager _objectLinkManager;
         private static SessionManager _sessionManager;
         private static NotificationCenterManager _notificationCenterManager;
@@ -220,6 +221,13 @@ namespace KleeneStar.Core
         /// that back the typed inputs on the object detail and edit views.
         /// </summary>
         public static IValueManager ValueManager => _valueManager ??= ComponentHub.GetComponentManager<ValueManager>();
+
+        /// <summary>
+        /// Gets the commit manager responsible for the append-only commit chains that record
+        /// every change made to an object, and for reconstructing and restoring past states
+        /// from them.
+        /// </summary>
+        public static ICommitManager CommitManager => _commitManager ??= ComponentHub.GetComponentManager<CommitManager>();
 
         /// <summary>
         /// Gets the object-link manager responsible for the typed directional links

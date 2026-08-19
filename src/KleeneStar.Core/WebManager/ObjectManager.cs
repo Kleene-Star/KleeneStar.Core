@@ -1,5 +1,6 @@
 ﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
+using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -259,6 +260,12 @@ namespace KleeneStar.Core.WebManager
         /// <summary>
         /// Adds a object to the manager.
         /// </summary>
+        /// <remarks>
+        /// The genesis commit of the object's history is opened here, so an object cannot come
+        /// into existence without one. The scope joins whatever the caller already opened, which
+        /// is how the field values written straight after a create end up in the same genesis
+        /// commit instead of in a follow-up edit.
+        /// </remarks>
         /// <param name="objectEntity">The object to add. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
         public IObjectManager Add(Model.Entities.Object objectEntity)
@@ -267,7 +274,16 @@ namespace KleeneStar.Core.WebManager
 
             objectEntity.Kind = DeriveKind(objectEntity);
 
+            using var scope = CoreHub.CommitManager.BeginCommit
+            (
+                objectEntity.Id,
+                CommitType.Created,
+                objectEntity.CreatorId ?? Guid.Empty
+            );
+
             ModelHub.Add(objectEntity);
+
+            RecordProperties(objectEntity.Id, null, objectEntity);
 
             ObjectAdded?.Invoke(this, objectEntity);
 
@@ -281,6 +297,11 @@ namespace KleeneStar.Core.WebManager
         /// <summary>
         /// Update a object to the manager.
         /// </summary>
+        /// <remarks>
+        /// The persisted row is read before it is overwritten so the commit can record what each
+        /// system property was as well as what it became. An update that changes nothing writes
+        /// no commit — the scope closes empty.
+        /// </remarks>
         /// <param name="objectEntity">The object to updated. Cannot be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
         public IObjectManager Update(Model.Entities.Object objectEntity)
@@ -289,7 +310,18 @@ namespace KleeneStar.Core.WebManager
 
             objectEntity.Kind = DeriveKind(objectEntity);
 
+            var previous = GetObject(objectEntity.Id);
+
+            using var scope = CoreHub.CommitManager.BeginCommit
+            (
+                objectEntity.Id,
+                CommitType.Updated,
+                objectEntity.UpdaterId ?? Guid.Empty
+            );
+
             ModelHub.Update(objectEntity);
+
+            RecordProperties(objectEntity.Id, previous, objectEntity);
 
             ObjectUpdated?.Invoke(this, objectEntity);
 
@@ -302,8 +334,12 @@ namespace KleeneStar.Core.WebManager
         /// <summary>
         /// Removes the specified object from the manager.
         /// </summary>
-        /// <remarks>This method removes the specified object from the manager. If the object does
-        /// not exist in the manager, no action is taken.</remarks>
+        /// <remarks>
+        /// The terminal <see cref="CommitType.Deleted"/> commit is appended before the row is
+        /// dropped, while the key and the field values can still be read. The chain itself is
+        /// not deleted with the object: what an object contained before it was removed is the
+        /// part of the history an audit most often asks for.
+        /// </remarks>
         /// <param name="objectId">The object id to be removed. Must not be null.</param>
         /// <returns>The current instance to allow for method chaining.</returns>
         public IObjectManager Remove(Guid objectId)
@@ -312,11 +348,52 @@ namespace KleeneStar.Core.WebManager
 
             if (objectEntry is not null)
             {
+                CoreHub.CommitManager.AddCommit(objectId, CommitType.Deleted, [], objectEntry.UpdaterId ?? Guid.Empty);
+
                 ModelHub.Remove(objectEntry);
                 ObjectRemoved?.Invoke(this, objectEntry);
             }
 
             return this;
+        }
+
+        /// <summary>
+        /// Reports the system properties that differ between two revisions of an object to the
+        /// open commit scope.
+        /// </summary>
+        /// <remarks>
+        /// Half of what a user changes on an object lives on the object row rather than in a
+        /// value row — the summary, the assignee, where it sits in the hierarchy. Recording only
+        /// the class fields would leave those changes out of the history entirely.
+        /// </remarks>
+        /// <param name="objectId">The id of the object being changed.</param>
+        /// <param name="previous">The object as it was persisted, or <c>null</c> for a creation.</param>
+        /// <param name="current">The object as it is now.</param>
+        private static void RecordProperties(Guid objectId, Model.Entities.Object previous, Model.Entities.Object current)
+        {
+            foreach (var name in ObjectProperty.All)
+            {
+                var before = ObjectProperty.Read(previous, name);
+                var after = ObjectProperty.Read(current, name);
+
+                if (string.Equals(before, after, StringComparison.Ordinal))
+                {
+                    continue;
+                }
+
+                CoreHub.CommitManager.Record
+                (
+                    objectId,
+                    new Change
+                    {
+                        Name = name,
+                        OldValue = before,
+                        NewValue = after
+                    },
+                    CommitType.Updated,
+                    current.UpdaterId ?? current.CreatorId ?? Guid.Empty
+                );
+            }
         }
 
         /// <summary>

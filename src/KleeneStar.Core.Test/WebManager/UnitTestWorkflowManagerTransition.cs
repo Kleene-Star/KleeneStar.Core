@@ -300,5 +300,50 @@ namespace KleeneStar.Core.Test.WebManager
             Assert.False(result.Succeeded);
             Assert.Equal(WorkflowTransitionOutcome.NotFound, result.Outcome);
         }
+
+        /// <summary>
+        /// Verifies that a state change is recorded in the object's history as a single commit of
+        /// type <see cref="CommitType.Transitioned"/> — the state write and the stamp the follow-up
+        /// puts on the object are one action, and the history has to say which one it was.
+        /// </summary>
+        [Fact]
+        public void ExecuteTransition_RecordsOneTransitionCommit()
+        {
+            Seed(nameof(ExecuteTransition_RecordsOneTransitionCommit));
+
+            CoreHub.ValueManager.Add(new Value { ObjectId = ObjectId, FieldId = FieldId, Data = "New" });
+
+            var before = CoreHub.CommitManager.GetHistory(ObjectId).Count();
+
+            CoreHub.WorkflowManager.ExecuteTransition(ObjectId, FieldId, ProgressId, Guid.Empty);
+
+            var history = CoreHub.CommitManager.GetHistory(ObjectId).ToList();
+
+            Assert.Equal(before + 1, history.Count);
+            Assert.Equal(CommitType.Transitioned, history[0].Type);
+
+            var change = Assert.Single(history[0].Changes, x => x.FieldId == FieldId);
+            Assert.Equal("New", change.OldValue);
+            Assert.Equal("In Progress", change.NewValue);
+        }
+
+        /// <summary>
+        /// Verifies that a refused state change leaves no trace in the history: a transition the
+        /// workflow does not allow never happened.
+        /// </summary>
+        [Fact]
+        public void ExecuteTransition_WhenRefused_RecordsNoCommit()
+        {
+            Seed(nameof(ExecuteTransition_WhenRefused_RecordsNoCommit));
+
+            CoreHub.ValueManager.Add(new Value { ObjectId = ObjectId, FieldId = FieldId, Data = "New" });
+
+            var before = CoreHub.CommitManager.GetHistory(ObjectId).Count();
+
+            // the New -> Done transition is archived, so the move is not allowed
+            CoreHub.WorkflowManager.ExecuteTransition(ObjectId, FieldId, DoneId, Guid.Empty);
+
+            Assert.Equal(before, CoreHub.CommitManager.GetHistory(ObjectId).Count());
+        }
     }
 }

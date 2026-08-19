@@ -1,4 +1,5 @@
-﻿using KleeneStar.Core.WebRestApi;
+﻿using KleeneStar.Core.WebManager;
+using KleeneStar.Core.WebRestApi;
 using KleeneStar.Model;
 using KleeneStar.Model.Entities;
 using System;
@@ -276,11 +277,17 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             DeriveReferences(fieldMap, newItem);
             EnsureKey(newItem);
 
-            CoreHub.ObjectManager.Add(newItem);
+            // the object row, its field values and the presets of its template are one act of
+            // creation; the scope makes them one genesis commit rather than a create followed by
+            // a handful of edits nobody performed
+            using (CoreHub.CommitManager.BeginCommit(newItem.Id, CommitType.Created, currentUser))
+            {
+                CoreHub.ObjectManager.Add(newItem);
 
-            UpsertFieldValues(newItem, fieldMap);
+                UpsertFieldValues(newItem, fieldMap);
 
-            ApplyTemplate(newItem, fieldMap, request);
+                ApplyTemplate(newItem, fieldMap, request);
+            }
 
             return new RestApiCrudResultCreate();
         }
@@ -326,9 +333,12 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             DeriveReferences(fieldMap, newItem);
             EnsureKey(newItem);
 
-            CoreHub.ObjectManager.Add(newItem);
+            using (CoreHub.CommitManager.BeginCommit(newItem.Id, CommitType.Created, currentUser))
+            {
+                CoreHub.ObjectManager.Add(newItem);
 
-            UpsertFieldValues(newItem, fieldMap);
+                UpsertFieldValues(newItem, fieldMap);
+            }
 
             return new RestApiCrudResultCreate();
         }
@@ -358,9 +368,13 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
                 existingItem.UpdaterId = currentUser;
             }
 
-            CoreHub.ObjectManager.Update(existingItem);
+            // one save is one commit, whether it moved a system property, a field value, or both
+            using (CoreHub.CommitManager.BeginCommit(existingItem.Id, CommitType.Updated, currentUser))
+            {
+                CoreHub.ObjectManager.Update(existingItem);
 
-            UpsertFieldValues(existingItem, payload);
+                UpsertFieldValues(existingItem, payload);
+            }
 
             return res;
         }
@@ -537,9 +551,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
 
                 EnsureKey(child);
 
-                CoreHub.ObjectManager.Add(child);
+                // a child gets a genesis commit of its own carrying its presets, so its history
+                // starts the same way a hand-created object's does
+                using (CoreHub.CommitManager.BeginCommit(child.Id, CommitType.Created, currentUser))
+                {
+                    CoreHub.ObjectManager.Add(child);
 
-                ApplyPresets(child, childTemplate.Id, null);
+                    ApplyPresets(child, childTemplate.Id, null);
+                }
 
                 CreateChildren(child, childTemplate.Id, request, visited);
             }

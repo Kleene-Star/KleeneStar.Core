@@ -16,6 +16,8 @@ namespace KleeneStar.Core.WebPolicies
     [Permission<ObjectAttachPermission>()]
     [Permission<ObjectLinkingPermission>()]
     [Permission<ObjectManageProfilesPermission>()]
+    [Permission<ObjectReadHistoryPermission>()]
+    [Permission<ObjectRestoreStatePermission>()]
     public sealed class ObjectAdminPolicy : IIdentityPolicy
     {
     }
