@@ -59,11 +59,14 @@ namespace KleeneStar.Core.WebRestApi
                     Text = x.Summary,
                     Image = x.Icon?.Uri?.ToString(),
                     // the selection is handed to the master-detail composite rather than
-                    // written into the frame, so it stays the single owner of the selection
+                    // written into the frame, so it stays the single owner of the selection.
+                    // the pane is fed the reduced view rather than the full reading view: the
+                    // frame embeds a page's main content region, and that region of the reading
+                    // view is written for a full-width column
                     PrimaryAction = new ActionMasterDetail(ListDetailControl.ControlId)
                     {
                         Uri = global::KleeneStar.Core.WebFragment.Object.ObjectKindCatalog
-                            .ResolveDetailUri(x)
+                            .ResolvePreviewUri(x)
                             .BindParameters(request),
                         Item = x.Id.ToString()
                     }.ToJson()

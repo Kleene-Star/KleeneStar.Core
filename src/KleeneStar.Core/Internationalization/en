@@ -502,6 +502,16 @@ object.kind.document.edit.title=Edit document
 object.kind.document.read.empty=This document has no content yet.
 object.prose.edit.label=Edit
 
+# reduced object view (detail side of a master-detail list)
+object.preview.title=Preview
+object.preview.property.header=Overview
+object.preview.key.label=Key
+object.preview.kind.label=Kind
+object.preview.description.none=This object has no description.
+object.preview.open.label=Open full view
+object.preview.unknown.title=Unknown object
+object.preview.unknown.message=No object exists for the requested key.
+
 # objects index view tabs (ControlDataTab)
 object.attachment.card.header=Attachments
 object.attachment.upload.placeholder=Drag files here or click to upload

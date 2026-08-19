@@ -502,6 +502,16 @@ object.kind.document.edit.title=Dokument bearbeiten
 object.kind.document.read.empty=Dieses Dokument hat noch keinen Inhalt.
 object.prose.edit.label=Bearbeiten
 
+# reduced object view (detail side of a master-detail list)
+object.preview.title=Vorschau
+object.preview.property.header=Überblick
+object.preview.key.label=Schlüssel
+object.preview.kind.label=Art
+object.preview.description.none=Für dieses Objekt ist keine Beschreibung hinterlegt.
+object.preview.open.label=Vollansicht öffnen
+object.preview.unknown.title=Unbekanntes Objekt
+object.preview.unknown.message=Zum angeforderten Schlüssel existiert kein Objekt.
+
 # objects index view tabs (ControlDataTab)
 object.attachment.card.header=Anhänge
 object.attachment.upload.placeholder=Dateien hierher ziehen oder zum Hochladen klicken

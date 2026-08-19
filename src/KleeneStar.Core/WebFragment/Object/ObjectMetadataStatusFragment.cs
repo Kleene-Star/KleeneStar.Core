@@ -18,8 +18,9 @@ namespace KleeneStar.Core.WebFragment.Object
     using Field = KleeneStar.Model.Entities.Field;
 
     /// <summary>
-    /// Headline-metadata fragment that surfaces the current workflow status of the object on
-    /// <see cref="WWW.Issue._objectkey_.Index"/> as a read-only pill badge.
+    /// Headline-metadata fragment that surfaces the current workflow status of the object as
+    /// a read-only pill badge, on the reading views and on the reduced view
+    /// <see cref="WWW.Issue._objectkey_.Preview"/> a master-detail pane shows.
     /// </summary>
     /// <remarks>
     /// The status is resolved exactly like the interactive
@@ -30,10 +31,16 @@ namespace KleeneStar.Core.WebFragment.Object
     /// split button, dropdown or workflow modal — so the status is displayed but cannot be
     /// changed from here. Returns <c>null</c> when the class has no workflow field or none has
     /// a value yet, keeping the metadata line clean.
+    /// <para>
+    /// A read-only badge is exactly what the reduced view needs, so it renders there unchanged:
+    /// the detail pane never receives the property column that holds the interactive control,
+    /// and this fragment is what puts the status in front of a reader without it.
+    /// </para>
     /// </remarks>
     [Section<SectionHeadlineMetadata>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Asset._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Preview>]
     [Order(0)]
     [Cache]
     public sealed class ObjectMetadataStatusFragment : FragmentControlPanel

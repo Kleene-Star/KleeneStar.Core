@@ -62,6 +62,24 @@ namespace KleeneStar.Core.WebFragment.Object
         IUri DetailUri(string objectKey);
 
         /// <summary>
+        /// Returns the route of the reduced reading view bound to the supplied object key -
+        /// the view a master-detail pane shows for a selected row, as opposed to the full
+        /// reading view <see cref="DetailUri(string)"/> names.
+        /// </summary>
+        /// <remarks>
+        /// Every kind shares one reduced view by default, because what a detail pane shows is
+        /// the object itself rather than the arrangement its kind reads best in: the shared
+        /// view is addressed by object key alone and composes from the object's class. A kind
+        /// that genuinely needs its own reduced view overrides this member; the default keeps
+        /// add-on kinds compiling and gives them a working pane without any work of their own.
+        /// </remarks>
+        /// <param name="objectKey">The key of the object to address. May be null.</param>
+        /// <returns>The bound reduced-view route.</returns>
+        IUri PreviewUri(string objectKey) => CoreHub
+            .GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Preview>()?
+            .BindParameters(new WebParameter.ObjectKeyParameter(objectKey));
+
+        /// <summary>
         /// Returns the route of the kind's dedicated editing view bound to the supplied
         /// object key, e.g. <c>/document/{objectkey}/edit</c>. Returns
         /// <see langword="null"/> for kinds that edit inline or through a modal rather

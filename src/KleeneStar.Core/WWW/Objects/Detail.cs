@@ -22,9 +22,15 @@ namespace KleeneStar.Core.WWW.Objects
     /// template here instead, and this page forwards to the real one.
     ///
     /// A redirect rather than a rendered summary, because the detail side is meant to show
-    /// the object itself, exactly as the list view's detail frame does. The frame fetches
-    /// its uri with the default redirect handling, so it follows the forward transparently
-    /// and embeds the reading view it lands on.
+    /// the object itself. The frame fetches its uri with the default redirect handling, so it
+    /// follows the forward transparently and embeds the view it lands on.
+    ///
+    /// The target is the full reading view, not the reduced
+    /// <see cref="global::KleeneStar.Core.WWW.Issue._objectkey_.Preview"/> the list views now
+    /// show in their pane. The two panes are not the same size: a board detail opens beside a
+    /// column layout that gives it most of the width, where the reading view still reads, while
+    /// a list detail sits beside a fixed master column. Should the board panes turn out to want
+    /// the reduced view as well, this is the single line that switches them.
     ///
     /// The page is deliberately outside every navigation scope: it is not a destination a
     /// user browses to, but the endpoint the detail frame fetches for the selected row.

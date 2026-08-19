@@ -118,6 +118,34 @@ namespace KleeneStar.Core.WebFragment.Object
         }
 
         /// <summary>
+        /// Resolves the reduced reading view of the supplied object - the view a master-detail
+        /// pane fetches for the selected row, as opposed to the full reading view
+        /// <see cref="ResolveDetailUri(Model.Entities.Object)"/> resolves.
+        /// </summary>
+        /// <param name="object">The object to link to. May be null.</param>
+        /// <returns>The bound reduced-view route, or <see langword="null"/> when the object is
+        /// null.</returns>
+        public static IUri ResolvePreviewUri(Model.Entities.Object @object)
+        {
+            return @object is null ? null : ResolvePreviewUri(@object.Kind, @object.Key);
+        }
+
+        /// <summary>
+        /// Resolves the reduced reading view for the supplied kind key and object key. An
+        /// unknown kind (e.g. the key of an uninstalled add-on) falls back to the issue kind,
+        /// exactly as <see cref="ResolveDetailUri(string, string)"/> does.
+        /// </summary>
+        /// <param name="kind">The object's kind key. May be null.</param>
+        /// <param name="objectKey">The object's key. May be null.</param>
+        /// <returns>The bound reduced-view route.</returns>
+        public static IUri ResolvePreviewUri(string kind, string objectKey)
+        {
+            var descriptor = GetKind(kind) ?? GetKind(Model.Entities.ObjectKind.Issue);
+
+            return descriptor?.PreviewUri(objectKey);
+        }
+
+        /// <summary>
         /// Resolves the detail route of the supplied object with its trailing object-key
         /// path segment "frozen" into a constant.
         /// </summary>
