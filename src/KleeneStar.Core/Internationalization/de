@@ -511,6 +511,7 @@ object.preview.description.none=Für dieses Objekt ist keine Beschreibung hinter
 object.preview.open.label=Vollansicht öffnen
 object.preview.unknown.title=Unbekanntes Objekt
 object.preview.unknown.message=Zum angeforderten Schlüssel existiert kein Objekt.
+object.preview.unknown.id.message=Zur angeforderten Kennung existiert kein Objekt.
 
 # objects index view tabs (ControlDataTab)
 object.attachment.card.header=Anhänge

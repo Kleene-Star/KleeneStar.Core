@@ -98,20 +98,19 @@ namespace KleeneStar.Core.WebControl
             MasterInitialSize = _ => 250;
             Unit = _ => TypeSizeUnit.Pixel;
 
-            // the two columns scroll independently, which needs a definite height. the
-            // control defaults to 70vh for a host that has none; here the view fills the
-            // content region, so it takes the height of its parent instead.
+            // the two columns scroll independently, which needs a definite height, and the
+            // control brings one of its own (70vh) for a host that has none. Here the
+            // composite is the view rather than one block on a page of them, so it takes the
+            // height the shell offers instead: the WebApp content panel turns the chain of
+            // panels between itself and a filling region into a flex column on its own, so
+            // declaring Fill is all this side has to do - no percentage against an
+            // auto-height parent, no viewport arithmetic under it.
             //
-            // the min-height is the net under that: the panels between #wx-content-main
-            // and this control are auto-height, and a percentage height against an
-            // auto-height parent does not resolve - the control would collapse onto the
-            // 12rem floor of its stylesheet. the inline value overrides that floor, so
-            // the view keeps a usable extent either way and the larger one wins.
-            Styles =
-            [
-                "--wx-master-detail-height: 100%;",
-                "min-height: calc(100vh - 12rem);"
-            ];
+            // Fill stays an opt-in of the control, and a host that hands nothing down leaves
+            // the region at the 70vh fallback rather than at its content. A composite that
+            // is not the view opts back out - see ObjectHistoryListFragment, which is copied
+            // into a modal and sizes itself.
+            Fill = _ => true;
         }
     }
 }

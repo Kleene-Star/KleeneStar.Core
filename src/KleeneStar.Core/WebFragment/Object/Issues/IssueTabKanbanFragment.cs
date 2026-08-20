@@ -15,9 +15,9 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
     /// </summary>
     /// <remarks>
     /// The board is the master side of a <see cref="ControlMasterDetail"/> whose frame shows
-    /// the selected object's reading view, so a card can be inspected without leaving the
-    /// board — the same detail the list view and the scrum views offer. Selecting a card is
-    /// the board's own behaviour; the composite only owns the detail side.
+    /// the reduced reading view of the selected object, so a card can be inspected without
+    /// leaving the board — the same pane the list view and the scrum views show. Selecting a
+    /// card is the board's own behaviour; the composite only owns the detail side.
     ///
     /// The fragment also owns the <see cref="ControlViewState"/> that carries the tab's
     /// query surface. The search (<see cref="IssueTabKanbanSearchFragment"/>) and the
@@ -73,9 +73,12 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
 
             Board.Resource<IssueKanbanResource>();
 
-            // the detail is addressed by object id, which is the card id the board reports
-            // in its selection event; "{id}" is substituted by the master-detail controller
-            var detailUri = $"{CoreHub.GetUri<WWW.Objects.Detail>()}?id={{id}}";
+            // the pane shows the reduced reading view, the same one the list tab shows: a
+            // detail frame embeds a page's main content region, and that region of the full
+            // reading view is written for a full-width column. The bridge page resolves the
+            // object id the board reports in its selection event onto the object key the
+            // per-kind route is addressed by; "{id}" is substituted by the controller
+            var detailUri = $"{CoreHub.GetUri<WWW.Objects.Preview>()}?id={{id}}";
 
             var masterDetail = new ControlMasterDetail(id + "-masterdetail", Board)
             {
@@ -88,7 +91,12 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
                 DetailVisible = _ => false,
                 Reveal = _ => TypeMasterDetailReveal.DoubleClick,
                 MasterInitialSize = _ => 62,
-                Styles = ["--wx-master-detail-height: 100%;", "min-height: calc(100vh - 16rem);"],
+
+                // the board is the view of the tab rather than one block on a page of them,
+                // so it takes the height the content panel offers instead of bringing one of
+                // its own — the panel opens the chain of panels down to it as soon as a
+                // filling region is on the page, so this is all the view has to declare
+                Fill = _ => true,
                 Detail = new ControlFrame(id + "-frame")
                 {
                     Selector = _ => "#wx-content-main"

@@ -28,8 +28,8 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
     /// it does not have to sit inside the ViewState host.
     ///
     /// The board is the master side of a <see cref="ControlMasterDetail"/> whose frame
-    /// shows the selected object's reading view, so a card can be inspected without leaving
-    /// the board — the same detail the list view and the backlog offer.
+    /// shows the reduced reading view of the selected object, so a card can be inspected
+    /// without leaving the board — the same pane the list view and the backlog show.
     /// </remarks>
     [Section<SectionViewItemPrimary>]
     [Scope<IssueTabScrumViewFragment>]
@@ -67,9 +67,11 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
             };
             board.Resource<IssueSprintBoardResource>();
 
-            // the detail is addressed by object id, which is the card id the board reports
-            // in its selection event; "{id}" is substituted by the master-detail controller
-            var detailUri = $"{CoreHub.GetUri<WWW.Objects.Detail>()}?id={{id}}";
+            // the pane shows the reduced reading view, the same one the list view shows; the
+            // bridge page resolves the object id the board reports in its selection event
+            // onto the object key the per-kind route is addressed by, and "{id}" is
+            // substituted by the master-detail controller
+            var detailUri = $"{CoreHub.GetUri<WWW.Objects.Preview>()}?id={{id}}";
 
             var masterDetail = new ControlMasterDetail(id + "-masterdetail", board)
             {
@@ -83,7 +85,11 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
                 DetailVisible = _ => false,
                 Reveal = _ => TypeMasterDetailReveal.DoubleClick,
                 MasterInitialSize = _ => 62,
-                Styles = ["--wx-master-detail-height: 100%;", "min-height: calc(100vh - 22rem);"]
+
+                // the view fills the pane the shell gives it instead of bringing a height of
+                // its own; the content panel opens the chain of panels down to the region as
+                // soon as a filling one is on the page
+                Fill = _ => true
             };
 
             masterDetail.Detail = new ControlFrame(id + "-frame")

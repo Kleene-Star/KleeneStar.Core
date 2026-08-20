@@ -16,9 +16,9 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
     /// </summary>
     /// <remarks>
     /// The board is the master side of a <see cref="ControlMasterDetail"/> whose frame shows
-    /// the selected object's reading view, mirroring the issue board. The detail endpoint
-    /// resolves the object by id and forwards to the route of its kind, so the asset board
-    /// needs no route knowledge of its own.
+    /// the reduced reading view of the selected object, mirroring the issue board. The bridge
+    /// endpoint resolves the object by id and forwards to the route of its kind, so the asset
+    /// board needs no route knowledge of its own.
     ///
     /// The fragment also owns the <see cref="ControlViewState"/> carrying the tab's query
     /// surface, which the search (<see cref="AssetTabKanbanSearchFragment"/>) and the
@@ -58,8 +58,10 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         {
             var id = fragmentContext?.FragmentId?.ToString()?.Replace(".", "-");
 
-            // the detail is addressed by object id, which is the card id the board reports
-            // in its selection event; "{id}" is substituted by the master-detail controller
+            // the pane shows the reduced reading view, the same one the list tab shows; the
+            // bridge page resolves the object id the board reports in its selection event
+            // onto the object key the per-kind route is addressed by, and "{id}" is
+            // substituted by the master-detail controller
             // the ViewState declares the board resource and maps the shared state onto the
             // query parameters the endpoint reads: "q" for the search, "f" for the chips
             var viewState = new ControlViewState<DataQueryState>(id + "-viewstate")
@@ -72,7 +74,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
 
             Board.Resource<AssetKanbanResource>();
 
-            var detailRoute = CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects.Detail>();
+            var detailRoute = CoreHub.GetUri<global::KleeneStar.Core.WWW.Objects.Preview>();
             var detailUri = $"{detailRoute}?id={{id}}";
 
             var masterDetail = new ControlMasterDetail(id + "-masterdetail", Board)
@@ -84,7 +86,12 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
                 DetailVisible = _ => false,
                 Reveal = _ => TypeMasterDetailReveal.DoubleClick,
                 MasterInitialSize = _ => 62,
-                Styles = ["--wx-master-detail-height: 100%;", "min-height: calc(100vh - 16rem);"],
+
+                // the board is the view of the tab rather than one block on a page of them,
+                // so it takes the height the content panel offers instead of bringing one of
+                // its own — the panel opens the chain of panels down to it as soon as a
+                // filling region is on the page, so this is all the view has to declare
+                Fill = _ => true,
                 Detail = new ControlFrame(id + "-frame")
                 {
                     Selector = _ => "#wx-content-main"

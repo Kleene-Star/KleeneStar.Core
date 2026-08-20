@@ -42,6 +42,10 @@ namespace KleeneStar.Core.WebFragment.Object
         {
             Closable = _ => false,
             MasterInitialSize = _ => 260,
+
+            // the view is copied into a modal rather than laid into the content pane, so it
+            // brings a height of its own instead of taking one from a host that has none
+            Fill = _ => false,
             Styles =
             [
                "--wx-master-detail-height: 55vh;",
