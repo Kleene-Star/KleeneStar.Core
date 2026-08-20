@@ -32,6 +32,7 @@ namespace KleeneStar.Core.Test
             ("_tenantManager",    typeof(TenantManager)),
             ("_navigatorLinkManager", typeof(NavigatorLinkManager)),
             ("_maintenanceManager", typeof(MaintenanceManager)),
+            ("_brandingManager", typeof(BrandingManager)),
             ("_customQuickfilterManager", typeof(CustomQuickfilterManager)),
             ("_permissionManager", typeof(PermissionManager)),
             ("_identityManager",  typeof(IdentityManager)),

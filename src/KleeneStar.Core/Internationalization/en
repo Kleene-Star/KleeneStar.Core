@@ -899,6 +899,14 @@ setting.database.provider.label=Database Provider
 setting.database.title=Database Settings
 setting.group.database.label=Database
 
+setting.branding.description=The title and the icon are fixed in the code of the application. Here the installation overrides both for itself - with the name of the team it serves, its own logo, or a marker that this is a test system. An empty field restores the default of the application.
+setting.branding.header=Title and icon of the application
+setting.branding.icon.help=Shown in the header and in the application switcher. Without an image the icon of the application applies again.
+setting.branding.icon.label=Application icon
+setting.branding.title=Application
+setting.branding.title.help=Shown in the header and in the application switcher. Without an entry the name of the application applies again.
+setting.branding.title.label=Application title
+setting.branding.title.placeholder=Enter the title the application should appear under.
 setting.maintenance.description=The instruction text is shown to all signed-in users as a notice at the top of the page for as long as it is enabled.
 setting.maintenance.enabled.help=Displays the instruction text on every page. Without a text the notice stays hidden regardless.
 setting.maintenance.enabled.label=Show notice
@@ -1260,6 +1268,7 @@ notification.savedsearch.deleted=The saved search has been deleted successfully.
 notification.savedsearch.updated=The saved search has been updated successfully.
 
 notification.maintenance.updated=The maintenance notice has been updated successfully.
+notification.branding.updated=The title and the icon of the application have been updated successfully.
 notification.navigatorlink.created=The link has been created successfully.
 notification.navigatorlink.updated=The link has been updated successfully.
 notification.quickfilter.created=The quick filter has been created successfully.

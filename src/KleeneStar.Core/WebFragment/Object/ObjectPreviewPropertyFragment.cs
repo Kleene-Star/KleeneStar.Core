@@ -21,7 +21,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// On the full reading view these attributes are spread over the property column
     /// (<c>#wx-content-property</c>), which a detail frame never receives because it embeds the
     /// main content region alone. The reduced view therefore carries them itself, collapsed from
-    /// four cards into one read-only list: a pane a few hundred pixels wide has room to say what
+    /// four sections into one read-only list: a pane a few hundred pixels wide has room to say what
     /// the object is, not to offer every way of changing it. The interactive affordances of the
     /// property column - the assign-to-me link, the watcher strip, the workflow split button -
     /// are intentionally absent; the button of
@@ -82,13 +82,14 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            var card = new ControlPanelCard("object-preview-property-card")
+            var section = new ControlSection("object-preview-property-section")
             {
                 Header = _ => "kleenestar.core:object.preview.property.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconCircleInfo(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule
             };
 
-            card.Add(new ControlAttribute("object-preview-key")
+            section.Add(new ControlAttribute("object-preview-key")
             {
                 Icon = _ => new IconKey(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.preview.key.label",
@@ -100,7 +101,7 @@ namespace KleeneStar.Core.WebFragment.Object
             // raw key rather than blank
             var kind = ObjectKindCatalog.GetKind(@object.Kind);
 
-            card.Add(new ControlAttribute("object-preview-kind")
+            section.Add(new ControlAttribute("object-preview-kind")
             {
                 Icon = _ => kind?.Icon ?? new IconCube(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.preview.kind.label",
@@ -111,14 +112,14 @@ namespace KleeneStar.Core.WebFragment.Object
 
             var className = _classManager.GetClass(@object.ClassId)?.Name;
 
-            card.Add(new ControlAttribute("object-preview-class")
+            section.Add(new ControlAttribute("object-preview-class")
             {
                 Icon = _ => new IconShapes(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.sidebar.class.label",
                 Value = _ => Fallback(className)
             });
 
-            card.Add(new ControlAttribute("object-preview-workspace")
+            section.Add(new ControlAttribute("object-preview-workspace")
             {
                 Icon = _ => new IconFolder(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.sidebar.workspace.label",
@@ -129,7 +130,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 ? _identityManager.GetIdentity(@object.AssigneeId.Value)?.Name
                 : null;
 
-            card.Add(new ControlAttribute("object-preview-assignee")
+            section.Add(new ControlAttribute("object-preview-assignee")
             {
                 Icon = _ => new IconUserCheck(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.assignee.label",
@@ -138,11 +139,11 @@ namespace KleeneStar.Core.WebFragment.Object
                     : assigneeName
             });
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
 
         /// <summary>
-        /// Returns the supplied text, or the em dash the property cards of the full reading
+        /// Returns the supplied text, or the em dash the property sections of the full reading
         /// view use for an attribute that carries no value.
         /// </summary>
         /// <param name="text">The text to show. May be null or blank.</param>

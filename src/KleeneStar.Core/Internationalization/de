@@ -899,6 +899,14 @@ setting.database.provider.label=Datenbankanbieter
 setting.database.title=Datenbankeinstellungen
 setting.group.database.label=Datenbank
 
+setting.branding.description=Titel und Icon sind im Programmcode der Anwendung festgelegt. Hier überschreibt die Installation beides für sich – etwa mit dem Namen des Teams, dem eigenen Logo oder einer Kennzeichnung als Testsystem. Ein leeres Feld stellt den Standard der Anwendung wieder her.
+setting.branding.header=Titel und Icon der Anwendung
+setting.branding.icon.help=Wird in der Kopfzeile und im Anwendungswechsler angezeigt. Ohne Bild gilt wieder das Icon der Anwendung.
+setting.branding.icon.label=Anwendungsicon
+setting.branding.title=Anwendung
+setting.branding.title.help=Wird in der Kopfzeile und im Anwendungswechsler angezeigt. Ohne Eintrag gilt wieder der Name der Anwendung.
+setting.branding.title.label=Anwendungstitel
+setting.branding.title.placeholder=Geben Sie den Titel ein, unter dem die Anwendung erscheinen soll.
 setting.maintenance.description=Der Anweisungstext wird allen angemeldeten Benutzern als Hinweis am oberen Seitenrand angezeigt, solange er aktiviert ist.
 setting.maintenance.enabled.help=Blendet den Anweisungstext auf allen Seiten ein. Ohne Text bleibt der Hinweis auch dann verborgen.
 setting.maintenance.enabled.label=Hinweis anzeigen
@@ -1260,6 +1268,7 @@ notification.savedsearch.deleted=Die gespeicherte Suche wurde erfolgreich gelös
 notification.savedsearch.updated=Die gespeicherte Suche wurde erfolgreich aktualisiert.
 
 notification.maintenance.updated=Der Wartungshinweis wurde erfolgreich aktualisiert.
+notification.branding.updated=Titel und Icon der Anwendung wurden erfolgreich aktualisiert.
 notification.navigatorlink.created=Der Link wurde erfolgreich erstellt.
 notification.navigatorlink.updated=Der Link wurde erfolgreich aktualisiert.
 notification.quickfilter.created=Der Schnellfilter wurde erfolgreich erstellt.

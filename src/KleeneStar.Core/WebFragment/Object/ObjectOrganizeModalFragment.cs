@@ -14,7 +14,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </summary>
     /// <remarks>
     /// A <c>wx-webui-modal-page</c> (not <c>-form</c>) modal is required because the dialog content
-    /// is a tree/card, not a <c>&lt;form&gt;</c>: the form modal only injects the children of a
+    /// is a tree in a flat section, not a <c>&lt;form&gt;</c>: the form modal only injects the children of a
     /// <c>&lt;form&gt;</c> element and would leave a non-form dialog empty. The page modal fetches
     /// the organize page and copies the element matching <see cref="ControlModalRemotePage.Selector"/>
     /// into the modal body, where the client controllers (tree + object-move controller) bootstrap

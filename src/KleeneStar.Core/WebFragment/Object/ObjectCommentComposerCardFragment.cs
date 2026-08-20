@@ -7,15 +7,17 @@ using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Object-scoped content card that renders the new-comment composer for the object
-    /// currently displayed on <see cref="WWW.Issue._objectkey_.Index"/>. The card is
+    /// The composer of the communication history: the new-comment form for the object
+    /// currently displayed on <see cref="WWW.Issue._objectkey_.Index"/>. The section is
     /// pinned to the end of the page via the maximum <see cref="OrderAttribute"/> value
     /// so it always renders below every other content fragment.
     /// </summary>
@@ -65,7 +67,7 @@ namespace KleeneStar.Core.WebFragment.Object
         }
 
         /// <summary>
-        /// Renders the composer card for the current object. Returns <c>null</c> when the
+        /// Renders the composer for the current object. Returns <c>null</c> when the
         /// fragment's render conditions exclude it or when no object can be resolved from
         /// the request.
         /// </summary>
@@ -87,15 +89,17 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            var card = new ControlPanelCard("object-comment-composer-card")
+            var section = new ControlSection("object-comment-composer-section")
             {
                 Header = _ => "kleenestar.core:object.comment.composer.card.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconPenToSquare(TypeIconTheme.Light),
+                Expanded = _ => false,
+                Layout = _ => TypeLayoutSection.Rule
             };
 
-            card.Add(Composer);
+            section.Add(Composer);
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
     }
 }

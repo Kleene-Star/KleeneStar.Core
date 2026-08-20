@@ -1,0 +1,267 @@
+
+#wx-content-main {
+    --ks-zone-padding: clamp(1rem, 2vw, 2rem);
+    --ks-measure: 78ch;
+
+    padding: 0 var(--ks-zone-padding) 3rem var(--ks-zone-padding);
+}
+
+#wx-content-property {
+    --ks-zone-padding: clamp(0.75rem, 1.2vw, 1.25rem);
+
+    padding: 1.25rem var(--ks-zone-padding) 2rem var(--ks-zone-padding);
+    font-size: 0.875rem;
+
+    /* the reference zone is a column beside the work zone, not a continuation of it. left alone
+       it grows with its content and takes the whole page with it: the object scrolls out of view
+       because its status and its dates are long.
+
+       it cannot simply be told to scroll, because nothing above it has a height to scroll
+       against - the shell never establishes one, so `height: 100%` on the pane resolves to auto
+       all the way down. the viewport is the one definite height available, so the column is
+       capped by it and gets a scrollbar of its own; the containment keeps a scroll that reaches
+       the end of the column from continuing into the page. */
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+/* the sections of the object view use the rule layout, whose hairline runs to the far edge of
+   its container. left alone it would run wider than the text it introduces, so the section is
+   held to the reading measure and the rule ends where the content ends */
+#wx-content-main .wx-section {
+    max-width: var(--ks-measure, 78ch);
+}
+
+/* the reference zone is a column of short sections, so it breathes in smaller steps than the
+   work zone - the same gap that reads as calm over a paragraph reads as disconnected over a
+   three-line property list */
+#wx-content-property .wx-section {
+    --wx-section-gap: 1.25rem;
+}
+
+/* ================================================================ headline */
+
+#wx-content-main-headline {
+    padding-top: 1.5rem;
+}
+
+#wx-content-main-headline h2 {
+    font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+}
+
+/* the metadata line under the summary is the object's vital signs, read at a glance and never
+   read twice - it stays quiet and sits close to the title it belongs to */
+#wx-content-main-headline #object-metadata-audit {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 1rem;
+    row-gap: 0.1rem;
+    margin-top: 0.25rem;
+}
+
+#wx-content-main-headline #object-metadata-status {
+    margin-top: 0.35rem;
+}
+
+/* ================================================================== prose */
+
+/* a measure of roughly 78 characters: long enough not to break sentences into fragments,
+   short enough that the eye finds the start of the next line without searching */
+.wx-kleenestar-prose,
+.wx-kleenestar-object-prose {
+    max-width: var(--ks-measure, 78ch);
+    line-height: 1.65;
+}
+
+.wx-kleenestar-prose > :first-child,
+.wx-kleenestar-object-prose > :first-child {
+    margin-top: 0;
+}
+
+.wx-kleenestar-prose > :last-child,
+.wx-kleenestar-object-prose > :last-child {
+    margin-bottom: 0;
+}
+
+.wx-kleenestar-prose h1,
+.wx-kleenestar-prose h2,
+.wx-kleenestar-prose h3,
+.wx-kleenestar-object-prose h1,
+.wx-kleenestar-object-prose h2,
+.wx-kleenestar-object-prose h3 {
+    margin: 1.5em 0 0.5em 0;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.wx-kleenestar-prose h1,
+.wx-kleenestar-object-prose h1 {
+    font-size: 1.4rem;
+}
+
+.wx-kleenestar-prose h2,
+.wx-kleenestar-object-prose h2 {
+    font-size: 1.2rem;
+}
+
+.wx-kleenestar-prose h3,
+.wx-kleenestar-object-prose h3 {
+    font-size: 1.05rem;
+}
+
+/* a quotation is the one place in the object view where a second vertical line is worth its
+   weight - it marks text that is not the author's */
+.wx-kleenestar-prose blockquote,
+.wx-kleenestar-object-prose blockquote {
+    margin: 1em 0;
+    padding: 0.1rem 0 0.1rem 1rem;
+    border-left: 2px solid var(--wx-border-color);
+    color: var(--wx-secondary-color);
+}
+
+.wx-kleenestar-prose pre,
+.wx-kleenestar-object-prose pre {
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    background: var(--wx-tertiary-bg);
+    overflow-x: auto;
+}
+
+/* ================================================================= fields */
+
+/* the field list is a two-column reading grid: the labels align down one edge so the eye runs
+   along the values, and a label that runs long wraps inside its own column instead of pushing
+   the value out of line */
+.wx-kleenestar-field-list {
+    display: grid;
+    grid-template-columns: minmax(6rem, 14rem) minmax(0, 1fr);
+    column-gap: 1.25rem;
+    row-gap: 0.15rem;
+    align-items: baseline;
+    max-width: var(--ks-measure, 78ch);
+}
+
+.wx-kleenestar-field-list > .wx-kleenestar-field {
+    display: contents;
+}
+
+.wx-kleenestar-field-label {
+    color: var(--wx-secondary-color);
+    font-weight: 500;
+    hyphens: auto;
+}
+
+/* the inline editors sit on the value column and only show their frame once they are aimed at,
+   so a page of fields reads as text rather than as a form waiting to be filled in */
+.wx-kleenestar-field-list .wx-webui-smartedit,
+.wx-kleenestar-field-list .wx-smartedit {
+    min-width: 0;
+}
+
+/* a narrow work zone cannot hold two columns - the labels move above their values */
+@media (max-width: 60rem) {
+    .wx-kleenestar-field-list {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 0.75rem;
+    }
+
+    .wx-kleenestar-field-label {
+        display: block;
+    }
+}
+
+/* ============================================================= attributes */
+
+/* the key/value rows of the reference zone: the key is the quiet half, and the pair sits on
+   one line until it cannot */
+#wx-content-property .wx-section-body > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+    padding: 0.15rem 0;
+}
+
+#wx-content-property .wx-section-body > div > span[id$="_name"] {
+    color: var(--wx-secondary-color);
+}
+
+#wx-content-property .wx-section-body > div > i {
+    color: var(--wx-secondary-color);
+    width: 1em;
+    text-align: center;
+    flex: none;
+}
+
+/* ========================================================== communication */
+
+/* the conversation is the one part of the view that is a stream rather than a statement, and
+   the comment control frames every entry as its own box. inside the object view the frames
+   come off: a single tint a step away from the work zone marks the entries as a different
+   medium, and the entries are told apart by that tint and the gap between them.
+
+   the rule stays inside the object view - the control keeps its framed look everywhere else it
+   is used, where it does not sit in a stack of flat sections. */
+#object-comments-section .wx-comment,
+#object-comments-section .wx-comment-item {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+#object-comments-section .wx-comment-item {
+    padding: 0.35rem 0;
+    background: color-mix(in srgb, var(--wx-tertiary-bg) 55%, transparent);
+    border-radius: 4px;
+}
+
+#object-comments-section .wx-comment-item + .wx-comment-item {
+    margin-top: 0.6rem;
+}
+
+/* a reply belongs to the comment above it, so it hangs off a guide line of its own rather than
+   off a second background */
+#object-comments-section .wx-comment-replies {
+    margin-left: 0.75rem;
+    padding-left: 0.75rem;
+    border-top: 0;
+    border-left: 1px solid var(--wx-border-color);
+    background: transparent;
+}
+
+#object-comments,
+#object-comments-section .wx-comment-list {
+    max-width: var(--ks-measure, 78ch);
+}
+
+#object-comment-composer-section .wx-section-body {
+    max-width: var(--ks-measure, 78ch);
+}
+
+/* ================================================================ preview */
+
+/* the reduced view is read inside a detail pane, which is narrower than the work zone and
+   already framed by the list beside it - its key/value rows take the same layout as the ones
+   in the reference zone rather than inventing a third */
+#object-preview-property-section .wx-section-body > div,
+#object-preview-field-section .wx-section-body > div {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem;
+    padding: 0.1rem 0;
+}
+
+#object-preview-property-section .wx-section-body > div > span[id$="_name"],
+#object-preview-field-section .wx-section-body > div > span[id$="_name"],
+#object-preview-property-section .wx-section-body > div > i,
+#object-preview-field-section .wx-section-body > div > i {
+    color: var(--wx-secondary-color);
+}

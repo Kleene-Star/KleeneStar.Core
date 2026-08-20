@@ -1,6 +1,7 @@
 using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using WebExpress.WebApp.WebSection;
@@ -24,7 +25,7 @@ namespace KleeneStar.Core.WebFragment.Object
     using Workflow = KleeneStar.Model.Entities.Workflow;
 
     /// <summary>
-    /// Object-scoped property card that renders, for every workflow-backed field of the
+    /// The status section of the reference zone, rendering for every workflow-backed field of the
     /// current object's class, a split button reflecting the field's current status on
     /// <see cref="WWW.Issue._objectkey_.Index"/> and offering the states the object may be
     /// moved to next.
@@ -32,7 +33,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// <remarks>
     /// A field qualifies when it is active, not deprecated, of type
     /// <see cref="FieldType.Workflow"/>, and carries a <see cref="Field.WorkflowId"/>.
-    /// For each such field the card hosts a <see cref="ControlSplitButton"/> whose main
+    /// For each such field the section hosts a <see cref="ControlSplitButton"/> whose main
     /// button shows the field's current status (resolved from the persisted
     /// <see cref="Model.Entities.Value"/> against the workflow's states) in the color and with
     /// the glyph of the status category, and whose dropdown lists the states reachable from it
@@ -43,7 +44,7 @@ namespace KleeneStar.Core.WebFragment.Object
     /// item opens the workflow itself in a modal
     /// (<see cref="WWW.Workflow._workflowid_.Flow"/>). These fields are intentionally omitted
     /// from the form-driven detail view rendered by <see cref="ObjectItemDetailFragment"/> so
-    /// the status lives only in this card.
+    /// the status lives only in this section.
     /// </remarks>
     [Section<SectionPropertyPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
@@ -85,7 +86,7 @@ namespace KleeneStar.Core.WebFragment.Object
         }
 
         /// <summary>
-        /// Renders the workflow status card for the current object. Returns <c>null</c>
+        /// Renders the workflow status section for the current object. Returns <c>null</c>
         /// when the fragment's render conditions exclude it, when no object can be resolved
         /// from the request, or when the object's class has no workflow-backed fields.
         /// </summary>
@@ -120,10 +121,18 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            var card = new ControlPanelCard("object-property-workflow-card")
+            // the status is the one property of the reference zone that has a color of its own,
+            // and it is the property a reader looks for first. lending that color to the label
+            // and the guide line makes the section findable by color alone in a column of
+            // otherwise identical grey labels
+            var accent = ResolveAccent(@object, workflowFields);
+
+            var section = new ControlSection("object-property-workflow-section")
             {
                 Header = _ => "kleenestar.core:object.property.workflow.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconTrafficLight(TypeIconTheme.Light),
+                Color = accent is null ? null : _ => new PropertyColorText(accent),
+                Layout = _ => TypeLayoutSection.Rule
             };
 
             var rendered = false;
@@ -133,12 +142,48 @@ namespace KleeneStar.Core.WebFragment.Object
                 var block = BuildFieldBlock(@object, field);
                 if (block is not null)
                 {
-                    card.Add(block);
+                    section.Add(block);
                     rendered = true;
                 }
             }
 
-            return rendered ? card.Render(renderContext, visualTree) : null;
+            return rendered ? section.Render(renderContext, visualTree) : null;
+        }
+
+        /// <summary>
+        /// Resolves the accent of the section: the category color of the first workflow field
+        /// whose status can be resolved.
+        /// </summary>
+        /// <remarks>
+        /// A class may model more than one workflow field, but only one of them can color the
+        /// section - so the first one that has a status wins, which is the one the form declared
+        /// first and therefore the one the class treats as its primary lifecycle. A class whose
+        /// object has not entered any workflow yet gets no accent rather than an arbitrary one.
+        /// </remarks>
+        /// <param name="object">The object whose status is displayed.</param>
+        /// <param name="fields">The workflow-backed fields of the class, in declaration order.</param>
+        /// <returns>The category color, or <c>null</c> when no status resolves to one.</returns>
+        private string ResolveAccent(Model.Entities.Object @object, IEnumerable<Field> fields)
+        {
+            foreach (var field in fields)
+            {
+                var workflow = _workflowManager.GetWorkflowWithStructure(field.WorkflowId.Value);
+
+                if (workflow is null)
+                {
+                    continue;
+                }
+
+                var value = _valueManager.GetValue(@object.Id, field.Id);
+                var color = _workflowManager.ResolveStatus(workflow, value?.Data)?.Category?.Color;
+
+                if (!string.IsNullOrWhiteSpace(color))
+                {
+                    return color;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -257,7 +302,7 @@ namespace KleeneStar.Core.WebFragment.Object
         }
 
         /// <summary>
-        /// Paints the split button in the color of the current state's category, so the card
+        /// Paints the split button in the color of the current state's category, so the section
         /// reads at a glance the same way the workflow designer canvas and the board columns
         /// do. Falls back to the system primary color when the state is unknown or its
         /// category carries no color.
@@ -281,7 +326,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
         /// <summary>
         /// Returns the glyph standing for a state, chosen from the category the state belongs
-        /// to, so the card still separates "not started" from "running", "waiting" and
+        /// to, so the section still separates "not started" from "running", "waiting" and
         /// "finished" for a reader who does not go by color alone.
         /// </summary>
         /// <remarks>

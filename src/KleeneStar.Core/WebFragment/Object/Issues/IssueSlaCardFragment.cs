@@ -9,8 +9,10 @@ using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment.Object.Issues
@@ -21,7 +23,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
     using Status = KleeneStar.Model.Entities.Status;
 
     /// <summary>
-    /// Object-scoped fragment that renders a card showing every SLA policy attached to the
+    /// The service-level section of the reference zone, showing every SLA policy attached to the
     /// current object's class as running agreements on
     /// <see cref="WWW.Issue._objectkey_.Index"/>.
     /// </summary>
@@ -33,7 +35,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
     /// and the time left until the deadline.
     /// <para>
     /// The tiles are rendered complete: the clock <see cref="SlaClock.Derive"/> builds from
-    /// the object is evaluated server side and seeded into the markup, so the card is correct
+    /// the object is evaluated server side and seeded into the markup, so the section is correct
     /// in the first paint and stays readable without JavaScript. The client then counts on
     /// its own and re-reads the state from
     /// <see cref="WWW.Api._1_.SlaClocks._objectkey_.Index"/> once a minute, which is what
@@ -97,7 +99,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         }
 
         /// <summary>
-        /// Renders the SLA card for the current object.
+        /// Renders the SLA section for the current object.
         /// </summary>
         /// <param name="renderContext">The render context.</param>
         /// <param name="visualTree">The visual tree.</param>
@@ -118,10 +120,11 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
                 return null;
             }
 
-            var card = new ControlPanelCard("object-sla-card")
+            var section = new ControlSection("object-sla-section")
             {
                 Header = _ => "kleenestar.core:object.sla.card.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconStopwatch(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule
             };
 
             var policies = _slaManager
@@ -133,13 +136,13 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
 
             if (policies.Count == 0)
             {
-                card.Add(EmptyState("object-sla-empty", "kleenestar.core:object.sla.card.none"));
+                section.Add(EmptyState("object-sla-empty", "kleenestar.core:object.sla.card.none"));
 
-                return card.Render(renderContext, visualTree);
+                return section.Render(renderContext, visualTree);
             }
 
             // the status is what decides whether a clock runs, is stopped or is settled, so it
-            // is resolved once for the whole card rather than per target
+            // is resolved once for the whole section rather than per target
             var status = SlaClock.ResolveStatus(@object, _fieldManager, _valueManager, _workflowManager);
             var moment = DateTime.Now;
             var rendered = false;
@@ -150,17 +153,17 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
 
                 if (group is not null)
                 {
-                    card.Add(group);
+                    section.Add(group);
                     rendered = true;
                 }
             }
 
             if (!rendered)
             {
-                card.Add(EmptyState("object-sla-notargets", "kleenestar.core:object.sla.card.notargets"));
+                section.Add(EmptyState("object-sla-notargets", "kleenestar.core:object.sla.card.notargets"));
             }
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
 
         /// <summary>
@@ -247,7 +250,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         }
 
         /// <summary>
-        /// Builds the line the card shows in place of the agreements when there are none.
+        /// Builds the line the section shows in place of the agreements when there are none.
         /// </summary>
         /// <param name="id">The id of the control.</param>
         /// <param name="key">The i18n key of the message.</param>
@@ -263,7 +266,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
     }
 
     /// <summary>
-    /// Provides translation-key lookups for SLA enums used by the card layout.
+    /// Provides translation-key lookups for SLA enums used by the section layout.
     /// </summary>
     internal static class SlaTranslationKeyExtensions
     {

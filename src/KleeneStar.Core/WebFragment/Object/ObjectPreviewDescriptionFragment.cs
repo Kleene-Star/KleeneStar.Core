@@ -4,8 +4,10 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment.Object
@@ -66,33 +68,34 @@ namespace KleeneStar.Core.WebFragment.Object
 
             var id = @object.Id.ToString("N");
 
-            var card = new ControlPanelCard("object-preview-description-card")
+            var section = new ControlSection("object-preview-description-section")
             {
                 Header = _ => "kleenestar.core:object.description.card.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconAlignLeft(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule
             };
 
             if (string.IsNullOrWhiteSpace(@object.Description))
             {
-                card.Add(new ControlText("object-preview-description-empty-" + id)
+                section.Add(new ControlText("object-preview-description-empty-" + id)
                 {
                     Text = _ => "kleenestar.core:object.preview.description.none",
                     Format = _ => TypeFormatText.Paragraph,
                     TextColor = _ => new PropertyColorText(TypeColorText.Secondary)
                 });
 
-                return card.Render(renderContext, visualTree);
+                return section.Render(renderContext, visualTree);
             }
 
             // the description is stored as the markup the wysiwyg editor produced, so it is
             // emitted as markup here too - the same way the document and blog reading views
             // render their prose
-            card.Add(new ControlHtml("object-preview-description-body-" + id)
+            section.Add(new ControlHtml("object-preview-description-body-" + id)
             {
                 Html = _ => "<div class=\"wx-kleenestar-prose\">" + @object.Description + "</div>"
             });
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
     }
 }

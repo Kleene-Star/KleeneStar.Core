@@ -3,6 +3,7 @@ using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebPolicies;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.Internationalization;
@@ -61,7 +62,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
         }
 
         /// <summary>
-        /// Renders the organize card. Returns <c>null</c> when the fragment's render conditions
+        /// Renders the organize dialog content. Returns <c>null</c> when the fragment's render conditions
         /// exclude it or when no workspace can be resolved from the request.
         /// </summary>
         /// <param name="renderContext">The render context.</param>
@@ -101,52 +102,69 @@ namespace KleeneStar.Core.WebFragment.Workspace
             wrapper.AddUserAttribute("data-rest-uri", CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Objects.Move>()?.ToString());
             wrapper.Add(treeHtml);
 
-            var card = new ControlPanelCard("workspace-organize-card")
-            {
-                Header = _ => "kleenestar.core:workspace.organize.header"
-            };
-
-            card.Add(new ControlText("workspace-organize-help")
+            // the instruction explains the gesture, not the hierarchy - it belongs above the
+            // section rather than inside it, where it would be the first thing folded away
+            var help = new ControlText("workspace-organize-help")
             {
                 Text = _ => "kleenestar.core:workspace.organize.help",
-                Format = _ => TypeFormatText.Paragraph
-            });
+                Format = _ => TypeFormatText.Paragraph,
+                TextColor = _ => new PropertyColorText(TypeColorText.Secondary)
+            };
+
+            // the tree draws its own structure through its indentation, so the section adds no
+            // guide line beside it; and a dialog whose only content could be folded away offers
+            // a control that leads nowhere, so the label stays a heading. the count is worth
+            // showing because the dialog caps at MaxItems - it says whether this is everything.
+            var section = new ControlSection("workspace-organize-section")
+            {
+                Header = _ => "kleenestar.core:workspace.organize.header",
+                HeaderIcon = _ => new IconSitemap(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule,
+                Collapsible = _ => false,
+                Guide = _ => false,
+                Badge = objects.Count > 0 ? _ => objects.Count.ToString(CultureInfo.InvariantCulture) : null
+            };
 
             if (objects.Count == 0)
             {
-                card.Add(new ControlText("workspace-organize-empty")
+                section.Add(new ControlText("workspace-organize-empty")
                 {
                     Text = _ => "kleenestar.core:workspace.organize.empty",
                     Format = _ => TypeFormatText.Paragraph
                 });
 
-                return WrapForModal(card, renderContext, visualTree);
+                return WrapForModal(renderContext, visualTree, help, section);
             }
 
-            card.Add(new ControlHtml("workspace-organize-tree-host")
+            section.Add(new ControlHtml("workspace-organize-tree-host")
             {
                 Html = _ => wrapper.ToString()
             });
 
-            return WrapForModal(card, renderContext, visualTree);
+            return WrapForModal(renderContext, visualTree, help, section);
         }
 
         /// <summary>
-        /// Wraps the rendered card in the content host element the page-modal extracts. The id must
+        /// Wraps the rendered content in the host element the page-modal extracts. The id must
         /// match the <c>Selector</c> of <c>ObjectOrganizeModalFragment</c> (<c>#kleenestar-organize-content</c>),
-        /// whose modal controller copies this element's children into the dialog body.
+        /// whose modal controller copies this element's children into the dialog body - so every
+        /// control handed in here arrives in the dialog, in the order it was given.
         /// </summary>
-        /// <param name="card">The organize card to host.</param>
+        /// <param name="controls">The controls to host, in reading order.</param>
         /// <param name="renderContext">The render context.</param>
         /// <param name="visualTree">The visual tree.</param>
-        /// <returns>The host element wrapping the rendered card.</returns>
-        private static IHtmlNode WrapForModal(ControlPanelCard card, IRenderControlContext renderContext, IVisualTreeControl visualTree)
+        /// <returns>The host element wrapping the rendered controls.</returns>
+        private static IHtmlNode WrapForModal(IRenderControlContext renderContext, IVisualTreeControl visualTree, params IControl[] controls)
         {
             var host = new HtmlElementTextContentDiv()
             {
                 Id = "kleenestar-organize-content"
             };
-            host.Add(card.Render(renderContext, visualTree));
+
+            foreach (var control in controls)
+            {
+                host.Add(control.Render(renderContext, visualTree));
+            }
 
             return host;
         }

@@ -6,8 +6,10 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment.Object
@@ -76,10 +78,11 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            var card = new ControlPanelCard("object-property-tag-card")
+            var section = new ControlSection("object-property-tag-section")
             {
                 Header = _ => "kleenestar.core:object.property.tag.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconTags(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule
             };
 
             var list = new ControlPanel("object-tag-list")
@@ -92,9 +95,9 @@ namespace KleeneStar.Core.WebFragment.Object
                 list.Add(BuildTagBadge(tag));
             }
 
-            card.Add(list);
+            section.Add(list);
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
 
         /// <summary>

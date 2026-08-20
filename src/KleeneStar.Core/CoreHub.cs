@@ -35,6 +35,7 @@ namespace KleeneStar.Core
         private static TenantManager _tenantManager;
         private static NavigatorLinkManager _navigatorLinkManager;
         private static MaintenanceManager _maintenanceManager;
+        private static BrandingManager _brandingManager;
         private static CustomQuickfilterManager _customQuickfilterManager;
         private static PermissionManager _permissionManager;
         private static IdentityManager _identityManager;
@@ -144,6 +145,12 @@ namespace KleeneStar.Core
         /// Gets the maintenance manager used to manage the maintenance notice of the installation.
         /// </summary>
         public static IMaintenanceManager MaintenanceManager => _maintenanceManager ??= ComponentHub.GetComponentManager<MaintenanceManager>();
+
+        /// <summary>
+        /// Gets the manager of the installation identity: the title and the icon the application
+        /// is presented under.
+        /// </summary>
+        public static IBrandingManager BrandingManager => _brandingManager ??= ComponentHub.GetComponentManager<BrandingManager>();
 
         /// <summary>
         /// Gets the manager of the quickfilters the users defined themselves.

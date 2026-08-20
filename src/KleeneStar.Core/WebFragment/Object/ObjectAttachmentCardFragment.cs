@@ -2,6 +2,7 @@
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System;
+using System.Globalization;
 using System.Linq;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
@@ -17,12 +18,12 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Object-scoped content card that lists the files attached to the object currently
+    /// The attachment section of the object view: the files attached to the object currently
     /// displayed on <see cref="WWW.Issue._objectkey_.Index"/> and offers a drag-and-drop
     /// upload zone for adding new ones.
     /// </summary>
     /// <remarks>
-    /// The card hosts a <see cref="ControlFileList"/> populated from
+    /// The section hosts a <see cref="ControlFileList"/> populated from
     /// <see cref="IAttachmentManager.GetAttachments(System.Guid)"/> (one
     /// <see cref="ControlFileListItem"/> per attachment, with a content-type-derived icon)
     /// followed by a <see cref="ControlUpload"/>. The upload posts back to the object's own
@@ -78,16 +79,22 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            var card = new ControlPanelCard("object-attachments-card")
+            // the count rides in the header so a folded section still answers the only question
+            // a reader has about it - is there anything in here - without being unfolded
+            var count = _attachmentManager.GetAttachments(@object.Id).Count();
+
+            var section = new ControlSection("object-attachment-section")
             {
                 Header = _ => "kleenestar.core:object.attachment.card.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconPaperclip(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule,
+                Badge = count > 0 ? _ => count.ToString(CultureInfo.InvariantCulture) : null
             };
 
-            card.Add(BuildFileList(@object));
-            card.Add(BuildUpload(@object, renderContext));
+            section.Add(BuildFileList(@object));
+            section.Add(BuildUpload(@object, renderContext));
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
 
         /// <summary>

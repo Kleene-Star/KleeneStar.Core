@@ -85,8 +85,15 @@ namespace KleeneStar.Core
         /// <summary>
         /// Called when the application starts working. The call is concurrent.
         /// </summary>
+        /// <remarks>
+        /// The identity the installation chose is pushed into the application context here, after
+        /// the database is migrated and seeded. It cannot happen in the constructor: the
+        /// application is not registered with the application manager until the constructor
+        /// returns, so there would be no context to rebrand yet.
+        /// </remarks>
         public void Run()
         {
+            CoreHub.BrandingManager.Apply();
         }
 
         /// <summary>

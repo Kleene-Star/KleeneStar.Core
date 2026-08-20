@@ -74,16 +74,18 @@ namespace KleeneStar.Core.WebFragment.Object
 
             var id = @object.Id.ToString("N");
 
-            var card = new ControlPanelCard("object-prose-card-" + id)
+            // the body of a document or a post is the page, not a thing on it - it carries no
+            // frame and no section label, only the reading measure the stylesheet gives it
+            var body = new ControlPanel("object-prose-" + id)
             {
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                Classes = ["wx-kleenestar-object-prose"]
             };
 
             var isBlog = string.Equals(@object.Kind, Model.Entities.ObjectKind.Blog, StringComparison.OrdinalIgnoreCase);
 
             if (isBlog)
             {
-                card.Add(new ControlText("object-prose-meta-" + id)
+                body.Add(new ControlText("object-prose-meta-" + id)
                 {
                     Text = _ => BuildBlogMeta(@object),
                     Format = _ => TypeFormatText.Small
@@ -92,7 +94,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             if (string.IsNullOrWhiteSpace(@object.Description))
             {
-                card.Add(new ControlText("object-prose-empty-" + id)
+                body.Add(new ControlText("object-prose-empty-" + id)
                 {
                     Text = _ => isBlog
                         ? "kleenestar.core:object.kind.blog.read.empty"
@@ -100,15 +102,15 @@ namespace KleeneStar.Core.WebFragment.Object
                     Format = _ => TypeFormatText.Paragraph
                 });
 
-                return card.Render(renderContext, visualTree);
+                return body.Render(renderContext, visualTree);
             }
 
-            card.Add(new ControlHtml("object-prose-body-" + id)
+            body.Add(new ControlHtml("object-prose-body-" + id)
             {
                 Html = _ => "<div class=\"wx-kleenestar-prose\">" + @object.Description + "</div>"
             });
 
-            return card.Render(renderContext, visualTree);
+            return body.Render(renderContext, visualTree);
         }
 
         /// <summary>

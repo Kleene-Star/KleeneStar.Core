@@ -1,23 +1,27 @@
 ﻿using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
+using System.Globalization;
+using System.Linq;
 using WebExpress.WebApp.WebControl;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebApp.WebData;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Object-scoped content card that renders the comment thread for the object
+    /// The communication-history section of the object view: the comment thread for the object
     /// currently displayed on <see cref="WWW.Issue._objectkey_.Index"/>.
     /// </summary>
     /// <remarks>
-    /// The card hosts a single <see cref="ControlDataComment"/> whose
+    /// The section hosts a single <see cref="ControlDataComment"/> whose
     /// <see cref="ControlDataComment.RestUri"/> points at the class-scoped
     /// <see cref="WWW.Api._1_.Comments._objectkey_.Index"/> REST endpoint with the
     /// <see cref="ObjectKeyParameter"/> bound from the request. The control
@@ -33,6 +37,7 @@ namespace KleeneStar.Core.WebFragment.Object
     public sealed class ObjectCommentCardFragment : FragmentControlPanel
     {
         private readonly IObjectManager _objectManager;
+        private readonly ICommentManager _commentManager;
 
         /// <summary>
         /// Gets the REST-backed comment list control.
@@ -54,14 +59,17 @@ namespace KleeneStar.Core.WebFragment.Object
         /// <param name="fragmentContext">The fragment context.</param>
         /// <param name="objectManager">The object manager used to resolve the current
         /// object from the URL-bound object key.</param>
-        public ObjectCommentCardFragment(IFragmentContext fragmentContext, IObjectManager objectManager)
+        /// <param name="commentManager">The comment manager, read for the count the header
+        /// reports.</param>
+        public ObjectCommentCardFragment(IFragmentContext fragmentContext, IObjectManager objectManager, ICommentManager commentManager)
             : base(fragmentContext)
         {
             _objectManager = objectManager;
+            _commentManager = commentManager;
         }
 
         /// <summary>
-        /// Renders the comment card for the current object. Returns <c>null</c> when the
+        /// Renders the comment section for the current object. Returns <c>null</c> when the
         /// fragment's render conditions exclude it or when no object can be resolved from
         /// the request.
         /// </summary>
@@ -83,15 +91,21 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            var card = new ControlPanelCard("object-comments-card")
+            // the thread itself arrives from the rest endpoint, but the count is cheap to read
+            // here - and it is what makes a folded conversation still say whether there is one
+            var count = _commentManager.GetComments(@object.Id).Count();
+
+            var section = new ControlSection("object-comments-section")
             {
                 Header = _ => "kleenestar.core:object.comments.card.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconComments(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule,
+                Badge = count > 0 ? _ => count.ToString(CultureInfo.InvariantCulture) : null
             };
 
-            card.Add(Comments);
+            section.Add(Comments);
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
     }
 }

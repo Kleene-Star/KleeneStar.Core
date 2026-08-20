@@ -16,10 +16,15 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Object-scoped property card that groups the lifecycle attributes of the object
-    /// (creation timestamp, last update timestamp, and lifecycle state) inside a single
-    /// <see cref="ControlPanelCard"/>.
+    /// The lifecycle section of the reference zone, grouping the creation timestamp, the last
+    /// update timestamp and the lifecycle state of the object.
     /// </summary>
+    /// <remarks>
+    /// An archived object is reported in the section header as well, where a folded section
+    /// still shows it: the archived state changes how everything else on the page should be
+    /// read. An active object is the normal case and gets no badge - a badge that is always
+    /// there stops being a signal.
+    /// </remarks>
     [Section<SectionPropertyPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Asset._objectkey_.Index>]
@@ -57,13 +62,22 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            var card = new ControlPanelCard("object-property-lifecycle-card")
+            // an archived object is the one lifecycle state that changes how everything else on
+            // the page should be read, so it is reported in the header where a folded section
+            // still shows it. an active object is the normal case and gets no badge - a badge
+            // that is always there stops being a signal.
+            var archived = @object.State == WorkspaceState.Archived;
+
+            var section = new ControlSection("object-property-lifecycle-section")
             {
                 Header = _ => "kleenestar.core:object.property.lifecycle.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconClockRotateLeft(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule,
+                Badge = archived ? ctx => I18N.Translate(ctx, @object.State.Text()) : null,
+                BadgeColor = archived ? _ => new PropertyColorBackgroundBadge(TypeColorBackgroundBadge.Secondary) : null
             };
 
-            card.Add(new ControlAttribute("object-property-created")
+            section.Add(new ControlAttribute("object-property-created")
             {
                 Icon = _ => new IconCalendarPlus(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.created.label",
@@ -73,14 +87,14 @@ namespace KleeneStar.Core.WebFragment.Object
                 Value = ctx => @object.Created.ToString("g", Culture(ctx))
             });
 
-            card.Add(new ControlAttribute("object-property-updated")
+            section.Add(new ControlAttribute("object-property-updated")
             {
                 Icon = _ => new IconClockRotateLeft(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.updated.label",
                 Value = ctx => @object.Updated.ToString("g", Culture(ctx))
             });
 
-            card.Add(new ControlPanelFlex
+            section.Add(new ControlPanelFlex
             (
                 "object-property-state",
                 new ControlIcon
@@ -106,7 +120,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 Justify = _ => TypeJustifiedFlex.Start
             });
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
 
         /// <summary>

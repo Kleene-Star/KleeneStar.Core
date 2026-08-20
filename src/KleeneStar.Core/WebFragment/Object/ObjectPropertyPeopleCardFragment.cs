@@ -79,17 +79,18 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            var card = new ControlPanelCard("object-property-people-card")
+            var section = new ControlSection("object-property-people-section")
             {
                 Header = _ => "kleenestar.core:object.property.people.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconUsers(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule
             };
 
             var creatorName = @object.CreatorId.HasValue
                 ? _identityManager.GetIdentity(@object.CreatorId.Value)?.Name
                 : null;
 
-            card.Add(new ControlAttribute("object-property-creator")
+            section.Add(new ControlAttribute("object-property-creator")
             {
                 Icon = _ => new IconUserPen(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.creator.label",
@@ -100,7 +101,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 ? _identityManager.GetIdentity(@object.AssigneeId.Value)?.Name
                 : null;
 
-            card.Add(new ControlAttribute("object-property-assignee")
+            section.Add(new ControlAttribute("object-property-assignee")
             {
                 Icon = _ => new IconUserCheck(TypeIconTheme.Light),
                 Key = _ => "kleenestar.core:object.assignee.label",
@@ -112,7 +113,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var currentUserId = CoreHub.SessionManager.GetCurrentIdentityId(renderContext?.Request);
             var assignedToMe = @object.AssigneeId.HasValue && @object.AssigneeId.Value == currentUserId;
 
-            card.Add(new ControlLink("object-property-assignee-action")
+            section.Add(new ControlLink("object-property-assignee-action")
             {
                 Text = _ => assignedToMe
                     ? "kleenestar.core:object.assignee.unassign.label"
@@ -128,20 +129,20 @@ namespace KleeneStar.Core.WebFragment.Object
                 }
             });
 
-            card.Add(new ControlText("object-property-watcher-label")
+            section.Add(new ControlText("object-property-watcher-label")
             {
                 Text = _ => "kleenestar.core:object.property.watcher.header",
                 Format = _ => TypeFormatText.Small
             });
 
-            card.Add(new ControlDataWatcher("object-property-watcher")
+            section.Add(new ControlDataWatcher("object-property-watcher")
             {
                 MaxVisible = _ => 6
             }
                 .DataService<global::KleeneStar.Core.WWW.Api._1_.Watchers._objectkey_.Index>()
                 .UsersService<global::KleeneStar.Core.WWW.Api._1_.WatcherUsers._objectkey_.Index>());
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
     }
 }

@@ -8,17 +8,19 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Represents a content card that displays detailed information about a specific
-    /// object within the user interface.
+    /// The metadata section of the object view: the field structure of the object as the
+    /// view form of its class arranges it.
     /// </summary>
     /// <remarks>
     /// The control resolves the object addressed by the current request, looks up the
@@ -28,9 +30,9 @@ namespace KleeneStar.Core.WebFragment.Object
     /// view is not a <c>&lt;form&gt;</c> with validation and a submit panel; instead
     /// each value is wrapped in a <see cref="ControlSmartEdit"/> that persists changes
     /// inline via the object REST API as soon as the user finishes editing.
-    /// The field structure is hosted inside a single <see cref="ControlPanelCard"/>;
-    /// the object description, the comment thread, and the comment composer are surfaced
-    /// separately by <see cref="ObjectDescriptionCardFragment"/>,
+    /// The field structure is hosted inside a single <see cref="ControlSection"/>, so it
+    /// folds away as a whole; the object description, the comment thread, and the comment
+    /// composer are surfaced separately by <see cref="ObjectDescriptionCardFragment"/>,
     /// <see cref="ObjectCommentCardFragment"/>, and
     /// <see cref="ObjectCommentComposerCardFragment"/>.
     /// </remarks>
@@ -55,13 +57,13 @@ namespace KleeneStar.Core.WebFragment.Object
         /// <summary>
         /// Converts the control to an HTML representation. The object's field structure
         /// (derived from the active <see cref="FormType.View"/> form of its class) is
-        /// rendered inside a single <see cref="ControlPanelCard"/>. When no view form is
-        /// configured the card renders without a field structure; the description, comment
-        /// thread, and composer are surfaced separately by their own card fragments.
+        /// rendered inside a single <see cref="ControlSection"/>. When no view form is
+        /// configured the section renders without a field structure; the description, comment
+        /// thread, and composer are surfaced separately by their own fragments.
         /// </summary>
         /// <param name="renderContext">The context in which the control is rendered.</param>
         /// <param name="visualTree">The visual tree representing the control's structure.</param>
-        /// <returns>An HTML node representing the rendered card, or <c>null</c> when no
+        /// <returns>An HTML node representing the rendered section, or <c>null</c> when no
         /// object can be resolved from the request.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
@@ -91,18 +93,19 @@ namespace KleeneStar.Core.WebFragment.Object
 
             AddFieldStructure(body, @object, objectUri, renderContext, visualTree);
 
-            var card = new ControlPanelCard("object-detail-card")
+            var section = new ControlSection("object-detail-section")
             {
                 Header = _ => "kleenestar.core:object.detail.card.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconTableList(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule
             };
 
-            card.Add(new ControlHtml("object-detail-body-" + @object.Id.ToString("N"))
+            section.Add(new ControlHtml("object-detail-body-" + @object.Id.ToString("N"))
             {
                 Html = _ => body.ToString()
             });
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
 
         /// <summary>
@@ -110,7 +113,7 @@ namespace KleeneStar.Core.WebFragment.Object
         /// appends its field structure to the supplied detail body: a single field list
         /// when the form defines one tab, or a tab control when it defines several. When
         /// no active view form (or no tab) is configured the body is left without a field
-        /// structure, so the card renders empty.
+        /// structure, so the section renders empty.
         /// </summary>
         /// <param name="body">The detail body container the field structure is appended to.</param>
         /// <param name="object">The object whose field values are displayed.</param>
@@ -351,10 +354,12 @@ namespace KleeneStar.Core.WebFragment.Object
                 }
             };
 
+            // the row carries no layout of its own: the field list is a two-column grid and the
+            // row dissolves into it (display: contents), so every label lines up on one edge
+            // however long the one above it ran
             return new ControlPanel("field-row-" + field.Id.ToString("N"), label, smartEdit)
             {
-                Classes = ["wx-kleenestar-field"],
-                Styles = ["display: flex; gap: 0.4em; align-items: baseline; margin-bottom: 0.35em;"]
+                Classes = ["wx-kleenestar-field"]
             };
         }
 

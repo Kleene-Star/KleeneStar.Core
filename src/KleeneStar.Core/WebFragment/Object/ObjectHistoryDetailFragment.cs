@@ -150,31 +150,37 @@ namespace KleeneStar.Core.WebFragment.Object
         }
 
         /// <summary>
-        /// Builds the "Changed fields" card: only the attributes this revision touched, as
+        /// Builds the "Changed fields" section: only the attributes this revision touched, as
         /// before/after pairs.
         /// </summary>
         /// <param name="commit">The revision.</param>
         /// <param name="renderContext">The render context used for translating.</param>
-        /// <returns>The card control.</returns>
+        /// <returns>The section control.</returns>
         private static IControl BuildChanges(CommitEntity commit, IRenderControlContext renderContext)
         {
-            var card = new ControlPanelCard("object-history-changes")
+            var changes = (commit.Changes ?? []).ToList();
+
+            // the two sections stand side by side, so their counts are read against each other -
+            // how much of the object this revision touched. the table draws its own structure,
+            // so the section adds no guide line beside it.
+            var section = new ControlSection("object-history-changes")
             {
                 Header = _ => "kleenestar.core:object.history.changes.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Three, PropertySpacing.Space.Three)
+                HeaderIcon = _ => new IconPenToSquare(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule,
+                Guide = _ => false,
+                Badge = changes.Count > 0 ? _ => changes.Count.ToString(CultureInfo.InvariantCulture) : null
             };
-
-            var changes = (commit.Changes ?? []).ToList();
 
             if (changes.Count == 0)
             {
-                card.Add(new ControlText()
+                section.Add(new ControlText()
                 {
                     Text = _ => I18N.Translate(renderContext, "kleenestar.core:object.history.changes.none"),
                     TextColor = _ => new PropertyColorText(TypeColorText.Secondary)
                 });
 
-                return card;
+                return section;
             }
 
             var table = new ControlTable("object-history-changes-table")
@@ -196,37 +202,40 @@ namespace KleeneStar.Core.WebFragment.Object
                 );
             }
 
-            card.Add(table);
+            section.Add(table);
 
-            return card;
+            return section;
         }
 
         /// <summary>
-        /// Builds the "All fields at this commit" card: the complete field set of the object at
-        /// this revision, replayed from the chain.
+        /// Builds the "All fields at this commit" section: the complete field set of the object
+        /// at this revision, replayed from the chain.
         /// </summary>
         /// <param name="state">The replayed state.</param>
         /// <param name="renderContext">The render context used for translating.</param>
-        /// <returns>The card control.</returns>
+        /// <returns>The section control.</returns>
         private static IControl BuildState(ObjectState state, IRenderControlContext renderContext)
         {
-            var card = new ControlPanelCard("object-history-state")
+            var fields = state.Fields.Where(x => !string.IsNullOrEmpty(x.Value)).ToList();
+
+            var section = new ControlSection("object-history-state")
             {
                 Header = _ => "kleenestar.core:object.history.state.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Three, PropertySpacing.Space.Three)
+                HeaderIcon = _ => new IconTableList(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule,
+                Guide = _ => false,
+                Badge = fields.Count > 0 ? _ => fields.Count.ToString(CultureInfo.InvariantCulture) : null
             };
-
-            var fields = state.Fields.Where(x => !string.IsNullOrEmpty(x.Value)).ToList();
 
             if (fields.Count == 0)
             {
-                card.Add(new ControlText()
+                section.Add(new ControlText()
                 {
                     Text = _ => I18N.Translate(renderContext, "kleenestar.core:object.history.state.none"),
                     TextColor = _ => new PropertyColorText(TypeColorText.Secondary)
                 });
 
-                return card;
+                return section;
             }
 
             var table = new ControlTable("object-history-state-table")
@@ -246,9 +255,9 @@ namespace KleeneStar.Core.WebFragment.Object
                 );
             }
 
-            card.Add(table);
+            section.Add(table);
 
-            return card;
+            return section;
         }
 
         /// <summary>

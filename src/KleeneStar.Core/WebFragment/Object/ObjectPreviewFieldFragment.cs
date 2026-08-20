@@ -109,22 +109,23 @@ namespace KleeneStar.Core.WebFragment.Object
             if (attributes.Count == 0)
             {
                 // a class without a view form, or an object that has filled none of its fields,
-                // gets no empty card - the identity block above already names the object
+                // gets no empty section - the identity block above already names the object
                 return null;
             }
 
-            var card = new ControlPanelCard("object-preview-field-card")
+            var section = new ControlSection("object-preview-field-section")
             {
                 Header = _ => "kleenestar.core:object.detail.card.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconTableList(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule
             };
 
             foreach (var attribute in attributes)
             {
-                card.Add(attribute);
+                section.Add(attribute);
             }
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
 
         /// <summary>

@@ -8,10 +8,12 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebCore.WebIcon;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebUri;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
+using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
 
 namespace KleeneStar.Core.WebFragment.Object
@@ -95,10 +97,11 @@ namespace KleeneStar.Core.WebFragment.Object
                 return null;
             }
 
-            var card = new ControlPanelCard("object-property-date-card")
+            var section = new ControlSection("object-property-date-section")
             {
                 Header = _ => "kleenestar.core:object.property.date.header",
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two)
+                HeaderIcon = _ => new IconCalendarDays(TypeIconTheme.Light),
+                Layout = _ => TypeLayoutSection.Rule
             };
 
             var objectUri = ResolveObjectRestUri(@object, renderContext);
@@ -106,17 +109,17 @@ namespace KleeneStar.Core.WebFragment.Object
             foreach (var field in dateFields)
             {
                 var value = _valueManager.GetValue(@object.Id, field.Id);
-                card.Add(BuildDateBlock(@object, objectUri, field, value));
+                section.Add(BuildDateBlock(@object, objectUri, field, value));
             }
 
-            return card.Render(renderContext, visualTree);
+            return section.Render(renderContext, visualTree);
         }
 
         /// <summary>
         /// Builds a single "field name: value" row for a date field: the field name (with the
         /// field description as a native HTML <c>title</c> tooltip and a trailing asterisk for
-        /// required fields) followed by an inline-editable date smart-edit. The row is laid out
-        /// as a flex line so the label and value sit next to each other; consecutive rows stack.
+        /// required fields) followed by an inline-editable date smart-edit. The row carries no
+        /// layout of its own - the reference zone lays out its key/value rows as one rule.
         /// </summary>
         /// <param name="object">The object whose value is displayed.</param>
         /// <param name="objectUri">The REST URI bound to the object's id; the smart-edit PUTs
@@ -175,10 +178,12 @@ namespace KleeneStar.Core.WebFragment.Object
                 }
             };
 
+            // the row takes the layout every key/value row of the reference zone takes, so a
+            // date lines up with the people and the tags beside it rather than with a rule of
+            // its own
             return new ControlPanel("date-field-row-" + field.Id.ToString("N"), label, smartEdit)
             {
-                Classes = ["wx-kleenestar-field"],
-                Styles = ["display: flex; gap: 0.4em; align-items: baseline; margin-bottom: 0.35em;"]
+                Classes = ["wx-kleenestar-field"]
             };
         }
 
