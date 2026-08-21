@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebFragment.Object
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:object.delete.title";
-            Icon = _ => new IconTrash(TypeIconTheme.Light);
+            Icon = _ => new IconTrash();
             Color = _ => TypeColorText.Danger;
             PrimaryAction = renderContext => new ActionModal
             (

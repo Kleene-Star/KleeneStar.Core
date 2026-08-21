@@ -71,7 +71,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-preview-description-section")
             {
                 Header = _ => "kleenestar.core:object.description.card.header",
-                HeaderIcon = _ => new IconAlignLeft(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconAlignLeft(),
                 Layout = _ => TypeLayoutSection.Rule
             };
 

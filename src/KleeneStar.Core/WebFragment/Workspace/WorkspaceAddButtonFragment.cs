@@ -29,7 +29,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:workspace.add.label";
-            Icon = _ => new IconPlus(TypeIconTheme.Light);
+            Icon = _ => new IconPlus();
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
             PrimaryAction = _ => new ActionModal

@@ -39,7 +39,7 @@ namespace KleeneStar.Core.WebFragment.Class
             _workspaceManager = workspaceManager;
 
             Alignment = _ => TypeToolbarItemAlignment.Right;
-            Icon = _ => new IconCog(TypeIconTheme.Light);
+            Icon = _ => new IconCog();
         }
 
         /// <summary>
@@ -76,19 +76,19 @@ namespace KleeneStar.Core.WebFragment.Class
                 new ControlDropdownItemLink()
                 {
                     Text = _ => "webexpress.webapp:edit.label",
-                    Icon = _ => new IconPen(TypeIconTheme.Light),
+                    Icon = _ => new IconPen(),
                     PrimaryAction = _ => new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
                     Text = _ => "webexpress.webapp:clone.label",
-                    Icon = _ => new IconClone(TypeIconTheme.Light),
+                    Icon = _ => new IconClone(),
                     PrimaryAction = _ => new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
                     Text = _ => "kleenestar.core:field.link.label",
-                    Icon = _ => new IconField(TypeIconTheme.Light),
+                    Icon = _ => new IconField(),
                     Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Fields._classid_.Index>()?
                         .BindParameters(keyParameter)
                         .BindParameters(renderContext.Request)
@@ -96,7 +96,7 @@ namespace KleeneStar.Core.WebFragment.Class
                 new ControlDropdownItemLink()
                 {
                     Text = _ => "kleenestar.core:form.link.label",
-                    Icon = _ => new IconListFunction(TypeIconTheme.Light),
+                    Icon = _ => new IconListFunction(),
                     //Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                     //    .BindParameters(keyParameter)
                     // .BindParameters(renderContext.Request)
@@ -104,7 +104,7 @@ namespace KleeneStar.Core.WebFragment.Class
                 new ControlDropdownItemLink()
                 {
                     Text = _ => "kleenestar.core:priority.link.label",
-                    Icon = _ => new IconFlag(TypeIconTheme.Light),
+                    Icon = _ => new IconFlag(),
                     //Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                     //    .BindParameters(keyParameter)
                     // .BindParameters(renderContext.Request)
@@ -112,7 +112,7 @@ namespace KleeneStar.Core.WebFragment.Class
                 new ControlDropdownItemLink()
                 {
                     Text = _ => "kleenestar.core:status.link.label",
-                    Icon = _ => new IconStatus(TypeIconTheme.Light),
+                    Icon = _ => new IconStatus(),
                     //Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                     //    .BindParameters(keyParameter)
                     // .BindParameters(renderContext.Request)
@@ -120,7 +120,7 @@ namespace KleeneStar.Core.WebFragment.Class
                 new ControlDropdownItemLink()
                 {
                     Text = _ => "kleenestar.core:workflow.link.label",
-                    Icon = _ => new IconWorkflow(TypeIconTheme.Light),
+                    Icon = _ => new IconWorkflow(),
                     //Uri = CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                     //    .BindParameters(keyParameter)
                     // .BindParameters(renderContext.Request)
@@ -129,7 +129,7 @@ namespace KleeneStar.Core.WebFragment.Class
                 new ControlDropdownItemLink("Delete")
                 {
                     Text = _ => "webexpress.webapp:delete.label",
-                    Icon = _ => new IconTrash(TypeIconTheme.Light),
+                    Icon = _ => new IconTrash(),
                     PrimaryAction = _ => new ActionModal("modal-form", deleteUri, TypeModalSize.Default),
                     Color = _ => TypeColorText.Danger
                 }

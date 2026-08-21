@@ -35,7 +35,7 @@ namespace KleeneStar.Core.WebFragment.Workflow
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:workflow.back.label";
-            Icon = _ => new IconArrowLeft(TypeIconTheme.Light);
+            Icon = _ => new IconArrowLeft();
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Secondary);
             Outline = _ => true;

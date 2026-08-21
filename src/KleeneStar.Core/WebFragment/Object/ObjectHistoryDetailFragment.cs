@@ -166,7 +166,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-history-changes")
             {
                 Header = _ => "kleenestar.core:object.history.changes.header",
-                HeaderIcon = _ => new IconPenToSquare(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconPenToSquare(),
                 Layout = _ => TypeLayoutSection.Rule,
                 Guide = _ => false,
                 Badge = changes.Count > 0 ? _ => changes.Count.ToString(CultureInfo.InvariantCulture) : null
@@ -221,7 +221,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-history-state")
             {
                 Header = _ => "kleenestar.core:object.history.state.header",
-                HeaderIcon = _ => new IconTableList(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconTableList(),
                 Layout = _ => TypeLayoutSection.Rule,
                 Guide = _ => false,
                 Badge = fields.Count > 0 ? _ => fields.Count.ToString(CultureInfo.InvariantCulture) : null

@@ -71,7 +71,7 @@ namespace KleeneStar.Core.WWW.Issue._objectkey_
                 // blank and a stale selection indistinguishable from a slow load
                 visualTree.Content.MainPanel.AddPrimary(new ControlEmptyState()
                 {
-                    Icon = _ => new IconMagnifyingGlass(TypeIconTheme.Light),
+                    Icon = _ => new IconMagnifyingGlass(),
                     Title = _ => "kleenestar.core:object.preview.unknown.title",
                     Message = _ => "kleenestar.core:object.preview.unknown.message"
                 });

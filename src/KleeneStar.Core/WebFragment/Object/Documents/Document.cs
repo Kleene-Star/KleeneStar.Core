@@ -25,7 +25,7 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
         /// <summary>
         /// Gets the icon representing documents.
         /// </summary>
-        public IIcon Icon => new IconFileLines(TypeIconTheme.Light);
+        public IIcon Icon => new IconFileLines();
 
         /// <summary>
         /// Gets the display order; documents lead the kind listings.

@@ -31,7 +31,7 @@ namespace KleeneStar.Core.WebFragment.Object
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:object.clone.title";
-            Icon = _ => new IconClone(TypeIconTheme.Light);
+            Icon = _ => new IconClone();
             PrimaryAction = renderContext => new ActionModal
             (
                 "modal-form",

@@ -85,13 +85,13 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-preview-property-section")
             {
                 Header = _ => "kleenestar.core:object.preview.property.header",
-                HeaderIcon = _ => new IconCircleInfo(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconCircleInfo(),
                 Layout = _ => TypeLayoutSection.Rule
             };
 
             section.Add(new ControlAttribute("object-preview-key")
             {
-                Icon = _ => new IconKey(TypeIconTheme.Light),
+                Icon = _ => new IconKey(),
                 Key = _ => "kleenestar.core:object.preview.key.label",
                 Value = _ => Fallback(@object.Key)
             });
@@ -103,7 +103,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             section.Add(new ControlAttribute("object-preview-kind")
             {
-                Icon = _ => kind?.Icon ?? new IconCube(TypeIconTheme.Light),
+                Icon = _ => kind?.Icon ?? new IconCube(),
                 Key = _ => "kleenestar.core:object.preview.kind.label",
                 Value = ctx => kind is null
                     ? Fallback(@object.Kind)
@@ -114,14 +114,14 @@ namespace KleeneStar.Core.WebFragment.Object
 
             section.Add(new ControlAttribute("object-preview-class")
             {
-                Icon = _ => new IconShapes(TypeIconTheme.Light),
+                Icon = _ => new IconShapes(),
                 Key = _ => "kleenestar.core:object.sidebar.class.label",
                 Value = _ => Fallback(className)
             });
 
             section.Add(new ControlAttribute("object-preview-workspace")
             {
-                Icon = _ => new IconFolder(TypeIconTheme.Light),
+                Icon = _ => new IconFolder(),
                 Key = _ => "kleenestar.core:object.sidebar.workspace.label",
                 Value = _ => Fallback(@object.Workspace?.Name)
             });
@@ -132,7 +132,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             section.Add(new ControlAttribute("object-preview-assignee")
             {
-                Icon = _ => new IconUserCheck(TypeIconTheme.Light),
+                Icon = _ => new IconUserCheck(),
                 Key = _ => "kleenestar.core:object.assignee.label",
                 Value = ctx => string.IsNullOrWhiteSpace(assigneeName)
                     ? I18N.Translate(ctx, "kleenestar.core:object.assignee.unassigned.label")

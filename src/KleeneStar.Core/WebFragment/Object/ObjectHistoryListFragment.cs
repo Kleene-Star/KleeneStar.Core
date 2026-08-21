@@ -60,7 +60,7 @@ namespace KleeneStar.Core.WebFragment.Object
         public ObjectHistoryListFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconClockRotateLeft(TypeIconTheme.Light);
+            Icon = _ => new IconClockRotateLeft();
             Title = _ => "kleenestar.core:object.history.title";
 
             List.Bind = _ => new Binding()

@@ -31,7 +31,7 @@ namespace KleeneStar.Core.WebFragment.Object
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:object.print.label";
-            Icon = _ => new IconPrint(TypeIconTheme.Light);
+            Icon = _ => new IconPrint();
             PrimaryAction = renderContext => new ActionModal
             (
                 "modal-form",

@@ -98,7 +98,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-comments-section")
             {
                 Header = _ => "kleenestar.core:object.comments.card.header",
-                HeaderIcon = _ => new IconComments(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconComments(),
                 Layout = _ => TypeLayoutSection.Rule,
                 Badge = count > 0 ? _ => count.ToString(CultureInfo.InvariantCulture) : null
             };

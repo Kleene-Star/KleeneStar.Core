@@ -130,7 +130,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-property-workflow-section")
             {
                 Header = _ => "kleenestar.core:object.property.workflow.header",
-                HeaderIcon = _ => new IconTrafficLight(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconTrafficLight(),
                 Color = accent is null ? null : _ => new PropertyColorText(accent),
                 Layout = _ => TypeLayoutSection.Rule
             };
@@ -224,7 +224,7 @@ namespace KleeneStar.Core.WebFragment.Object
             split.Add(new ControlSplitButtonItemLink("object-workflow-show-" + field.Id.ToString("N"))
             {
                 Text = _ => "kleenestar.core:object.property.workflow.show.label",
-                Icon = _ => new IconWorkflow(TypeIconTheme.Light),
+                Icon = _ => new IconWorkflow(),
                 PrimaryAction = ctx => new ActionModal
                 (
                     "modal-form",
@@ -344,10 +344,10 @@ namespace KleeneStar.Core.WebFragment.Object
         {
             return Normalize(status?.Category?.Name) switch
             {
-                "inprogress" => new IconPlay(TypeIconTheme.Light),
-                "waiting" => new IconPause(TypeIconTheme.Light),
-                "done" => new IconCircleCheck(TypeIconTheme.Light),
-                _ => new IconStatus(TypeIconTheme.Light)
+                "inprogress" => new IconPlay(),
+                "waiting" => new IconPause(),
+                "done" => new IconCircleCheck(),
+                _ => new IconStatus()
             };
         }
 

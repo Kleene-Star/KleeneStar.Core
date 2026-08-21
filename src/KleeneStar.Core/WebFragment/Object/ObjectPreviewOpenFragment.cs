@@ -84,7 +84,7 @@ namespace KleeneStar.Core.WebFragment.Object
             return new ControlButtonLink("object-preview-open")
             {
                 Text = ctx => I18N.Translate(ctx, "kleenestar.core:object.preview.open.label"),
-                Icon = _ => new IconArrowUpRightFromSquare(TypeIconTheme.Light),
+                Icon = _ => new IconArrowUpRightFromSquare(),
                 Uri = _ => uri,
                 Outline = _ => true,
                 Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two, PropertySpacing.Space.None)

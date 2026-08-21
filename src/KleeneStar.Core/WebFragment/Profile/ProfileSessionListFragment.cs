@@ -103,7 +103,7 @@ namespace KleeneStar.Core.WebFragment.Profile
                 panel.Add(new ControlButtonLink("profile-session-revokeall")
                 {
                     Text = _ => I18N.Translate(renderContext, "kleenestar.core:profile.sessions.revokeall"),
-                    Icon = _ => new IconArrowRightFromBracket(TypeIconTheme.Light),
+                    Icon = _ => new IconArrowRightFromBracket(),
                     Outline = _ => true,
                     Uri = _ => Bind(CoreHub.GetUri<global::KleeneStar.Core.WWW.Profile.Sessions.RevokeAll>(), renderContext),
                     Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None)
@@ -156,7 +156,7 @@ namespace KleeneStar.Core.WebFragment.Profile
                 action.Add(new ControlButtonLink()
                 {
                     Text = _ => I18N.Translate(renderContext, "kleenestar.core:profile.sessions.revoke"),
-                    Icon = _ => new IconArrowRightFromBracket(TypeIconTheme.Light),
+                    Icon = _ => new IconArrowRightFromBracket(),
                     Outline = _ => true,
                     Size = _ => TypeSizeButton.Small,
                     Uri = _ => Bind(uri, renderContext)
@@ -167,7 +167,7 @@ namespace KleeneStar.Core.WebFragment.Profile
             (
                 new ControlTableCellPanel().Add(new ControlIcon()
                 {
-                    Icon = _ => session.Mobile ? new IconMobile(TypeIconTheme.Light) : new IconLaptop(TypeIconTheme.Light)
+                    Icon = _ => session.Mobile ? new IconMobile() : new IconLaptop()
                 }),
                 new ControlTableCellPanel().Add(device),
                 new ControlTableCellPanel().Add(action)

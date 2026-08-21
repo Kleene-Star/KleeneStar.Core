@@ -90,7 +90,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Commits._objectkey_
             {
                 Id = x.Id.ToString(),
                 Text = Describe(x, request),
-                Icon = new IconCodeCommit(TypeIconTheme.Light).Class,
+                Icon = new IconCodeCommit().Class,
 
                 // the selection is handed to the master-detail composite rather than written into
                 // the frame, so it stays the single owner of the selection and the highlight

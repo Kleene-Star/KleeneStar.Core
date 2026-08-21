@@ -164,7 +164,6 @@ namespace KleeneStar.Core.WWW.Api._1_.SavedSearches
         {
             var editUri = _editFormUri?.BindParameters(new SavedSearchIdParameter(row.Id));
             var deleteUri = _deleteFormUri?.BindParameters(new SavedSearchIdParameter(row.Id));
-            var iconTheme = request?.ApplicationContext?.DefaultTheme?.IconTheme ?? TypeIconTheme.Light;
 
             yield return new RestApiOptionHeader(request)
             {
@@ -175,19 +174,19 @@ namespace KleeneStar.Core.WWW.Api._1_.SavedSearches
             {
                 Uri = RunUri(row),
                 Text = I18N.Translate(request, "kleenestar.core:search.saved.run.label"),
-                Icon = new IconMagnifyingGlass(iconTheme)
+                Icon = new IconMagnifyingGlass()
             };
 
             yield return new RestApiOptionEdit(request)
             {
-                Icon = new IconPen(iconTheme),
+                Icon = new IconPen(),
                 PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionSeparator(request);
             yield return new RestApiOptionDelete(request)
             {
-                Icon = new IconTrash(iconTheme),
+                Icon = new IconTrash(),
                 PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Small)
             };
         }

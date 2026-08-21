@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WebFragment.Class
         public ClassSidebarClassLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconClass(TypeIconTheme.Light);
+            Icon = _ => new IconClass();
             Text = _ => "kleenestar.core:class.link.label";
             Uri = _ => _uri;
             Active = renderContext => IsActive(renderContext)

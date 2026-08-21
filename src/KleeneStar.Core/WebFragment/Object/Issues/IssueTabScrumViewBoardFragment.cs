@@ -46,7 +46,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         {
             var id = fragmentContext?.FragmentId?.ToString()?.Replace(".", "-");
 
-            Icon = _ => new IconTableColumns(TypeIconTheme.Light);
+            Icon = _ => new IconTableColumns();
             Title = _ => "kleenestar.core:view.board.title";
 
             // it shares the same workspace+kind (issue) board configuration as the main

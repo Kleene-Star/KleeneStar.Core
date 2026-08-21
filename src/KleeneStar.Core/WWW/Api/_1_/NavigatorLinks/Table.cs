@@ -301,14 +301,14 @@ namespace KleeneStar.Core.WWW.Api._1_.NavigatorLinks
             yield return new RestApiOptionCustom(request)
             {
                 Text = I18N.Translate(request, "kleenestar.core:order.move.up.label"),
-                Icon = new IconArrowUp(TypeIconTheme.Light),
+                Icon = new IconArrowUp(),
                 PrimaryAction = new ActionRequest(MoveUri(row, "up"), "PUT")
             };
 
             yield return new RestApiOptionCustom(request)
             {
                 Text = I18N.Translate(request, "kleenestar.core:order.move.down.label"),
-                Icon = new IconArrowDown(TypeIconTheme.Light),
+                Icon = new IconArrowDown(),
                 PrimaryAction = new ActionRequest(MoveUri(row, "down"), "PUT")
             };
 

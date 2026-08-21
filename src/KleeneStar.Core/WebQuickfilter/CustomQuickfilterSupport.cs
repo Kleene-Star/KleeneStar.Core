@@ -66,7 +66,7 @@ namespace KleeneStar.Core.WebQuickfilter
                 Name = filter.Name,
                 // a shared filter is marked, because the bar otherwise gives no clue why a chip
                 // the user never created is being offered
-                Icon = filter.Shared ? new IconUsers(TypeIconTheme.Light) : new IconFilter(TypeIconTheme.Light),
+                Icon = filter.Shared ? new IconUsers() : new IconFilter(),
                 Custom = true,
                 Criteria = filter.Query
             };

@@ -30,7 +30,7 @@ namespace KleeneStar.Core.WebControl
             : base(id)
         {
             Placeholder = _ => "kleenestar.core:search.header.placeholder";
-            Icon = _ => new IconMagnifyingGlass(TypeIconTheme.Light);
+            Icon = _ => new IconMagnifyingGlass();
             EmptyText = _ => "kleenestar.core:search.header.empty";
             MaxItems = _ => MaxSuggestions;
             SubmitUri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Search.Index>();
@@ -41,7 +41,7 @@ namespace KleeneStar.Core.WebControl
             Footer = new ControlLink($"{id}-all")
             {
                 Text = _ => "kleenestar.core:search.dropdown.all.label",
-                Icon = _ => new IconMagnifyingGlass(TypeIconTheme.Light),
+                Icon = _ => new IconMagnifyingGlass(),
                 Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Search.Index>()
             };
         }

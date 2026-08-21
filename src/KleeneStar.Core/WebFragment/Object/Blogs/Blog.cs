@@ -24,7 +24,7 @@ namespace KleeneStar.Core.WebFragment.Object.Blogs
         /// <summary>
         /// Gets the icon representing blog posts.
         /// </summary>
-        public IIcon Icon => new IconBlog(TypeIconTheme.Light);
+        public IIcon Icon => new IconBlog();
 
         /// <summary>
         /// Gets the display order; blogs follow the documents.

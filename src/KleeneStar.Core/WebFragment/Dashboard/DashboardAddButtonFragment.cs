@@ -30,7 +30,7 @@ namespace KleeneStar.Core.WebFragment.Dashboard
         {
             Text = _ => "kleenestar.core:dashboard.add.label";
             PrimaryAction = _ => new ActionModal("modal-form", CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboards.Add>(), TypeModalSize.ExtraLarge);
-            Icon = _ => new IconPlus(TypeIconTheme.Light);
+            Icon = _ => new IconPlus();
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
         }

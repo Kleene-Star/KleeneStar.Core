@@ -37,7 +37,7 @@ namespace KleeneStar.Core.WebFragment.Field
         public FieldViewTableFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconTable(TypeIconTheme.Light);
+            Icon = _ => new IconTable();
             Title = _ => "kleenestar.core:view.table.title";
 
             // declares the endpoint and, derived from its generic argument, the domain the

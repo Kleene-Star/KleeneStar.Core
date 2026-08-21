@@ -30,7 +30,7 @@ namespace KleeneStar.Core.WebFragment.Notification
         public NotificationSidebarSettingsLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconGear(TypeIconTheme.Light);
+            Icon = _ => new IconGear();
             Text = _ => "kleenestar.core:notification.center.settings";
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Profile.Notifications>();
         }

@@ -32,7 +32,7 @@ namespace KleeneStar.Core.WebFragment.Class
         public ClassEmptyStateFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconInbox(TypeIconTheme.Light);
+            Icon = _ => new IconInbox();
             Title = _ => "kleenestar.core:class.empty.title";
             Message = _ => "kleenestar.core:class.empty.message";
         }

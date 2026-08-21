@@ -62,7 +62,7 @@ namespace KleeneStar.Core.WWW.Objects
             // selection reads as a missing object instead of a broken link
             visualTree.Content.MainPanel.AddPrimary(new ControlEmptyState()
             {
-                Icon = _ => new IconMagnifyingGlass(TypeIconTheme.Light),
+                Icon = _ => new IconMagnifyingGlass(),
                 Title = _ => "kleenestar.core:object.scrum.detail.unknown.title",
                 Message = _ => "kleenestar.core:object.scrum.detail.unknown.message"
             });

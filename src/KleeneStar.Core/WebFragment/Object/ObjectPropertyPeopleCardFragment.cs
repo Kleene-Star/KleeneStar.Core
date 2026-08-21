@@ -82,7 +82,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-property-people-section")
             {
                 Header = _ => "kleenestar.core:object.property.people.header",
-                HeaderIcon = _ => new IconUsers(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconUsers(),
                 Layout = _ => TypeLayoutSection.Rule
             };
 
@@ -92,7 +92,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             section.Add(new ControlAttribute("object-property-creator")
             {
-                Icon = _ => new IconUserPen(TypeIconTheme.Light),
+                Icon = _ => new IconUserPen(),
                 Key = _ => "kleenestar.core:object.creator.label",
                 Value = _ => string.IsNullOrWhiteSpace(creatorName) ? "—" : creatorName
             });
@@ -103,7 +103,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             section.Add(new ControlAttribute("object-property-assignee")
             {
-                Icon = _ => new IconUserCheck(TypeIconTheme.Light),
+                Icon = _ => new IconUserCheck(),
                 Key = _ => "kleenestar.core:object.assignee.label",
                 Value = ctx => string.IsNullOrWhiteSpace(assigneeName)
                     ? I18N.Translate(ctx, "kleenestar.core:object.assignee.unassigned.label")
@@ -118,7 +118,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 Text = _ => assignedToMe
                     ? "kleenestar.core:object.assignee.unassign.label"
                     : "kleenestar.core:object.assignee.assignme.label",
-                Icon = _ => assignedToMe ? new IconUserXmark(TypeIconTheme.Light) : new IconUserPlus(TypeIconTheme.Light),
+                Icon = _ => assignedToMe ? new IconUserXmark() : new IconUserPlus(),
                 Uri = ctx =>
                 {
                     var uri = CoreHub

@@ -86,7 +86,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-attachment-section")
             {
                 Header = _ => "kleenestar.core:object.attachment.card.header",
-                HeaderIcon = _ => new IconPaperclip(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconPaperClip(),
                 Layout = _ => TypeLayoutSection.Rule,
                 Badge = count > 0 ? _ => count.ToString(CultureInfo.InvariantCulture) : null
             };
@@ -200,35 +200,35 @@ namespace KleeneStar.Core.WebFragment.Object
 
             if (type.StartsWith("image/"))
             {
-                return new IconFileImage(TypeIconTheme.Light);
+                return new IconFileImage();
             }
 
             if (type == "application/pdf" || name.EndsWith(".pdf"))
             {
-                return new IconFilePdf(TypeIconTheme.Light);
+                return new IconFilePdf();
             }
 
             if (type.Contains("word") || name.EndsWith(".doc") || name.EndsWith(".docx"))
             {
-                return new IconFileWord(TypeIconTheme.Light);
+                return new IconFileWord();
             }
 
             if (type.Contains("spreadsheet") || type.Contains("excel") || name.EndsWith(".xls") || name.EndsWith(".xlsx") || name.EndsWith(".csv"))
             {
-                return new IconFileExcel(TypeIconTheme.Light);
+                return new IconFileExcel();
             }
 
             if (type.Contains("zip") || name.EndsWith(".zip") || name.EndsWith(".7z") || name.EndsWith(".rar"))
             {
-                return new IconFileZipper(TypeIconTheme.Light);
+                return new IconFileZipper();
             }
 
             if (type.StartsWith("text/") || name.EndsWith(".txt") || name.EndsWith(".log"))
             {
-                return new IconFileLines(TypeIconTheme.Light);
+                return new IconFileLines();
             }
 
-            return new IconFile(TypeIconTheme.Light);
+            return new IconFile();
         }
 
         /// <summary>

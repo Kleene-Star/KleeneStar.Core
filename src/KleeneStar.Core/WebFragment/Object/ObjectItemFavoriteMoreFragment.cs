@@ -37,7 +37,7 @@ namespace KleeneStar.Core.WebFragment.Object
             Text = renderContext => IsFavorite(renderContext)
                 ? "kleenestar.core:object.favorite.remove.label"
                 : "kleenestar.core:object.favorite.add.label";
-            Icon = _ => new IconStar(TypeIconTheme.Light);
+            Icon = _ => new IconStar();
             Uri = renderContext => CoreHub.GetUri<global::KleeneStar.Core.WWW.Issue._objectkey_.Favorite>()?
                 .BindParameters(renderContext.Request);
         }

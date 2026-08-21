@@ -205,7 +205,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             yield return new RestApiOptionCustom(request)
             {
                 Text = I18N.Translate(request, "kleenestar.core:workspace.permissions.label"),
-                Icon = new IconUserShield(TypeIconTheme.Light),
+                Icon = new IconUserShield(),
                 PrimaryAction = new ActionModal("modal-form", permissionsUri, TypeModalSize.ExtraLarge)
             };
 

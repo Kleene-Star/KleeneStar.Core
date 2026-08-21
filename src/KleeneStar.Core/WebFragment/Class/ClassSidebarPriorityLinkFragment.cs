@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WebFragment.Class
         public ClassSidebarPriorityLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconFlag(TypeIconTheme.Light);
+            Icon = _ => new IconFlag();
             Text = _ => "kleenestar.core:priority.link.label";
             Uri = renderContext => GetUri(renderContext);
             Active = renderContext => IsActive(renderContext)

@@ -174,7 +174,7 @@ namespace KleeneStar.Core.WebFragment.Profile
             actions.Add(new ControlButtonLink()
             {
                 Text = _ => I18N.Translate(renderContext, "kleenestar.core:profile.tokens.edit"),
-                Icon = _ => new IconPen(TypeIconTheme.Light),
+                Icon = _ => new IconPen(),
                 Outline = _ => true,
                 Size = _ => TypeSizeButton.Small,
                 PrimaryAction = _ => new ActionModal
@@ -191,7 +191,7 @@ namespace KleeneStar.Core.WebFragment.Profile
                 actions.Add(new ControlButtonLink()
                 {
                     Text = _ => I18N.Translate(renderContext, "kleenestar.core:profile.tokens.revoke"),
-                    Icon = _ => new IconBan(TypeIconTheme.Light),
+                    Icon = _ => new IconBan(),
                     Outline = _ => true,
                     Size = _ => TypeSizeButton.Small,
                     TextColor = _ => new PropertyColorText(TypeColorText.Danger),
@@ -204,7 +204,7 @@ namespace KleeneStar.Core.WebFragment.Profile
                 actions.Add(new ControlButtonLink()
                 {
                     Text = _ => I18N.Translate(renderContext, "kleenestar.core:profile.tokens.delete"),
-                    Icon = _ => new IconTrashCan(TypeIconTheme.Light),
+                    Icon = _ => new IconTrashCan(),
                     Outline = _ => true,
                     Size = _ => TypeSizeButton.Small,
                     TextColor = _ => new PropertyColorText(TypeColorText.Danger),

@@ -31,7 +31,7 @@ namespace KleeneStar.Core.WebFragment.Object
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:object.export.label";
-            Icon = _ => new IconFileExport(TypeIconTheme.Light);
+            Icon = _ => new IconFileExport();
             PrimaryAction = renderContext => new ActionModal
             (
                 "modal-form",

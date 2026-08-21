@@ -43,7 +43,7 @@ namespace KleeneStar.Core.WebFragment.Class
         public ClassSidebarCalendarLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconCalendar(TypeIconTheme.Light);
+            Icon = _ => new IconCalendar();
             Text = _ => "kleenestar.core:calendar.link.label";
             Uri = renderContext => GetUri(renderContext);
             Active = renderContext => IsActive(renderContext)

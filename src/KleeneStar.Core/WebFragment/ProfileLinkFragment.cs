@@ -35,7 +35,7 @@ namespace KleeneStar.Core.WebFragment
         {
             _componentHub = componentHub;
             Text = _ => "kleenestar.core:profile.dropdown.label";
-            Icon = _ => new IconCircleUser(TypeIconTheme.Light);
+            Icon = _ => new IconCircleUser();
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Profile.Index>();
         }
 

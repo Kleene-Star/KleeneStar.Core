@@ -96,7 +96,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-detail-section")
             {
                 Header = _ => "kleenestar.core:object.detail.card.header",
-                HeaderIcon = _ => new IconTableList(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconTableList(),
                 Layout = _ => TypeLayoutSection.Rule
             };
 

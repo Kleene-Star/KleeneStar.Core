@@ -41,7 +41,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         {
             // icon, name and description feed the template picker of the tab control;
             // the control emits the raw values, so the i18n keys are translated here
-            Icon = _ => new IconBolt(TypeIconTheme.Light);
+            Icon = _ => new IconBolt();
             Name = renderContext => I18N.Translate(renderContext, "kleenestar.core:object.view.scrum.label");
             Description = renderContext => I18N.Translate(renderContext, "kleenestar.core:object.view.scrum.description");
         }

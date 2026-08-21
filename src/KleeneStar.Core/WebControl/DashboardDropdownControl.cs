@@ -19,7 +19,7 @@ namespace KleeneStar.Core.WebControl
         public ControlDropdownItemLink AddDashboard { get; } = new()
         {
             Text = _ => "kleenestar.core:dashboard.add.label",
-            Icon = _ => new IconPlus(TypeIconTheme.Light),
+            Icon = _ => new IconPlus(),
             PrimaryAction = _ => new ActionModal("modal-form", CoreHub.GetUri<global::KleeneStar.Core.WWW.Dashboards.Add>(), TypeModalSize.ExtraLarge),
         };
 

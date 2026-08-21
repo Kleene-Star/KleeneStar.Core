@@ -34,7 +34,7 @@ namespace KleeneStar.Core.WebFragment.Object
         /// </summary>
         public ControlSearch Search { get; } = new ControlSearch(ContentId)
         {
-            Icon = _ => new IconMagnifyingGlass(TypeIconTheme.Light)
+            Icon = _ => new IconMagnifyingGlass()
         };
 
         /// <summary>

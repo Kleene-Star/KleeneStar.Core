@@ -34,7 +34,7 @@ namespace KleeneStar.Core.WebFragment.Workflow
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:workflow.edit.label";
-            Icon = _ => new IconPen(TypeIconTheme.Light);
+            Icon = _ => new IconPen();
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
             PrimaryAction = renderContext => new ActionModal

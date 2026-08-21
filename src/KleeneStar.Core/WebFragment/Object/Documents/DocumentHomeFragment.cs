@@ -94,7 +94,7 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
             card.Add(new ControlLink("document-home-open")
             {
                 Text = _ => "kleenestar.core:object.kind.documents.open.label",
-                Icon = _ => (IIcon)home.Icon ?? new IconFileLines(TypeIconTheme.Light),
+                Icon = _ => (IIcon)home.Icon ?? new IconFileLines(),
                 Uri = _ => ObjectKindCatalog.ResolveDetailUri(home)
             });
 

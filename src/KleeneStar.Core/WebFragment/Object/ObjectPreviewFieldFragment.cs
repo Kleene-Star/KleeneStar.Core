@@ -116,7 +116,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-preview-field-section")
             {
                 Header = _ => "kleenestar.core:object.detail.card.header",
-                HeaderIcon = _ => new IconTableList(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconTableList(),
                 Layout = _ => TypeLayoutSection.Rule
             };
 
@@ -191,7 +191,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
                 yield return new ControlAttribute("object-preview-field-" + field.Id.ToString("N"))
                 {
-                    Icon = _ => new IconAngleRight(TypeIconTheme.Light),
+                    Icon = _ => new IconAngleRight(),
                     Key = _ => field.Name,
                     Value = ctx => Format(ctx, field, data)
                 };

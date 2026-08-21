@@ -34,7 +34,7 @@ namespace KleeneStar.Core.WebFragment.Template
         public TemplateViewTableFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconTable(TypeIconTheme.Light);
+            Icon = _ => new IconTable();
             Title = _ => "kleenestar.core:view.table.title";
 
             // declares the endpoint the table loads from. The domain it serves cannot be derived

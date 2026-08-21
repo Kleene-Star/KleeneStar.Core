@@ -42,7 +42,7 @@ namespace KleeneStar.Core.WebFragment.Profile
         public ProfileSidebarIntegrationsLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconPlug(TypeIconTheme.Light);
+            Icon = _ => new IconPlug();
             Text = _ => "kleenestar.core:profile.integrations.title";
             Uri = _ => _uri;
             Active = renderContext => ProfileSidebarUriHelper.IsActive(renderContext, _uri)

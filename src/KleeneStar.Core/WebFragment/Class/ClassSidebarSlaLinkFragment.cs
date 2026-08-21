@@ -43,7 +43,7 @@ namespace KleeneStar.Core.WebFragment.Class
         public ClassSidebarSlaLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconProcessTimer(/*TypeIconTheme.Light*/);
+            Icon = _ => new IconProcessTimer();
             Text = _ => "kleenestar.core:sla.link.label";
             Uri = renderContext => GetUri(renderContext);
             Active = renderContext => IsActive(renderContext)

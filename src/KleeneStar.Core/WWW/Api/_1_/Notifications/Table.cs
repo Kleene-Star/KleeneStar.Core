@@ -255,20 +255,20 @@ namespace KleeneStar.Core.WWW.Api._1_.Notifications
 
             if (key.EndsWith(".created", StringComparison.OrdinalIgnoreCase))
             {
-                return new IconPlus(TypeIconTheme.Light).Class;
+                return new IconPlus().Class;
             }
 
             if (key.EndsWith(".updated", StringComparison.OrdinalIgnoreCase))
             {
-                return new IconPen(TypeIconTheme.Light).Class;
+                return new IconPen().Class;
             }
 
             if (key.EndsWith(".deleted", StringComparison.OrdinalIgnoreCase))
             {
-                return new IconTrashCan(TypeIconTheme.Light).Class;
+                return new IconTrashCan().Class;
             }
 
-            return new IconBell(TypeIconTheme.Light).Class;
+            return new IconBell().Class;
         }
 
         /// <summary>
@@ -294,14 +294,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Notifications
                 yield return new RestApiOptionCustom(request)
                 {
                     Text = I18N.Translate(request, "kleenestar.core:notification.center.markread"),
-                    Icon = new IconCheck(TypeIconTheme.Light),
+                    Icon = new IconCheck(),
                     Uri = BuildUri<global::KleeneStar.Core.WWW.Notifications.Read>(row, request)
                 };
             }
 
             yield return new RestApiOptionDelete(request)
             {
-                Icon = new IconTrashCan(TypeIconTheme.Light),
+                Icon = new IconTrashCan(),
                 Uri = BuildUri<global::KleeneStar.Core.WWW.Notifications.Delete>(row, request)
             };
         }

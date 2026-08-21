@@ -44,7 +44,7 @@ namespace KleeneStar.Core.WebFragment.Object
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:object.history.label";
-            Icon = _ => new IconClockRotateLeft(TypeIconTheme.Light);
+            Icon = _ => new IconClockRotateLeft();
             PrimaryAction = renderContext => new ActionModal
             (
                 ObjectHistoryModalFragment.ModalId,

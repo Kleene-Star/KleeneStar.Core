@@ -123,7 +123,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
             var section = new ControlSection("object-sla-section")
             {
                 Header = _ => "kleenestar.core:object.sla.card.header",
-                HeaderIcon = _ => new IconStopwatch(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconStopwatch(),
                 Layout = _ => TypeLayoutSection.Rule
             };
 

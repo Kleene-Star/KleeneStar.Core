@@ -168,7 +168,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Classes._workspacekey_
             //            new KeyParameter(row.Key)
             //        ),
             //    Text = I18N.Translate(request, "kleenestar.core:class.manage.label"),
-            //    Icon = new IconBoxesStacked(TypeIconTheme.Light).Class
+            //    Icon = new IconBoxesStacked().Class
 
             //};
 

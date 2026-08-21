@@ -107,7 +107,7 @@ namespace KleeneStar.Core.WebFragment.Object
             panel.Add(new ControlButtonLink("object-history-restore-button")
             {
                 Text = _ => I18N.Translate(renderContext, "kleenestar.core:object.history.restore.label"),
-                Icon = _ => new IconArrowRotateLeft(TypeIconTheme.Light),
+                Icon = _ => new IconArrowRotateLeft(),
                 Outline = _ => true,
                 Uri = _ => uri,
                 Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two, PropertySpacing.Space.None)

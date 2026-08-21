@@ -71,7 +71,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-property-lifecycle-section")
             {
                 Header = _ => "kleenestar.core:object.property.lifecycle.header",
-                HeaderIcon = _ => new IconClockRotateLeft(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconClockRotateLeft(),
                 Layout = _ => TypeLayoutSection.Rule,
                 Badge = archived ? ctx => I18N.Translate(ctx, @object.State.Text()) : null,
                 BadgeColor = archived ? _ => new PropertyColorBackgroundBadge(TypeColorBackgroundBadge.Secondary) : null
@@ -79,7 +79,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             section.Add(new ControlAttribute("object-property-created")
             {
-                Icon = _ => new IconCalendarPlus(TypeIconTheme.Light),
+                Icon = _ => new IconCalendarPlus(),
                 Key = _ => "kleenestar.core:object.created.label",
                 // the card is read in the visitor's language, so the timestamp is written in
                 // the visitor's culture as well - an invariant 07/25/2026 on a German page
@@ -89,7 +89,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             section.Add(new ControlAttribute("object-property-updated")
             {
-                Icon = _ => new IconClockRotateLeft(TypeIconTheme.Light),
+                Icon = _ => new IconClockRotateLeft(),
                 Key = _ => "kleenestar.core:object.updated.label",
                 Value = ctx => @object.Updated.ToString("g", Culture(ctx))
             });
@@ -99,7 +99,7 @@ namespace KleeneStar.Core.WebFragment.Object
                 "object-property-state",
                 new ControlIcon
                 {
-                    Icon = _ => new IconTrafficLight(TypeIconTheme.Light),
+                    Icon = _ => new IconTrafficLight(),
                     Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.One, PropertySpacing.Space.None, PropertySpacing.Space.None)
                 },
                 new ControlText

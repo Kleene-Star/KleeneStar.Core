@@ -39,7 +39,7 @@ namespace KleeneStar.Core.WebFragment.Object
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:workspace.organize.title";
-            Icon = _ => new IconSitemap(TypeIconTheme.Light);
+            Icon = _ => new IconSitemap();
             // target the body-level page-modal rendered by ObjectOrganizeModalFragment; a form modal
             // would inject only <form> children and leave the tree dialog empty.
             PrimaryAction = renderContext => new ActionModal

@@ -118,7 +118,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
             var section = new ControlSection("workspace-organize-section")
             {
                 Header = _ => "kleenestar.core:workspace.organize.header",
-                HeaderIcon = _ => new IconSitemap(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconSitemap(),
                 Layout = _ => TypeLayoutSection.Rule,
                 Collapsible = _ => false,
                 Guide = _ => false,
@@ -243,7 +243,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
             {
                 Text = _ => $"{obj.Key}  {obj.Summary}",
                 Tooltip = _ => obj.Summary,
-                Icon = _ => (IIcon)obj.Icon ?? new IconObject(TypeIconTheme.Light),
+                Icon = _ => (IIcon)obj.Icon ?? new IconObject(),
                 Expand = _ => depth == 0
             };
         }

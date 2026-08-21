@@ -35,7 +35,7 @@ namespace KleeneStar.Core.WebFragment.Form
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:form.back.label";
-            Icon = _ => new IconArrowLeft(TypeIconTheme.Light);
+            Icon = _ => new IconArrowLeft();
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Secondary);
             Outline = _ => true;

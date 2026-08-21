@@ -50,7 +50,7 @@ namespace KleeneStar.Core.WebFragment.Template
         public ControlDataQuickfilterItemDropdown ClassFilter { get; } = new(ClassFilterId)
         {
             Text = _ => "kleenestar.core:template.class.label",
-            Icon = _ => new IconClass(TypeIconTheme.Light),
+            Icon = _ => new IconClass(),
             Group = _ => global::KleeneStar.Core.WWW.Api._1_.Templates._workspacekey_.Classes.FilterGroup,
             Multiple = _ => false,
             // the control writes the uri into its data attribute as it is, so the workspace of

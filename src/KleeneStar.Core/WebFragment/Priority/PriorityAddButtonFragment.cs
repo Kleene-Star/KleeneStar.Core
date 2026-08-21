@@ -29,7 +29,7 @@ namespace KleeneStar.Core.WebFragment.Priority
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:priority.add.label";
-            Icon = _ => new IconPlus(TypeIconTheme.Light);
+            Icon = _ => new IconPlus();
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
             PrimaryAction = renderContext => new ActionModal

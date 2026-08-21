@@ -44,7 +44,7 @@ namespace KleeneStar.Core.WebFragment.Class
         public ClassViewListFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconSplitFunction(TypeIconTheme.Light);
+            Icon = _ => new IconSplitFunction();
             Title = _ => "kleenestar.core:view.split.title";
 
             Add(List);

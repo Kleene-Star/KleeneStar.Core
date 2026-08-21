@@ -239,7 +239,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Dashboards
             yield return new RestApiOptionCustom(request)
             {
                 Text = "kleenestar.core:dashboard.permission.label",
-                Icon = new IconUserShield(TypeIconTheme.Light),
+                Icon = new IconUserShield(),
                 PrimaryAction = new ActionModal("modal-form", permissionUri, TypeModalSize.ExtraLarge)
             };
 

@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WebFragment.Notification
             _notificationCenterManager = notificationCenterManager;
 
             Text = _ => "kleenestar.core:notification.center.clear";
-            Icon = _ => new IconTrashCan(TypeIconTheme.Light);
+            Icon = _ => new IconTrashCan();
             Outline = _ => true;
             TextColor = _ => new PropertyColorText(TypeColorText.Danger);
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);

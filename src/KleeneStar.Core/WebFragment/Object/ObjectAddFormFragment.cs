@@ -163,7 +163,7 @@ namespace KleeneStar.Core.WebFragment.Object
 
             Mode = _ => TypeRestFormMode.Add;
             FinishLabel = _ => "kleenestar.core:object.add.submit.label";
-            FinishIcon = _ => new IconPlus(TypeIconTheme.Light);
+            FinishIcon = _ => new IconPlus();
 
             // the wizard shapes its own load and submit requests and picks the method per
             // request, so it needs the endpoint and nothing else. Pinning a method here —

@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WebFragment.Class
         public ClassSidebarWorkflowLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconWorkflow(TypeIconTheme.Light);
+            Icon = _ => new IconWorkflow();
             Text = _ => "kleenestar.core:workflow.link.label";
             Uri = renderContext => GetUri(renderContext);
             Active = renderContext => IsActive(renderContext)

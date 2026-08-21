@@ -49,7 +49,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
             _workspaceManager = workspaceManager;
 
             Alignment = _ => TypeToolbarItemAlignment.Right;
-            Icon = _ => new IconCog(TypeIconTheme.Light);
+            Icon = _ => new IconCog();
         }
 
         /// <summary>
@@ -96,25 +96,25 @@ namespace KleeneStar.Core.WebFragment.Workspace
                 new ControlDropdownItemLink()
                 {
                     Text = _ => "webexpress.webapp:edit.label",
-                    Icon = _ => new IconPen(TypeIconTheme.Light),
+                    Icon = _ => new IconPen(),
                     PrimaryAction =_ =>  new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
                     Text =_ =>  "webexpress.webapp:clone.label",
-                    Icon = _ => new IconClone(TypeIconTheme.Light),
+                    Icon = _ => new IconClone(),
                     PrimaryAction = _ => new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
                     Text = _ => "kleenestar.core:workspace.permissions.label",
-                    Icon = _ => new IconUserShield(TypeIconTheme.Light),
+                    Icon = _ => new IconUserShield(),
                     PrimaryAction =_ =>  new ActionModal("modal-form", permissionsUri, TypeModalSize.ExtraLarge),
                 },
                 new ControlDropdownItemLink()
                 {
                     Text = _ => "kleenestar.core:class.manage.label",
-                    Icon = _ => new IconClass(TypeIconTheme.Light),
+                    Icon = _ => new IconClass(),
                     Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Classes._workspacekey_.Index>()?
                         .BindParameters(keyParameter)
                 },
@@ -129,7 +129,7 @@ namespace KleeneStar.Core.WebFragment.Workspace
                 new ControlDropdownItemLink("Delete")
                 {
                     Text = _ => "webexpress.webapp:delete.label",
-                    Icon =_ =>  new IconTrash(TypeIconTheme.Light),
+                    Icon =_ =>  new IconTrash(),
                     PrimaryAction = _ => new ActionModal("modal-form", deleteUri, TypeModalSize.Default),
                     Color = _ => TypeColorText.Danger
                 }

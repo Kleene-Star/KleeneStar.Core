@@ -48,7 +48,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         {
             var id = fragmentContext?.FragmentId?.ToString()?.Replace(".", "-");
 
-            Icon = _ => new IconListCheck(TypeIconTheme.Light);
+            Icon = _ => new IconListCheck();
             Title = _ => "kleenestar.core:view.backlog.title";
 
             // the backlog data is a central resource the view's ViewState owns and loads, so

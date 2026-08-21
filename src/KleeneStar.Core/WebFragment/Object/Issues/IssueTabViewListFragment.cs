@@ -39,7 +39,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         public IssueTabViewListFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconList(TypeIconTheme.Light);
+            Icon = _ => new IconList();
             Title = _ => "kleenestar.core:view.list.title";
             List.Bind = _ => new Binding()
                 .Add(new BindSearch() { Source = IssueTabViewSearchFragment.ContentId })

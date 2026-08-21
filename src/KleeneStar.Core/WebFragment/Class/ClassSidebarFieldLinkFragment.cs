@@ -45,7 +45,7 @@ namespace KleeneStar.Core.WebFragment.Class
         public ClassSidebarFieldLinkFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconField(TypeIconTheme.Light);
+            Icon = _ => new IconField();
             Text = _ => "kleenestar.core:field.link.label";
             Uri = renderContext => GetUri(renderContext);
             Active = renderContext => IsActive(renderContext)

@@ -42,7 +42,7 @@ namespace KleeneStar.Core.WebFragment
         {
             _componentHub = componentHub;
             Text = _ => "webexpress.webapp:login.label";
-            Icon = _ => new IconRightToBracket(TypeIconTheme.Light);
+            Icon = _ => new IconRightToBracket();
             PrimaryAction = renderContext => new ActionModal
             (
                 "modal-login",

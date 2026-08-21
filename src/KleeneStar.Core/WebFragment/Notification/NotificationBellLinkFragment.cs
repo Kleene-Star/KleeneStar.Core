@@ -139,7 +139,7 @@ namespace KleeneStar.Core.WebFragment.Notification
 
             return new ControlDropdownItemLink("notification-center")
             {
-                Icon = _ => new IconBell(TypeIconTheme.Light),
+                Icon = _ => new IconBell(),
                 Text = _ => string.IsNullOrEmpty(badge) ? label : $"{label} ({badge})",
                 Uri = _ => BindUri(CoreHub.GetUri<global::KleeneStar.Core.WWW.Notifications.Index>(), renderContext)
             };
@@ -251,25 +251,25 @@ namespace KleeneStar.Core.WebFragment.Notification
 
             if (key.EndsWith(".created", StringComparison.OrdinalIgnoreCase))
             {
-                return new IconPlus(TypeIconTheme.Light);
+                return new IconPlus();
             }
 
             if (key.EndsWith(".updated", StringComparison.OrdinalIgnoreCase))
             {
-                return new IconPen(TypeIconTheme.Light);
+                return new IconPen();
             }
 
             if (key.EndsWith(".deleted", StringComparison.OrdinalIgnoreCase))
             {
-                return new IconTrashCan(TypeIconTheme.Light);
+                return new IconTrashCan();
             }
 
             if (key.EndsWith(".error", StringComparison.OrdinalIgnoreCase))
             {
-                return new IconTriangleExclamation(TypeIconTheme.Light);
+                return new IconTriangleExclamation();
             }
 
-            return new IconBell(TypeIconTheme.Light);
+            return new IconBell();
         }
 
         /// <summary>

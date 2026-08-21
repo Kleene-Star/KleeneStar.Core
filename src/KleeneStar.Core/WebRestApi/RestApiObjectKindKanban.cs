@@ -481,7 +481,7 @@ namespace KleeneStar.Core.WebRestApi
                 yield return new RestApiKanbanCardChip
                 {
                     Label = priority,
-                    Icon = new IconFlag(TypeIconTheme.Light),
+                    Icon = new IconFlag(),
                     Color = new PropertyColorBackgroundBadge(PriorityBadgeColor(priority)),
                     Title = "Priority"
                 };
@@ -492,7 +492,7 @@ namespace KleeneStar.Core.WebRestApi
                 yield return new RestApiKanbanCardChip
                 {
                     Label = points.ToString(),
-                    Icon = new IconScaleBalanced(TypeIconTheme.Light),
+                    Icon = new IconScaleBalanced(),
                     Color = new PropertyColorBackgroundBadge(TypeColorBackgroundBadge.Secondary),
                     Title = "Story points"
                 };

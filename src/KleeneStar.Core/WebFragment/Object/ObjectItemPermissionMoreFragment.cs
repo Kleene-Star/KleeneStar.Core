@@ -31,7 +31,7 @@ namespace KleeneStar.Core.WebFragment.Object
             : base(fragmentContext)
         {
             Text = _ => "kleenestar.core:object.permission.label";
-            Icon = _ => new IconUserShield(TypeIconTheme.Light);
+            Icon = _ => new IconUserShield();
             PrimaryAction = renderContext => new ActionModal
             (
                 "modal-form",

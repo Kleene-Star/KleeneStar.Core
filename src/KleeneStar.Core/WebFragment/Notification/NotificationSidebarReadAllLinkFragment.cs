@@ -44,7 +44,7 @@ namespace KleeneStar.Core.WebFragment.Notification
         {
             _notificationCenterManager = notificationCenterManager;
 
-            Icon = _ => new IconCheckDouble(TypeIconTheme.Light);
+            Icon = _ => new IconCheckDouble();
             Text = _ => "kleenestar.core:notification.center.readall";
             Uri = _ => CoreHub.GetUri<global::KleeneStar.Core.WWW.Notifications.ReadAll>();
             Badge = ResolveBadge;

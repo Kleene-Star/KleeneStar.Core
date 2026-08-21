@@ -81,7 +81,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-property-tag-section")
             {
                 Header = _ => "kleenestar.core:object.property.tag.header",
-                HeaderIcon = _ => new IconTags(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconTags(),
                 Layout = _ => TypeLayoutSection.Rule
             };
 

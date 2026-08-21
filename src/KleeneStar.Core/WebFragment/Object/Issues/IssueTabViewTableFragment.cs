@@ -51,7 +51,7 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
         public IssueTabViewTableFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
-            Icon = _ => new IconTable(TypeIconTheme.Light);
+            Icon = _ => new IconTable();
             Title = _ => "kleenestar.core:view.table.title";
 
             // the endpoint is free-form and carries no generic argument, so the domain of the

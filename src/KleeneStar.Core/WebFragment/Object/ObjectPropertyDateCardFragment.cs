@@ -100,7 +100,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-property-date-section")
             {
                 Header = _ => "kleenestar.core:object.property.date.header",
-                HeaderIcon = _ => new IconCalendarDays(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconCalendarDays(),
                 Layout = _ => TypeLayoutSection.Rule
             };
 

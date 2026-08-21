@@ -302,7 +302,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
             var ownerId = CoreHub.SessionManager.GetCurrentIdentityId(request);
             var isFavorite = CoreHub.WorkspaceManager.IsFavorite(ownerId, row.Id);
 
-            var iconTheme = request?.ApplicationContext?.DefaultTheme?.IconTheme ?? TypeIconTheme.Light;
 
             yield return new RestApiOptionHeader(request)
             {
@@ -311,20 +310,20 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             yield return new RestApiOptionEdit(request)
             {
-                Icon = new IconPen(iconTheme),
+                Icon = new IconPen(),
                 PrimaryAction = new ActionModal("modal-form", editUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionClone(request)
             {
-                Icon = new IconClone(iconTheme),
+                Icon = new IconClone(),
                 PrimaryAction = new ActionModal("modal-form", cloneUri, TypeModalSize.ExtraLarge)
             };
 
             yield return new RestApiOptionCustom(request)
             {
                 Text = I18N.Translate(request, "kleenestar.core:workspace.permissions.label"),
-                Icon = new IconUserShield(iconTheme),
+                Icon = new IconUserShield(),
                 PrimaryAction = new ActionModal("modal-form", permissionsUri, TypeModalSize.ExtraLarge)
             };
 
@@ -336,7 +335,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                         new WorkspaceKeyParameter(row.Key)
                     ),
                 Text = I18N.Translate(request, "kleenestar.core:class.manage.label"),
-                Icon = new IconClass(iconTheme)
+                Icon = new IconClass()
             };
 
             // toggle the calling identity's favorite flag; the label reflects the current
@@ -346,14 +345,14 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
                 Text = I18N.Translate(request, isFavorite
                     ? "kleenestar.core:workspace.favorite.remove.label"
                     : "kleenestar.core:workspace.favorite.add.label"),
-                Icon = new IconStar(iconTheme),
+                Icon = new IconStar(),
                 Uri = favoriteUri
             };
 
             yield return new RestApiOptionSeparator(request);
             yield return new RestApiOptionDelete(request)
             {
-                Icon = new IconTrash(iconTheme),
+                Icon = new IconTrash(),
                 PrimaryAction = new ActionModal("modal-form", deleteUri, TypeModalSize.Small)
             };
         }

@@ -254,7 +254,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Tenants
             yield return new RestApiOptionCustom(request)
             {
                 Text = I18N.Translate(request, "kleenestar.core:setting.tenant.avatar.label"),
-                Icon = new IconImage(TypeIconTheme.Light),
+                Icon = new IconImage(),
                 PrimaryAction = new ActionModal("modal-form", avatarUri, TypeModalSize.ExtraLarge)
             };
 

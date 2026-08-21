@@ -56,7 +56,6 @@ namespace KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_
                 .BindParameters(request)
                 .BindParameters(keyParameter);
 
-            var iconTheme = request?.ApplicationContext?.DefaultTheme?.IconTheme ?? WebExpress.WebCore.WebIcon.TypeIconTheme.Light;
 
             yield return new RestApiOptionHeader(request)
             {
@@ -80,7 +79,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_
                 Text = I18N.Translate(request, starred
                     ? "kleenestar.core:object.favorite.remove.label"
                     : "kleenestar.core:object.favorite.add.label"),
-                Icon = new WebExpress.WebUI.WebIcon.IconStar(iconTheme),
+                Icon = new WebExpress.WebUI.WebIcon.IconStar(),
                 Uri = favoriteUri
             };
 

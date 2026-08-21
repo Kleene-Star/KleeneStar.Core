@@ -92,7 +92,7 @@ namespace KleeneStar.Core.WebFragment.Object
             var section = new ControlSection("object-comment-composer-section")
             {
                 Header = _ => "kleenestar.core:object.comment.composer.card.header",
-                HeaderIcon = _ => new IconPenToSquare(TypeIconTheme.Light),
+                HeaderIcon = _ => new IconPenToSquare(),
                 Expanded = _ => false,
                 Layout = _ => TypeLayoutSection.Rule
             };
