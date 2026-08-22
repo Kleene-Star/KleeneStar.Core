@@ -1,5 +1,7 @@
-﻿using KleeneStar.Core.WebTheme;
+﻿using KleeneStar.Core.WebManager;
+using KleeneStar.Core.WebTheme;
 using KleeneStar.Model;
+using KleeneStar.Model.Entities;
 using KleeneStar.Model.Config;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -92,6 +94,61 @@ namespace KleeneStar.Core
         public void Run()
         {
             CoreHub.BrandingManager.Apply();
+
+            RecordStartup();
+        }
+
+        /// <summary>
+        /// Subscribes the audit log to the managers it records, and writes the first event of
+        /// this run.
+        /// </summary>
+        /// <remarks>
+        /// This cannot happen in the constructor. The audit manager is resolved through the
+        /// component hub, which does not hand out managers until the application it belongs to
+        /// is registered - and that only happens once the constructor returns. Recording the
+        /// startup here also means the event is written after the migration and the seed, so an
+        /// installation that failed to come up leaves no entry claiming it did.
+        /// <para>
+        /// The startup event is what turns a gap in the log into a readable fact. Without it a
+        /// restart is indistinguishable from a quiet night, and the sequence numbers on either
+        /// side of it say nothing about why nothing happened in between.
+        /// </para>
+        /// </remarks>
+        private static void RecordStartup()
+        {
+            try
+            {
+                var audit = CoreHub.AuditManager;
+
+                audit.Connect();
+
+                using var activity = audit.BeginActivity(AuditOrigin.System, Guid.Empty, "kleenestar.host");
+
+                audit.Record
+                (
+                    AuditCategory.Lifecycle,
+                    AuditAction.Started,
+                    AuditTarget.Installation,
+                    [
+                        AuditDelta.Added("provider", ModelHub.DatabaseConfig?.Provider, AuditValueKind.Text),
+                        AuditDelta.Added("assembly", ModelHub.DatabaseConfig?.Assembly, AuditValueKind.Text),
+                        AuditDelta.Added
+                        (
+                            "version",
+                            typeof(KleeneStarApplication).Assembly.GetName().Version?.ToString(),
+                            AuditValueKind.Text
+                        )
+                    ],
+                    AuditOutcome.Succeeded,
+                    AuditSeverity.Notice
+                );
+            }
+            catch (Exception ex)
+            {
+                // an installation that cannot audit its own startup still has to start; the
+                // missing entry is visible as a run with no Started event preceding its changes
+                CoreHub.ComponentHub?.LogManager?.DefaultLog?.Exception(ex);
+            }
         }
 
         /// <summary>

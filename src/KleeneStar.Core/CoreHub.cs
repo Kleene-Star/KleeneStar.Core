@@ -58,6 +58,7 @@ namespace KleeneStar.Core
         private static AccessTokenManager _accessTokenManager;
         private static SavedSearchManager _savedSearchManager;
         private static SprintManager _sprintManager;
+        private static AuditManager _auditManager;
 
         /// <summary>
         /// Gets the shared instance of the component hub used for managing and coordinating application components.
@@ -235,6 +236,13 @@ namespace KleeneStar.Core
         /// from them.
         /// </summary>
         public static ICommitManager CommitManager => _commitManager ??= ComponentHub.GetComponentManager<CommitManager>();
+
+        /// <summary>
+        /// Gets the audit manager responsible for the installation-wide, append-only,
+        /// hash-chained record of every event worth reconstructing later, and for replaying
+        /// and verifying it.
+        /// </summary>
+        public static IAuditManager AuditManager => _auditManager ??= ComponentHub.GetComponentManager<AuditManager>();
 
         /// <summary>
         /// Gets the object-link manager responsible for the typed directional links
