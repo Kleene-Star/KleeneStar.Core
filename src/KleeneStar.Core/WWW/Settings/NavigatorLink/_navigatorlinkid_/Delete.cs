@@ -10,7 +10,7 @@ namespace KleeneStar.Core.WWW.Settings.NavigatorLink._navigatorlinkid_
     /// <summary>
     /// Represents a page that provides the delete form for an additional app navigator link.
     /// </summary>
-    [WebIcon<IconTrashAlt>]
+    [WebIcon<IconTrash>]
     [Title("kleenestar.core:setting.navigatorlink.delete.title")]
     [Scope<IScopeGeneral>]
     public sealed class Delete : IPage<VisualTreeWebApp>, IScope

@@ -11,7 +11,7 @@ namespace KleeneStar.Core.WWW.Workspaces._workspacekey_
     /// Represents the page for deleting a workspace within the web application. Provides access to the
     /// workspace edit form and handles form processing and rendering.
     /// </summary>
-    [WebIcon<IconTrashAlt>]
+    [WebIcon<IconTrash>]
     [Title("kleenestar.core:workspace.delete.title")]
     //[Policy<WorkspaceAdminPolicy>]
     [Scope<IScopeGeneral>]

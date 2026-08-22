@@ -14,8 +14,8 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// The way out of the reduced object view: a button opening the full reading view of the
-    /// object the pane is showing.
+    /// The way out of the reduced object view: a headline button opening the full reading view
+    /// of the object the pane is showing.
     /// </summary>
     /// <remarks>
     /// The reduced view is a summary, not a replacement - comments, attachments, the workflow
@@ -23,12 +23,17 @@ namespace KleeneStar.Core.WebFragment.Object
     /// less has to say where the rest is, or the omission reads as data that is missing rather
     /// than data that is one click away.
     /// <para>
+    /// It sits in the headline rather than above the content: the pane's header is the one
+    /// place a reader keeps in view while scrolling the summary, and putting the escape hatch
+    /// there keeps it opposite the title instead of pushing the first content section down.
+    /// </para>
+    /// <para>
     /// The link leaves the frame instead of loading into it: the target is addressed by the
     /// kind of the object, so it is the issue view for an issue and the asset view for an
     /// asset, and it is meant to fill the window rather than the pane.
     /// </para>
     /// </remarks>
-    [Section<SectionContentPreferences>]
+    [Section<SectionHeadlineSecondary>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Preview>]
     [Order(0)]
     [Cache]
@@ -84,10 +89,12 @@ namespace KleeneStar.Core.WebFragment.Object
             return new ControlButtonLink("object-preview-open")
             {
                 Text = ctx => I18N.Translate(ctx, "kleenestar.core:object.preview.open.label"),
+                Tooltip = ctx => I18N.Translate(ctx, "kleenestar.core:object.preview.open.label"),
                 Icon = _ => new IconArrowUpRightFromSquare(),
                 Uri = _ => uri,
                 Outline = _ => true,
-                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.Two, PropertySpacing.Space.None)
+                Size = _ => TypeSizeButton.Small,
+                Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two, PropertySpacing.Space.None, PropertySpacing.Space.None, PropertySpacing.Space.None)
             }.Render(renderContext, visualTree);
         }
     }
