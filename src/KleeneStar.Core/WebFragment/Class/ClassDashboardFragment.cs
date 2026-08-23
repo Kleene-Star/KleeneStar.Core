@@ -31,6 +31,11 @@ namespace KleeneStar.Core.WebFragment.Class
         public ClassDashboardFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            // the board is the view here rather than a block among others, so it takes the
+            // height it is handed instead of growing with its longest column: the widgets then
+            // scroll below a menu bar that stays, so adding a column stays reachable
+            Fill = _ => true;
+
             ServiceFactory = renderContext => DataServiceDescriptor.QueryData(GetRestUri(renderContext).ToString());
         }
 

@@ -31,6 +31,11 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
         public AssetTabDashboardFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            // the board is the view here rather than a block among others, so it takes the
+            // height it is handed instead of growing with its longest column: the widgets then
+            // scroll below a menu bar that stays, so adding a column stays reachable
+            Fill = _ => true;
+
             ServiceFactory = _ => DataServiceDescriptor.Data(CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.Dashboard>().ToString());
 
             // enable the full board editing surface; the endpoint persists every change and

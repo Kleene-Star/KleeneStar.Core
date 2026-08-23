@@ -38,6 +38,11 @@ namespace KleeneStar.Core.WebFragment.Workspace
         public WorkspaceViewTileFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            // the tiles are the view here rather than a block among others, so they take the
+            // height they are handed instead of growing with their number: the tiles then
+            // scroll above chrome that stays instead of pushing the pager out of reach
+            Tile.Fill = _ => true;
+
             Icon = _ => new IconTile();
             Title = _ => "kleenestar.core:view.tile.title";
             Tile.Bind = _ => new Binding()

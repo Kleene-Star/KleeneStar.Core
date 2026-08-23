@@ -45,7 +45,12 @@ namespace KleeneStar.Core.WebFragment.Object.Issues
             // a plan of issues is read at the week scale far more often than at the day one,
             // and all three scales stay available from the toolbar
             Scale = _ => "week",
-            Columns = _ => "name,start,end,duration,progress,resources"
+            Columns = _ => "name,start,end,duration,progress,resources",
+            // the plan is the whole tab rather than a block among others, so it takes the
+            // height the content region offers instead of bringing its own: a chart with a
+            // height of its own either leaves dead space under it or reaches past the pane,
+            // which then scrolls around a grid and a timeline that already scroll in step
+            Fill = _ => true
         };
 
         /// <summary>

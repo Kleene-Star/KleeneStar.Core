@@ -4,6 +4,7 @@ using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebScope;
+using WebExpress.WebUI.WebControl;
 using Api = KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_;
 
 namespace KleeneStar.Core.WebFragment.Object.Assets
@@ -31,6 +32,7 @@ namespace KleeneStar.Core.WebFragment.Object.Assets
             : base(fragmentContext)
         {
             MovableTab = _ => true;
+            Layout = _ => TypeLayoutTab.Underline;
             ServiceFactory = _ => DataServiceDescriptor.TabData(CoreHub.GetUri<Api.Tab>().ToString());
         }
     }

@@ -44,6 +44,11 @@ namespace KleeneStar.Core.WebFragment.Dashboard
         public DashboardDetailViewFragment(IFragmentContext fragmentContext)
             : base(fragmentContext)
         {
+            // the board is the view here rather than a block among others, so it takes the
+            // height it is handed instead of growing with its longest column: the widgets then
+            // scroll below a menu bar that stays, so adding a column stays reachable
+            Fill = _ => true;
+
             ServiceFactory = renderContext => DataServiceDescriptor.Data(BuildViewUri(renderContext)?.ToString());
 
             // enable the full board editing surface; the endpoint persists every change and reports

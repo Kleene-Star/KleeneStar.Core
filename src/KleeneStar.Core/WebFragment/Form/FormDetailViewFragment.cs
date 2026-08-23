@@ -28,6 +28,12 @@ namespace KleeneStar.Core.WebFragment.Form
             : base(fragmentContext)
         {
             ServiceFactory = renderContext => DataServiceDescriptor.QueryData(GetUri(renderContext).ToString());
+
+            // the editor is the whole page rather than a block among others, so it takes the
+            // height the content region offers instead of growing with the form it edits:
+            // otherwise the page scrolls around it and carries the form name above and the
+            // save state below off the screen while the user is still working in the middle
+            Fill = _ => true;
         }
 
         /// <summary>
