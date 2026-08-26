@@ -11,11 +11,17 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Dashboard
 {
     /// <summary>
-    /// Displays the list of all available dashboards in the sidebar of the home page, 
-    /// allowing the user to switch between dashboards.
+    /// Displays the list of all available dashboards in the sidebar of the dashboard view
+    /// page, allowing the user to switch between dashboards.
     /// </summary>
+    /// <remarks>
+    /// The list used to sit on the home page, back when the home page was a dashboard. The
+    /// home page is now the landing page (<see cref="WWW.Index"/>), which is the shared
+    /// starting point rather than one person's board, so the switcher moved to where the
+    /// boards are read.
+    /// </remarks>
     [Section<SectionSidebarPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Dashboard._dashboardid_.Index>]
     [Cache]
     public sealed class DashboardSidebarFilterFragment : FragmentControlSidebarItemLink
     {

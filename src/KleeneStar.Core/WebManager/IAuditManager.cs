@@ -102,6 +102,19 @@ namespace KleeneStar.Core.WebManager
         IEnumerable<AuditEvent> GetEvents(IQuery<AuditEvent> query, IQueryContext context);
 
         /// <summary>
+        /// Returns how many events satisfy the supplied query without loading them. This is
+        /// the filtered counterpart of <see cref="Count"/>, which reports the length of the
+        /// whole chain: a caller asking "how much happened lately" filters by
+        /// <see cref="AuditEvent.Timestamp"/> and counts that.
+        /// </summary>
+        /// <param name="query">
+        /// The query criteria used to filter the counted events. Paging must be left off:
+        /// a query carrying it counts the page, not the whole result.
+        /// </param>
+        /// <returns>The number of matching events.</returns>
+        int CountEvents(IQuery<AuditEvent> query);
+
+        /// <summary>
         /// Returns a single event by its unique identifier.
         /// </summary>
         /// <param name="eventId">The event id.</param>

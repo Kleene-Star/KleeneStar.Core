@@ -84,6 +84,18 @@ namespace KleeneStar.Core.WebManager
         IEnumerable<Object> GetObjects(IQuery<Object> query, IQueryContext context);
 
         /// <summary>
+        /// Returns how many objects satisfy the supplied filter criteria without loading
+        /// them. This is what a headline figure such as the landing page's issue count asks
+        /// for - the number alone, never the rows behind it.
+        /// </summary>
+        /// <param name="query">
+        /// The query criteria used to filter the counted objects. Paging must be left off:
+        /// a query carrying it counts the page, not the whole result.
+        /// </param>
+        /// <returns>The number of matching objects.</returns>
+        int CountObjects(IQuery<Object> query);
+
+        /// <summary>
         /// Returns the active objects the supplied identity has most recently opened, newest
         /// first, capped at <paramref name="count"/>. Backs the "recently used" section of the
         /// object dropdown in the application header.

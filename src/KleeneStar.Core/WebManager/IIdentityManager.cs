@@ -69,6 +69,17 @@ namespace KleeneStar.Core.WebManager
         IEnumerable<Identity> GetIdentities(IQuery<Identity> query, IQueryContext context);
 
         /// <summary>
+        /// Returns how many identities satisfy the supplied filter criteria without loading
+        /// them - the figure behind a headline such as the landing page's people count.
+        /// </summary>
+        /// <param name="query">
+        /// The query criteria used to filter the counted identities. Paging must be left
+        /// off: a query carrying it counts the page, not the whole result.
+        /// </param>
+        /// <returns>The number of matching identities.</returns>
+        int CountIdentities(IQuery<Identity> query);
+
+        /// <summary>
         /// Adds an identity.
         /// </summary>
         /// <param name="identityEntity">The identity to add.</param>

@@ -114,6 +114,20 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Returns how many identities satisfy the specified filter criteria without
+        /// loading them.
+        /// </summary>
+        /// <param name="query">
+        /// The query criteria used to filter the counted identities. Paging must be left
+        /// off: a query carrying it counts the page, not the whole result.
+        /// </param>
+        /// <returns>The number of matching identities.</returns>
+        public int CountIdentities(IQuery<Identity> query)
+        {
+            return ModelHub.CountIdentities(query);
+        }
+
+        /// <summary>
         /// Retrieves a collection of identities that satisfy the specified filter criteria.
         /// </summary>
         /// <param name="query">The query criteria.</param>

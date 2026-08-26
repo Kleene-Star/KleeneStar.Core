@@ -1,15 +1,4 @@
-
-#wx-content-main {
-    --ks-zone-padding: clamp(1rem, 2vw, 2rem);
-    --ks-measure: 78ch;
-
-    padding: 0 var(--ks-zone-padding) 3rem var(--ks-zone-padding);
-}
-
 #wx-content-property {
-    --ks-zone-padding: clamp(0.75rem, 1.2vw, 1.25rem);
-
-    padding: 1.25rem var(--ks-zone-padding) 2rem var(--ks-zone-padding);
     font-size: 0.875rem;
 
     /* the reference zone is a column beside the work zone, not a continuation of it. left alone
@@ -28,13 +17,6 @@
     overscroll-behavior: contain;
 }
 
-/* the sections of the object view use the rule layout, whose hairline runs to the far edge of
-   its container. left alone it would run wider than the text it introduces, so the section is
-   held to the reading measure and the rule ends where the content ends */
-#wx-content-main .wx-section {
-    max-width: var(--ks-measure, 78ch);
-}
-
 /* the reference zone is a column of short sections, so it breathes in smaller steps than the
    work zone - the same gap that reads as calm over a paragraph reads as disconnected over a
    three-line property list */
@@ -43,10 +25,6 @@
 }
 
 /* ================================================================ headline */
-
-#wx-content-main-headline {
-    padding-top: 1.5rem;
-}
 
 #wx-content-main-headline h2 {
     font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.75rem);
@@ -71,11 +49,10 @@
 
 /* ================================================================== prose */
 
-/* a measure of roughly 78 characters: long enough not to break sentences into fragments,
-   short enough that the eye finds the start of the next line without searching */
+/* prose takes the width of the view it is read in; only the line height is set, because a
+   long line is easier to follow when the next one is not crowded against it */
 .wx-kleenestar-prose,
 .wx-kleenestar-object-prose {
-    max-width: var(--ks-measure, 78ch);
     line-height: 1.65;
 }
 
@@ -144,7 +121,6 @@
     column-gap: 1.25rem;
     row-gap: 0.15rem;
     align-items: baseline;
-    max-width: var(--ks-measure, 78ch);
 }
 
 .wx-kleenestar-field-list > .wx-kleenestar-field {
@@ -178,9 +154,14 @@
 
 /* ============================================================= attributes */
 
-/* the key/value rows of the reference zone: the key is the quiet half, and the pair sits on
-   one line until it cannot */
-#wx-content-property .wx-section-body > div {
+/* The key/value rows of the reference zone: the key is the quiet half, and the pair sits on
+   one line until it cannot.
+
+   Matched by the name span a key/value row carries rather than by position, because the zone
+   holds more than attributes - the sla, the workflow, the dates each render their own
+   structure into the same section body, and turning those into a baseline flex row collapses
+   them to the width of their narrowest child. */
+#wx-content-property .wx-section-body > div:has(> span[id$="_name"]) {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
@@ -192,7 +173,7 @@
     color: var(--wx-secondary-color);
 }
 
-#wx-content-property .wx-section-body > div > i {
+#wx-content-property .wx-section-body > div:has(> span[id$="_name"]) > i {
     color: var(--wx-secondary-color);
     width: 1em;
     text-align: center;
@@ -236,13 +217,22 @@
     background: transparent;
 }
 
-#object-comments,
-#object-comments-section .wx-comment-list {
-    max-width: var(--ks-measure, 78ch);
-}
+/* The composer stays in reach at the foot of the view rather than at the end of the thread.
+   A conversation grows downwards, so on an object with a long history the one thing a reader
+   came to do - reply - sits below everything they have to scroll past first.
 
-#object-comment-composer-section .wx-section-body {
-    max-width: var(--ks-measure, 78ch);
+   It is pinned to the bottom of the scrolling work zone and given the zone's own background,
+   so the comments pass behind it instead of showing through. The rule of the section becomes
+   its top edge, which is what tells the reader that the strip is the end of the page rather
+   than a floating panel. */
+#object-comment-composer-section {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    background: var(--wx-body-bg);
+    border-top: 1px solid var(--wx-border-color);
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 /* ================================================================ preview */
@@ -264,4 +254,111 @@
 #object-preview-property-section .wx-section-body > div > i,
 #object-preview-field-section .wx-section-body > div > i {
     color: var(--wx-secondary-color);
+}
+
+/* ================================================================ landing page */
+
+/* The landing page is the one view of the installation that is read rather than worked in, so
+   it is laid out as a page: a full-width head, then a wide reading column beside a narrow
+   column of things that keep arriving.
+
+   Everything inside the columns is a WebExpress control - sections, tiles, a stat group, a
+   timeline, an accordion, a callout - so what is left here is the page grid and the few
+   places where a control has to be told how much room it has. The section container the
+   fragment manager emits is anonymous, so the grid is attached through the one child that is
+   always present. */
+#wx-content-main div:has(> .ks-landing-head) {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 1.5rem 1.75rem;
+}
+
+/* the head and the figures speak for the whole page, so they span both columns */
+.ks-landing-head,
+.ks-landing-stats {
+    grid-column: 1 / -1;
+}
+
+.ks-landing-col-main {
+    grid-column: 1;
+}
+
+.ks-landing-col-side {
+    grid-column: 2;
+}
+
+/* below the two-column breakpoint the side column is not a margin any more but a continuation,
+   so the grid collapses into one column and the sections simply follow each other */
+@media (max-width: 1200px) {
+    #wx-content-main div:has(> .ks-landing-head) {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .ks-landing-col-main,
+    .ks-landing-col-side {
+        grid-column: 1;
+    }
+}
+
+.ks-landing-col-main,
+.ks-landing-col-side {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    min-width: 0;
+}
+
+/* the page carries its own head, so the frame's headline would repeat the application name
+   above it. the headline is emitted by the frame rather than by the page, so it is hidden
+   from here, on this page only */
+#wx-content-main:has(.ks-landing-head) #wx-content-main-headline {
+    display: none !important;
+}
+
+/* -------------------------------------------------------------- head */
+
+.ks-landing-kicker {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--wx-secondary-color);
+}
+
+.ks-landing-head-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.ks-landing-greeting {
+    margin: 0.15rem 0 0.25rem 0;
+    font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+    font-weight: 600;
+    line-height: 1.15;
+}
+
+.ks-landing-lede {
+    margin: 0;
+    color: var(--wx-secondary-color);
+}
+
+.ks-landing-head-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* -------------------------------------------------------------- help columns */
+
+/* the three help columns divide the width of the wide column between them and wrap on a
+   narrow one. the flex control carries the gap; what it cannot express is that a column
+   should take an equal share rather than the width of its content */
+.ks-landing-help > .ks-landing-help-col {
+    flex: 1 1 15rem;
+    min-width: 0;
 }

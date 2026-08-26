@@ -239,6 +239,20 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Returns how many events satisfy the supplied query without loading them. No
+        /// hydration takes place - a count has no rows to enrich.
+        /// </summary>
+        /// <param name="query">
+        /// The query criteria used to filter the counted events. Paging must be left off:
+        /// a query carrying it counts the page, not the whole result.
+        /// </param>
+        /// <returns>The number of matching events.</returns>
+        public int CountEvents(IQuery<AuditEvent> query)
+        {
+            return ModelHub.CountAuditEvents(query);
+        }
+
+        /// <summary>
         /// Returns the events that satisfy the supplied query, executed inside the supplied
         /// query context.
         /// </summary>

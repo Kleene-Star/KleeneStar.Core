@@ -123,6 +123,20 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Returns how many objects satisfy the specified filter criteria without loading
+        /// them.
+        /// </summary>
+        /// <param name="query">
+        /// The query criteria used to filter the counted objects. Paging must be left off:
+        /// a query carrying it counts the page, not the whole result.
+        /// </param>
+        /// <returns>The number of matching objects.</returns>
+        public int CountObjects(IQuery<Model.Entities.Object> query)
+        {
+            return ModelHub.CountObjects(query);
+        }
+
+        /// <summary>
         /// Retrieves a collection of objects that satisfy the specified filter criteria.
         /// </summary>
         /// <param name="query">

@@ -85,6 +85,20 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Returns how many groups satisfy the specified filter criteria without loading
+        /// them.
+        /// </summary>
+        /// <param name="query">
+        /// The query criteria used to filter the counted groups. Paging must be left off:
+        /// a query carrying it counts the page, not the whole result.
+        /// </param>
+        /// <returns>The number of matching groups.</returns>
+        public int CountGroups(IQuery<Group> query)
+        {
+            return ModelHub.CountGroups(query);
+        }
+
+        /// <summary>
         /// Retrieves groups matching the query with context.
         /// </summary>
         public IEnumerable<Group> GetGroups(IQuery<Group> query, IQueryContext context)

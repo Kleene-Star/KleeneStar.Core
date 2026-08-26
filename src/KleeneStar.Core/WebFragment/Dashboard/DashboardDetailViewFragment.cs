@@ -13,7 +13,8 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Dashboard
 {
     /// <summary>
-    /// Renders the selected dashboard on the content area of the dashboard view page using the
+    /// Renders the selected dashboard on the content area of the dashboard view page
+    /// (<c>/dashboard/{dashboardid}</c>) using the
     /// <c>ControlDataDashboard</c> control backed by the <c>RestApiDashboard</c> REST endpoint. The
     /// board is fully editable: columns can be added, renamed, resized, recolored, reordered and
     /// deleted, and widgets can be added, reconfigured and removed, all persisted through the
@@ -29,7 +30,6 @@ namespace KleeneStar.Core.WebFragment.Dashboard
     /// so they are shadowed and never served. Inlining keeps the widgets working regardless.
     /// </remarks>
     [Section<SectionContentPrimary>]
-    [Scope<global::KleeneStar.Core.WWW.Index>]
     [Scope<global::KleeneStar.Core.WWW.Dashboard._dashboardid_.Index>]
     [Cache]
     public sealed class DashboardDetailViewFragment : FragmentControlDataDashboard
