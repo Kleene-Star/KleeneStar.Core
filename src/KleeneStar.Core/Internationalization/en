@@ -606,6 +606,7 @@ object.add.workspace.empty=No workspace found.
 object.add.workspace.help=The workspace determines which kinds of issue the next step offers.
 object.add.workspace.search=Search workspaces…
 
+object.attachment.api.title=Object attachments
 object.assignee.api.title=Object assignee
 object.assignee.assignme.label=Assign to me
 object.assignee.label=Assignee

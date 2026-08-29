@@ -362,3 +362,21 @@
     flex: 1 1 15rem;
     min-width: 0;
 }
+
+/* -------------------------------------------------- comment composer frame */
+
+/* The framework draws the composer as a card and tints its border with a primary ring while it
+   is expanded - an affordance for the moment a reader opens it. Ours is open from the start, so
+   the ring is never a response to anything and reduces to a blue frame that asks for attention
+   it has not earned. The card border goes with it: the section already frames this surface, the
+   same reason the relation view is rendered flat one section above. What is left to separate the
+   composer from the page are its own head and foot bars, which is enough.
+
+   Scoped to the opt-in class rather than to the control, because the ring is only wrong for a
+   composer that is permanently expanded. */
+.ks-comment-composer-open,
+.ks-comment-composer-open.wx-comment-composer-expanded {
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}

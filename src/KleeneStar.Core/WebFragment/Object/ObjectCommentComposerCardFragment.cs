@@ -29,6 +29,13 @@ namespace KleeneStar.Core.WebFragment.Object
     /// request's <see cref="ObjectKeyParameter"/>; the
     /// <see cref="ControlDataCommentComposer.Placeholder"/> is sourced from the
     /// <c>kleenestar.core:comment.composer.placeholder</c> translation key.
+    /// <para>
+    /// The composer shows its <b>WYSIWYG form right away</b> rather than the framework's one-line
+    /// trigger, so unfolding this section is the only gesture between reading an issue and writing
+    /// on it. The control offers no option for that, which is what
+    /// <see cref="CommentComposerExpandScript"/> exists for - it also carries the remedy that
+    /// would make it unnecessary.
+    /// </para>
     /// </remarks>
     [Section<SectionContentSecondary>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
@@ -45,6 +52,9 @@ namespace KleeneStar.Core.WebFragment.Object
         /// </summary>
         public ControlDataCommentComposer Composer { get; } = new("object-comment-composer")
         {
+            // the composer would otherwise mount on its one-line trigger and only build the
+            // editor once that is clicked; the class asks the companion script to open it
+            Classes = [CommentComposerExpandScript.OptInClass],
             Placeholder = renderContext => I18N.Translate(renderContext, "kleenestar.core:comment.composer.placeholder"),
             ServiceFactory = renderContext => DataServiceDescriptor.QueryData
             (
@@ -88,6 +98,13 @@ namespace KleeneStar.Core.WebFragment.Object
             if (@object is null)
             {
                 return null;
+            }
+
+            var script = CommentComposerExpandScript.Value;
+
+            if (!string.IsNullOrEmpty(script))
+            {
+                visualTree.AddHeaderScript(script);
             }
 
             var section = new ControlSection("object-comment-composer-section")

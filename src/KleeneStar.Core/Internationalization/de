@@ -606,6 +606,7 @@ object.add.workspace.empty=Kein Arbeitsbereich gefunden.
 object.add.workspace.help=Der Arbeitsbereich bestimmt, welche Vorgangsarten im nächsten Schritt zur Auswahl stehen.
 object.add.workspace.search=Arbeitsbereich suchen…
 
+object.attachment.api.title=Objektanhänge
 object.assignee.api.title=Objektzuweisung
 object.assignee.assignme.label=Mir zuweisen
 object.assignee.label=Zugewiesen an
