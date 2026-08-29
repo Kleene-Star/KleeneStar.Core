@@ -629,6 +629,7 @@ object.property.workflow.show.label=Workflow anzeigen
 object.property.workflow.target.none=Kein Übergang verfügbar
 object.property.workflow.transition.executed=Der Status wurde erfolgreich geändert.
 object.property.workflow.transition.invalid=Der Statuswechsel wurde durch eine Validierungsregel abgelehnt.
+object.property.workflow.transition.blocked=Der Status kann nicht abgeschlossen werden, solange {0} noch offen ist.
 object.property.workflow.transition.notallowed=Der Workflow lässt diesen Statuswechsel nicht zu.
 object.property.workflow.transition.notfound=Der angeforderte Status konnte nicht aufgelöst werden.
 object.property.workflow.transition.unchanged=Das Objekt hat diesen Status bereits.
@@ -1310,6 +1311,16 @@ quickfilter.query.placeholder=z. B. State = Active
 quickfilter.shared.help=Ohne diese Option sehen nur Sie den Filter. Eingeschaltet erscheint er in der Filterleiste aller Benutzer dieser Ansicht.
 quickfilter.shared.label=Für alle sichtbar
 
+# Object relations (ControlDataRelationView / ControlDataRelationEditor)
+relation.api.title=Beziehungen
+relation.link.label=Beziehungen
+relation.manage.description=In dieser Ansicht werden die Beziehungen festgelegt, die Objekte dieser Klasse eingehen dürfen: wie eine Beziehung von beiden Seiten gelesen wird, welche Klassen sie als Ziel akzeptiert, wie viele an jedem Ende zusammentreffen dürfen und was sie im Workflow bewirkt. Nichts davon ist fest vorgegeben - jede Beziehung ist eine, die Sie selbst definiert haben.
+relation.manage.title=Beziehungen
+relation.systems.api.title=Beziehungssysteme
+relation.targets.api.title=Beziehungsziele
+relation.type.api.title=Beziehungstypen
+object.relations.card.header=Beziehungen
+
 order.move.down.label=Nach unten
 order.move.up.label=Nach oben
 
@@ -1464,7 +1475,8 @@ audit.target.form=Formular
 audit.target.group=Gruppe
 audit.target.identity=Identität
 audit.target.installation=Installation
-audit.target.link=Verknüpfung
+audit.target.relation=Beziehung
+audit.target.relationtype=Beziehungstyp
 audit.target.maintenance=Wartung
 audit.target.navigatorlink=Navigator-Link
 audit.target.none=--

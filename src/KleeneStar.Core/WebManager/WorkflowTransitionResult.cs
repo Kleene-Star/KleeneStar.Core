@@ -97,6 +97,13 @@ namespace KleeneStar.Core.WebManager
         /// A validator of the transition rejected the change. The findings are carried by
         /// <see cref="WorkflowTransitionResult.ValidationErrors"/>.
         /// </summary>
-        ValidationFailed
+        ValidationFailed,
+
+        /// <summary>
+        /// A relation of the object refuses the move: something that blocks it is still open.
+        /// The blocking objects are named by
+        /// <see cref="WorkflowTransitionResult.ValidationErrors"/>.
+        /// </summary>
+        Blocked
     }
 }

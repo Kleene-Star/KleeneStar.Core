@@ -82,8 +82,9 @@ namespace KleeneStar.Core.WebManager
             CoreHub.AttachmentManager.AttachmentAdded += (_, x) => RecordChange(AuditCategory.Content, AuditAction.Created, x);
             CoreHub.AttachmentManager.AttachmentRemoved += (_, x) => RecordChange(AuditCategory.Content, AuditAction.Deleted, x, AuditSeverity.Notice);
 
-            CoreHub.ObjectLinkManager.LinkAdded += (_, x) => RecordChange(AuditCategory.Content, AuditAction.Created, x);
-            CoreHub.ObjectLinkManager.LinkRemoved += (_, x) => RecordChange(AuditCategory.Content, AuditAction.Deleted, x);
+            CoreHub.ObjectRelationManager.RelationAdded += (_, x) => RecordChange(AuditCategory.Content, AuditAction.Created, x);
+            CoreHub.ObjectRelationManager.RelationUpdated += (_, x) => RecordChange(AuditCategory.Content, AuditAction.Updated, x);
+            CoreHub.ObjectRelationManager.RelationRemoved += (_, x) => RecordChange(AuditCategory.Content, AuditAction.Deleted, x);
 
             CoreHub.ObjectTagManager.TagAdded += (_, x) => RecordChange(AuditCategory.Content, AuditAction.Created, x);
             CoreHub.ObjectTagManager.TagRemoved += (_, x) => RecordChange(AuditCategory.Content, AuditAction.Deleted, x);
@@ -123,6 +124,7 @@ namespace KleeneStar.Core.WebManager
             Configuration<Dashboard>(h => CoreHub.DashboardManager.DashboardAdded += h, h => CoreHub.DashboardManager.DashboardUpdated += h, h => CoreHub.DashboardManager.DashboardRemoved += h);
             Configuration<ObjectView>(h => CoreHub.ObjectViewManager.ObjectViewAdded += h, h => CoreHub.ObjectViewManager.ObjectViewUpdated += h, h => CoreHub.ObjectViewManager.ObjectViewRemoved += h);
             Configuration<NavigatorLink>(h => CoreHub.NavigatorLinkManager.NavigatorLinkAdded += h, h => CoreHub.NavigatorLinkManager.NavigatorLinkUpdated += h, h => CoreHub.NavigatorLinkManager.NavigatorLinkRemoved += h);
+            Configuration<ObjectRelationType>(h => CoreHub.ObjectRelationTypeManager.RelationTypeAdded += h, h => CoreHub.ObjectRelationTypeManager.RelationTypeUpdated += h, h => CoreHub.ObjectRelationTypeManager.RelationTypeRemoved += h);
 
             CoreHub.BrandingManager.BrandingUpdated += (_, x) => RecordChange(AuditCategory.Configuration, AuditAction.Updated, x, AuditSeverity.Notice);
             CoreHub.MaintenanceManager.MaintenanceUpdated += (_, x) => RecordChange(AuditCategory.Configuration, AuditAction.Updated, x, AuditSeverity.Notice);

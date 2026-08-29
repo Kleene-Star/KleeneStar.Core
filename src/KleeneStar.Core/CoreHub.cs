@@ -51,7 +51,8 @@ namespace KleeneStar.Core
         private static ObjectTagManager _objectTagManager;
         private static ValueManager _valueManager;
         private static CommitManager _commitManager;
-        private static ObjectLinkManager _objectLinkManager;
+        private static ObjectRelationManager _objectRelationManager;
+        private static ObjectRelationTypeManager _objectRelationTypeManager;
         private static SessionManager _sessionManager;
         private static NotificationCenterManager _notificationCenterManager;
         private static IdentitySessionManager _identitySessionManager;
@@ -245,10 +246,18 @@ namespace KleeneStar.Core
         public static IAuditManager AuditManager => _auditManager ??= ComponentHub.GetComponentManager<AuditManager>();
 
         /// <summary>
-        /// Gets the object-link manager responsible for the typed directional links
-        /// between objects (e.g. blocked-by, duplicates, relates-to).
+        /// Gets the object-relation manager responsible for the semantic relations an object
+        /// holds - to other objects (blocks, causes, duplicate of, ...) and to addresses
+        /// outside the installation.
         /// </summary>
-        public static IObjectLinkManager ObjectLinkManager => _objectLinkManager ??= ComponentHub.GetComponentManager<ObjectLinkManager>();
+        public static IObjectRelationManager ObjectRelationManager => _objectRelationManager ??= ComponentHub.GetComponentManager<ObjectRelationManager>();
+
+        /// <summary>
+        /// Gets the relation-type manager responsible for administering the relations an
+        /// object relation may carry, and for publishing them into the framework registry
+        /// every link surface reads.
+        /// </summary>
+        public static IObjectRelationTypeManager ObjectRelationTypeManager => _objectRelationTypeManager ??= ComponentHub.GetComponentManager<ObjectRelationTypeManager>();
 
         /// <summary>
         /// Gets the session manager responsible for per-identity session/preference

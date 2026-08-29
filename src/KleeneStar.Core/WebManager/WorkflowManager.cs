@@ -283,6 +283,29 @@ namespace KleeneStar.Core.WebManager
                 return Failed(WorkflowTransitionOutcome.NotAllowed, "kleenestar.core:object.property.workflow.transition.notallowed", objectId, fieldId, source, target);
             }
 
+            // relation guard - what the object is connected to can refuse a move the workflow
+            // itself allows. Only a move into a closing state can be refused, so a blocked object
+            // can still be worked on; it simply cannot be finished while what blocks it is open
+            var blockers = ObjectRelationWorkflowRules.FindBlockers(objectId, target);
+
+            if (blockers.Count > 0)
+            {
+                return new WorkflowTransitionResult
+                {
+                    Outcome = WorkflowTransitionOutcome.Blocked,
+                    Message = "kleenestar.core:object.property.workflow.transition.blocked",
+                    ObjectId = objectId,
+                    FieldId = fieldId,
+                    Source = source,
+                    Target = target,
+                    Transition = transition,
+
+                    // the blocking objects travel as the findings, so the message can name what
+                    // has to happen first instead of only saying that something must
+                    ValidationErrors = blockers
+                };
+            }
+
             // validator stage - the rules a transition validates against are configured on the
             // transition, which the data model does not carry yet, so there is nothing to check
             var validationErrors = Validate(transition);
@@ -367,10 +390,70 @@ namespace KleeneStar.Core.WebManager
 
             CoreHub.ObjectManager.Update(objectEntity);
 
+            // relation post function - an object that declares itself closed with another one
+            // follows it, which is how a duplicate is settled by its original
+            CloseFollowers(result, identityId);
+
             // the configured post functions of the transition would run here; the data model
             // carries none yet (see the remarks on ExecuteTransition)
 
             TransitionExecuted?.Invoke(this, result);
+        }
+
+        /// <summary>
+        /// Moves the objects that declare themselves closed with the one that just reached a
+        /// closing state.
+        /// </summary>
+        /// <remarks>
+        /// A follower is moved along a transition its own workflow declares, never by writing a
+        /// state its state machine forbids; a workflow offering no reachable closing state simply
+        /// keeps its object where it is. The recursion is bounded by
+        /// <paramref name="visited"/>, because two objects can be each other's duplicate and the
+        /// cascade would otherwise not terminate.
+        /// <para>
+        /// A follower that cannot be moved is not an error of the transition that triggered it:
+        /// the original was closed legitimately, and refusing it because a duplicate is stuck
+        /// would let one object hold another's workflow hostage.
+        /// </para>
+        /// </remarks>
+        /// <param name="result">The state change that completed.</param>
+        /// <param name="identityId">The identity that performed the change.</param>
+        /// <param name="visited">The objects already closed in this cascade.</param>
+        private void CloseFollowers(WorkflowTransitionResult result, Guid identityId, HashSet<Guid> visited = null)
+        {
+            if (!ObjectRelationWorkflowRules.IsClosing(result.Target))
+            {
+                return;
+            }
+
+            visited ??= [];
+
+            if (!visited.Add(result.ObjectId))
+            {
+                return;
+            }
+
+            foreach (var followerId in ObjectRelationWorkflowRules.FindFollowers(result.ObjectId))
+            {
+                if (visited.Contains(followerId))
+                {
+                    continue;
+                }
+
+                var closing = ObjectRelationWorkflowRules.FindClosingTarget(followerId, out var followerFieldId);
+
+                if (closing is null || followerFieldId == Guid.Empty)
+                {
+                    continue;
+                }
+
+                var followed = ExecuteTransition(followerId, followerFieldId, closing.Id, identityId);
+
+                if (followed.Outcome == WorkflowTransitionOutcome.Executed)
+                {
+                    CloseFollowers(followed, identityId, visited);
+                }
+            }
         }
 
         /// <summary>

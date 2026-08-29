@@ -629,6 +629,7 @@ object.property.workflow.show.label=Show workflow
 object.property.workflow.target.none=No transition available
 object.property.workflow.transition.executed=The status has been changed successfully.
 object.property.workflow.transition.invalid=The status change was rejected by a validation rule.
+object.property.workflow.transition.blocked=The status cannot be closed while {0} is still open.
 object.property.workflow.transition.notallowed=The workflow does not allow this status change.
 object.property.workflow.transition.notfound=The requested status could not be resolved.
 object.property.workflow.transition.unchanged=The object already has this status.
@@ -1310,6 +1311,16 @@ quickfilter.query.placeholder=e.g. State = Active
 quickfilter.shared.help=Without this option only you see the filter. Enabled, it appears in the filter bar of every user of this view.
 quickfilter.shared.label=Visible to everyone
 
+# Object relations (ControlDataRelationView / ControlDataRelationEditor)
+relation.api.title=Relations
+relation.link.label=Relations
+relation.manage.description=This view is where the relations objects of this class may hold are defined: how each one reads from either end, which classes it accepts as a target, how many may meet at each end and what it does to the workflow. Nothing here is fixed - every relation is one you defined.
+relation.manage.title=Relations
+relation.systems.api.title=Relation systems
+relation.targets.api.title=Relation targets
+relation.type.api.title=Relation types
+object.relations.card.header=Relations
+
 order.move.down.label=Move down
 order.move.up.label=Move up
 
@@ -1464,7 +1475,8 @@ audit.target.form=Form
 audit.target.group=Group
 audit.target.identity=Identity
 audit.target.installation=Installation
-audit.target.link=Link
+audit.target.relation=Relation
+audit.target.relationtype=Relation type
 audit.target.maintenance=Maintenance
 audit.target.navigatorlink=Navigator link
 audit.target.none=--

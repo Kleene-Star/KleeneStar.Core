@@ -5,12 +5,12 @@ using WebExpress.WebCore.WebIdentity;
 namespace KleeneStar.Core.WebPermissions
 {
     /// <summary>
-    /// Permission allowing management of object links, such as references to issues or external resources.
+    /// Permission allowing management of object relations, such as references to issues or external resources.
     /// </summary>
-    [Name("object_linking")]
+    [Name("object_relation")]
     [Policy<ObjectEditPolicy>()]
     [Policy<ObjectAdminPolicy>()]
-    public sealed class ObjectLinkingPermission : IIdentityPermission
+    public sealed class ObjectRelationPermission : IIdentityPermission
     {
     }
 

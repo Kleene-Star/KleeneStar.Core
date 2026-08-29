@@ -66,6 +66,90 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Determines whether an identity holds a permission on a resource.
+        /// </summary>
+        /// <remarks>
+        /// See <see cref="IPermissionManager.IsGranted"/> for the rule an unadministered resource
+        /// is answered by. The evaluation is deliberately cheap on the common path: the grants of
+        /// the chain are read first, and an empty result ends the check before the identity is
+        /// resolved at all.
+        /// </remarks>
+        /// <param name="identityId">The identity performing the action.</param>
+        /// <param name="permission">The permission type required.</param>
+        /// <param name="resources">The resource and the resources that contain it, most specific first.</param>
+        /// <returns><see langword="true"/> when the action may proceed.</returns>
+        public bool IsGranted(Guid identityId, Type permission, params PermissionResource[] resources)
+        {
+            if (permission is null)
+            {
+                return true;
+            }
+
+            var grants = (resources ?? [])
+                .Where(x => x.IsResolved)
+                .SelectMany(x => GetAssignments(x.Scope, x.ScopeId))
+                .ToList();
+
+            // nothing on the chain was ever administered, so the installation has expressed no
+            // restriction to enforce
+            if (grants.Count == 0)
+            {
+                return true;
+            }
+
+            // from here on the chain is administered, so an unresolvable caller is a caller
+            // nobody granted anything to
+            var identity = identityId == Guid.Empty ? null : CoreHub.IdentityManager.GetIdentity(identityId);
+
+            if (identity is null)
+            {
+                return false;
+            }
+
+            var groups = (identity.GroupMemberships ?? [])
+                .Select(x => x.Group?.Id)
+                .Where(x => x.HasValue)
+                .Select(x => x.Value)
+                .ToHashSet();
+
+            if (groups.Count == 0)
+            {
+                return false;
+            }
+
+            // one policy can be granted several times over the chain, and resolving what it
+            // carries is the expensive half, so each distinct policy is judged once
+            var policies = grants
+                .Where(x => groups.Contains(x.GroupId))
+                .Select(x => x.Policy)
+                .Where(x => !string.IsNullOrWhiteSpace(x))
+                .Distinct(StringComparer.OrdinalIgnoreCase);
+
+            return policies.Any(x => Carries(x, permission));
+        }
+
+        /// <summary>
+        /// Determines whether a granted policy carries a permission.
+        /// </summary>
+        /// <remarks>
+        /// The question is put to the framework registry rather than answered by reading the
+        /// attributes here, so a policy the application declares and one a plugin contributes are
+        /// judged by the same rule. A grant naming a policy the running system no longer knows
+        /// carries nothing, which is the safe reading: it was written against a component that is
+        /// gone.
+        /// </remarks>
+        /// <param name="policy">The registered policy name the grant records.</param>
+        /// <param name="permission">The permission type required.</param>
+        /// <returns><see langword="true"/> when the policy includes the permission.</returns>
+        private static bool Carries(string policy, Type permission)
+        {
+            var policyType = PolicyCatalog.GetPolicyType(policy);
+
+            return policyType is not null
+                && CoreHub.ComponentHub?.IdentityManager?.CheckAccess(CoreHub.ApplicationContext, policyType, permission) == true;
+        }
+
+        /// <summary>
         /// Grants a group a policy on a resource.
         /// </summary>
         /// <param name="scope">The kind of resource.</param>

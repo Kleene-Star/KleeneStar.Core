@@ -97,6 +97,32 @@ namespace KleeneStar.Core.WebPermission
         }
 
         /// <summary>
+        /// Resolves a stored policy name to the type that declares it, which is what the
+        /// permission check needs: a grant records the name, while the registry answers questions
+        /// about a policy by its type.
+        /// </summary>
+        /// <param name="policy">The registered policy name, as a grant stores it.</param>
+        /// <returns>The policy type, or <see langword="null"/> when no policy carries that name.</returns>
+        public static Type GetPolicyType(string policy)
+        {
+            if (string.IsNullOrWhiteSpace(policy))
+            {
+                return null;
+            }
+
+            var policies = CoreHub.ComponentHub?.IdentityManager?.Policies;
+
+            if (policies is null)
+            {
+                return null;
+            }
+
+            return policies
+                .Select(x => x.Policy)
+                .FirstOrDefault(x => string.Equals(GetName(x), policy, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
         /// Returns the names of every policy the application registered.
         /// </summary>
         /// <remarks>

@@ -2,6 +2,8 @@ using KleeneStar.Core.WebAttribute;
 using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using System;
+using System.Globalization;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebRestApi;
@@ -83,8 +85,35 @@ namespace KleeneStar.Core.WWW.Api._1_.Transitions._objectkey_
             CoreHub.AddNotification
             (
                 "kleenestar.core:notification.title.error",
-                result.Message,
+                Describe(result),
                 5000
+            );
+        }
+
+        /// <summary>
+        /// Builds the sentence a refused state change is reported with. A move a relation
+        /// refused names what has to happen first, because "not allowed" would leave the user
+        /// looking for a workflow rule that is not the reason.
+        /// </summary>
+        /// <remarks>
+        /// The message is composed here rather than by the manager: it is translated and filled
+        /// in one step, and the notification pipeline translates a key it is given while passing
+        /// finished prose through unchanged.
+        /// </remarks>
+        /// <param name="result">The outcome reported by the workflow manager.</param>
+        /// <returns>The message key, or the composed sentence.</returns>
+        private static string Describe(WorkflowTransitionResult result)
+        {
+            if (result.Outcome != WorkflowTransitionOutcome.Blocked || result.ValidationErrors is not { Count: > 0 })
+            {
+                return result.Message;
+            }
+
+            return string.Format
+            (
+                CultureInfo.CurrentCulture,
+                I18N.Translate(result.Message),
+                string.Join(", ", result.ValidationErrors)
             );
         }
     }

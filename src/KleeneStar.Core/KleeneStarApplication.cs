@@ -95,7 +95,36 @@ namespace KleeneStar.Core
         {
             CoreHub.BrandingManager.Apply();
 
+            PublishRelationTypes();
+
             RecordStartup();
+        }
+
+        /// <summary>
+        /// Lays the administered relation catalog over the framework defaults, so every link
+        /// surface, the add dialog and the validation read what this installation defined
+        /// rather than what WebExpress ships.
+        /// </summary>
+        /// <remarks>
+        /// This cannot happen in the constructor, for the same reason the audit subscription
+        /// cannot: the manager is resolved through the component hub, which hands out no
+        /// manager until the application is registered. The registry keeps the framework
+        /// defaults until this runs, so a request arriving in between is answered with a
+        /// smaller catalog rather than with none.
+        /// </remarks>
+        private static void PublishRelationTypes()
+        {
+            try
+            {
+                CoreHub.ObjectRelationTypeManager.Publish();
+            }
+            catch (Exception ex)
+            {
+                // an installation whose relation catalog cannot be read still starts; the
+                // surfaces then offer the framework defaults, which is a smaller catalog
+                // rather than a broken page
+                CoreHub.ComponentHub?.LogManager?.DefaultLog?.Exception(ex);
+            }
         }
 
         /// <summary>
