@@ -176,25 +176,40 @@ namespace KleeneStar.Core.WebRestApi
             var layout = ResolveLayout(catalog, request);
 
             var filtered = objects.ToList();
-            var page = Sort(filtered, layout, request)
+
+            // an object whose parent survived the same filter is shown nested beneath it, so the
+            // containment the data expresses is what the table draws; everything else is a root.
+            // paging counts roots, because a page that split a parent from its children would
+            // show orphans
+            var children = filtered
+                .Where(x => x.ParentId is not null)
+                .GroupBy(x => x.ParentId.Value)
+                .ToDictionary(x => x.Key, x => (IReadOnlyList<ObjectEntity>)x.ToList());
+            var present = filtered.Select(x => x.Id).ToHashSet();
+            var roots = filtered
+                .Where(x => x.ParentId is null || !present.Contains(x.ParentId.Value))
+                .ToList();
+
+            var page = Sort(roots, layout, request)
                 .Skip(pageNumber * pageSize)
                 .Take(pageSize)
                 .ToList();
 
             // the values and class definitions of the whole page are read in one go, so a
-            // table with twenty field columns does not issue a query per cell
-            var projection = ObjectTableProjection.Build(page);
+            // table with twenty field columns does not issue a query per cell. the nested rows
+            // are part of the page, so their values are read with it
+            var projection = ObjectTableProjection.Build([.. Flatten(page, children)]);
 
             var result = new RestApiTableResult()
             {
                 Title = null,
                 Columns = layout.Select(x => x.Column.ToRestApiColumn(x.Visible, x.Width)),
-                Rows = page.Select(x => BuildRow(x, layout, projection, starredIds.Contains(x.Id), request)),
+                Rows = page.Select(x => BuildRow(x, layout, projection, children, starredIds, request)),
                 Pagination = new RestApiPaginationInfo()
                 {
                     PageNumber = pageNumber,
                     PageSize = pageSize,
-                    TotalCount = filtered.Count
+                    TotalCount = roots.Count
                 }
             };
 
@@ -398,30 +413,83 @@ namespace KleeneStar.Core.WebRestApi
         }
 
         /// <summary>
+        /// Walks a set of roots and everything nested beneath them, so the values of a page
+        /// can be read in one go rather than per level.
+        /// </summary>
+        /// <param name="roots">The rows the page starts from.</param>
+        /// <param name="children">The objects of the result grouped by their parent.</param>
+        /// <returns>The roots and their descendants.</returns>
+        private static IEnumerable<ObjectEntity> Flatten
+        (
+            IEnumerable<ObjectEntity> roots,
+            IReadOnlyDictionary<Guid, IReadOnlyList<ObjectEntity>> children
+        )
+        {
+            // a parent chain that loops back on itself would otherwise never end; an object
+            // already seen is not descended into a second time
+            var seen = new HashSet<Guid>();
+            var pending = new Stack<ObjectEntity>(roots);
+
+            while (pending.Count > 0)
+            {
+                var current = pending.Pop();
+
+                if (!seen.Add(current.Id))
+                {
+                    continue;
+                }
+
+                yield return current;
+
+                if (children.TryGetValue(current.Id, out var nested))
+                {
+                    foreach (var child in nested)
+                    {
+                        pending.Push(child);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Projects a single object to a table row: one cell per column of the effective
         /// layout — including the hidden ones, because the client keeps their content and
         /// shows it the moment the column is switched on — the object endpoint an inline edit
-        /// writes through, the link to the detail page, and the row menu.
+        /// writes through, the link to the detail page, the row menu, and the rows of the
+        /// objects nested beneath it.
         /// </summary>
         /// <param name="entity">The object to project.</param>
         /// <param name="layout">The effective columns.</param>
         /// <param name="projection">The loaded class definitions and field values.</param>
-        /// <param name="starred">Whether the calling identity has starred the object.</param>
+        /// <param name="children">The objects of the result grouped by their parent.</param>
+        /// <param name="starredIds">The objects the calling identity has starred.</param>
         /// <param name="request">The request used to resolve localized content and URIs.</param>
+        /// <param name="ancestors">The objects already on the path from the root, or null at it.</param>
         /// <returns>The table row.</returns>
         private RestApiTableRow BuildRow
         (
             ObjectEntity entity,
             IReadOnlyList<ObjectTableColumnState> layout,
             ObjectTableProjection projection,
-            bool starred,
-            IRequest request
+            IReadOnlyDictionary<Guid, IReadOnlyList<ObjectEntity>> children,
+            IReadOnlySet<Guid> starredIds,
+            IRequest request,
+            HashSet<Guid> ancestors = null
         )
         {
             // the reading view is addressed through the kind catalog rather than through a
             // route named here, so a kind brings its own detail page without this base
             // knowing it
             var uri = ObjectKindCatalog.ResolveDetailUri(Kind, entity.Key);
+            var starred = starredIds.Contains(entity.Id);
+
+            // a parent chain that loops back on itself would otherwise recurse forever
+            var path = ancestors is null ? new HashSet<Guid>() : new HashSet<Guid>(ancestors);
+            path.Add(entity.Id);
+
+            List<ObjectEntity> nested = children.TryGetValue(entity.Id, out var found)
+                ? [.. found.Where(x => !path.Contains(x.Id))]
+                : [];
 
             return new RestApiTableRow()
             {
@@ -437,7 +505,13 @@ namespace KleeneStar.Core.WebRestApi
                 // a starred object is marked rather than given a column of its own; the star
                 // sits beside the object icon in the row's leading cell
                 Icon = starred ? "fas fa-star" : null,
-                Image = entity.Icon?.Uri?.ToString()
+                Image = entity.Icon?.Uri?.ToString(),
+                // the nested rows are ordered by the same column the roots are, so one sort
+                // governs the whole table rather than only its top level
+                Children = nested.Count == 0
+                    ? null
+                    : [.. Sort(nested, layout, request)
+                        .Select(x => BuildRow(x, layout, projection, children, starredIds, request, path))]
             };
         }
 

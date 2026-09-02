@@ -1,4 +1,4 @@
-using WebExpress.WebCore.WebAttribute;
+﻿using WebExpress.WebCore.WebAttribute;
 
 namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
 {
@@ -23,5 +23,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects._workspacekey_
         /// Gets the object kind the list is scoped to: issues.
         /// </summary>
         protected override string Kind => Model.Entities.ObjectKind.Issue;
+
+        /// <summary>
+        /// Gets the key the user-defined quickfilters of the issue views are stored under. The
+        /// bar of the tab is shared with the table view, so both read the same key.
+        /// </summary>
+        protected override string ViewKey => global::KleeneStar.Core.WWW.Api._1_.Issues._workspacekey_.Quickfilter.ViewKey;
     }
 }

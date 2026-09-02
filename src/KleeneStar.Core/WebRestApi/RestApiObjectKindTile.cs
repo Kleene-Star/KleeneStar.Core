@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Model;
 using System;
 using System.Collections.Generic;
@@ -24,6 +24,13 @@ namespace KleeneStar.Core.WebRestApi
         protected abstract string Kind { get; }
 
         /// <summary>
+        /// Gets the key the quickfilters a user defined for this view are stored under, or
+        /// <see langword="null"/> when the view offers none. The bar and this endpoint have to
+        /// agree on it.
+        /// </summary>
+        protected virtual string ViewKey => null;
+
+        /// <summary>
         /// Creates a new instance of an object that implements the IQueryContext interface.
         /// </summary>
         /// <returns>An IQueryContext instance that can be used to execute queries.</returns>
@@ -41,15 +48,7 @@ namespace KleeneStar.Core.WebRestApi
         /// <returns>The tile items, each opening its object detail page when selected.</returns>
         protected override IEnumerable<RestApiTileItem> RetrieveItems(IQuery<Model.Entities.Object> query, IQueryContext context, IRequest request)
         {
-            var key = request.GetParameter<WorkspaceKeyParameter>();
-            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value);
-            var id = workspace?.Id ?? Guid.Empty;
-
-            query = query
-                .WhereEquals(x => x.WorkspaceId, id)
-                .WhereEquals(x => x.Kind, Kind);
-
-            return CoreHub.ObjectManager.GetObjects(query, context)
+            return CoreHub.ObjectManager.GetObjects(Scope(query, request), context)
                 .Select(x => new RestApiTileItem()
                 {
                     Id = x.Id.ToString(),
@@ -58,6 +57,41 @@ namespace KleeneStar.Core.WebRestApi
                     Image = x.Icon?.Uri?.ToString(),
                     PrimaryAction = GetPrimaryAction(x, request)?.ToJson()
                 });
+        }
+
+        /// <summary>
+        /// Returns how many objects the tile view holds in total, before paging narrows it, so
+        /// the pager offers every page rather than only the one it was handed.
+        /// </summary>
+        /// <param name="query">The filtered query, without paging applied.</param>
+        /// <param name="context">The query context.</param>
+        /// <param name="request">The request that provides the operational context.</param>
+        /// <returns>The number of objects in the whole result.</returns>
+        protected override int RetrieveTotal(IQuery<Model.Entities.Object> query, IQueryContext context, IRequest request)
+        {
+            return CoreHub.ObjectManager.GetObjects(Scope(query, request), context).Count();
+        }
+
+        /// <summary>
+        /// Narrows a query to the workspace the request addresses and to the endpoint's kind.
+        /// </summary>
+        /// <remarks>
+        /// The scope is applied here rather than in <see cref="Filter(string, IQuery{Model.Entities.Object}, IRequest)"/>
+        /// because the count and the page have to agree on it: a total counted over a wider set
+        /// than the page is drawn from promises pages that do not exist.
+        /// </remarks>
+        /// <param name="query">The query to narrow.</param>
+        /// <param name="request">The request naming the workspace.</param>
+        /// <returns>The narrowed query.</returns>
+        private IQuery<Model.Entities.Object> Scope(IQuery<Model.Entities.Object> query, IRequest request)
+        {
+            var key = request.GetParameter<WorkspaceKeyParameter>();
+            var workspace = CoreHub.WorkspaceManager.GetWorkspaceByKey(key?.Value);
+            var id = workspace?.Id ?? Guid.Empty;
+
+            return query
+                .WhereEquals(x => x.WorkspaceId, id)
+                .WhereEquals(x => x.Kind, Kind);
         }
 
         /// <summary>
@@ -74,12 +108,34 @@ namespace KleeneStar.Core.WebRestApi
                 return query;
             }
 
-            query = query.WhereContainsIgnoreCase
-            (
-                x => x.Summary, filter
-            );
+            // the same three fields the table searches, so the presentations of one view
+            // answer the same term with the same set - a summary-only search made the
+            // tile and the list report fewer hits than the table for the same word
+            var needle = filter.ToLower();
 
-            return query;
+            return query.Where
+            (
+                x => (x.Summary ?? string.Empty).ToLower().Contains(needle) ||
+                     (x.Key ?? string.Empty).ToLower().Contains(needle) ||
+                     (x.Description ?? string.Empty).ToLower().Contains(needle)
+            );
+        }
+
+        /// <summary>
+        /// Applies the quickfilter chips the client reports as active.
+        /// </summary>
+        /// <remarks>
+        /// The bar is shared with the table view of the same tab, so the chips have to mean the
+        /// same thing here; without this override the base ignores them and a click answers with
+        /// the unfiltered result.
+        /// </remarks>
+        /// <param name="filters">The quickfilter ids reported as active.</param>
+        /// <param name="query">The query to narrow.</param>
+        /// <param name="request">The request that provides the operational context.</param>
+        /// <returns>The narrowed query.</returns>
+        protected override IQuery<Model.Entities.Object> Filter(IEnumerable<string> filters, IQuery<Model.Entities.Object> query, IRequest request)
+        {
+            return ObjectKindQuickfilter.Apply(query, filters, request, ViewKey);
         }
 
         /// <summary>

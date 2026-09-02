@@ -1,4 +1,4 @@
-using WebExpress.WebCore.WebAttribute;
+﻿using WebExpress.WebCore.WebAttribute;
 
 namespace KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_
 {
@@ -24,5 +24,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_
         /// Gets the object kind the tile view is scoped to: assets.
         /// </summary>
         protected override string Kind => Model.Entities.ObjectKind.Asset;
+
+        /// <summary>
+        /// Gets the key the user-defined quickfilters of the asset views are stored under. The
+        /// bar of the tab is shared with the table view, so both read the same key.
+        /// </summary>
+        protected override string ViewKey => global::KleeneStar.Core.WWW.Api._1_.Assets._workspacekey_.KanbanQuickfilter.ViewKey;
     }
 }
