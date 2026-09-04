@@ -92,50 +92,12 @@ namespace KleeneStar.Core.WebFragment.Object
 
             foreach (var tag in tags)
             {
-                list.Add(BuildTagBadge(tag));
+                list.Add(ObjectTagBadge.Create(tag, "object-tag-"));
             }
 
             section.Add(list);
 
             return section.Render(renderContext, visualTree);
-        }
-
-        /// <summary>
-        /// Builds a colored badge for a single tag. The badge background is the tag's stored
-        /// color, or a color derived from the tag name when none is stored; the text is white
-        /// for contrast against the colored background.
-        /// </summary>
-        /// <param name="tag">The tag to render.</param>
-        /// <returns>The badge control.</returns>
-        private static IControl BuildTagBadge(ObjectTag tag)
-        {
-            var color = string.IsNullOrWhiteSpace(tag.Color) ? DeriveColor(tag.Name) : tag.Color;
-
-            return new ControlBadge("object-tag-" + tag.Id.ToString("N"))
-            {
-                Value = _ => tag.Name,
-                Styles = ["background-color: " + color + "; color: #fff; border-radius: 0.5em; padding: 0.2em 0.6em;"]
-            };
-        }
-
-        /// <summary>
-        /// Derives a deterministic six-digit hex color from a tag name so tags without a
-        /// stored color still get a stable, distinct badge color across requests.
-        /// </summary>
-        /// <param name="name">The tag name.</param>
-        /// <returns>A CSS hex color string of the form <c>#RRGGBB</c>.</returns>
-        private static string DeriveColor(string name)
-        {
-            unchecked
-            {
-                var hash = 17;
-                foreach (var ch in name ?? string.Empty)
-                {
-                    hash = (hash * 31) + ch;
-                }
-
-                return "#" + (hash & 0x00FFFFFF).ToString("x6");
-            }
         }
     }
 }

@@ -380,3 +380,58 @@
     border-radius: 0;
     box-shadow: none;
 }
+
+/* ------------------------------------------------------ draft comparison */
+
+/* The two states of a changed attribute are told apart by a coloured edge rather than by a
+   caption alone: the eye finds the pair before it reads the labels. Removed on the left,
+   arriving on the right - the same reading the history detail uses. */
+.ks-draft-changes-before,
+.ks-draft-changes-after {
+    padding: 0.5rem 0.75rem;
+    border-left: 3px solid var(--wx-border-color);
+    border-radius: 0 4px 4px 0;
+}
+
+.ks-draft-changes-before {
+    border-left-color: var(--wx-danger);
+    background: var(--wx-tertiary-bg);
+    color: var(--wx-secondary-color);
+}
+
+.ks-draft-changes-after {
+    border-left-color: var(--wx-success);
+    background: var(--wx-tertiary-bg);
+}
+
+/* -------------------------------------------------------- prose reading view */
+
+/* The reading view of a document is the document. The content control lays the stored value
+   out; what is set here is the measure it is read at - long enough to carry a paragraph, short
+   enough that the eye finds the next line - and the room it takes when the text is short, so a
+   half-page article does not leave the view looking unfinished. */
+.wx-kleenestar-object-prose .ks-prose-content {
+    min-height: max(18rem, calc(100vh - 20rem));
+    line-height: 1.65;
+}
+
+/* the tags end the piece rather than annotate it, so they sit under the text behind a rule,
+   the way a byline or a set of labels closes an article */
+.ks-prose-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35em;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--wx-border-color);
+}
+
+/* ------------------------------------------------------------ collaboration */
+
+/* On the object detail the presence chips are drawn into the top right corner of the shared
+   area, which is where its first field is. The padding is what keeps the two apart. The prose
+   editor needs none of this: its dialog docks the chips on the footer bar. */
+.wx-kleenestar-collaborative {
+    padding-top: 1.75rem;
+}
+

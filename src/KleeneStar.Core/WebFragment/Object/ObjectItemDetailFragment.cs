@@ -100,10 +100,20 @@ namespace KleeneStar.Core.WebFragment.Object
                 Layout = _ => TypeLayoutSection.Rule
             };
 
-            section.Add(new ControlHtml("object-detail-body-" + @object.Id.ToString("N"))
-            {
-                Html = _ => body.ToString()
-            });
+            // the field structure is where two people edit the same object at the same time -
+            // every value here is a smart-edit that writes through on blur - so it is the
+            // surface that carries the presence, the pointers and the carets of whoever else
+            // has the object open
+            section.Add(ObjectCollaborativeHost.Create
+            (
+                @object,
+                "detail",
+                renderContext,
+                new ControlHtml("object-detail-body-" + @object.Id.ToString("N"))
+                {
+                    Html = _ => body.ToString()
+                }
+            ));
 
             return section.Render(renderContext, visualTree);
         }

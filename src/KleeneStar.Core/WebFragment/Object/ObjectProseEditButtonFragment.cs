@@ -13,18 +13,15 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Object
 {
     /// <summary>
-    /// Headline button on the prose reading views (document and blog detail) that opens
-    /// the object's edit form in a <see cref="TypeModalSize.Fullscreen"/> modal. The
-    /// modal loads the object's dedicated edit page — resolved from the object's kind via
-    /// <see cref="ObjectKindCatalog.ResolveEditUri(Model.Entities.Object)"/>, so a
-    /// document loads <c>/document/{key}/edit</c> and a post <c>/blog/{key}/edit</c> —
-    /// which hosts <see cref="ObjectProseEditFormFragment"/>.
+    /// Headline button on the prose reading views (document and blog detail) that opens the
+    /// prose editor standing on the same page.
     /// </summary>
     /// <remarks>
-    /// Opening the editor as a modal (like the issue detail's edit button) means the
-    /// underlying <see cref="WebExpress.WebUI.WebControl.ControlRestForm"/> closes the
-    /// modal automatically on a successful save, returning the user to the reading view
-    /// without a manual back navigation.
+    /// The editor is a dialog that already stands on this page - the framework's
+    /// <see cref="WebExpress.WebApp.WebControl.ModalDataEditor"/>, contributed by
+    /// <see cref="ObjectProseEditorFragment"/> - so the button only opens it. Nothing is
+    /// fetched and nothing is composed here: the text the dialog opens on, the draft it
+    /// resumes and the publication it ends with are all the editor's.
     /// </remarks>
     [Section<SectionHeadlinePrimary>]
     [Scope<global::KleeneStar.Core.WWW.Document._objectkey_.Index>]
@@ -49,18 +46,7 @@ namespace KleeneStar.Core.WebFragment.Object
             Icon = _ => new IconPen();
             Margin = _ => new PropertySpacingMargin(PropertySpacing.Space.Two);
             BackgroundColor = _ => new PropertyColorButton(TypeColorButton.Primary);
-            PrimaryAction = renderContext =>
-            {
-                var keyParameter = renderContext?.Request?.GetParameter<ObjectKeyParameter>();
-                var @object = _objectManager.GetObjectByKey(keyParameter?.Value);
-
-                var editUri = ObjectKindCatalog.ResolveEditUri(@object)?
-                    .BindParameters(renderContext.Request);
-
-                return editUri is null
-                    ? null
-                    : new ActionModal("modal-form", editUri, TypeModalSize.Fullscreen);
-            };
+            PrimaryAction = _ => new ActionModal(ObjectProseEditorFragmentBase.ModalId);
         }
 
         /// <summary>
@@ -71,7 +57,11 @@ namespace KleeneStar.Core.WebFragment.Object
         /// <returns>An HTML node representing the rendered fragment, or <c>null</c>.</returns>
         public override IHtmlNode Render(IRenderControlContext renderContext, IVisualTreeControl visualTree)
         {
-            return base.Render(renderContext, visualTree);
+            var keyParameter = renderContext?.Request?.GetParameter<ObjectKeyParameter>();
+
+            return _objectManager.GetObjectByKey(keyParameter?.Value) is null
+                ? null
+                : base.Render(renderContext, visualTree);
         }
     }
 }

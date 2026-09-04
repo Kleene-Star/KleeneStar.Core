@@ -451,6 +451,7 @@ object.history.state.none=The object carried no field values at this commit.
 object.history.title=Version History
 object.history.type.archived=archived
 object.history.type.created=created
+object.history.type.drafted=Draft (unpublished)
 object.history.type.deleted=deleted
 object.history.type.restored=restored
 object.history.type.transitioned=transitioned
@@ -501,6 +502,18 @@ object.kind.blog.read.empty=This post has no content yet.
 object.kind.document.edit.title=Edit document
 object.kind.document.read.empty=This document has no content yet.
 object.prose.edit.label=Edit
+object.prose.api.title=Publish Prose
+
+# unpublished draft of the prose editor (ObjectDraft)
+object.draft.api.title=Draft
+object.draft.commit.published=Draft published
+object.draft.changes.label=Show changes
+object.draft.changes.title=Unpublished changes
+object.draft.changes.none=This object carries no unpublished draft.
+object.draft.changes.unchanged=Unchanged
+object.draft.changes.published=Published
+object.draft.changes.draft=Draft
+object.draft.changes.empty=(empty)
 
 # reduced object view (detail side of a master-detail list)
 object.preview.title=Preview

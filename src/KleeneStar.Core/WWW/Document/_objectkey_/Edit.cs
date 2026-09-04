@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebAttribute;
+﻿using KleeneStar.Core.WebAttribute;
 using KleeneStar.Core.WebFragment.Object;
 using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
@@ -14,17 +14,21 @@ using WebExpress.WebUI.WebIcon;
 namespace KleeneStar.Core.WWW.Document._objectkey_
 {
     /// <summary>
-    /// The editing view of a single document: a full-page form for the document's title
-    /// and rich-text body (contributed by
-    /// <see cref="WebFragment.Object.ObjectProseEditFormFragment"/>). The URL is
-    /// <c>/document/{objectkey}/edit</c>. Saving persists through the object REST API;
-    /// the headline's back link returns to the reading view (<see cref="Index"/>).
+    /// The editing route of a single document: the prose editor, opened with the page. The URL is
+    /// <c>/document/{objectkey}/edit</c>.
     /// </summary>
     /// <remarks>
-    /// The <c>{objectkey}</c> segment is declared by the sibling <see cref="Index"/>
-    /// page, so this sibling must NOT redeclare it. As on the reading view, an object
-    /// whose kind is not <see cref="Model.Entities.ObjectKind.Document"/> is redirected
-    /// to the detail view matching its own kind.
+    /// The editor is the framework's <c>ModalDataEditor</c>, contributed by
+    /// <see cref="WebFragment.Object.ObjectProseEditorPageFragment"/>. It is the same dialog the
+    /// reading view opens, configured to show itself rather than to wait for a trigger - which is
+    /// what this route is for: an editor that can be linked to, from a notification or a
+    /// bookmark. Publishing and abandoning behave exactly as they do there.
+    /// <para>
+    /// The <c>{objectkey}</c> segment is declared by the sibling <see cref="Index"/> page, so
+    /// this sibling must NOT redeclare it. As on the reading view, an object whose kind is not
+    /// <see cref="Model.Entities.ObjectKind.Document"/> is redirected to the detail view matching
+    /// its own kind.
+    /// </para>
     /// </remarks>
     [WebIcon<IconPen>]
     [Title("kleenestar.core:object.kind.document.edit.title")]

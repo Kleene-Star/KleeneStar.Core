@@ -86,7 +86,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Commits._objectkey_
                 .GetCommits(query.WhereEquals(x => x.ObjectId, @object.Id).OrderByDesc(x => x.Number), context)
                 .ToList();
 
-            return [.. commits.Select(x => new RestApiListItem
+            var items = commits.Select(x => new RestApiListItem
             {
                 Id = x.Id.ToString(),
                 Text = Describe(x, request),
@@ -99,7 +99,16 @@ namespace KleeneStar.Core.WWW.Api._1_.Commits._objectkey_
                     Uri = DetailUri(@object.Key, x, request),
                     Item = x.Id.ToString()
                 }.ToJson()
-            })];
+            }).ToList();
+
+            var pending = DescribeDraft(@object, request);
+
+            if (pending is not null)
+            {
+                items.Insert(0, pending);
+            }
+
+            return items;
         }
 
         /// <summary>
@@ -186,6 +195,64 @@ namespace KleeneStar.Core.WWW.Api._1_.Commits._objectkey_
             parts.Add(commit.Created.ToLocalTime().ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture));
 
             return string.Join(" · ", parts);
+        }
+
+        /// <summary>
+        /// Builds the entry that stands for the unpublished draft of the object, or
+        /// <see langword="null"/> when there is none.
+        /// </summary>
+        /// <remarks>
+        /// A draft is not a revision - it has no commit, no number and nothing to replay - so it
+        /// cannot be one of the entries below it, and it deliberately carries no primary action:
+        /// there is no state to load into the detail side, and offering one would suggest the
+        /// draft can be restored to, which is what publishing is for.
+        /// <para>
+        /// It is shown all the same, at the head of the chain, because the question a version
+        /// history is opened with is "what is the current state of this text", and an answer that
+        /// stopped at the last publication would omit the part somebody is still writing. The
+        /// entry is what tells a second author that the document has unpublished changes before
+        /// they start their own.
+        /// </para>
+        /// <para>
+        /// It sits outside the paging and the search of the chain on purpose: it is one row, it
+        /// is always the newest, and hiding it behind a typed term would hide exactly the state
+        /// the search was meant to find.
+        /// </para>
+        /// </remarks>
+        /// <param name="object">The object whose chain is listed.</param>
+        /// <param name="request">The request, used to localize the label.</param>
+        /// <returns>The entry, or <see langword="null"/>.</returns>
+        private static RestApiListItem DescribeDraft(Model.Entities.Object @object, IRequest request)
+        {
+            var draft = CoreHub.ObjectDraftManager.GetDraft(@object.Id);
+
+            if (draft is null)
+            {
+                return null;
+            }
+
+            var parts = new List<string>
+            {
+                I18N.Translate(request, "kleenestar.core:object.history.type.drafted")
+            };
+
+            var author = draft.UpdaterId.HasValue
+                ? CoreHub.IdentityManager.GetIdentity(draft.UpdaterId.Value)?.Name
+                : null;
+
+            if (!string.IsNullOrWhiteSpace(author))
+            {
+                parts.Add(author);
+            }
+
+            parts.Add(draft.Updated.ToLocalTime().ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture));
+
+            return new RestApiListItem
+            {
+                Id = draft.Id.ToString(),
+                Text = string.Join(" · ", parts),
+                Icon = new IconPen().Class
+            };
         }
 
         /// <summary>

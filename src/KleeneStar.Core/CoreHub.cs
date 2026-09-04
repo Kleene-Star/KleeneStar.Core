@@ -49,6 +49,7 @@ namespace KleeneStar.Core
         private static WatcherManager _watcherManager;
         private static ShareManager _shareManager;
         private static ObjectTagManager _objectTagManager;
+        private static ObjectDraftManager _objectDraftManager;
         private static ValueManager _valueManager;
         private static CommitManager _commitManager;
         private static ObjectRelationManager _objectRelationManager;
@@ -224,6 +225,13 @@ namespace KleeneStar.Core
         /// Gets the object-tag manager responsible for the tags (labels) attached to objects.
         /// </summary>
         public static IObjectTagManager ObjectTagManager => _objectTagManager ??= ComponentHub.GetComponentManager<ObjectTagManager>();
+
+        /// <summary>
+        /// Gets the object-draft manager responsible for the unpublished working copies of the
+        /// prose attributes of objects - what the document and blog editor writes on every
+        /// change, and what publishing turns into a revision.
+        /// </summary>
+        public static IObjectDraftManager ObjectDraftManager => _objectDraftManager ??= ComponentHub.GetComponentManager<ObjectDraftManager>();
 
         /// <summary>
         /// Gets the value manager responsible for the per-object per-field value rows

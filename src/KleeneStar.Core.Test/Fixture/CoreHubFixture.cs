@@ -44,6 +44,7 @@ namespace KleeneStar.Core.Test
             ("_watcherManager",   typeof(WatcherManager)),
             ("_shareManager",     typeof(ShareManager)),
             ("_objectTagManager", typeof(ObjectTagManager)),
+            ("_objectDraftManager", typeof(ObjectDraftManager)),
             ("_valueManager",     typeof(ValueManager)),
             ("_commitManager",    typeof(CommitManager)),
             ("_templateManager",  typeof(TemplateManager)),
