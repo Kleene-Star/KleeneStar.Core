@@ -22,6 +22,7 @@ namespace KleeneStar.Core
     public static class CoreHub
     {
         private static WorkspaceManager _workspaceManager;
+        private static WorkspaceTemplateManager _workspaceTemplateManager;
         private static ClassManager _classManager;
         private static FieldManager _fieldManager;
         private static FormManager _formManager;
@@ -225,6 +226,13 @@ namespace KleeneStar.Core
         /// Gets the object-tag manager responsible for the tags (labels) attached to objects.
         /// </summary>
         public static IObjectTagManager ObjectTagManager => _objectTagManager ??= ComponentHub.GetComponentManager<ObjectTagManager>();
+
+        /// <summary>
+        /// Gets the workspace-template manager responsible for the workspace shapes the installed
+        /// plugins define - what a new workspace can be created as, and which classes it starts
+        /// with.
+        /// </summary>
+        public static IWorkspaceTemplateManager WorkspaceTemplateManager => _workspaceTemplateManager ??= ComponentHub.GetComponentManager<WorkspaceTemplateManager>();
 
         /// <summary>
         /// Gets the object-draft manager responsible for the unpublished working copies of the

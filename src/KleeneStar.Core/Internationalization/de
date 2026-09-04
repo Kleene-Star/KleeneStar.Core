@@ -59,6 +59,18 @@ workspace.manage.description=Diese Übersicht listet alle verfügbaren Arbeitsbe
 workspace.manage.label=Arbeitsbereiche
 workspace.manage.title=Arbeitsbereiche
 workspace.name.help=Der Name hilft Ihnen, diesen Arbeitsbereich schnell zu identifizieren.
+# workspace creation wizard
+workspace.add.step.template.title=Vorlage
+workspace.add.step.template.subtitle=Wofür ist der Arbeitsbereich da? Die Vorlage legt fest, mit welchen Klassen er startet — alles davon lässt sich danach ändern.
+workspace.add.step.values.title=Angaben
+workspace.add.step.values.subtitle=Wie der Arbeitsbereich heißt, wer ihn sehen darf und wo er einsortiert wird.
+workspace.add.template.help=Die Vorlagen kommen aus den installierten Plugins.
+workspace.add.template.search=Vorlage suchen…
+workspace.add.template.empty=Keine Vorlage passt zur Suche.
+workspace.add.template.classes={0} Klassen
+workspace.add.template.none.label=Leerer Arbeitsbereich
+workspace.add.template.none.description=Ohne Vorlage anlegen und die Klassen selbst definieren.
+
 workspace.name.label=Arbeitsbereichsname
 workspace.name.placeholder=Geben Sie den Namen des Arbeitsbereichs ein.
 workspace.organize.empty=Dieser Arbeitsbereich enthält noch keine Objekte.

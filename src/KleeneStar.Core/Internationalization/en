@@ -59,6 +59,18 @@ workspace.manage.description=This overview lists all available workspaces. Each 
 workspace.manage.label=Workspaces
 workspace.manage.title=Workspaces
 workspace.name.help=The name helps you quickly identify this workspace.
+# workspace creation wizard
+workspace.add.step.template.title=Template
+workspace.add.step.template.subtitle=What is the workspace for? The template decides which classes it starts with — all of it can be changed afterwards.
+workspace.add.step.values.title=Details
+workspace.add.step.values.subtitle=What the workspace is called, who may see it, and where it is filed.
+workspace.add.template.help=The templates come from the installed plugins.
+workspace.add.template.search=Search template…
+workspace.add.template.empty=No template matches the search.
+workspace.add.template.classes={0} classes
+workspace.add.template.none.label=Empty workspace
+workspace.add.template.none.description=Create without a template and define the classes yourself.
+
 workspace.name.label=Workspace Name
 workspace.name.placeholder=Enter the name of the workspace.
 workspace.organize.empty=This workspace has no objects yet.

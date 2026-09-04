@@ -19,6 +19,7 @@ namespace KleeneStar.Core.Test
         private static readonly (string FieldName, Type ManagerType)[] _managers =
         [
             ("_workspaceManager", typeof(WorkspaceManager)),
+            ("_workspaceTemplateManager", typeof(WorkspaceTemplateManager)),
             ("_classManager",     typeof(ClassManager)),
             ("_fieldManager",     typeof(FieldManager)),
             ("_formManager",      typeof(FormManager)),

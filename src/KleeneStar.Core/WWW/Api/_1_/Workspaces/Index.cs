@@ -225,7 +225,47 @@ namespace KleeneStar.Core.WWW.Api._1_.Workspaces
 
             CoreHub.WorkspaceManager.Add(newItem);
 
+            ApplyTemplate(fieldMap, newItem);
+
             return new RestApiCrudResultCreate();
+        }
+
+        /// <summary>
+        /// Creates the classes of the workspace template the creation wizard chose.
+        /// </summary>
+        /// <remarks>
+        /// The classes are created after the workspace rather than with it, because they belong
+        /// to it: there is nothing to attach them to until it exists, and a workspace that was
+        /// stored while its classes failed is a workspace an administrator can finish by hand -
+        /// the other order would leave classes belonging to nothing.
+        /// <para>
+        /// A payload without the field, or carrying the wizard's "no template" value, creates
+        /// none. That is the ordinary case for every caller that is not the wizard - the REST API
+        /// itself, an import - and it must stay the default rather than an error.
+        /// </para>
+        /// </remarks>
+        /// <param name="fieldMap">The submitted form data.</param>
+        /// <param name="workspace">The workspace that was just created.</param>
+        private static void ApplyTemplate(RestApiCrudFormData fieldMap, Workspace workspace)
+        {
+            // the payload parser lower-cases every property name it reads off the wire, so a
+            // lookup spelled the way the field is declared misses - silently, because a missing
+            // key is indistinguishable from an unsent field
+            if (fieldMap is null ||
+                !fieldMap.TryGetValue(WebFragment.Workspace.WorkspaceAddFormFragment.TemplateField.ToLowerInvariant(), out var value))
+            {
+                return;
+            }
+
+            var key = value?.ToString();
+
+            if (string.IsNullOrWhiteSpace(key) ||
+                string.Equals(key, WebFragment.Workspace.WorkspaceAddFormFragment.NoTemplate, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            CoreHub.WorkspaceTemplateManager.Apply(key, workspace.Id);
         }
 
         /// <summary>
