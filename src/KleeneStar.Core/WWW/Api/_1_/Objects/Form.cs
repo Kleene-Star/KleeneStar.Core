@@ -57,8 +57,9 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
                 ? ObjectFormLayout.ResolveStandardForm(classId, FormType.Create)
                 : null;
 
+            var identityId = CoreHub.SessionManager.GetCurrentIdentityId(request);
             var inputs = new List<IControlFormItemInput>();
-            var items = BuildItems(form, classId, inputs).ToList();
+            var items = BuildItems(form, classId, identityId, inputs).ToList();
             var content = Render(request, items, inputs, Presets(templateId));
 
             return new ResponseOK { Content = content }
@@ -72,14 +73,34 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         /// </summary>
         /// <param name="form">The create form of the class, or null.</param>
         /// <param name="classId">The class the object is created in.</param>
+        /// <param name="identityId">The identity filling the step in.</param>
         /// <param name="inputs">Receives the inputs of the step, so they can be pre-filled.</param>
         /// <returns>The form items.</returns>
-        private static IEnumerable<IControlFormItem> BuildItems(FormEntity form, Guid classId, ICollection<IControlFormItemInput> inputs)
+        private static IEnumerable<IControlFormItem> BuildItems(FormEntity form, Guid classId, Guid identityId, ICollection<IControlFormItemInput> inputs)
         {
             var summary = ObjectFormLayout.CreateSummaryInput();
             inputs.Add(summary);
 
             yield return summary;
+
+            // a class that classifies its objects asks for the classification here, next to the
+            // title, because it is a property of the object rather than a configured field. A
+            // caller cleared for none of its levels gets the notice instead of the input
+            var notice = ObjectFormLayout.CreateSecurityLevelNotice(classId, identityId, null);
+
+            if (notice is not null)
+            {
+                yield return notice;
+            }
+
+            var securityLevel = ObjectFormLayout.CreateSecurityLevelInput(classId, identityId);
+
+            if (securityLevel is not null)
+            {
+                inputs.Add(securityLevel);
+
+                yield return securityLevel;
+            }
 
             var structure = ObjectFormLayout.BuildItems(form, classId, inputs).ToList();
 

@@ -65,7 +65,7 @@ namespace KleeneStar.Core.WebManager
                 .Where(x => x.Id == objectId)
                 .WithPaging(0, 1);
 
-            return ModelHub.GetObjects(query)
+            return GetObjects(query)
                 .FirstOrDefault();
         }
 
@@ -92,7 +92,7 @@ namespace KleeneStar.Core.WebManager
                 .WhereEqualsIgnoreCase(x => x.Key, key)
                 .WithPaging(0, 1);
 
-            return ModelHub.GetObjects(query)
+            return GetObjects(query)
                 .FirstOrDefault();
         }
 
@@ -140,6 +140,10 @@ namespace KleeneStar.Core.WebManager
                 .WhereEquals(x => x.WorkspaceId, workspaceId);
             var pattern = new Regex($"^{Regex.Escape(prefix)}-(\\d+)$", RegexOptions.IgnoreCase);
 
+            // the numbering has to see the keys of the classified objects too - a key derived
+            // from what the caller happens to be cleared for would be handed out twice
+            using var unrestricted = CoreHub.SecurityLevelManager?.BeginUnrestricted();
+
             var next = GetObjects(query)
                 .Select(x => pattern.Match(x.Key ?? string.Empty))
                 .Where(m => m.Success)
@@ -162,7 +166,7 @@ namespace KleeneStar.Core.WebManager
         /// </returns>
         public IEnumerable<Model.Entities.Object> GetObjects(IQuery<Model.Entities.Object> query)
         {
-            return ModelHub.GetObjects(query);
+            return ModelHub.GetObjects(Restrict(query));
         }
 
         /// <summary>
@@ -176,7 +180,7 @@ namespace KleeneStar.Core.WebManager
         /// <returns>The number of matching objects.</returns>
         public int CountObjects(IQuery<Model.Entities.Object> query)
         {
-            return ModelHub.CountObjects(query);
+            return ModelHub.CountObjects(Restrict(query));
         }
 
         /// <summary>
@@ -195,7 +199,40 @@ namespace KleeneStar.Core.WebManager
         /// </returns>
         public IEnumerable<Model.Entities.Object> GetObjects(IQuery<Model.Entities.Object> query, IQueryContext context)
         {
-            return ModelHub.GetObjects(query, context as KleeneStarDbContext);
+            return ModelHub.GetObjects(Restrict(query), context as KleeneStarDbContext);
+        }
+
+        /// <summary>
+        /// Narrows an object query to the classifications the identity behind the current
+        /// request is cleared for.
+        /// </summary>
+        /// <remarks>
+        /// Every read this manager performs on a user's behalf passes through here, which is
+        /// what makes "an object nobody may see does not appear" a property of the system
+        /// rather than of the lists somebody remembered to guard. The reads the system performs
+        /// on its own behalf - issuing the next object key, a relation guard, a commit replay -
+        /// open an unrestricted scope and are handed the query untouched.
+        /// <para>
+        /// The narrowing is a predicate rather than a filter over the result, so it lands
+        /// before paging and a page of hidden records does not come back short.
+        /// </para>
+        /// </remarks>
+        /// <param name="query">The query to narrow.</param>
+        /// <returns>The narrowed query.</returns>
+        private static IQuery<Model.Entities.Object> Restrict(IQuery<Model.Entities.Object> query)
+        {
+            var securityLevelManager = CoreHub.SecurityLevelManager;
+
+            if (securityLevelManager is null)
+            {
+                return query;
+            }
+
+            // the request is not threaded through the manager, and the session manager answers
+            // the current identity without one
+            var identityId = CoreHub.SessionManager?.GetCurrentIdentityId(null) ?? Guid.Empty;
+
+            return securityLevelManager.Restrict(query, identityId);
         }
 
         /// <summary>
@@ -230,6 +267,10 @@ namespace KleeneStar.Core.WebManager
                 ? null
                 : Model.Entities.ObjectKind.Normalize(kind);
 
+            // the visits are the owner's own, so the classification is judged against the
+            // owner rather than against whoever the ambient request belongs to. It is filtered
+            // after the take-count on purpose: a record the owner may no longer see should
+            // leave the list short rather than pull an older one up into it
             return [.. ModelHub.GetObjectVisits(new Query<Model.Entities.ObjectVisit>())
                 .Where(x => x.OwnerId == ownerId
                     && x.LastVisited != default
@@ -238,7 +279,8 @@ namespace KleeneStar.Core.WebManager
                     && (normalized == null || x.Object.Kind == normalized))
                 .OrderByDescending(x => x.LastVisited)
                 .Take(Math.Max(0, count))
-                .Select(x => x.Object)];
+                .Select(x => x.Object)
+                .Where(x => CoreHub.SecurityLevelManager?.IsCleared(ownerId, x.SecurityLevelId) != false)];
         }
 
         /// <summary>

@@ -200,6 +200,21 @@ namespace KleeneStar.Core.WebRestApi
                 Read = (o, _) => o.Updated.ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture)
             };
 
+            // read-only: the classification is what decides who sees the row at all, so it is
+            // changed on the object's own form where the hint about it can be shown, not by an
+            // inline edit in a list
+            var securityLevels = ResolveSecurityLevelNames();
+
+            yield return new ObjectTableColumn
+            {
+                Id = "securitylevel",
+                Label = I18N.Translate(request, "kleenestar.core:securitylevel.object.label"),
+                Template = ObjectTableColumnTemplate.ReadOnly("text"),
+                Read = (o, _) => o.SecurityLevelId.HasValue && securityLevels.TryGetValue(o.SecurityLevelId.Value, out var name)
+                    ? name
+                    : null
+            };
+
             yield return new ObjectTableColumn
             {
                 Id = "storypoints",
@@ -390,6 +405,22 @@ namespace KleeneStar.Core.WebRestApi
         /// <summary>
         /// Returns the active identities as selectable items, keyed by their id.
         /// </summary>
+        /// <summary>
+        /// Reads the names of the security levels, by id, so a row can name the level it
+        /// carries without a query per row.
+        /// </summary>
+        /// <remarks>
+        /// The catalog is installation-wide rather than per class: a table of a kind mixes
+        /// classes, and each of them defines its own levels.
+        /// </remarks>
+        /// <returns>The level names, by id.</returns>
+        private static IReadOnlyDictionary<Guid, string> ResolveSecurityLevelNames()
+        {
+            return CoreHub.SecurityLevelManager
+                .GetSecurityLevels(new Query<Model.Entities.SecurityLevel>())
+                .ToDictionary(x => x.Id, x => x.Name);
+        }
+
         private static IReadOnlyList<RestApiTableColumnTemplateItem> ResolveIdentityItems()
         {
             var query = new Query<Identity>();

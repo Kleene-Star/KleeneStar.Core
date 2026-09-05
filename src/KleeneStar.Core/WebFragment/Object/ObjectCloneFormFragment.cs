@@ -1,4 +1,5 @@
-﻿using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebControl;
+using KleeneStar.Core.WebParameter;
 using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
@@ -86,7 +87,8 @@ namespace KleeneStar.Core.WebFragment.Object
         {
             var keyParam = renderContext.Request.GetParameter<ObjectKeyParameter>();
             var @object = CoreHub.ObjectManager.GetObjectByKey(keyParam);
-            var items = BuildItems(@object);
+            var identityId = CoreHub.SessionManager.GetCurrentIdentityId(renderContext.Request);
+            var items = BuildItems(@object, identityId);
 
             return base.Render(renderContext, visualTree, items);
         }
@@ -97,9 +99,29 @@ namespace KleeneStar.Core.WebFragment.Object
         /// is reproduced from the form's tabs, groups, and field references. When no
         /// active edit form exists, only the system fields are rendered.
         /// </summary>
-        private IEnumerable<IControlFormItem> BuildItems(Model.Entities.Object @object)
+        private IEnumerable<IControlFormItem> BuildItems(Model.Entities.Object @object, Guid identityId)
         {
             yield return Summary;
+
+            // a copy inherits the classification of its original, so the form says so and
+            // offers to change it - see the create wizard for the same pair of items
+            var notice = @object is not null
+                ? ObjectFormLayout.CreateSecurityLevelNotice(@object.ClassId, identityId, @object.SecurityLevelId)
+                : null;
+
+            if (notice is not null)
+            {
+                yield return notice;
+            }
+
+            var securityLevel = @object is not null
+                ? ObjectFormLayout.CreateSecurityLevelInput(@object.ClassId, identityId)
+                : null;
+
+            if (securityLevel is not null)
+            {
+                yield return securityLevel;
+            }
 
             var form = @object is not null ? ResolveStandardForm(@object.ClassId, FormType.Edit) : null;
 

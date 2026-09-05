@@ -233,6 +233,12 @@ namespace KleeneStar.Core.WebManager
         /// <returns>The outcome of the state change.</returns>
         public WorkflowTransitionResult ExecuteTransition(Guid objectId, Guid fieldId, Guid targetStatusId, Guid identityId)
         {
+            // a transition also runs on an object the caller never named - the follower a
+            // relation closes - and that one has to move whether or not the caller is cleared
+            // for it. The caller's own object was resolved by the endpoint, which is where the
+            // classification of a user-initiated move is judged
+            using var unrestricted = CoreHub.SecurityLevelManager?.BeginUnrestricted();
+
             var objectEntity = CoreHub.ObjectManager.GetObject(objectId);
             var field = CoreHub.FieldManager.GetField(fieldId);
 

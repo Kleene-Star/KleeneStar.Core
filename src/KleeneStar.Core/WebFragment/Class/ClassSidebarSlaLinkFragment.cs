@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using System;
 using System.Linq;
 using WebExpress.WebApp.WebSection;
@@ -20,6 +20,7 @@ namespace KleeneStar.Core.WebFragment.Class
     [Section<SectionSidebarPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.SecurityLevels._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Forms._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Workflows._classid_.Index>]

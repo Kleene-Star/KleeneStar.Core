@@ -94,7 +94,8 @@ namespace KleeneStar.Core.WebFragment.Object
         {
             var keyParam = renderContext.Request.GetParameter<ObjectKeyParameter>();
             var @object = CoreHub.ObjectManager.GetObjectByKey(keyParam);
-            var items = BuildItems(@object);
+            var identityId = CoreHub.SessionManager.GetCurrentIdentityId(renderContext.Request);
+            var items = BuildItems(@object, identityId);
 
             return base.Render(renderContext, visualTree, items);
         }
@@ -107,10 +108,33 @@ namespace KleeneStar.Core.WebFragment.Object
         /// When no active edit form exists, only the system fields are rendered.
         /// </summary>
         /// <param name="object">The object the form is built for.</param>
+        /// <param name="identityId">The identity the form is rendered for.</param>
         /// <returns>The form items.</returns>
-        private IEnumerable<IControlFormItem> BuildItems(Model.Entities.Object @object)
+        private IEnumerable<IControlFormItem> BuildItems(Model.Entities.Object @object, Guid identityId)
         {
             yield return Summary;
+
+            // the classification is a system property like the title, so it is offered here
+            // rather than through the configured form. The notice comes first: it explains why
+            // the input beneath it is missing, or what the classification already on the object
+            // will do once the edit is saved
+            var notice = @object is not null
+                ? ObjectFormLayout.CreateSecurityLevelNotice(@object.ClassId, identityId, @object.SecurityLevelId)
+                : null;
+
+            if (notice is not null)
+            {
+                yield return notice;
+            }
+
+            var securityLevel = @object is not null
+                ? ObjectFormLayout.CreateSecurityLevelInput(@object.ClassId, identityId)
+                : null;
+
+            if (securityLevel is not null)
+            {
+                yield return securityLevel;
+            }
 
             var form = @object is not null
                 ? ObjectFormLayout.ResolveStandardForm(@object.ClassId, FormType.Edit)

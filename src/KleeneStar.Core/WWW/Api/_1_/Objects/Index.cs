@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using WebExpress.WebApp.WebRestApi;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebMessage;
 using WebExpress.WebCore.WebRestApi;
@@ -115,7 +116,12 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
                 State = WorkspaceState.Active,
                 WorkspaceId = data.WorkspaceId,
                 ClassId = data.ClassId,
-                ParentId = data.ParentId
+                ParentId = data.ParentId,
+
+                // the copy of a classified record is classified the same way: a duplicate that
+                // quietly came out readable by more people than its original would be a leak
+                // dressed up as a convenience
+                SecurityLevelId = data.SecurityLevelId
             };
 
             var result = RetrieveForClone(request, newItem);
@@ -238,7 +244,60 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         /// </returns>
         protected override IRestApiValidationResult Validate(Model.Entities.Object existingItem, RestApiCrudFormData payload, IRequest request)
         {
-            return base.Validate(existingItem, payload, request);
+            var result = base.Validate(existingItem, payload, request);
+
+            return ValidateSecurityLevel(existingItem, payload, request, result);
+        }
+
+        /// <summary>
+        /// Refuses a classification the caller may not put on the object.
+        /// </summary>
+        /// <remarks>
+        /// The form only offers the levels the caller is cleared for, so this is not what stops
+        /// an honest mistake - it is what makes the rule true of the endpoint rather than of one
+        /// dialog. Two things are checked: that the level belongs to the class of the object,
+        /// and that the caller is cleared for it. Clearing the classification is always allowed:
+        /// it makes the record more visible, never less.
+        /// </remarks>
+        /// <param name="existingItem">The currently persisted item (null for create).</param>
+        /// <param name="payload">The submitted payload.</param>
+        /// <param name="request">The request, for the culture of the message.</param>
+        /// <param name="result">The validation result to add to.</param>
+        /// <returns>The validation result, for chaining.</returns>
+        private static IRestApiValidationResult ValidateSecurityLevel(Model.Entities.Object existingItem, RestApiCrudFormData payload, IRequest request, IRestApiValidationResult result)
+        {
+            if (!payload.TryGetGuid(nameof(Model.Entities.Object.SecurityLevelId), out var securityLevelId)
+                || securityLevelId == Guid.Empty)
+            {
+                return result;
+            }
+
+            // an unchanged classification is not a new decision and is left alone, so an edit of
+            // a record somebody was cleared for yesterday does not become unsavable today
+            if (existingItem?.SecurityLevelId == securityLevelId)
+            {
+                return result;
+            }
+
+            var identityId = CoreHub.SessionManager.GetCurrentIdentityId(request);
+            var classId = existingItem?.ClassId
+                ?? (payload.TryGetGuid(nameof(Model.Entities.Object.ClassId), out var payloadClassId) ? payloadClassId : Guid.Empty);
+
+            var assignable = classId == Guid.Empty
+                ? []
+                : CoreHub.SecurityLevelManager.GetAssignableSecurityLevels(classId, identityId);
+
+            if (assignable.Any(x => x.Id == securityLevelId))
+            {
+                return result;
+            }
+
+            return result.Add
+            (
+                I18N.Translate(request, "kleenestar.core:securitylevel.object.restricted"),
+                nameof(Model.Entities.Object.SecurityLevelId),
+                "securitylevel.restricted"
+            );
         }
 
         /// <summary>
@@ -276,6 +335,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
 
             DeriveReferences(fieldMap, newItem);
             EnsureKey(newItem);
+            ApplyDefaultSecurityLevel(fieldMap, newItem, currentUser);
 
             // the object row, its field values and the presets of its template are one act of
             // creation; the scope makes them one genesis commit rather than a create followed by
@@ -330,6 +390,11 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
 
             newItem.ClassId = existingItem?.ClassId ?? newItem.ClassId;
             newItem.WorkspaceId = existingItem?.WorkspaceId ?? newItem.WorkspaceId;
+
+            // a copy keeps the classification of its original when the payload names none; see
+            // RetrieveForClone for why it is not allowed to come out more visible
+            newItem.SecurityLevelId ??= existingItem?.SecurityLevelId;
+
             DeriveReferences(fieldMap, newItem);
             EnsureKey(newItem);
 
@@ -377,6 +442,43 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
             }
 
             return res;
+        }
+
+        /// <summary>
+        /// Puts the class's default classification on an object the payload left unclassified.
+        /// </summary>
+        /// <remarks>
+        /// A class that classifies its objects names one level as the starting point, and a
+        /// create that says nothing about the classification means "the usual one" rather than
+        /// "none" - otherwise every record filed through an interface that does not ask (the
+        /// api, a template, an import) would silently come out unclassified.
+        /// <para>
+        /// The default is only applied when the caller is cleared for it. Where they are not,
+        /// the object stays unclassified rather than disappearing from the list of the person
+        /// who just created it.
+        /// </para>
+        /// </remarks>
+        /// <param name="fieldMap">The payload carrying the answers.</param>
+        /// <param name="object">The object being created.</param>
+        /// <param name="identityId">The identity performing the create.</param>
+        private static void ApplyDefaultSecurityLevel(RestApiCrudFormData fieldMap, Model.Entities.Object @object, Guid identityId)
+        {
+            // an explicit answer wins, including the explicit "unclassified" the selection
+            // submits as the empty guid
+            if (fieldMap.ContainsKey(nameof(Model.Entities.Object.SecurityLevelId).ToLowerInvariant())
+                || fieldMap.ContainsKey(nameof(Model.Entities.Object.SecurityLevelId))
+                || @object.SecurityLevelId.HasValue
+                || @object.ClassId == Guid.Empty)
+            {
+                return;
+            }
+
+            var securityLevel = CoreHub.SecurityLevelManager.GetDefaultSecurityLevel(@object.ClassId);
+
+            if (securityLevel is not null && CoreHub.SecurityLevelManager.IsCleared(identityId, securityLevel.Id))
+            {
+                @object.SecurityLevelId = securityLevel.Id;
+            }
         }
 
         /// <summary>

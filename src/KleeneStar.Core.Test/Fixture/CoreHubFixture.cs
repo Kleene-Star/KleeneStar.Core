@@ -22,6 +22,7 @@ namespace KleeneStar.Core.Test
             ("_workspaceTemplateManager", typeof(WorkspaceTemplateManager)),
             ("_classManager",     typeof(ClassManager)),
             ("_fieldManager",     typeof(FieldManager)),
+            ("_securityLevelManager", typeof(SecurityLevelManager)),
             ("_formManager",      typeof(FormManager)),
             ("_priorityManager",  typeof(PriorityManager)),
             ("_workflowManager",  typeof(WorkflowManager)),

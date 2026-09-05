@@ -25,6 +25,7 @@ namespace KleeneStar.Core
         private static WorkspaceTemplateManager _workspaceTemplateManager;
         private static ClassManager _classManager;
         private static FieldManager _fieldManager;
+        private static SecurityLevelManager _securityLevelManager;
         private static FormManager _formManager;
         private static PriorityManager _priorityManager;
         private static WorkflowManager _workflowManager;
@@ -92,6 +93,12 @@ namespace KleeneStar.Core
         /// Gets the field manager responsible for managing fields within the class.
         /// </summary>
         public static IFieldManager FieldManager => _fieldManager ??= ComponentHub.GetComponentManager<FieldManager>();
+
+        /// <summary>
+        /// Gets the security level manager responsible for the classifications of the classes
+        /// and for deciding who is cleared to see an object carrying one.
+        /// </summary>
+        public static ISecurityLevelManager SecurityLevelManager => _securityLevelManager ??= ComponentHub.GetComponentManager<SecurityLevelManager>();
 
         /// <summary>
         /// Gets the form manager responsible for managing forms within the class.

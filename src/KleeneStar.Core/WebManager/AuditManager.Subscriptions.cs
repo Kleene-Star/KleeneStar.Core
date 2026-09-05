@@ -1,4 +1,4 @@
-using KleeneStar.Model.Entities;
+﻿using KleeneStar.Model.Entities;
 using Calendar = KleeneStar.Model.Entities.Calendar;
 using System;
 using System.Collections.Generic;
@@ -114,6 +114,7 @@ namespace KleeneStar.Core.WebManager
             Configuration<Workspace>(h => CoreHub.WorkspaceManager.WorkspaceAdded += h, h => CoreHub.WorkspaceManager.WorkspaceUpdated += h, h => CoreHub.WorkspaceManager.WorkspaceRemoved += h);
             Configuration<Class>(h => CoreHub.ClassManager.ClassAdded += h, h => CoreHub.ClassManager.ClassUpdated += h, h => CoreHub.ClassManager.ClassRemoved += h);
             Configuration<Field>(h => CoreHub.FieldManager.FieldAdded += h, h => CoreHub.FieldManager.FieldUpdated += h, h => CoreHub.FieldManager.FieldRemoved += h);
+            Configuration<SecurityLevel>(h => CoreHub.SecurityLevelManager.SecurityLevelAdded += h, h => CoreHub.SecurityLevelManager.SecurityLevelUpdated += h, h => CoreHub.SecurityLevelManager.SecurityLevelRemoved += h);
             Configuration<Form>(h => CoreHub.FormManager.FormAdded += h, h => CoreHub.FormManager.FormUpdated += h, h => CoreHub.FormManager.FormRemoved += h);
             Configuration<Template>(h => CoreHub.TemplateManager.TemplateAdded += h, h => CoreHub.TemplateManager.TemplateUpdated += h, h => CoreHub.TemplateManager.TemplateRemoved += h);
             Configuration<Priority>(h => CoreHub.PriorityManager.PriorityAdded += h, h => CoreHub.PriorityManager.PriorityUpdated += h, h => CoreHub.PriorityManager.PriorityRemoved += h);

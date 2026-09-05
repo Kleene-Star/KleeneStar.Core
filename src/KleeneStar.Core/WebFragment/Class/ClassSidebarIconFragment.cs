@@ -21,6 +21,7 @@ namespace KleeneStar.Core.WebFragment.Class
     [Section<SectionSidebarPreferences>]
     [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.SecurityLevels._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Forms._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Priorities._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Workflows._classid_.Index>]

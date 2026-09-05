@@ -18,6 +18,7 @@ namespace KleeneStar.Core.WebFragment.Class
     [Section<SectionSidebarToolbarPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Class._classid_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Fields._classid_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.SecurityLevels._classid_.Index>]
     [Cache]
     public sealed class ClassItemSidebarSettingFragment : FragmentControlToolbarItemDropdown
     {

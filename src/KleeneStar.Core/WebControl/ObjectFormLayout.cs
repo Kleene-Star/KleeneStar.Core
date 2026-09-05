@@ -3,6 +3,9 @@ using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using WebExpress.WebApp.WebApiControl;
+using WebExpress.WebApp.WebData;
+using WebExpress.WebCore.Internationalization;
 using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebPage;
 
@@ -60,6 +63,121 @@ namespace KleeneStar.Core.WebControl
                 Format = _ => TypeEditTextFormat.Wysiwyg,
                 Required = _ => false
             };
+        }
+
+        /// <summary>
+        /// Creates the input for the security level of an object, or <c>null</c> when the
+        /// class classifies nothing or the caller is cleared for no level of it.
+        /// </summary>
+        /// <remarks>
+        /// Like the title, the classification is a system property rather than a configured
+        /// field, so it is emitted alongside the form structure rather than being part of it.
+        /// The options come from the class-scoped selection endpoint, which offers only the
+        /// levels the caller may assign.
+        /// </remarks>
+        /// <param name="classId">The class the object belongs to.</param>
+        /// <param name="identityId">The identity filling the form in.</param>
+        /// <returns>The input control, or <c>null</c> when there is nothing to choose.</returns>
+        public static ControlDataFormItemInputSelection CreateSecurityLevelInput(Guid classId, Guid identityId)
+        {
+            if (classId == Guid.Empty || !HasSecurityLevels(classId))
+            {
+                return null;
+            }
+
+            // a caller cleared for none of the class's levels is offered no input at all; the
+            // notice beside it says why, and the only value they could pick is "unclassified",
+            // which is what the object gets anyway
+            if (CoreHub.SecurityLevelManager.GetAssignableSecurityLevels(classId, identityId).Count == 0)
+            {
+                return null;
+            }
+
+            return new ControlDataFormItemInputSelection()
+            {
+                Name = _ => nameof(ObjectEntity.SecurityLevelId),
+                Label = _ => "kleenestar.core:securitylevel.object.label",
+                Placeholder = _ => "kleenestar.core:securitylevel.object.placeholder",
+                Help = _ => "kleenestar.core:securitylevel.object.help",
+                StickySelection = _ => true,
+                ServiceFactory = _ => DataServiceDescriptor.QueryData
+                (
+                    CoreHub.GetUri<global::KleeneStar.Core.WWW.Api._1_.SecurityLevels._classid_.Selection>()
+                        .BindParameters(new ClassIdParameter(classId))
+                        .ToString()
+                )
+            };
+        }
+
+        /// <summary>
+        /// Creates the notice the form shows when the caller and the classification of the
+        /// object do not agree, or <c>null</c> when there is nothing to say.
+        /// </summary>
+        /// <remarks>
+        /// Two situations are worth a sentence, and both are ones the form would otherwise
+        /// leave to be discovered by the record disappearing:
+        /// <list type="bullet">
+        ///   <item>The class classifies its objects, but the caller is cleared for none of its
+        ///   levels. The input is then absent, and the notice says why.</item>
+        ///   <item>The object already carries a level the caller cannot assign. Saving keeps
+        ///   the classification, and with it the chance that the record leaves their view.</item>
+        /// </list>
+        /// </remarks>
+        /// <param name="classId">The class the object belongs to.</param>
+        /// <param name="identityId">The identity filling the form in.</param>
+        /// <param name="currentLevelId">The level the object carries, or <c>null</c>.</param>
+        /// <returns>The notice, or <c>null</c>.</returns>
+        public static IControlFormItem CreateSecurityLevelNotice(Guid classId, Guid identityId, Guid? currentLevelId)
+        {
+            if (classId == Guid.Empty)
+            {
+                return null;
+            }
+
+            var securityLevelManager = CoreHub.SecurityLevelManager;
+            var message = (string)null;
+
+            if (currentLevelId.HasValue
+                && currentLevelId.Value != Guid.Empty
+                && !securityLevelManager.IsCleared(identityId, currentLevelId))
+            {
+                message = "kleenestar.core:securitylevel.object.hint";
+            }
+            else if (HasSecurityLevels(classId)
+                && securityLevelManager.GetAssignableSecurityLevels(classId, identityId).Count == 0)
+            {
+                message = "kleenestar.core:securitylevel.object.unavailable";
+            }
+
+            if (message is null)
+            {
+                return null;
+            }
+
+            // the alert prints what it is handed, so the keys are resolved here rather than
+            // reaching the page raw
+            return new ControlFormItemPanel
+            (
+                null,
+                new ControlAlert()
+                {
+                    Head = ctx => I18N.Translate(ctx, "kleenestar.core:securitylevel.object.hint.title"),
+                    Text = ctx => I18N.Translate(ctx, message),
+                    BackgroundColor = _ => new PropertyColorBackgroundAlert(TypeColorBackgroundAlert.Warning)
+                }
+            );
+        }
+
+        /// <summary>
+        /// Determines whether a class classifies its objects at all.
+        /// </summary>
+        /// <param name="classId">The class.</param>
+        /// <returns><see langword="true"/> when the class defines an active security level.</returns>
+        public static bool HasSecurityLevels(Guid classId)
+        {
+            return CoreHub.SecurityLevelManager
+                .GetSecurityLevels(new ClassIdParameter(classId))
+                .Any(x => x.State == SecurityLevelState.Active);
         }
 
         /// <summary>

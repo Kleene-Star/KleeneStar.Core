@@ -637,6 +637,10 @@ namespace KleeneStar.Core.WebManager
                 return null;
             }
 
+            // the chain records what happened, not what the writer is cleared to look at: a
+            // commit on a classified object still has to name the object it belongs to
+            using var unrestricted = CoreHub.SecurityLevelManager?.BeginUnrestricted();
+
             var @object = CoreHub.ObjectManager.GetObject(objectId);
 
             // a terminal commit is appended while the object row still exists; should it already
@@ -800,6 +804,10 @@ namespace KleeneStar.Core.WebManager
                 return null;
             }
 
+            // whether the reader may see the object was decided before the chain was reached;
+            // hydrating it is plumbing and must not silently produce a headless commit
+            using var unrestricted = CoreHub.SecurityLevelManager?.BeginUnrestricted();
+
             commit.Object = CoreHub.ObjectManager.GetObject(commit.ObjectId);
             commit.CreatedBy = commit.CreatedById.HasValue
                 ? CoreHub.IdentityManager.GetIdentity(commit.CreatedById.Value)
@@ -828,6 +836,10 @@ namespace KleeneStar.Core.WebManager
             var objects = new Dictionary<Guid, ObjectEntity>();
             var identities = new Dictionary<Guid, Identity>();
             var fields = new Dictionary<Guid, Field>();
+
+            // see the single-commit overload: resolving the object of a chain already reached
+            // is plumbing rather than a read on the user's behalf
+            using var unrestricted = CoreHub.SecurityLevelManager?.BeginUnrestricted();
 
             foreach (var commit in materialized)
             {

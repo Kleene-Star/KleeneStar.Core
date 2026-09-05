@@ -10,6 +10,15 @@ namespace KleeneStar.Core.WebManager
     /// Defines the contract for managing objects, including adding, retrieving, and removing, as well as
     /// handling object-related events.
     /// </summary>
+    /// <remarks>
+    /// <b>Every read is classified.</b> The retrieval methods answer only what the identity
+    /// behind the current request is cleared to see: an object carrying a security level its
+    /// class defines is absent from the result unless the identity belongs to one of the groups
+    /// the level names. An unclassified object is answered to everyone. The rule is applied
+    /// here rather than at the call sites so a list written tomorrow obeys it without its
+    /// author having to remember to; a read the system performs on its own behalf lifts it with
+    /// <see cref="ISecurityLevelManager.BeginUnrestricted"/> and says why.
+    /// </remarks>
     public interface IObjectManager : IComponentManager
     {
         /// <summary>

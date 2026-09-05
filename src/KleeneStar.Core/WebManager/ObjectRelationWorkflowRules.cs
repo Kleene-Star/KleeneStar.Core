@@ -1,4 +1,4 @@
-using KleeneStar.Core.WebParameter;
+﻿using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebRestApi;
 using KleeneStar.Model.Entities;
 using System;
@@ -214,6 +214,10 @@ namespace KleeneStar.Core.WebManager
         public static Status FindClosingTarget(Guid objectId, out Guid fieldId)
         {
             fieldId = Guid.Empty;
+
+            // the follower is somebody else's record and may well be classified above the
+            // caller; a relation that closes it has to close it either way
+            using var unrestricted = CoreHub.SecurityLevelManager?.BeginUnrestricted();
 
             var @object = CoreHub.ObjectManager.GetObject(objectId);
             var @class = @object is null ? null : CoreHub.ClassManager.GetClass(@object.ClassId);
