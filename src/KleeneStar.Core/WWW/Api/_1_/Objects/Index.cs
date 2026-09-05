@@ -414,9 +414,10 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
         /// <remarks>
         /// The key is the human-readable handle an object is addressed by (<c>SD-17</c>), so it
         /// has to exist before the record is written, and the create form does not ask for one.
-        /// The next free number is derived from the keys already issued in the workspace. Two
-        /// creates racing each other could derive the same number; the surrounding code is
-        /// likewise single-writer, so the sequence is not guarded any further here.
+        /// The numbering itself belongs to the object manager, because this is not the only
+        /// caller that creates objects nobody named - the setup a workspace template performs is
+        /// another - and a second implementation of it would eventually hand out the same key
+        /// twice.
         /// </remarks>
         /// <param name="object">The object to assign a key to.</param>
         private static void EnsureKey(Model.Entities.Object @object)
@@ -426,26 +427,7 @@ namespace KleeneStar.Core.WWW.Api._1_.Objects
                 return;
             }
 
-            var workspace = CoreHub.WorkspaceManager.GetWorkspace(@object.WorkspaceId);
-            var prefix = workspace?.Key;
-
-            if (string.IsNullOrWhiteSpace(prefix))
-            {
-                return;
-            }
-
-            var query = new Query<Model.Entities.Object>()
-                .WhereEquals(x => x.WorkspaceId, @object.WorkspaceId);
-            var pattern = new Regex($"^{Regex.Escape(prefix)}-(\\d+)$", RegexOptions.IgnoreCase);
-
-            var next = CoreHub.ObjectManager.GetObjects(query)
-                .Select(x => pattern.Match(x.Key ?? string.Empty))
-                .Where(m => m.Success)
-                .Select(m => int.TryParse(m.Groups[1].Value, out var number) ? number : 0)
-                .DefaultIfEmpty(0)
-                .Max() + 1;
-
-            @object.Key = $"{prefix}-{next.ToString(CultureInfo.InvariantCulture)}";
+            @object.Key = CoreHub.ObjectManager.NextObjectKey(@object.WorkspaceId) ?? @object.Key;
         }
 
         /// <summary>

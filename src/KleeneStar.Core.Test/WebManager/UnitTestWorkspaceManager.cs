@@ -307,6 +307,148 @@ namespace KleeneStar.Core.Test.WebManager
         }
 
         /// <summary>
+        /// Without a choice the home page is the first root of the page tree by summary — which
+        /// is what the overview showed before the setting existed, and is an accident of
+        /// alphabetical order rather than a decision.
+        /// </summary>
+        [Fact]
+        public void GetHome_WithoutChoice_FallsBackToFirstRoot()
+        {
+            Seed(nameof(GetHome_WithoutChoice_FallsBackToFirstRoot));
+
+            var workspace = Sample("home1");
+            CoreHub.WorkspaceManager.Add(workspace);
+
+            var beta = Document(workspace.Id, "Beta");
+            var alpha = Document(workspace.Id, "Alpha");
+            var child = Document(workspace.Id, "Aardvark", alpha.Id);
+
+            Assert.NotNull(child);
+            Assert.Equal(alpha.Id, CoreHub.WorkspaceManager.GetHome(workspace.Id)?.Id);
+            Assert.NotEqual(beta.Id, CoreHub.WorkspaceManager.GetHome(workspace.Id)?.Id);
+        }
+
+        /// <summary>
+        /// A chosen document wins over the fallback, and clearing the choice returns to it —
+        /// which is what the more menu's second state does.
+        /// </summary>
+        [Fact]
+        public void SetHome_ChoosesAndClears()
+        {
+            Seed(nameof(SetHome_ChoosesAndClears));
+
+            var workspace = Sample("home2");
+            CoreHub.WorkspaceManager.Add(workspace);
+
+            var alpha = Document(workspace.Id, "Alpha");
+            var zulu = Document(workspace.Id, "Zulu");
+
+            CoreHub.WorkspaceManager.SetHome(workspace.Id, zulu.Id);
+
+            Assert.Equal(zulu.Id, CoreHub.WorkspaceManager.GetHome(workspace.Id)?.Id);
+            Assert.True(CoreHub.WorkspaceManager.IsHome(workspace.Id, zulu.Id));
+            Assert.False(CoreHub.WorkspaceManager.IsHome(workspace.Id, alpha.Id));
+
+            CoreHub.WorkspaceManager.SetHome(workspace.Id, null);
+
+            Assert.Equal(alpha.Id, CoreHub.WorkspaceManager.GetHome(workspace.Id)?.Id);
+
+            // the fallback is not a choice: nothing offers to reset what nobody set
+            Assert.False(CoreHub.WorkspaceManager.IsHome(workspace.Id, alpha.Id));
+        }
+
+        /// <summary>
+        /// Only a document of this workspace may be chosen. Anything else changes nothing rather
+        /// than storing an id the overview would silently ignore.
+        /// </summary>
+        [Fact]
+        public void SetHome_RefusesWhatIsNotItsDocument()
+        {
+            Seed(nameof(SetHome_RefusesWhatIsNotItsDocument));
+
+            var workspace = Sample("home3");
+            var other = Sample("home4");
+            CoreHub.WorkspaceManager.Add(workspace);
+            CoreHub.WorkspaceManager.Add(other);
+
+            var mine = Document(workspace.Id, "Mine");
+            var theirs = Document(other.Id, "Theirs");
+            var issue = Document(workspace.Id, "An issue", kind: ObjectKind.Issue);
+
+            Assert.Null(CoreHub.WorkspaceManager.SetHome(workspace.Id, theirs.Id));
+            Assert.Null(CoreHub.WorkspaceManager.SetHome(workspace.Id, issue.Id));
+            Assert.Null(CoreHub.WorkspaceManager.SetHome(Guid.NewGuid(), mine.Id));
+
+            Assert.False(CoreHub.WorkspaceManager.IsHome(workspace.Id, theirs.Id));
+            Assert.Null(CoreHub.WorkspaceManager.GetWorkspace(workspace.Id).HomeId);
+        }
+
+        /// <summary>
+        /// A chosen document that has since been deleted falls back rather than leaving the
+        /// overview with nothing to show.
+        /// </summary>
+        [Fact]
+        public void GetHome_StaleChoiceFallsBack()
+        {
+            Seed(nameof(GetHome_StaleChoiceFallsBack));
+
+            var workspace = Sample("home5");
+            CoreHub.WorkspaceManager.Add(workspace);
+
+            var alpha = Document(workspace.Id, "Alpha");
+            var zulu = Document(workspace.Id, "Zulu");
+
+            CoreHub.WorkspaceManager.SetHome(workspace.Id, zulu.Id);
+            CoreHub.ObjectManager.Remove(zulu.Id);
+
+            Assert.Equal(alpha.Id, CoreHub.WorkspaceManager.GetHome(workspace.Id)?.Id);
+        }
+
+        /// <summary>
+        /// A workspace holding no documents has no home page, and the overview says so instead
+        /// of rendering an empty card.
+        /// </summary>
+        [Fact]
+        public void GetHome_WithoutDocuments_IsNull()
+        {
+            Seed(nameof(GetHome_WithoutDocuments_IsNull));
+
+            var workspace = Sample("home6");
+            CoreHub.WorkspaceManager.Add(workspace);
+
+            Assert.Null(CoreHub.WorkspaceManager.GetHome(workspace.Id));
+        }
+
+        /// <summary>
+        /// Creates a document in a workspace.
+        /// </summary>
+        /// <param name="workspaceId">The owning workspace.</param>
+        /// <param name="summary">The title, which is what the fallback orders by.</param>
+        /// <param name="parentId">The parent page, or null for a root.</param>
+        /// <param name="kind">The object kind, for the cases that are deliberately not a
+        /// document.</param>
+        /// <returns>The created object.</returns>
+        private static Model.Entities.Object Document(Guid workspaceId, string summary, Guid? parentId = null, string kind = ObjectKind.Document)
+        {
+            var document = new Model.Entities.Object
+            {
+                Id = Guid.NewGuid(),
+                Key = summary,
+                Summary = summary,
+                Kind = kind,
+                State = WorkspaceState.Active,
+                WorkspaceId = workspaceId,
+                ParentId = parentId,
+                Created = DateTime.UtcNow,
+                Updated = DateTime.UtcNow
+            };
+
+            CoreHub.ObjectManager.Add(document);
+
+            return document;
+        }
+
+        /// <summary>
         /// Creates a sample <see cref="Workspace"/> with a fresh GUID and the supplied key.
         /// </summary>
         /// <param name="key">The workspace key.</param>

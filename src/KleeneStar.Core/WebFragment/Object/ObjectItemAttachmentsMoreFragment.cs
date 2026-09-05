@@ -3,6 +3,7 @@ using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
@@ -15,9 +16,17 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </summary>
     /// <remarks>
     /// The files of a prose object live on a page of their own rather than under its text, so
-    /// they need a way in; this is the one in the overflow menu, matched by
-    /// <see cref="ObjectToolbarAttachmentsFragment"/> in the toolbar. The number of files is
-    /// part of the label, because whether there are any is the question the entry is read for.
+    /// they need a way in - and this is the only one: the toolbar over the text used to carry the
+    /// same two destinations, which put them twice on a page whose whole point is the text.
+    /// <para>
+    /// It opens them in a modal (<see cref="ObjectAttachmentsModalFragment"/>) rather than
+    /// navigating to that page. A reader of a document is reading it; sending them away to see
+    /// what is attached takes the text off the screen and makes coming back their problem.
+    /// </para>
+    /// <para>
+    /// The number of files is part of the label, because whether there are any is the question
+    /// the entry is read for.
+    /// </para>
     /// </remarks>
     [Section<SectionHeadlineMorePrimary>]
     [Scope<global::KleeneStar.Core.WWW.Document._objectkey_.Index>]
@@ -39,7 +48,12 @@ namespace KleeneStar.Core.WebFragment.Object
                 I18N.Translate(renderContext, "kleenestar.core:object.attachment.card.header"),
                 ObjectSidePageLink.CountAttachments(ObjectSidePageLink.ResolveObject(renderContext))
             );
-            Uri = ObjectSidePageLink.ResolveAttachmentsUri;
+            PrimaryAction = renderContext => new ActionModal
+            (
+                ObjectAttachmentsModalFragment.ModalId,
+                ObjectSidePageLink.ResolveAttachmentsUri(renderContext),
+                TypeModalSize.Large
+            );
         }
 
         /// <summary>

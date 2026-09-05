@@ -33,6 +33,8 @@ namespace KleeneStar.Core.WebFragment.Object
     [Section<SectionContentSecondary>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Asset._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Document._objectkey_.Index>]
+    [Scope<global::KleeneStar.Core.WWW.Blog._objectkey_.Index>]
     [Scope<global::KleeneStar.Core.WWW.Issue._objectkey_.Preview>]
     [Cache]
     public sealed class ObjectCommentCardFragment : FragmentControlPanel

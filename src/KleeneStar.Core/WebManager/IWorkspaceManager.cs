@@ -140,6 +140,45 @@ namespace KleeneStar.Core.WebManager
         WorkspaceBookmark RecordVisit(Guid ownerId, Guid workspaceId);
 
         /// <summary>
+        /// Returns the document shown as the home page of the supplied workspace.
+        /// </summary>
+        /// <remarks>
+        /// The chosen document when somebody chose one and it is still a document of this
+        /// workspace; otherwise the first root of the page tree, ordered by summary, which is
+        /// what the overview showed before the choice existed. The fallback is what makes the
+        /// setting optional rather than a step every new workspace has to go through, and it is
+        /// also the answer for a chosen document that has since been deleted.
+        /// </remarks>
+        /// <param name="workspaceId">The id of the workspace.</param>
+        /// <returns>The home document, or <see langword="null"/> when the workspace holds no
+        /// documents at all.</returns>
+        Model.Entities.Object GetHome(Guid workspaceId);
+
+        /// <summary>
+        /// Returns whether the supplied object is the chosen home page of its workspace.
+        /// </summary>
+        /// <remarks>
+        /// It answers the <b>choice</b>, not <see cref="GetHome"/>: a document that is only
+        /// being shown because nothing was chosen is not the home page, and offering to "reset"
+        /// it would suggest a setting that was never made.
+        /// </remarks>
+        /// <param name="workspaceId">The id of the workspace.</param>
+        /// <param name="objectId">The id of the document.</param>
+        /// <returns><see langword="true"/> when the document was chosen as the home page.</returns>
+        bool IsHome(Guid workspaceId, Guid objectId);
+
+        /// <summary>
+        /// Chooses the document shown as the home page of the supplied workspace, or clears the
+        /// choice when <paramref name="objectId"/> is <see langword="null"/>.
+        /// </summary>
+        /// <param name="workspaceId">The id of the workspace.</param>
+        /// <param name="objectId">The document to show, or <see langword="null"/> to fall back to
+        /// the first root of the page tree.</param>
+        /// <returns>The updated workspace, or <see langword="null"/> when the workspace does not
+        /// exist or the document is not one of its documents.</returns>
+        Workspace SetHome(Guid workspaceId, Guid? objectId);
+
+        /// <summary>
         /// Adds a workspace to the workspace manager.
         /// </summary>
         /// <param name="workspace">The workspace to add. Cannot be null.</param>

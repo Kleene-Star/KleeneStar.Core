@@ -1,8 +1,6 @@
 using KleeneStar.Core.WebManager;
 using KleeneStar.Core.WebParameter;
 using KleeneStar.Core.WebPolicies;
-using System.Collections.Generic;
-using System.Linq;
 using WebExpress.WebApp.WebSection;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
@@ -17,31 +15,35 @@ using WebExpress.WebUI.WebPage;
 namespace KleeneStar.Core.WebFragment.Object.Documents
 {
     /// <summary>
-    /// Main-panel content of the document overview: shows the workspace's home
-    /// document — the first root of the document tree, ordered by summary — with its
-    /// description and a link to the full document. The tree itself lives in the
-    /// sidebar (<see cref="DocumentSidebarTreeFragment"/>), so the page opens like a
-    /// wiki space: navigation on the left, the home page in the middle.
+    /// Main-panel content of the document overview: shows the workspace's home document with
+    /// its description and a link to the full document. The tree itself lives in the sidebar
+    /// (<see cref="DocumentSidebarTreeFragment"/>), so the page opens like a wiki space:
+    /// navigation on the left, the home page in the middle.
     /// </summary>
+    /// <remarks>
+    /// Which document that is belongs to <see cref="IWorkspaceManager.GetHome"/>: the one
+    /// chosen through the document's own more menu, and failing that the first root of the page
+    /// tree by summary — which is what this fragment used to decide on its own, and is an
+    /// accident of alphabetical order. It moved to the manager because the choice is now asked
+    /// about in two places, and a second implementation of "which one is it" would answer
+    /// differently the first time somebody renamed a page.
+    /// </remarks>
     [Section<SectionContentPrimary>]
     [Scope<global::KleeneStar.Core.WWW.Documents._workspacekey_.Index>]
     [Policy<WorkspaceViewPolicy>]
     [Cache]
     public sealed class DocumentHomeFragment : FragmentControlPanel
     {
-        private readonly IObjectManager _objectManager;
         private readonly IWorkspaceManager _workspaceManager;
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         /// <param name="fragmentContext">The fragment context.</param>
-        /// <param name="objectManager">The object manager used to fetch the workspace documents.</param>
         /// <param name="workspaceManager">The workspace manager used to resolve the workspace from the request.</param>
-        public DocumentHomeFragment(IFragmentContext fragmentContext, IObjectManager objectManager, IWorkspaceManager workspaceManager)
+        public DocumentHomeFragment(IFragmentContext fragmentContext, IWorkspaceManager workspaceManager)
             : base(fragmentContext)
         {
-            _objectManager = objectManager;
             _workspaceManager = workspaceManager;
         }
 
@@ -67,7 +69,7 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
                 return null;
             }
 
-            var home = GetHomeDocument(workspace.Id);
+            var home = _workspaceManager.GetHome(workspace.Id);
 
             if (home is null)
             {
@@ -85,41 +87,17 @@ namespace KleeneStar.Core.WebFragment.Object.Documents
                 Header = _ => home.Summary
             };
 
+            // opening the page is a headline button beside the more menu
+            // (DocumentHomeOpenButtonFragment), not a link in the body of the card: it is the
+            // one thing a reader of this preview wants next, and an action buried in a card is
+            // found late
             card.Add(new ControlText("document-home-description")
             {
                 Text = _ => home.Description,
                 Format = _ => TypeFormatText.Paragraph
             });
 
-            card.Add(new ControlLink("document-home-open")
-            {
-                Text = _ => "kleenestar.core:object.kind.documents.open.label",
-                Icon = _ => (IIcon)home.Icon ?? new IconFileLines(),
-                Uri = _ => ObjectKindCatalog.ResolveDetailUri(home)
-            });
-
             return card.Render(renderContext, visualTree);
-        }
-
-        /// <summary>
-        /// Resolves the workspace's home document: the first root of the document tree,
-        /// ordered by summary. Returns <see langword="null"/> when the workspace holds
-        /// no documents.
-        /// </summary>
-        /// <param name="workspaceId">The owning workspace id.</param>
-        /// <returns>The home document, or <see langword="null"/>.</returns>
-        private Model.Entities.Object GetHomeDocument(System.Guid workspaceId)
-        {
-            var query = new Query<Model.Entities.Object>()
-                .WhereEquals(x => x.WorkspaceId, workspaceId)
-                .WhereEquals(x => x.Kind, Model.Entities.ObjectKind.Document)
-                .OrderByAsc(x => x.Summary);
-
-            var documents = (IReadOnlyList<Model.Entities.Object>)[.. _objectManager.GetObjects(query)];
-            var ids = documents.Select(x => x.Id).ToHashSet();
-
-            return documents.FirstOrDefault(x => !x.ParentId.HasValue || !ids.Contains(x.ParentId.Value))
-                ?? documents.FirstOrDefault();
         }
     }
 }

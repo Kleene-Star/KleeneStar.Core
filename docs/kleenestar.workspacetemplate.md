@@ -48,13 +48,39 @@ There is one ordering subtlety worth knowing about. The manager is constructed w
 
 ## Applying a Template
 
-Creating the classes is the manager's job (`Apply`) rather than the caller's, because it is the same act wherever it is triggered from — the wizard today, an import or a scripted setup tomorrow.
+Setting the workspace up is the manager's job (`Apply`) rather than the caller's, because it is the same act wherever it is triggered from — the wizard today, an import or a scripted setup tomorrow.
 
-The classes are created **after** the workspace, because they belong to it: there is nothing to attach them to until it exists. A workspace stored while its classes failed is one an administrator can finish by hand; the other order would leave classes belonging to nothing.
+It is **four** steps, not one. A workspace that arrived with its classes and nothing else still had to be assembled by hand — both overviews an empty tab strip, no page saying what the place is for, an empty timeline — which is the afternoon the templates exist to save in the first place. So applying a template produces:
 
-Applying a template twice adds what is missing rather than a second set of everything. A name the workspace already carries is skipped, so a retried create — or a template applied to a workspace somebody had already set up by hand — does the useful thing instead of the destructive one.
+| Step | What is created                                                                 | Skipped when
+|------|---------------------------------------------------------------------------------|--------------------------------------
+| 1    | the **classes** the template names                                               | the workspace already carries the name
+| 2    | the starting **views** of the issue and asset overviews                          | the kind already carries a tab of that name
+| 3    | the **home page**, a document                                                    | the workspace already holds a document
+| 4    | the **opening post**, a blog entry                                               | the workspace already holds a post
 
-An unknown template key creates nothing and raises nothing. That is the ordinary answer for a workspace whose template has since been uninstalled, and for every caller of the REST API that is not the wizard.
+The order is the order of dependence. Everything is created **after** the workspace, because it all belongs to it: there is nothing to attach any of it to until it exists. A workspace stored while its setup failed is one an administrator can finish by hand; the other order would leave classes belonging to nothing. For the same reason a step that fails does not stop the ones after it.
+
+The two overviews keep separate tab sets, so the same layout exists once for issues and once for assets:
+
+| Overview | Views created                           | Left to the user
+|----------|-----------------------------------------|--------------------------------
+| Issues   | curated list, dashboard, Scrum          | table, list, Kanban, Gantt, scheduler
+| Assets   | curated list, dashboard                 | table, list, Kanban
+
+Each leads with its own curated list, because the tab strip has **no built-in first entry** — everything in it comes from the persisted views, so whichever view is ordered first is what the overview opens on.
+
+It is a *starting* set, not the catalogue. The seeded workspaces carry every layout, and handing a new workspace all of them turned out to be the wrong default: a table and a list of the same rows, beside a board nobody asked for, is six tabs to read before the first item exists. What is created is somewhere to land, the shape of the work, and — for issues — the Scrum view. Everything else is one click away in the tab strip's own template picker, and is left to whoever decides they want it. Assets get no Scrum view at all: the asset overview embeds no Scrum template, so the type is neither offered nor resolvable there.
+
+The two pages need a class of their kind to live in. It is one the workspace already has when the template names one — a knowledge base gets the home page, an announcement channel gets the post — and otherwise the workspace is given the one class it is missing (`Page` for documents, `News` for posts). A home page is not an optional extra of a workspace, and a class holding one page is a smaller surprise than a workspace with nowhere to write.
+
+The home page is **named as such** (`Workspace.HomeId`) rather than left to be guessed. Without a choice the document overview falls back to the first root of the page tree by summary, which would happen to be this page today and stop being it the moment somebody adds one whose title sorts earlier. Anybody can point it somewhere else later from the document overview's own more menu — *choose home page* — and picking the automatic entry returns to the fallback.
+
+What the pages say is written by `WorkspaceTemplateContent`, and it is written **once, at creation**, in the language of whoever created the workspace rather than the installation's default: the person filling in the wizard is reading it in one particular language, and an author is going to rewrite the page anyway. A page that silently changed language under an author who had edited it would be worse than one written in the wrong one. Both carry a banner drawn from the product's own mark in the workspace's accent colour, inline as a `data:` SVG so it needs no route, no file and no cleanup, and survives a database copied to another installation.
+
+Applying a template twice adds what is missing rather than a second set of everything, per the table above — so a retried create, or a template applied to a workspace somebody had already set up by hand, does the useful thing instead of the destructive one.
+
+An unknown template key creates nothing and raises nothing. That is the ordinary answer for a workspace whose template has since been uninstalled, and for every caller of the REST API that is not the wizard. A workspace created **without** a template gets none of this either: the empty-workspace card means an empty workspace.
 
 ## The Creation Wizard
 
@@ -67,6 +93,14 @@ The steps are in that order because the first is the decision and the second is 
 
 The step always carries an **empty workspace** card besides whatever the plugins offer, and that card is visible whatever the search says. A workspace set up by hand has to stay one click away, and on an installation with no template plugin it is the only way through.
 
+### The required fields are actually required
+
+The name and the key are marked required, and for a long time nothing checked either of them: a workspace could be created with no name at all, and it was then a row no list could address. Three things were wrong at once, and all three are fixed:
+
+- **The form did not ask.** `ControlDataFormItemInputUnique` takes a `Required` resolver and the form renderer paints the asterisk from it, but the resolver never reached the DOM — the control rendered a bare host div and its client controller built the real `<input>` afterwards with neither `required` nor the framework's own `data-wx-required`, so the validator passed an empty value. **Fixed in WebExpress**: the control now emits `data-required` on the host and `webexpress.webapp.input.unique.js` carries it onto the input as `data-wx-required`, the way the tile control always did. KleeneStar carried a page-wide script for this between 2026-09-04 and the framework fix; it is gone.
+- **The endpoint did not check.** `RestApiCrud` reads the entity's `Validate…` attributes, and it reads them per field the payload carries — a field the payload omits is not checked, which is right for an update and wrong for a create. `Workspace.Name` carried no attribute at all. It has `[ValidateRequired]` now, and `/api/1/workspaces` demands both fields on a create whether the payload mentions them or not, and refuses a key or a name another workspace already holds.
+- **The advice contradicted the product.** `/api/1/workspaces/uniquekey` matched lower case only, so it reported the wizard's own suggested key — `SD`, `DEV` — as unavailable. It now matches the shape the create endpoint enforces.
+
 ## Where the Pieces Live
 
 | Concern                         | Where
@@ -74,8 +108,11 @@ The step always carries an **empty workspace** card besides whatever the plugins
 | What a template is              | `IWorkspaceTemplate`, `WorkspaceTemplateClass` (`KleeneStar.Core/WebWorkspaceTemplate`)
 | One registration                | `IWorkspaceTemplateContext`
 | Discovery and application       | `IWorkspaceTemplateManager` / `WorkspaceTemplateManager`
+| What an application produced    | `WorkspaceTemplateResult`
+| What the two pages say          | `WorkspaceTemplateContent`
 | The wizard                      | `WorkspaceAddFormFragment`
 | Applying on create              | `/api/1/workspaces` — `ApplyTemplate` in its `Create`
+| Refusing a nameless workspace   | `/api/1/workspaces` — `Validate`
 | The templates shipped           | the `KleeneStar.Templates` plugin
 
 ## Writing a Template

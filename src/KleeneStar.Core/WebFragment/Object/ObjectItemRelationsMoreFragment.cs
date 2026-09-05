@@ -3,6 +3,7 @@ using WebExpress.WebCore.Internationalization;
 using WebExpress.WebCore.WebAttribute;
 using WebExpress.WebCore.WebFragment;
 using WebExpress.WebCore.WebHtml;
+using WebExpress.WebUI.WebControl;
 using WebExpress.WebUI.WebFragment;
 using WebExpress.WebUI.WebIcon;
 using WebExpress.WebUI.WebPage;
@@ -15,7 +16,9 @@ namespace KleeneStar.Core.WebFragment.Object
     /// </summary>
     /// <remarks>
     /// The counterpart of <see cref="ObjectItemAttachmentsMoreFragment"/> for what the object is
-    /// linked to, matched by <see cref="ObjectToolbarRelationsFragment"/> in the toolbar.
+    /// linked to, and like it the only way in: the toolbar over the text used to carry the same
+    /// destination. It opens in a modal (<see cref="ObjectRelationsModalFragment"/>) rather than
+    /// navigating, so the text stays on the screen behind it.
     /// </remarks>
     [Section<SectionHeadlineMorePrimary>]
     [Scope<global::KleeneStar.Core.WWW.Document._objectkey_.Index>]
@@ -37,7 +40,12 @@ namespace KleeneStar.Core.WebFragment.Object
                 I18N.Translate(renderContext, "kleenestar.core:object.relations.card.header"),
                 ObjectSidePageLink.CountRelations(ObjectSidePageLink.ResolveObject(renderContext))
             );
-            Uri = ObjectSidePageLink.ResolveRelationsUri;
+            PrimaryAction = renderContext => new ActionModal
+            (
+                ObjectRelationsModalFragment.ModalId,
+                ObjectSidePageLink.ResolveRelationsUri(renderContext),
+                TypeModalSize.Large
+            );
         }
 
         /// <summary>

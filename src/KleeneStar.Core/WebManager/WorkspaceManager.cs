@@ -245,6 +245,119 @@ namespace KleeneStar.Core.WebManager
         }
 
         /// <summary>
+        /// Returns the documents of a workspace, ordered by summary.
+        /// </summary>
+        /// <param name="workspaceId">The id of the workspace.</param>
+        /// <returns>The documents. The collection may be empty.</returns>
+        private static IReadOnlyList<Model.Entities.Object> GetDocuments(Guid workspaceId)
+        {
+            var query = new Query<Model.Entities.Object>()
+                .WhereEquals(x => x.WorkspaceId, workspaceId)
+                .WhereEquals(x => x.Kind, ObjectKind.Document)
+                .OrderByAsc(x => x.Summary);
+
+            return [.. CoreHub.ObjectManager.GetObjects(query)];
+        }
+
+        /// <summary>
+        /// Returns the document shown as the home page of the supplied workspace: the chosen one
+        /// when there is one, otherwise the first root of the page tree.
+        /// </summary>
+        /// <remarks>
+        /// The chosen document is looked for among the workspace's own documents rather than
+        /// fetched by id, which settles the two ways a choice can go stale - the document was
+        /// deleted, or it was moved to another workspace - with the same lookup, and in both
+        /// cases by falling back rather than by showing nothing.
+        /// </remarks>
+        /// <param name="workspaceId">The id of the workspace.</param>
+        /// <returns>The home document, or <see langword="null"/> when the workspace holds no
+        /// documents.</returns>
+        public Model.Entities.Object GetHome(Guid workspaceId)
+        {
+            var documents = GetDocuments(workspaceId);
+
+            if (documents.Count == 0)
+            {
+                return null;
+            }
+
+            var chosen = GetWorkspace(workspaceId)?.HomeId;
+
+            if (chosen.HasValue)
+            {
+                var home = documents.FirstOrDefault(x => x.Id == chosen.Value);
+
+                if (home is not null)
+                {
+                    return home;
+                }
+            }
+
+            // the fallback: the first root of the page tree by summary. A document whose parent
+            // is not itself a document of this workspace counts as a root, so a page hung under
+            // something that has since gone is still reachable here
+            var ids = documents.Select(x => x.Id).ToHashSet();
+
+            return documents.FirstOrDefault(x => !x.ParentId.HasValue || !ids.Contains(x.ParentId.Value))
+                ?? documents[0];
+        }
+
+        /// <summary>
+        /// Returns whether the supplied object is the chosen home page of its workspace.
+        /// </summary>
+        /// <param name="workspaceId">The id of the workspace.</param>
+        /// <param name="objectId">The id of the document.</param>
+        /// <returns><see langword="true"/> when the document was chosen.</returns>
+        public bool IsHome(Guid workspaceId, Guid objectId)
+        {
+            return objectId != Guid.Empty && GetWorkspace(workspaceId)?.HomeId == objectId;
+        }
+
+        /// <summary>
+        /// Chooses the home page of a workspace, or clears the choice.
+        /// </summary>
+        /// <remarks>
+        /// Only a document of this workspace may be chosen. A caller naming something else - an
+        /// issue, a document of another workspace - changes nothing rather than storing an id
+        /// the overview would silently ignore.
+        /// <para>
+        /// The write goes through <see cref="Update"/>, so it raises the same event and reaches
+        /// the audit log the same way any other change to the workspace does. Choosing what a
+        /// whole workspace opens on is a change to the workspace, not a per-user preference like
+        /// a favourite.
+        /// </para>
+        /// </remarks>
+        /// <param name="workspaceId">The id of the workspace.</param>
+        /// <param name="objectId">The document to show, or <see langword="null"/> to clear.</param>
+        /// <returns>The updated workspace, or <see langword="null"/> when nothing was changed.</returns>
+        public Workspace SetHome(Guid workspaceId, Guid? objectId)
+        {
+            var workspace = GetWorkspace(workspaceId);
+
+            if (workspace is null)
+            {
+                return null;
+            }
+
+            if (objectId.HasValue && !GetDocuments(workspaceId).Any(x => x.Id == objectId.Value))
+            {
+                return null;
+            }
+
+            if (workspace.HomeId == objectId)
+            {
+                return workspace;
+            }
+
+            workspace.HomeId = objectId;
+            workspace.Updated = DateTime.UtcNow;
+
+            Update(workspace);
+
+            return workspace;
+        }
+
+        /// <summary>
         /// Adds a workspace to the workspace manager.
         /// </summary>
         /// <param name="workspace">The workspace to add. Cannot be null.</param>

@@ -56,6 +56,25 @@ namespace KleeneStar.Core.WebManager
         Object GetObjectByKey(ObjectKeyParameter objectKey);
 
         /// <summary>
+        /// Returns the next free object key of a workspace, e.g. <c>SD-18</c>, derived from the
+        /// keys already issued there.
+        /// </summary>
+        /// <remarks>
+        /// Every caller that creates an object the user never named needs this - the create
+        /// endpoint and the setup a workspace template performs - and two implementations of the
+        /// same numbering would eventually hand out the same key twice.
+        /// </remarks>
+        /// <param name="workspaceId">The workspace the key is issued in.</param>
+        /// <returns>The key, or <see langword="null"/> when the workspace is unknown or carries
+        /// no key of its own to prefix with.</returns>
+        /// <remarks>
+        /// The type is written out because this file deliberately does not import
+        /// <c>System</c>: it names <see cref="Object"/> throughout, and that would become
+        /// ambiguous with <see cref="System.Object"/>.
+        /// </remarks>
+        string NextObjectKey(System.Guid workspaceId);
+
+        /// <summary>
         /// Retrieves a collection of objects that satisfy the specified filter criteria.
         /// </summary>
         /// <param name="query">
@@ -156,6 +175,48 @@ namespace KleeneStar.Core.WebManager
         /// <param name="favorite">The new starred state.</param>
         /// <returns>The persisted visit row, or <see langword="null"/>.</returns>
         ObjectVisit SetFavorite(System.Guid ownerId, System.Guid objectId, bool favorite);
+
+        /// <summary>
+        /// Returns whether the supplied identity has liked the supplied object.
+        /// </summary>
+        /// <param name="ownerId">The id of the liking identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <returns><see langword="true"/> when the identity has liked it.</returns>
+        bool IsLiked(System.Guid ownerId, System.Guid objectId);
+
+        /// <summary>
+        /// Returns how many identities have liked the supplied object.
+        /// </summary>
+        /// <param name="objectId">The id of the object.</param>
+        /// <returns>The number of likes.</returns>
+        int GetLikeCount(System.Guid objectId);
+
+        /// <summary>
+        /// Sets the liked state of the supplied object for the supplied identity. Returns
+        /// <see langword="null"/> when the owner or object does not exist.
+        /// </summary>
+        /// <remarks>
+        /// A like is public and a star is private, so unlike <see cref="SetFavorite"/> this is
+        /// counted and shown to everybody. It writes no commit and raises no audit event: what a
+        /// reader thought of a post is not a revision of it.
+        /// </remarks>
+        /// <param name="ownerId">The id of the liking identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <param name="liked">The new liked state.</param>
+        /// <returns>The persisted visit row, or <see langword="null"/>.</returns>
+        ObjectVisit SetLike(System.Guid ownerId, System.Guid objectId, bool liked);
+
+        /// <summary>
+        /// Returns whether the supplied identity has opened the supplied object before.
+        /// </summary>
+        /// <remarks>
+        /// It is the same row a visit is recorded in, so "read" means exactly "opened at least
+        /// once" - a feed can say which entries are new to this reader without a second store.
+        /// </remarks>
+        /// <param name="ownerId">The id of the reading identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <returns><see langword="true"/> when the object has been opened before.</returns>
+        bool IsRead(System.Guid ownerId, System.Guid objectId);
 
         /// <summary>
         /// Adds a object to the manager.

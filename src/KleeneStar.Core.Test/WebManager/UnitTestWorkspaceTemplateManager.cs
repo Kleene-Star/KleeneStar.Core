@@ -8,6 +8,7 @@ using WebExpress.WebCore.WebPlugin;
 using WebExpress.WebIndex.Queries;
 using WebExpress.WebUI.WebIcon;
 using ClassEntity = KleeneStar.Model.Entities.Class;
+using ObjectEntity = KleeneStar.Model.Entities.Object;
 
 namespace KleeneStar.Core.Test.WebManager
 {
@@ -26,6 +27,7 @@ namespace KleeneStar.Core.Test.WebManager
     {
         private static readonly Guid WorkspaceId = Guid.Parse("B7C8D9E0-1111-4111-8111-111111111111");
         private static readonly Guid OtherWorkspaceId = Guid.Parse("B7C8D9E0-2222-4222-8222-222222222222");
+        private static readonly Guid AuthorId = Guid.Parse("B7C8D9E0-3333-4333-8333-333333333333");
 
         /// <summary>
         /// A template with two classes, one of them a document, standing in for the ones a plugin
@@ -172,6 +174,10 @@ namespace KleeneStar.Core.Test.WebManager
         /// Applying a template creates its classes in the workspace, with the kind and the portal
         /// visibility the template declared.
         /// </summary>
+        /// <remarks>
+        /// The probe names a document class but no blog class, so the count is its two plus the
+        /// one class the opening post needs and would otherwise have nowhere to live.
+        /// </remarks>
         [Fact]
         public void ApplyCreatesTheClasses()
         {
@@ -179,7 +185,7 @@ namespace KleeneStar.Core.Test.WebManager
 
             var created = CoreHub.WorkspaceTemplateManager.Apply("test.probe", WorkspaceId);
 
-            Assert.Equal(2, created.Count);
+            Assert.Equal(3, created.Classes.Count);
 
             var classes = CoreHub.ClassManager
                 .GetClasses(new Query<ClassEntity>().WhereEquals(x => x.WorkspaceId, WorkspaceId))
@@ -195,9 +201,124 @@ namespace KleeneStar.Core.Test.WebManager
         }
 
         /// <summary>
+        /// A workspace whose template names no class of a prose kind is given the one class that
+        /// kind's page needs - and only that one: the document page goes into the class the
+        /// template already named rather than beside it.
+        /// </summary>
+        [Fact]
+        public void ApplyAddsOnlyTheMissingProseClass()
+        {
+            Seed(nameof(ApplyAddsOnlyTheMissingProseClass));
+
+            var created = CoreHub.WorkspaceTemplateManager.Apply("test.probe", WorkspaceId);
+
+            Assert.DoesNotContain(created.Classes, x => x.Name == "Page");
+
+            var news = Assert.Single(created.Classes, x => x.Name == "News");
+
+            Assert.Equal(ObjectKind.Blog, news.Kind);
+            Assert.Equal(WorkspaceId, news.WorkspaceId);
+
+            Assert.Equal(created.Home.ClassId, created.Classes.Single(x => x.Name == "Knowledge").Id);
+            Assert.Equal(created.OpeningPost.ClassId, news.Id);
+        }
+
+        /// <summary>
+        /// Applying a template lays out both overviews with a starting set, not the whole
+        /// catalogue: each kind leads with its own curated list - the tab strip has no built-in
+        /// first entry, so the leading view is what the overview opens on - followed by the
+        /// dashboard, and for issues the Scrum view.
+        /// </summary>
+        /// <remarks>
+        /// The table, the list and the Kanban board are deliberately absent. They are one click
+        /// away in the tab strip's own template picker, and a new workspace opening on six tabs
+        /// of the same empty rows is worse than one opening on three.
+        /// </remarks>
+        [Fact]
+        public void ApplyCreatesTheViews()
+        {
+            Seed(nameof(ApplyCreatesTheViews));
+
+            var created = CoreHub.WorkspaceTemplateManager.Apply("test.probe", WorkspaceId);
+
+            Assert.Equal(5, created.Views.Count);
+
+            var issues = CoreHub.ObjectViewManager
+                .GetViewsForWorkspace(WorkspaceId, ObjectKind.Issue)
+                .OrderBy(x => x.Order)
+                .ToList();
+
+            var assets = CoreHub.ObjectViewManager
+                .GetViewsForWorkspace(WorkspaceId, ObjectKind.Asset)
+                .OrderBy(x => x.Order)
+                .ToList();
+
+            Assert.Equal
+            (
+                [ObjectViewType.Issues, ObjectViewType.Dashboard, ObjectViewType.ScrumSprint],
+                issues.Select(x => x.ViewType)
+            );
+
+            Assert.Equal
+            (
+                [ObjectViewType.Assets, ObjectViewType.Dashboard],
+                assets.Select(x => x.ViewType)
+            );
+
+            Assert.All(issues, x => Assert.Equal(ObjectViewState.Active, x.State));
+
+            // what the user is left to add, rather than what happens to be missing
+            Assert.DoesNotContain(issues.Concat(assets), x => x.ViewType is ObjectViewType.Table
+                or ObjectViewType.List
+                or ObjectViewType.Kanban);
+
+            // the asset overview embeds no scrum template, so the type is not resolvable there
+            Assert.DoesNotContain(assets, x => x.ViewType == ObjectViewType.ScrumSprint);
+        }
+
+        /// <summary>
+        /// Applying a template writes the home page and the post announcing the workspace, both
+        /// of them ordinary objects of their kind, keyed like every other object of the
+        /// workspace and illustrated with the product's mark.
+        /// </summary>
+        [Fact]
+        public void ApplyWritesTheProsePages()
+        {
+            Seed(nameof(ApplyWritesTheProsePages));
+
+            var created = CoreHub.WorkspaceTemplateManager.Apply("test.probe", WorkspaceId, AuthorId);
+
+            Assert.NotNull(created.Home);
+            Assert.NotNull(created.OpeningPost);
+
+            Assert.Equal(ObjectKind.Document, created.Home.Kind);
+            Assert.Equal(ObjectKind.Blog, created.OpeningPost.Kind);
+
+            Assert.StartsWith("ws-tpl-", created.Home.Key);
+            Assert.StartsWith("ws-tpl-", created.OpeningPost.Key);
+            Assert.NotEqual(created.Home.Key, created.OpeningPost.Key);
+
+            Assert.Equal(AuthorId, created.Home.CreatorId);
+            Assert.Equal(AuthorId, created.OpeningPost.CreatorId);
+
+            // the illustration is carried in the page rather than pointing at a file, so a
+            // database that is copied to another installation keeps its pictures
+            Assert.Contains("data:image/svg+xml;base64,", created.Home.Description);
+            Assert.Contains("data:image/svg+xml;base64,", created.OpeningPost.Description);
+
+            // the page says what the workspace holds, so a class name has to appear in it
+            Assert.Contains("Ticket", created.Home.Description);
+
+            // the home page is named as such rather than left to the fallback, which would stop
+            // pointing at it the moment somebody adds a page whose title sorts earlier
+            Assert.True(CoreHub.WorkspaceManager.IsHome(WorkspaceId, created.Home.Id));
+            Assert.Equal(created.Home.Id, CoreHub.WorkspaceManager.GetHome(WorkspaceId)?.Id);
+        }
+
+        /// <summary>
         /// Applying the same template twice adds what is missing rather than a second set of
         /// everything - a retried create, or a template applied to a workspace somebody had
-        /// already set up by hand, must not double its classes.
+        /// already set up by hand, must not double any of it.
         /// </summary>
         [Fact]
         public void ApplyTwiceIsIdempotent()
@@ -207,14 +328,26 @@ namespace KleeneStar.Core.Test.WebManager
             CoreHub.WorkspaceTemplateManager.Apply("test.probe", WorkspaceId);
             var second = CoreHub.WorkspaceTemplateManager.Apply("test.probe", WorkspaceId);
 
-            Assert.Empty(second);
-            Assert.Equal(2, CoreHub.ClassManager
+            Assert.Empty(second.Classes);
+            Assert.Empty(second.Views);
+            Assert.Null(second.Home);
+            Assert.Null(second.OpeningPost);
+
+            Assert.Equal(3, CoreHub.ClassManager
                 .GetClasses(new Query<ClassEntity>().WhereEquals(x => x.WorkspaceId, WorkspaceId))
+                .Count());
+
+            Assert.Equal(5, CoreHub.ObjectViewManager
+                .GetViewsForWorkspace(WorkspaceId)
+                .Count());
+
+            Assert.Equal(2, CoreHub.ObjectManager
+                .GetObjects(new Query<ObjectEntity>().WhereEquals(x => x.WorkspaceId, WorkspaceId))
                 .Count());
         }
 
         /// <summary>
-        /// The classes land in the workspace they were applied to and nowhere else.
+        /// Everything lands in the workspace it was applied to and nowhere else.
         /// </summary>
         [Fact]
         public void ApplyTouchesOnlyItsWorkspace()
@@ -225,6 +358,11 @@ namespace KleeneStar.Core.Test.WebManager
 
             Assert.Empty(CoreHub.ClassManager
                 .GetClasses(new Query<ClassEntity>().WhereEquals(x => x.WorkspaceId, OtherWorkspaceId)));
+
+            Assert.Empty(CoreHub.ObjectViewManager.GetViewsForWorkspace(OtherWorkspaceId));
+
+            Assert.Empty(CoreHub.ObjectManager
+                .GetObjects(new Query<ObjectEntity>().WhereEquals(x => x.WorkspaceId, OtherWorkspaceId)));
         }
 
         /// <summary>
@@ -237,10 +375,25 @@ namespace KleeneStar.Core.Test.WebManager
         {
             Seed(nameof(ApplyUnknownCreatesNothing));
 
-            Assert.Empty(CoreHub.WorkspaceTemplateManager.Apply("test.gone", WorkspaceId));
-            Assert.Empty(CoreHub.WorkspaceTemplateManager.Apply("test.probe", Guid.NewGuid()));
-            Assert.Empty(CoreHub.WorkspaceTemplateManager.Apply("test.probe", Guid.Empty));
-            Assert.Empty(CoreHub.WorkspaceTemplateManager.Apply(null, WorkspaceId));
+            AssertNothingCreated(CoreHub.WorkspaceTemplateManager.Apply("test.gone", WorkspaceId));
+            AssertNothingCreated(CoreHub.WorkspaceTemplateManager.Apply("test.probe", Guid.NewGuid()));
+            AssertNothingCreated(CoreHub.WorkspaceTemplateManager.Apply("test.probe", Guid.Empty));
+            AssertNothingCreated(CoreHub.WorkspaceTemplateManager.Apply(null, WorkspaceId));
+
+            Assert.Empty(CoreHub.ClassManager
+                .GetClasses(new Query<ClassEntity>().WhereEquals(x => x.WorkspaceId, WorkspaceId)));
+        }
+
+        /// <summary>
+        /// Asserts that an application produced nothing at all.
+        /// </summary>
+        /// <param name="result">The result to check.</param>
+        private static void AssertNothingCreated(WorkspaceTemplateResult result)
+        {
+            Assert.Empty(result.Classes);
+            Assert.Empty(result.Views);
+            Assert.Null(result.Home);
+            Assert.Null(result.OpeningPost);
         }
     }
 }

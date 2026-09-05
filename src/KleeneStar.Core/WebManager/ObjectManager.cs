@@ -4,7 +4,9 @@ using KleeneStar.Model.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using WebExpress.WebCore;
 using WebExpress.WebCore.WebComponent;
 using WebExpress.WebIndex.Queries;
@@ -106,6 +108,47 @@ namespace KleeneStar.Core.WebManager
             return GetObjectByKey(key);
         }
 
+        /// <summary>
+        /// Returns the next free object key of a workspace, e.g. <c>SD-18</c>.
+        /// </summary>
+        /// <remarks>
+        /// The key is the human-readable handle an object is addressed by, so it has to exist
+        /// before the record is written, and no form asks for one. The next free number is
+        /// derived from the keys already issued in the workspace. Two creates racing each other
+        /// could derive the same number; the surrounding code is likewise single-writer, so the
+        /// sequence is not guarded any further here.
+        /// <para>
+        /// It lives on the manager rather than at a call site because more than one caller
+        /// creates objects the user never named - the create endpoint, and the setup a workspace
+        /// template performs - and two implementations of the same numbering would eventually
+        /// hand out the same key twice.
+        /// </para>
+        /// </remarks>
+        /// <param name="workspaceId">The workspace the key is issued in.</param>
+        /// <returns>The key, or <see langword="null"/> when the workspace is unknown or carries
+        /// no key of its own to prefix with.</returns>
+        public string NextObjectKey(Guid workspaceId)
+        {
+            var prefix = CoreHub.WorkspaceManager.GetWorkspace(workspaceId)?.Key;
+
+            if (string.IsNullOrWhiteSpace(prefix))
+            {
+                return null;
+            }
+
+            var query = new Query<Model.Entities.Object>()
+                .WhereEquals(x => x.WorkspaceId, workspaceId);
+            var pattern = new Regex($"^{Regex.Escape(prefix)}-(\\d+)$", RegexOptions.IgnoreCase);
+
+            var next = GetObjects(query)
+                .Select(x => pattern.Match(x.Key ?? string.Empty))
+                .Where(m => m.Success)
+                .Select(m => int.TryParse(m.Groups[1].Value, out var number) ? number : 0)
+                .DefaultIfEmpty(0)
+                .Max() + 1;
+
+            return $"{prefix}-{next.ToString(CultureInfo.InvariantCulture)}";
+        }
 
         /// <summary>
         /// Retrieves a collection of objects that satisfy the specified filter criteria.
@@ -238,6 +281,63 @@ namespace KleeneStar.Core.WebManager
         public bool IsFavorite(Guid ownerId, Guid objectId)
         {
             return ModelHub.GetObjectVisit(ownerId, objectId)?.Favorite ?? false;
+        }
+
+        /// <summary>
+        /// Returns whether the supplied identity has liked the supplied object.
+        /// </summary>
+        /// <param name="ownerId">The id of the liking identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <returns><see langword="true"/> when the identity has liked it.</returns>
+        public bool IsLiked(Guid ownerId, Guid objectId)
+        {
+            return ModelHub.GetObjectVisit(ownerId, objectId)?.Liked ?? false;
+        }
+
+        /// <summary>
+        /// Returns whether the supplied identity has opened the supplied object before.
+        /// </summary>
+        /// <param name="ownerId">The id of the reading identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <returns><see langword="true"/> when the object has been opened before.</returns>
+        public bool IsRead(Guid ownerId, Guid objectId)
+        {
+            // a row exists as soon as anything about the object was recorded for this identity -
+            // a star, a like - so the timestamp is what says it was opened, not the row
+            return ModelHub.GetObjectVisit(ownerId, objectId)?.LastVisited > default(DateTime);
+        }
+
+        /// <summary>
+        /// Returns how many identities have liked the supplied object.
+        /// </summary>
+        /// <param name="objectId">The id of the object.</param>
+        /// <returns>The number of likes.</returns>
+        public int GetLikeCount(Guid objectId)
+        {
+            // the object narrows the query and the flag is counted here: a visit row exists per
+            // identity that ever touched the object, which is a handful, and the flag is not one
+            // of the comparisons the index query offers
+            var query = new Query<Model.Entities.ObjectVisit>()
+                .WhereEquals(x => x.ObjectId, objectId);
+
+            return ModelHub.GetObjectVisits(query).Count(x => x.Liked);
+        }
+
+        /// <summary>
+        /// Sets the liked state of the supplied object for the supplied identity.
+        /// </summary>
+        /// <remarks>
+        /// No commit and no audit event: what a reader thought of a post is not a revision of it.
+        /// The star does raise an update, because a starred object changes what its owner's lists
+        /// show; a like changes only a number under the post.
+        /// </remarks>
+        /// <param name="ownerId">The id of the liking identity.</param>
+        /// <param name="objectId">The id of the object.</param>
+        /// <param name="liked">The new liked state.</param>
+        /// <returns>The persisted visit row, or <see langword="null"/>.</returns>
+        public Model.Entities.ObjectVisit SetLike(Guid ownerId, Guid objectId, bool liked)
+        {
+            return ModelHub.UpsertObjectVisit(ownerId, objectId, favorite: null, recordVisit: false, liked: liked);
         }
 
         /// <summary>
